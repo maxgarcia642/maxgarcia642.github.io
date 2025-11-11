@@ -200,12 +200,7 @@ ul li {
         width: 100%;
         height: auto;
     }
+    .aero-section {
+        padding: 20px;
+    }
 }
-
-/* Section colors (different hues for each, all Frutiger Aero base) */
-#introduction { --hue: 200; } /* Blue */
-#coding { --hue: 120; } /* Green */
-#articles { --hue: 300; } /* Purple */
-#utilities { --hue: 60; } /* Yellow */
-#connect { --hue: 0; } /* Red */
-#game { --hue: 240; } /* Indigo */
