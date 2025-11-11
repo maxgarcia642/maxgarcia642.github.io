@@ -22,7 +22,7 @@ class PixelArt {
         this.render();
     }
     paint(event) {
-        const rect = this.canvas.getBoundingRect();
+        const rect = this.canvas.getBoundingClientRect();
         const x = Math.floor((event.clientX - rect.left) / this.pixelSize);
         const y = Math.floor((event.clientY - rect.top) / this.pixelSize);
         this.grid[y][x] = this.color;
@@ -48,10 +48,6 @@ class PixelArt {
         if (saved) this.grid = JSON.parse(saved);
     }
 }
-// Initialize the game when the page loads: Waits for DOM to be ready.
-document.addEventListener('DOMContentLoaded', () => {
-    new PixelArt();
-});
 function clearCanvas() {
     pixelArt.grid = Array.from({length: 16}, () => Array(16).fill('#FFFFFF'));
     pixelArt.saveToLocal();
@@ -63,3 +59,7 @@ function saveDrawing() {
     link.href = pixelArt.canvas.toDataURL('image/png');
     link.click();
 }
+// Init
+document.addEventListener('DOMContentLoaded', () => {
+    new PixelArt();
+});
