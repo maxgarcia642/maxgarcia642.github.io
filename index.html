@@ -127,4 +127,36 @@ int main() {
         <div id="investment" class="aero-card">
             <h3>Investment Valuations</h3>
             <!-- Embedded TradingView widget for stocks/crypto (customize at tradingview.com/widget) -->
-            <iframe src="https://www.tradingview.com/widgetembed/?symbol=BITSTAMP%3ABTCUSD&interval=D&hidesidelegend=0&symboledit=1&saveimage=1&toolbarbg=f1f
+            <iframe src="https://www.tradingview.com/widgetembed/?symbol=BITSTAMP%3ABTCUSD&interval=D&hidesidelegend=0&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=%5B%5D&theme=light&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en" width="100%" height="400" frameborder="0"></iframe>
+        </div>
+        <div id="ecological" class="aero-card">
+            <h3>Ecological Data</h3>
+            <!-- Embedded NREL SCOUT energy calculator for ecological analysis -->
+            <iframe src="https://scout.energy.gov/embedded-calculator" width="100%" height="400" frameborder="0"></iframe>
+        </div>
+    </section>
+    <!-- Connect section: Embeds your LinkTree for social links. -->
+    <section id="connect" class="aero-section connect-color">
+        <h2>Connect with Me</h2>
+        <p>Check out my projects and social media via LinkTree.</p>
+        <!-- Iframe embeds the external page; replace src with your actual URL. -->
+        <!-- Replace 'YOUR_LINKTREE_URL' with your actual LinkTree link, e.g., https://linktr.ee/yourusername -->
+        <iframe src="YOUR_LINKTREE_URL" width="100%" height="600px" frameborder="0" class="aero-card"></iframe>
+    </section>
+    <!-- Game section: A simple interactive 2D game using HTML canvas. -->
+    <section id="game" class="aero-section game-color">
+        <h2>Pixel Art Drawing Game</h2>
+        <p>Choose a color and click pixels to draw (16x16 grid). Clear or save as PNG.</p>
+        <input type="color" id="color-picker" value="#000000">
+        <button onclick="clearCanvas()" class="aero-button">Clear</button>
+        <button onclick="saveDrawing()" class="aero-button">Save PNG</button>
+        <canvas id="pixelCanvas" width="320" height="320" class="aero-canvas"></canvas>
+    </section>
+    <!-- Footer: Displays copyright info at the bottom of the page. -->
+    <footer class="aero-footer">
+        <p>&copy; 2025 Your Name. All rights reserved.</p>
+    </footer>
+    <!-- Links to the external JavaScript file for interactivity. -->
+    <script src="script.js"></script>
+</body>
+</html>
