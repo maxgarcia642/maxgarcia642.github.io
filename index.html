@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- This sets the character encoding to UTF-8 (a variable-width character encoding standard that uses between one and four bytes to represent each Unicode code point), ensuring proper display of special characters. -->
+    <!-- This sets the character encoding to UTF-8, ensuring proper display of special characters. -->
     <meta charset="UTF-8">
     <!-- This meta tag makes the page responsive, adjusting to different screen sizes like mobile devices. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +24,7 @@
         </nav>
     </header>
     <!-- Introduction section: This is the first content area, welcoming visitors and showing your resume. -->
-    <section id="introduction" class="aero-section">
+    <section id="introduction" class="wii-aero">
         <h1>Welcome to My Website</h1>
         <p>This is your introduction paragraph. Tell visitors about yourself!</p>
         <h2>My Resume</h2>
@@ -37,7 +37,7 @@
         </div>
     </section>
     <!-- Coding section: Displays your code snippets from GitHub in terminal-like boxes for a techy look. -->
-    <section id="coding" class="aero-section">
+    <section id="coding" class="frutiger-metro">
         <h2>Coding Projects</h2>
         <p>Here are examples of my code in Python, Java, and C++, displayed in terminal-like windows. These are for showcase purposes (static display). If you want interactive running, consider embedding from services like Replit or linking to your GitHub repos.</p>
         <p>Also including the website's own code for reference.</p>
@@ -93,7 +93,7 @@ int main() {
         </div>
     </section>
     <!-- Articles section: Embeds or links to your PDFs for easy viewing. -->
-    <section id="articles" class="aero-section">
+    <section id="articles" class="vaporwave">
         <h2>Articles & Projects</h2>
         <p>Here are my most valuable PDFs and reports.</p>
         <ul>
@@ -107,49 +107,78 @@ int main() {
                 <a href="#project2">Project 2 Report</a>
                 <iframe src="project2.pdf" width="100%" height="400px"></iframe>
             </li>
-            <!-- Add more list items as needed for additional projects here. -->
+            <!-- Add more list items as needed for additional projects. -->
         </ul>
     </section>
-    <!-- Utilities section: Added per discussion, with API integrations for weather, flights, news, etc. -->
-    <section id="utilities" class="aero-section">
+    <!-- Utilities section: Now only 3 utilities. -->
+    <section id="utilities" class="y2k">
         <h2>Utilities</h2>
-        <p>Handy tools for daily use: Weather, flights, news, and calendar.</p>
-        <div id="weather" class="aero-card">
-            <h3>Weather (Enter city, e.g., New York)</h3>
-            <input type="text" id="city-input" placeholder="City name">
-            <button onclick="fetchWeather()" class="aero-button">Get Weather</button>
-            <p id="weather-result"></p>
+        <p>Unique tools for geo, investments, and energy analysis.</p>
+        <div id="geodata" class="aero-card">
+            <h3>Geodata Collective</h3>
+            <input type="text" id="geo-city" placeholder="City (e.g., New York)">
+            <input type="text" id="start-loc" placeholder="Start location (lat,lon e.g., 40.7128,-74.0060)">
+            <input type="text" id="end-loc" placeholder="End location (lat,lon)">
+            <select id="trans-mode">
+                <option value="drive">Car</option>
+                <option value="bicycle">Bike</option>
+                <option value="flight">Flight (airport ICAO, e.g., KJFK)</option>
+            </select>
+            <button onclick="fetchGeodata()" class="aero-button">Get Data</button>
+            <p id="geo-time"></p>
+            <p id="geo-weather"></p>
+            <p id="geo-trans"></p>
+            <div id="calendar-embed" class="aero-card">
+                <iframe src="https://calendar.google.com/calendar/embed?src=yourcalendar%40gmail.com" width="100%" height="300" frameborder="0" scrolling="no"></iframe>
+            </div>
         </div>
-        <div id="flights" class="aero-card">
-            <h3>Flight Status (Enter ICAO code, e.g., KJFK for JFK)</h3>
-            <input type="text" id="airport-input" placeholder="Airport ICAO">
-            <button onclick="fetchFlights()" class="aero-button">Get Flights</button>
-            <p id="flights-result"></p>
+        <div id="investment" class="aero-card">
+            <h3>Investment Vehicle Converter</h3>
+            <select id="from-type">
+                <option value="stock">Stock</option>
+                <option value="crypto">Crypto</option>
+                <option value="currency">Currency</option>
+                <option value="art">Art</option>
+                <option value="realestate">Real Estate</option>
+            </select>
+            <input type="text" id="from-asset" placeholder="Asset name/ticker/address/art piece">
+            <input type="number" id="from-value" placeholder="Value in USD">
+            <select id="to-type">
+                <option value="stock">Stock</option>
+                <option value="crypto">Crypto</option>
+                <option value="currency">Currency</option>
+                <option value="art">Art</option>
+                <option value="realestate">Real Estate</option>
+            </select>
+            <input type="text" id="to-asset" placeholder="Target asset name/ticker">
+            <button onclick="convertInvestment()" class="aero-button">Convert</button>
+            <p id="investment-result"></p>
+            <p id="from-desc"></p>
+            <p id="to-desc"></p>
         </div>
-        <div id="news" class="aero-card">
-            <h3>Latest News</h3>
-            <ul id="news-list"></ul>
-        </div>
-        <div id="calendar" class="aero-card">
-            <h3>Calendar Embed</h3>
-            <!-- Replace with your public Google Calendar iframe -->
-            <iframe src="https://calendar.google.com/calendar/embed?src=yourcalendar%40gmail.com" width="100%" height="300" frameborder="0" scrolling="no"></iframe>
+        <div id="ecofuel" class="aero-card">
+            <h3>Ecofuel Analysis</h3>
+            <input type="text" id="use-case" placeholder="Use case (e.g., vehicles, home heating)">
+            <button onclick="analyzeEcofuel()" class="aero-button">Rank Sources</button>
+            <ul id="ecofuel-result"></ul>
         </div>
     </section>
     <!-- Connect section: Embeds your LinkTree for social links. -->
-    <section id="connect" class="aero-section">
+    <section id="connect" class="corporate-min">
         <h2>Connect with Me</h2>
         <p>Check out my projects and social media via LinkTree.</p>
         <!-- Iframe embeds the external page; replace src with your actual URL. -->
         <!-- Replace 'YOUR_LINKTREE_URL' with your actual LinkTree link, e.g., https://linktr.ee/yourusername -->
         <iframe src="YOUR_LINKTREE_URL" width="100%" height="600px" frameborder="0" class="aero-card"></iframe>
     </section>
-    <!-- Game section: A simple interactive 2D game using HTML canvas. -->
+    <!-- Game section: Now Pixel Art Drawing. -->
     <section id="game" class="aero-section">
-        <h2>2D Minecraft Game</h2>
-        <p>A simple 2D Minecraft-like game built with JavaScript and Canvas. Click to place or remove blocks. Cycles through different block types.</p>
-        <!-- Canvas element where the game is drawn; script.js handles the logic. -->
-        <canvas id="gameCanvas" width="800" height="400" class="aero-canvas"></canvas>
+        <h2>Pixel Art Drawing Game</h2>
+        <p>Choose a color and click pixels to draw (16x16 grid). Clear or save as PNG.</p>
+        <input type="color" id="color-picker" value="#000000">
+        <button onclick="clearCanvas()" class="aero-button">Clear</button>
+        <button onclick="saveDrawing()" class="aero-button">Save PNG</button>
+        <canvas id="pixelCanvas" width="320" height="320" class="aero-canvas"></canvas> <!-- 16x16 at 20px/pixel -->
     </section>
     <!-- Footer: Displays copyright info at the bottom of the page. -->
     <footer class="aero-footer">
