@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- This sets the character encoding to UTF-8 (a variable-width character encoding standard that uses between one and four bytes to represent each Unicode code point), ensuring proper display of special characters. -->
+    <meta charset="UTF-8">
+    <!-- This meta tag makes the page responsive, adjusting to different screen sizes like mobile devices. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Personal Website</title>
+    <!-- Links to the external CSS file for styling the page. -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <!-- Navigation bar for jumping to different sections of the page. -->
+        <nav>
+            <ul>
+                <li><a href="#introduction" class="aero-button">Introduction</a></li>
+                <li><a href="#coding" class="aero-button">Coding</a></li>
+                <li><a href="#articles" class="aero-button">Articles</a></li>
+                <li><a href="#utilities" class="aero-button">Utilities</a></li>
+                <li><a href="#connect" class="aero-button">Connect</a></li>
+                <li><a href="#game" class="aero-button">Game</a></li>
+            </ul>
+        </nav>
+    </header>
+    <!-- Introduction section: This is the first content area, welcoming visitors and showing your resume. -->
+    <section id="introduction" class="aero-section">
+        <h1>Welcome to My Website</h1>
+        <p>This is your introduction paragraph. Tell visitors about yourself!</p>
+        <h2>My Resume</h2>
+        <!-- Resume container: Styles this as a boxed area for better readability. Replace placeholders with your actual details. -->
+        <div class="resume aero-card">
+            <p><strong>Name:</strong> Your Name</p>
+            <p><strong>Experience:</strong> List your jobs, skills, etc. here. You can format this as a full resume.</p>
+            <!-- Optional: Uncomment to embed a PDF resume instead of text. The src should point to your uploaded PDF file. -->
+            <!-- <iframe src="your-resume.pdf" width="100%" height="600px"></iframe> -->
+        </div>
+    </section>
+    <!-- Coding section: Displays your code snippets from GitHub in terminal-like boxes for a techy look. -->
+    <section id="coding" class="aero-section">
+        <h2>Coding Projects</h2>
+        <p>Here are examples of my code in Python, Java, and C++, displayed in terminal-like windows. These are for showcase purposes (static display). If you want interactive running, consider embedding from services like Replit or linking to your GitHub repos.</p>
+        <p>Also including the website's own code for reference.</p>
+       
+        <!-- Each terminal-container holds a code snippet with a header. -->
+        <div class="terminal-container aero-card">
+            <h3>Python Code (from your GitHub repo)</h3>
+            <!-- The terminal div styles this like a command-line window, with green text on black. -->
+            <div class="terminal">
+                <pre><code># Paste your Python code here from your GitHub repository.
+# For example:
+def hello_world():
+    print("Hello, World!")
+hello_world()</code></pre>
+            </div>
+        </div>
+       
+        <div class="terminal-container aero-card">
+            <h3>Java Code (from your GitHub repo)</h3>
+            <div class="terminal">
+                <pre><code>// Paste your Java code here from your GitHub repository.
+// For example:
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}</code></pre>
+            </div>
+        </div>
+       
+        <div class="terminal-container aero-card">
+            <h3>C++ Code (from your GitHub repo)</h3>
+            <div class="terminal">
+                <pre><code>// Paste your C++ code here from your GitHub repository.
+// For example:
+#include &lt;iostream&gt;
+int main() {
+    std::cout &lt;&lt; "Hello, World!" &lt;&lt; std::endl;
+    return 0;
+}</code></pre>
+            </div>
+        </div>
+       
+        <div class="terminal-container aero-card">
+            <h3>Website Code (HTML excerpt)</h3>
+            <div class="terminal">
+                <pre><code>&lt;!-- This is a snippet from index.html --&gt;
+&lt;section id="introduction"&gt;
+    &lt;h1&gt;Welcome to My Website&lt;/h1&gt;
+    &lt;p&gt;This is your introduction paragraph.&lt;/p&gt;
+&lt;/section&gt;</code></pre>
+            </div>
+        </div>
+    </section>
+    <!-- Articles section: Embeds or links to your PDFs for easy viewing. -->
+    <section id="articles" class="aero-section">
+        <h2>Articles & Projects</h2>
+        <p>Here are my most valuable PDFs and reports.</p>
+        <ul>
+            <li class="aero-card">
+                <!-- Anchor for direct linking, and iframe to embed the PDF inline. -->
+                <a href="#project1">Project 1 Report</a>
+                <!-- Embed PDF inline for easy reading (host in your repo) -->
+                <iframe src="project1.pdf" width="100%" height="400px"></iframe>
+            </li>
+            <li class="aero-card">
+                <a href="#project2">Project 2 Report</a>
+                <iframe src="project2.pdf" width="100%" height="400px"></iframe>
+            </li>
+            <!-- Add more list items as needed for additional projects here. -->
+        </ul>
+    </section>
+    <!-- Utilities section: Added per discussion, with API integrations for weather, flights, news, etc. -->
+    <section id="utilities" class="aero-section">
+        <h2>Utilities</h2>
+        <p>Handy tools for daily use: Weather, flights, news, and calendar.</p>
+        <div id="weather" class="aero-card">
+            <h3>Weather (Enter city, e.g., New York)</h3>
+            <input type="text" id="city-input" placeholder="City name">
+            <button onclick="fetchWeather()" class="aero-button">Get Weather</button>
+            <p id="weather-result"></p>
+        </div>
+        <div id="flights" class="aero-card">
+            <h3>Flight Status (Enter ICAO code, e.g., KJFK for JFK)</h3>
+            <input type="text" id="airport-input" placeholder="Airport ICAO">
+            <button onclick="fetchFlights()" class="aero-button">Get Flights</button>
+            <p id="flights-result"></p>
+        </div>
+        <div id="news" class="aero-card">
+            <h3>Latest News</h3>
+            <ul id="news-list"></ul>
+        </div>
+        <div id="calendar" class="aero-card">
+            <h3>Calendar Embed</h3>
+            <!-- Replace with your public Google Calendar iframe -->
+            <iframe src="https://calendar.google.com/calendar/embed?src=yourcalendar%40gmail.com" width="100%" height="300" frameborder="0" scrolling="no"></iframe>
+        </div>
+    </section>
+    <!-- Connect section: Embeds your LinkTree for social links. -->
+    <section id="connect" class="aero-section">
+        <h2>Connect with Me</h2>
+        <p>Check out my projects and social media via LinkTree.</p>
+        <!-- Iframe embeds the external page; replace src with your actual URL. -->
+        <!-- Replace 'YOUR_LINKTREE_URL' with your actual LinkTree link, e.g., https://linktr.ee/yourusername -->
+        <iframe src="YOUR_LINKTREE_URL" width="100%" height="600px" frameborder="0" class="aero-card"></iframe>
+    </section>
+    <!-- Game section: A simple interactive 2D game using HTML canvas. -->
+    <section id="game" class="aero-section">
+        <h2>2D Minecraft Game</h2>
+        <p>A simple 2D Minecraft-like game built with JavaScript and Canvas. Click to place or remove blocks. Cycles through different block types.</p>
+        <!-- Canvas element where the game is drawn; script.js handles the logic. -->
+        <canvas id="gameCanvas" width="800" height="400" class="aero-canvas"></canvas>
+    </section>
+    <!-- Footer: Displays copyright info at the bottom of the page. -->
+    <footer class="aero-footer">
+        <p>&copy; 2025 Your Name. All rights reserved.</p>
+    </footer>
+    <!-- Links to the external JavaScript file for interactivity. -->
+    <script src="script.js"></script>
+</body>
+</html>
