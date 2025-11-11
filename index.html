@@ -110,50 +110,21 @@ int main() {
             <!-- Add more list items as needed for additional projects. -->
         </ul>
     </section>
-    <!-- Utilities section: Now with embedded interactive content from other sites. -->
+    <!-- Utilities section: Embedded interactive content from other sites for weather, transportation, investment, and ecological data. -->
     <section id="utilities" class="aero-section utilities-color">
         <h2>Utilities</h2>
-        <p>Handy tools for daily use, embedded from reliable sites for weather, transport, investments, and energy analysis.</p>
-        <div id="geodata" class="aero-card">
-            <h3>Geodata Collective (Weather & Transport)</h3>
-            <!-- Embedded weather widget from WeatherWidget.io -->
-            <iframe src="https://weatherwidget.io/" width="100%" height="300" frameborder="0"></iframe>
-            <!-- Embedded Google Maps for transport routes (customize with your locations) -->
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.241264558923!2d-74.0060!3d40.7128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a1f2a8e4f5f%3A0x1234567890!2sNew%20York!5e0!3m2!1sen!2sus!4v1731400000000" width="100%" height="300" frameborder="0" allowfullscreen="" loading="lazy"></iframe>
+        <p>Handy tools for daily use: Weather, transportation, investment valuations, and ecological energy analysis – embedded from reliable sites.</p>
+        <div id="weather" class="aero-card">
+            <h3>Weather</h3>
+            <!-- Embedded from weatherwidget.io (generate your own free widget at weatherwidget.io and paste the iframe code here) -->
+            <iframe src="https://weatherwidget.io/w/01J5Z0Q0K" width="100%" height="300" frameborder="0"></iframe>
+        </div>
+        <div id="transportation" class="aero-card">
+            <h3>Transportation</h3>
+            <!-- Embedded Google Maps for routes (customize with locations) -->
+            <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d3022.241264558923!2d-74.0060!3d40.7128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x89c25a1f2a8e4f5f%3A0x1234567890!2sNew%20York!3m2!1d40.7128!2d-74.0060!4m5!1s0x89c25b45b73f4b97%3A0x2bda3c067dacf38b!2sBrooklyn!3m2!1d40.6782!2d-73.9442" width="100%" height="300" frameborder="0" allowfullscreen="" loading="lazy"></iframe>
         </div>
         <div id="investment" class="aero-card">
-            <h3>Investment Vehicle Converter</h3>
-            <!-- Embedded TradingView stock/crypto chart widget -->
-            <iframe src="https://www.tradingview.com/widgetembed/?symbol=BITSTAMP%3ABTCUSD&interval=D&hidesidelegend=0&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=%5B%5D&theme=light&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en" width="100%" height="400" frameborder="0"></iframe>
-        </div>
-        <div id="ecofuel" class="aero-card">
-            <h3>Ecofuel Analysis</h3>
-            <!-- Embedded NREL Energy Calculator widget -->
-            <iframe src="https://scout.energy.gov/embedded-calculator" width="100%" height="400" frameborder="0"></iframe>
-        </div>
-    </section>
-    <!-- Connect section: Embeds your LinkTree for social links. -->
-    <section id="connect" class="aero-section connect-color">
-        <h2>Connect with Me</h2>
-        <p>Check out my projects and social media via LinkTree.</p>
-        <!-- Iframe embeds the external page; replace src with your actual URL. -->
-        <!-- Replace 'YOUR_LINKTREE_URL' with your actual LinkTree link, e.g., https://linktr.ee/yourusername -->
-        <iframe src="YOUR_LINKTREE_URL" width="100%" height="600px" frameborder="0" class="aero-card"></iframe>
-    </section>
-    <!-- Game section: A simple interactive 2D game using HTML canvas. -->
-    <section id="game" class="aero-section game-color">
-        <h2>Pixel Art Drawing Game</h2>
-        <p>Choose a color and click pixels to draw (16x16 grid). Clear or save as PNG.</p>
-        <input type="color" id="color-picker" value="#000000">
-        <button onclick="clearCanvas()" class="aero-button">Clear</button>
-        <button onclick="saveDrawing()" class="aero-button">Save PNG</button>
-        <canvas id="pixelCanvas" width="320" height="320" class="aero-canvas"></canvas>
-    </section>
-    <!-- Footer: Displays copyright info at the bottom of the page. -->
-    <footer class="aero-footer">
-        <p>&copy; 2025 Your Name. All rights reserved.</p>
-    </footer>
-    <!-- Links to the external JavaScript file for interactivity. -->
-    <script src="script.js"></script>
-</body>
-</html>
+            <h3>Investment Valuations</h3>
+            <!-- Embedded TradingView widget for stocks/crypto (customize at tradingview.com/widget) -->
+            <iframe src="https://www.tradingview.com/widgetembed/?symbol=BITSTAMP%3ABTCUSD&interval=D&hidesidelegend=0&symboledit=1&saveimage=1&toolbarbg=f1f
