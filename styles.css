@@ -116,20 +116,23 @@ body {
    ----------------------------- */
 main{max-width:var(--max-width);margin:28px auto;padding:0 20px}
 .section{margin-bottom:22px;display:flex;justify-content:center;padding:36px 0}
-.card{
-  width:100%;
-  max-width:1100px;
-  background: linear-gradient(145deg, rgba(255,255,255,0.94), rgba(245,250,255,0.88));
-  border-radius:var(--card-radius);
-  padding:var(--card-pad);
-  box-shadow: var(--shadow);
-  border: var(--glass-border);
-  position:relative;
-  overflow:visible;
-  backdrop-filter: blur(8px);
-  transition: transform .35s cubic-bezier(.2,.9,.25,1), box-shadow .35s ease;
+.card {
+  background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(240,249,255,0.90));
+  border-radius: var(--card-radius);
+  padding: var(--card-pad);
+  box-shadow: 0 20px 40px rgba(0,11,190,0.15);
+  border: 1.5px solid rgba(255,255,255,0.9);
+  position: relative;
+  overflow: visible;
+  backdrop-filter: blur(14px);
+  transform: translateZ(0);
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.card:hover{ transform: translateY(-8px); box-shadow: 0 20px 50px rgba(0,11,190,0.18); }
+
+.card:hover {
+  transform: translateY(-10px) scale(1.015);
+  box-shadow: 0 25px 60px rgba(0,11,190,0.25);
+}
 
 /* accent mapping (use data-accent on section to influence local glow) */
 .section[data-accent="sky"] { --accent: var(--sky); }
