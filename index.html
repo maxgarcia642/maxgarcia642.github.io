@@ -13,18 +13,34 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <!-- Ambient aura (Frutiger Aero glow) -->
+  <div class="aura" aria-hidden="true"></div>
+
   <header class="site-header" role="banner">
     <div class="header-inner">
       <div class="brand">
-        <svg class="logo" width="36" height="36" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <rect x="1.5" y="1.5" width="21" height="21" rx="5" fill="url(#g)"></rect>
+        <!-- Glassy circular logo (replaces the rectangle) -->
+        <svg class="logo" width="36" height="36" viewBox="0 0 36 36" aria-hidden="true" focusable="false">
           <defs>
             <linearGradient id="g" x1="0" x2="1">
               <stop offset="0" stop-color="#E6FBFF"/>
               <stop offset="1" stop-color="#BEEBFF"/>
             </linearGradient>
+            <radialGradient id="glass" cx="30%" cy="25%" r="80%">
+              <stop offset="0" stop-color="rgba(255,255,255,0.85)"/>
+              <stop offset="0.45" stop-color="rgba(255,255,255,0.25)"/>
+              <stop offset="1" stop-color="rgba(255,255,255,0)"/>
+            </radialGradient>
           </defs>
+
+          <!-- outer soft aqua circle -->
+          <circle cx="18" cy="18" r="15" fill="url(#g)" />
+          <!-- glossy highlight -->
+          <circle cx="12" cy="11" r="8" fill="url(#glass)" opacity="0.9" />
+          <!-- inner emblem (subtle) -->
+          <circle cx="18" cy="18" r="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.18)" stroke-width="1" />
         </svg>
+
         <div class="site-title">Maximiliano Garcia</div>
       </div>
 
@@ -54,7 +70,6 @@
         <div class="resume-wrap">
           <h2>My Resume</h2>
           <p>If you have problems viewing the embedded PDF, <a href="assets/resume.pdf" download>download the resume</a>.</p>
-          <!-- Embed resume (place your resume at assets/resume.pdf) -->
           <div class="pdf-frame">
             <iframe src="assets/resume.pdf" title="Resume PDF (Maximiliano Garcia)" loading="lazy"></iframe>
           </div>
@@ -162,45 +177,94 @@
       </div>
     </section>
 
-    <!-- UTILITIES (UPDATED: only TradingView + redirects) -->
+    <!-- UTILITIES (TradingView + public redirects for investment vehicles) -->
     <section id="utilities" class="section section-utilities" aria-labelledby="utilities-title">
       <div class="card card-utilities reveal" data-accent="coral">
         <h2 id="utilities-title">Utilities</h2>
         <p class="lead small">Investment Valuations — live market data & quick redirects for alternative investments.</p>
 
         <div class="utilities-grid">
-          <!-- TradingView Widget (Investment Valuations) -->
+          <!-- TradingView (investment valuations) -->
           <div class="util-card">
             <h3>Investment Valuations</h3>
-            <p class="muted">Live market data & analysis via TradingView.</p>
+            <p class="muted">Live market data & analysis via TradingView (stocks, ETFs, crypto, commodities).</p>
             <div class="embed-wrap">
-              <!-- Example TradingView embed; you can change the symbol & params -->
-              <iframe src="https://s.tradingview.com/widgetembed/?symbol=BITSTAMP%3ABTCUSD&interval=D&hidesidelegend=0&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=%5B%5D&theme=light&style=1&timezone=Etc%2FUTC&locale=en" title="TradingView Widget" loading="lazy" style="width:100%;height:100%;border:none;"></iframe>
+              <iframe src="https://s.tradingview.com/widgetembed/?symbol=NASDAQ%3AAAPL&interval=D&hidesidelegend=0&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=%5B%5D&theme=light&style=1&timezone=Etc%2FUTC&locale=en" title="TradingView Widget" loading="lazy" style="width:100%;height:100%;border:none;"></iframe>
             </div>
           </div>
 
-          <!-- Art Gallery Collecting -->
+          <!-- Markets (stocks/ETFs/indices) -->
           <div class="util-card">
-            <h3>Art Gallery Collecting</h3>
-            <p class="muted">Explore high-value art & auction marketplaces.</p>
-            <a href="https://www.sothebys.com" target="_blank" rel="noopener" class="link-btn">Visit Sotheby's</a>
-            <a href="https://www.christies.com" target="_blank" rel="noopener" class="link-btn">Visit Christie's</a>
+            <h3>Markets (Stocks / ETFs)</h3>
+            <p class="muted">Quick market dashboards.</p>
+            <div style="margin-top:8px;">
+              <a class="link-btn" href="https://finance.yahoo.com" target="_blank" rel="noopener">Yahoo Finance</a>
+              <a class="link-btn" href="https://www.marketwatch.com" target="_blank" rel="noopener">MarketWatch</a>
+              <a class="link-btn" href="https://www.etf.com" target="_blank" rel="noopener">ETF.com</a>
+            </div>
           </div>
 
-          <!-- Real Estate Listings -->
+          <!-- Bonds -->
           <div class="util-card">
-            <h3>Real Estate Listings</h3>
-            <p class="muted">Luxury properties and market insights.</p>
-            <a href="https://www.zillow.com" target="_blank" rel="noopener" class="link-btn">Browse Zillow</a>
-            <a href="https://www.realtor.com" target="_blank" rel="noopener" class="link-btn">Browse Realtor</a>
+            <h3>Bonds</h3>
+            <p class="muted">Treasury yields & bond center tools.</p>
+            <div style="margin-top:8px;">
+              <a class="link-btn" href="https://www.treasurydirect.gov" target="_blank" rel="noopener">TreasuryDirect</a>
+              <a class="link-btn" href="https://finra-markets.morningstar.com/BondCenter" target="_blank" rel="noopener">FINRA / Bond Center</a>
+            </div>
           </div>
 
-          <!-- Alternative Investments -->
+          <!-- Real Estate & REITs -->
+          <div class="util-card">
+            <h3>Real Estate</h3>
+            <p class="muted">Listings, REIT research & trends.</p>
+            <div style="margin-top:8px;">
+              <a class="link-btn" href="https://www.zillow.com" target="_blank" rel="noopener">Zillow</a>
+              <a class="link-btn" href="https://www.realtor.com" target="_blank" rel="noopener">Realtor</a>
+              <a class="link-btn" href="https://www.reit.com" target="_blank" rel="noopener">REIT.com</a>
+            </div>
+          </div>
+
+          <!-- Crypto -->
+          <div class="util-card">
+            <h3>Crypto</h3>
+            <p class="muted">Market overviews & coin data.</p>
+            <div style="margin-top:8px;">
+              <a class="link-btn" href="https://coinmarketcap.com" target="_blank" rel="noopener">CoinMarketCap</a>
+              <a class="link-btn" href="https://www.coingecko.com" target="_blank" rel="noopener">CoinGecko</a>
+            </div>
+          </div>
+
+          <!-- Commodities & Metals -->
+          <div class="util-card">
+            <h3>Commodities & Metals</h3>
+            <p class="muted">Spot prices & charts.</p>
+            <div style="margin-top:8px;">
+              <a class="link-btn" href="https://www.kitco.com" target="_blank" rel="noopener">Kitco</a>
+              <a class="link-btn" href="https://tradingeconomics.com/commodities" target="_blank" rel="noopener">TradingEconomics</a>
+            </div>
+          </div>
+
+          <!-- Collectibles & Art -->
+          <div class="util-card">
+            <h3>Art & Collectibles</h3>
+            <p class="muted">Auction databases & price-search.</p>
+            <div style="margin-top:8px;">
+              <a class="link-btn" href="https://www.artnet.com/price-database" target="_blank" rel="noopener">Artnet</a>
+              <a class="link-btn" href="https://www.wine-searcher.com" target="_blank" rel="noopener">Wine-Searcher</a>
+              <a class="link-btn" href="https://www.chrono24.com" target="_blank" rel="noopener">Chrono24 (Watches)</a>
+            </div>
+          </div>
+
+          <!-- Alternatives / VC / Farmland -->
           <div class="util-card">
             <h3>Alternative Investments</h3>
-            <p class="muted">Fine wine, watches, and collectibles marketplaces.</p>
-            <a href="https://www.vivino.com" target="_blank" rel="noopener" class="link-btn">Fine Wine</a>
-            <a href="https://www.chrono24.com" target="_blank" rel="noopener" class="link-btn">Luxury Watches</a>
+            <p class="muted">VC news, farmland & private fund info.</p>
+            <div style="margin-top:8px;">
+              <a class="link-btn" href="https://www.crunchbase.com" target="_blank" rel="noopener">Crunchbase</a>
+              <a class="link-btn" href="https://www.ncreif.org" target="_blank" rel="noopener">NCREIF</a>
+              <a class="link-btn" href="https://www.acretrader.com" target="_blank" rel="noopener">AcreTrader</a>
+            </div>
           </div>
         </div>
       </div>
