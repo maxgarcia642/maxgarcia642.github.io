@@ -27,23 +27,25 @@
    Background + aura (parallax)
    ----------------------------- */
 html,body{height:100%}
-body{
-  margin:0;
+body {
+  margin: 0;
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  color:var(--text);
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  line-height:1.5;
-  min-height:100vh;
-  padding-bottom:48px;
   background:
-    radial-gradient(1000px 600px at var(--bg-pos-x,20%) var(--bg-pos-y,10%), rgba(16,152,186,0.22), transparent 45%),
-    radial-gradient(900px 700px at calc(var(--bg-pos-x2,80%)) calc(var(--bg-pos-y2,80%)), rgba(0,11,190,0.18), transparent 50%),
-    radial-gradient(800px 500px at calc(var(--bg-pos-x3,40%)) calc(var(--bg-pos-y3,70%)), rgba(48,138,17,0.16), transparent 45%),
-    radial-gradient(1200px 800px at calc(var(--bg-pos-x4,60%)) calc(var(--bg-pos-y4,20%)), rgba(233,235,227,0.3), transparent 40%),
-    linear-gradient(135deg, #e6f7ff 0%, #f0f9ff 100%);
-  transition: background-position 0.3s linear;
-  -webkit-transition: background-position 0.3s linear;
+    radial-gradient(1200px 700px at 30% 15%, rgba(16,152,186,0.35), transparent 45%),
+    radial-gradient(1000px 800px at 70% 80%, rgba(0,11,190,0.30), transparent 50%),
+    radial-gradient(900px 600px at 40% 65%, rgba(48,138,17,0.28), transparent 45%),
+    radial-gradient(1600px 1000px at 60% 30%, rgba(233,235,227,0.35), transparent 40%),
+    linear-gradient(135deg, #dfefff 0%, #edf9ff 100%);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  padding-bottom: 48px;
+  min-height: 100vh;
+  background-attachment: fixed;
+  transition: background-position 0.5s ease-out;
+  background-repeat: no-repeat;
+  background-size: 160% 160%;
 }
 
 /* finite-sized aura element for richer parallax (optional) */
