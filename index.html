@@ -4,250 +4,317 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Maximiliano Garcia — Portfolio</title>
-  <meta name="description" content="Maximiliano Garcia — portfolio: programming, articles, investment utilities, and a 16×16 Pixel Art Studio." />
+  <meta name="description" content="Maximiliano Garcia — portfolio (Frutiger Aero). Programming, posts, utilities, pixel-art studio and contact." />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
 </head>
 <body>
-  <!-- ambient aura -->
+  <!-- ambient aura (used for parallax subtle drift) -->
   <div class="aura" aria-hidden="true"></div>
 
   <header class="site-header" role="banner">
     <div class="header-inner container">
-      <a class="brand" href="#introduction" aria-label="Home">
-        <!-- colorful glossy icon -->
-        <svg class="logo" width="44" height="44" viewBox="0 0 64 64" aria-hidden="true">
+      <a class="brand" href="#top" aria-label="Home">
+        <!-- Colorful icon top-left (glossy SVG) -->
+        <svg class="site-icon" width="40" height="40" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
           <defs>
-            <linearGradient id="lg1" x1="0" x2="1">
+            <linearGradient id="lg" x1="0" x2="1">
               <stop offset="0" stop-color="#1098ba"/>
               <stop offset="1" stop-color="#000bbe"/>
             </linearGradient>
-            <radialGradient id="rg1" cx="30%" cy="25%" r="80%">
+            <radialGradient id="rg" cx="30%" cy="25%" r="70%">
               <stop offset="0" stop-color="rgba(255,255,255,0.9)"/>
-              <stop offset="0.6" stop-color="rgba(255,255,255,0.25)"/>
-              <stop offset="1" stop-color="rgba(255,255,255,0)"/>
+              <stop offset="1" stop-color="rgba(255,255,255,0.0)"/>
             </radialGradient>
           </defs>
-          <rect x="6" y="6" width="52" height="52" rx="12" fill="url(#lg1)"/>
-          <circle cx="22" cy="20" r="9" fill="url(#rg1)" opacity="0.94"/>
-          <circle cx="38" cy="38" r="8" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+          <rect x="0" y="0" width="40" height="40" rx="8" fill="url(#lg)"/>
+          <circle cx="12" cy="11" r="7" fill="url(#rg)" opacity="0.95"/>
+          <text x="50%" y="62%" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="Inter, sans-serif">MG</text>
         </svg>
-        <div class="site-title">Maximiliano Garcia</div>
+        <span class="brand-title">Maximiliano Garcia</span>
       </a>
 
       <nav aria-label="Main navigation" class="main-nav">
-        <ul>
-          <li><a class="nav-pill" href="#introduction">Introduction</a></li>
-          <li><a class="nav-pill" href="#programming">Programming</a></li>
-          <li><a class="nav-pill" href="#posts">Articles &amp; Projects</a></li>
-          <li><a class="nav-pill" href="#utilities">Utilities</a></li>
-          <li><a class="nav-pill" href="#game">Pixel Art Studio</a></li>
-          <li><a class="nav-pill" href="#connect">Connect</a></li>
-        </ul>
+        <a class="nav-pill" href="#introduction">Introduction</a>
+        <a class="nav-pill" href="#programming">Programming</a>
+        <a class="nav-pill" href="#posts">Posts</a>
+        <a class="nav-pill" href="#utilities">Utilities</a>
+        <a class="nav-pill" href="#game">Pixel Art Studio Max</a>
+        <a class="nav-pill" href="#connect">Connect</a>
       </nav>
     </div>
   </header>
 
-  <main id="main" tabindex="-1">
+  <main id="top">
     <!-- INTRODUCTION -->
-    <section id="introduction" class="section" aria-labelledby="intro-title" data-accent="sky">
-      <div class="section-bar" aria-hidden="true"></div>
-      <div class="card reveal">
+    <section id="introduction" class="section reveal" data-accent="sky" aria-labelledby="intro-title">
+      <div class="card card-intro">
         <h1 id="intro-title">Hello and Welcome to my Website!</h1>
         <p class="lead">
-          I’m Maximiliano — this is my portfolio. Explore my coding samples, project write-ups, investment utilities, and a small 16×16 Pixel Art Studio.
-          Below you'll find my resume preview and a download link.
+          I’m Maximiliano — this site is my portfolio where I share programming work, project reports, small utilities, and a pixel-art studio.
+          Below you’ll find my resume embedded for quick viewing and a download link if you prefer a local copy.
         </p>
 
-        <h2>Resume</h2>
-        <p>If the embedded preview doesn't load, use the download link below.</p>
-        <div class="pdf-frame">
-          <iframe src="assets/resume.pdf" title="Resume PDF (Maximiliano Garcia)" loading="lazy"></iframe>
+        <div class="resume-wrap">
+          <h2>Resume</h2>
+          <p>If the embedded viewer does not display, use the download link to get a copy.</p>
+          <div class="pdf-frame">
+            <!-- Put assets/resume.pdf into your repo -->
+            <iframe src="assets/resume.pdf" title="Resume PDF (Maximiliano Garcia)" loading="lazy"></iframe>
+          </div>
+          <p style="margin-top:10px;">
+            <a href="assets/resume.pdf" download class="btn link-btn">Download Resume (PDF)</a>
+          </p>
         </div>
-        <p style="margin-top:8px;"><a class="link-btn" href="assets/resume.pdf" download>Download resume</a></p>
       </div>
     </section>
 
     <!-- PROGRAMMING -->
-    <section id="programming" class="section" aria-labelledby="programming-title" data-accent="ocean">
-      <div class="section-bar" aria-hidden="true"></div>
-      <div class="card reveal">
-        <h2 id="programming-title">Programming Works</h2>
-        <p class="lead small">Code examples (Python, Java, C++). I will embed raw GitHub snippets soon — terminal cards are prepared to fetch raw.githubusercontent.com links and show them verbatim.</p>
+    <section id="programming" class="section reveal" data-accent="ocean" aria-labelledby="programming-title">
+      <div class="card card-programming">
+        <h2 id="programming-title">Programming works</h2>
+        <p class="lead small">
+          Examples of code I’ve worked on — I plan to keep these up-to-date. Terminals below will try to display raw code from GitHub (auto-converts blob → raw). If fetch fails, a fallback snippet will be shown.
+        </p>
 
         <div class="terminals">
-          <article class="terminal-card floating" data-raw="https://raw.githubusercontent.com/example-user/example-repo/main/snippets/python/hello_world.py">
+          <!-- Python terminal -->
+          <article class="terminal-card floating" data-raw="https://github.com/maxgarcia642/Garcia-School-Coding-Projects/blob/main/(Garcia)%20Python%20work">
             <header class="term-header">
-              <div class="traffic" aria-hidden="true"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-              <div class="term-title">Python — High School Computer Science</div>
-              <div class="term-actions"><button class="btn copy-btn" aria-label="Copy Python code">Copy</button></div>
+              <div class="traffic" aria-hidden="true">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+              </div>
+              <div class="term-title">Python - High School Computer Science</div>
+              <div class="term-actions">
+                <button class="btn copy-btn">Copy</button>
+                <a class="btn link-btn" target="_blank" rel="noopener" href="https://github.com/maxgarcia642/Garcia-School-Coding-Projects/blob/main/(Garcia)%20Python%20work">View on GitHub</a>
+              </div>
             </header>
-            <pre class="terminal"><code data-lang="python"># Loading...</code></pre>
+            <pre class="terminal"><code data-lang="python">// Loading...</code></pre>
           </article>
 
-          <article class="terminal-card floating" data-raw="https://raw.githubusercontent.com/example-user/example-repo/main/snippets/java/HelloWorld.java">
+          <!-- Java terminal -->
+          <article class="terminal-card floating" data-raw="https://github.com/maxgarcia642/Garcia-School-Coding-Projects/blob/main/(Garcia)%20Java%20work">
             <header class="term-header">
-              <div class="traffic" aria-hidden="true"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-              <div class="term-title">Java — High School AP Computer Science</div>
-              <div class="term-actions"><button class="btn copy-btn" aria-label="Copy Java code">Copy</button></div>
+              <div class="traffic" aria-hidden="true">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+              </div>
+              <div class="term-title">Java - High School AP Computer Science</div>
+              <div class="term-actions">
+                <button class="btn copy-btn">Copy</button>
+                <a class="btn link-btn" target="_blank" rel="noopener" href="https://github.com/maxgarcia642/Garcia-School-Coding-Projects/blob/main/(Garcia)%20Java%20work">View on GitHub</a>
+              </div>
             </header>
             <pre class="terminal"><code data-lang="java">// Loading...</code></pre>
           </article>
 
-          <article class="terminal-card floating" data-raw="https://raw.githubusercontent.com/example-user/example-repo/main/snippets/cpp/main.cpp">
+          <!-- C++ terminal -->
+          <article class="terminal-card floating" data-raw="https://github.com/maxgarcia642/Garcia-School-Coding-Projects/blob/main/(Garcia)%20C%2B%2B%20Work">
             <header class="term-header">
-              <div class="traffic" aria-hidden="true"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-              <div class="term-title">C++ — University Programming Foundations</div>
-              <div class="term-actions"><button class="btn copy-btn" aria-label="Copy C++ code">Copy</button></div>
+              <div class="traffic" aria-hidden="true">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+              </div>
+              <div class="term-title">C++ - University Programming Foundations</div>
+              <div class="term-actions">
+                <button class="btn copy-btn">Copy</button>
+                <a class="btn link-btn" target="_blank" rel="noopener" href="https://github.com/maxgarcia642/Garcia-School-Coding-Projects/blob/main/(Garcia)%20C%2B%2B%20Work">View on GitHub</a>
+              </div>
             </header>
             <pre class="terminal"><code data-lang="cpp">// Loading...</code></pre>
           </article>
 
-          <article class="terminal-card floating" data-raw="https://raw.githubusercontent.com/example-user/example-repo/main/web/index-snippet.html">
+          <!-- This website's code -->
+          <article class="terminal-card floating" data-raw="">
             <header class="term-header">
-              <div class="traffic" aria-hidden="true"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-              <div class="term-title">This Website — HTML / CSS / JS</div>
-              <div class="term-actions"><button class="btn copy-btn" aria-label="Copy HTML snippet">Copy</button></div>
+              <div class="traffic" aria-hidden="true">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+              </div>
+              <div class="term-title">This Website's Code (index / script / styles)</div>
+              <div class="term-actions">
+                <button class="btn copy-btn">Copy</button>
+                <a class="btn link-btn" target="_blank" rel="noopener" href="https://github.com/maxgarcia642/maxgarcia642.github.io/blob/main/index.html">index.html</a>
+                <a class="btn link-btn" target="_blank" rel="noopener" href="https://github.com/maxgarcia642/maxgarcia642.github.io/blob/main/script.js">script.js</a>
+                <a class="btn link-btn" target="_blank" rel="noopener" href="https://github.com/maxgarcia642/maxgarcia642.github.io/blob/main/styles.css">styles.css</a>
+              </div>
             </header>
-            <pre class="terminal"><code data-lang="html">&lt;!-- Loading... --&gt;</code></pre>
+            <pre class="terminal"><code data-lang="html">// Loading...</code></pre>
           </article>
         </div>
       </div>
     </section>
 
     <!-- POSTS -->
-    <section id="posts" class="section" aria-labelledby="posts-title" data-accent="grass">
-      <div class="section-bar" aria-hidden="true"></div>
-      <div class="card reveal">
-        <h2 id="posts-title">Articles &amp; Projects</h2>
-        <p class="lead small">This is where I share my most personally important project works and updates — longer write-ups, reports, and downloadable PDFs.</p>
+    <section id="posts" class="section reveal" data-accent="grass" aria-labelledby="posts-title">
+      <div class="card card-posts">
+        <h2 id="posts-title">Posts</h2>
+        <p class="lead small">
+          This is where I publish my most important project reports and updates — documentation and deep-dives about things I'm proud of.
+        </p>
 
-        <div class="posts-carousel">
-          <button class="carousel-btn prev" aria-label="Previous project">◀</button>
-          <div class="carousel-track" role="list">
-            <article class="post-card large" role="listitem">
-              <div class="post-preview"><iframe src="assets/project1.pdf" title="Project 1 preview" loading="lazy"></iframe></div>
-              <h3>Project 1 Report</h3>
-              <p class="muted">Short description of Project 1.</p>
-              <p><a class="link" href="https://github.com/example-user/example-repo" target="_blank" rel="noopener">View on GitHub</a></p>
-            </article>
-
-            <article class="post-card large" role="listitem">
-              <div class="post-preview"><iframe src="assets/project2.pdf" title="Project 2 preview" loading="lazy"></iframe></div>
-              <h3>Project 2 Report</h3>
-              <p class="muted">Short description of Project 2.</p>
-              <p><a class="link" href="https://github.com/example-user/example-repo-2" target="_blank" rel="noopener">View on GitHub</a></p>
-            </article>
-
-            <article class="post-card large" role="listitem">
-              <div class="post-preview"><iframe src="assets/project3.pdf" title="Project 3 preview" loading="lazy"></iframe></div>
-              <h3>Project 3 Report</h3>
-              <p class="muted">Short description of Project 3.</p>
-              <p><a class="link" href="https://github.com/example-user/example-repo-3" target="_blank" rel="noopener">View on GitHub</a></p>
-            </article>
+        <div class="posts-controls">
+          <div class="project-tabs" role="tablist" aria-label="Project reports">
+            <!-- 10 tabs -->
+            <button class="tab floating" data-pdf="assets/project1.pdf" aria-selected="true">Project Report 1</button>
+            <button class="tab floating" data-pdf="assets/project2.pdf">Project Report 2</button>
+            <button class="tab floating" data-pdf="assets/project3.pdf">Project Report 3</button>
+            <button class="tab floating" data-pdf="assets/project4.pdf">Project Report 4</button>
+            <button class="tab floating" data-pdf="assets/project5.pdf">Project Report 5</button>
+            <button class="tab floating" data-pdf="assets/project6.pdf">Project Report 6</button>
+            <button class="tab floating" data-pdf="assets/project7.pdf">Project Report 7</button>
+            <button class="tab floating" data-pdf="assets/project8.pdf">Project Report 8</button>
+            <button class="tab floating" data-pdf="assets/project9.pdf">Project Report 9</button>
+            <button class="tab floating" data-pdf="assets/project10.pdf">Project Report 10</button>
           </div>
-          <button class="carousel-btn next" aria-label="Next project">▶</button>
+
+          <div class="project-viewer-wrap">
+            <iframe id="projectViewer" src="assets/project1.pdf" title="Project viewer" loading="lazy"></iframe>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- UTILITIES -->
-    <section id="utilities" class="section" aria-labelledby="utilities-title" data-accent="ocean">
-      <div class="section-bar" aria-hidden="true"></div>
-      <div class="card reveal">
+    <section id="utilities" class="section reveal" data-accent="sun" aria-labelledby="utilities-title">
+      <div class="card card-utilities">
         <h2 id="utilities-title">Investment Vehicle Valuations</h2>
-        <p class="lead small">Live market data and curated links across many investment vehicle types. The TradingView widget is highlighted for quick valuations.</p>
+        <p class="lead small">Live market data & helpful links for investing vehicles — a TradingView widget is included below for quick market snapshots.</p>
 
         <div class="utilities-grid">
-          <div class="util-card util-main">
+          <div class="util-card util-tradingview large">
             <h3>TradingView Widget</h3>
-            <p class="muted">Live valuations — stocks, ETFs, crypto, commodities.</p>
-            <div class="embed-wrap large">
-              <iframe src="https://s.tradingview.com/widgetembed/?symbol=NASDAQ%3AAAPL&interval=D&hidesidelegend=0&theme=light" title="TradingView Widget" loading="lazy"></iframe>
+            <!-- Larger widget — replace src params if you want a different symbol -->
+            <div class="embed-wrap">
+              <iframe src="https://s.tradingview.com/widgetembed/?symbol=NASDAQ%3AAAPL&interval=D&hidesidelegend=0&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=%5B%5D&theme=light&style=1&timezone=Etc%2FUTC&locale=en"
+                      title="TradingView Widget" loading="lazy"></iframe>
             </div>
           </div>
 
-          <div class="util-card"><h3>Markets (Stocks, ETFs, Index, Mutual Funds)</h3>
+          <div class="util-card">
+            <h3>Markets (Stocks, ETFs, Index, Mutual Funds)</h3>
             <div class="link-group">
-              <a class="link-btn" href="https://finance.yahoo.com" target="_blank" rel="noopener">Yahoo Finance</a>
-              <a class="link-btn" href="https://www.marketwatch.com" target="_blank" rel="noopener">MarketWatch</a>
-              <a class="link-btn" href="https://www.morningstar.com" target="_blank" rel="noopener">Morningstar</a>
+              <a class="link small" href="https://finance.yahoo.com" target="_blank" rel="noopener">Yahoo Finance</a>
+              <a class="link small" href="https://www.marketwatch.com" target="_blank" rel="noopener">MarketWatch</a>
+              <a class="link small" href="https://www.morningstar.com" target="_blank" rel="noopener">Morningstar</a>
+              <a class="link small" href="https://www.etf.com" target="_blank" rel="noopener">ETF.com</a>
             </div>
           </div>
 
-          <div class="util-card"><h3>Bonds</h3>
+          <div class="util-card">
+            <h3>Bonds</h3>
             <div class="link-group">
-              <a class="link-btn" href="https://treasurydirect.gov" target="_blank" rel="noopener">TreasuryDirect</a>
-              <a class="link-btn" href="https://finra-markets.morningstar.com/BondCenter" target="_blank" rel="noopener">FINRA</a>
+              <a class="link small" href="https://treasurydirect.gov" target="_blank" rel="noopener">TreasuryDirect</a>
+              <a class="link small" href="https://finra-markets.morningstar.com/BondCenter" target="_blank" rel="noopener">FINRA Bond Center</a>
             </div>
           </div>
 
-          <div class="util-card"><h3>Real Estate &amp; REITs</h3>
+          <div class="util-card">
+            <h3>Real Estate & REITs</h3>
             <div class="link-group">
-              <a class="link-btn" href="https://www.zillow.com" target="_blank" rel="noopener">Zillow</a>
-              <a class="link-btn" href="https://www.realtor.com" target="_blank" rel="noopener">Realtor</a>
+              <a class="link small" href="https://www.zillow.com" target="_blank" rel="noopener">Zillow</a>
+              <a class="link small" href="https://www.realtor.com" target="_blank" rel="noopener">Realtor</a>
+              <a class="link small" href="https://www.reit.com" target="_blank" rel="noopener">REIT.com</a>
             </div>
           </div>
 
-          <div class="util-card"><h3>Crypto</h3>
-            <div class="link-group"><a class="link-btn" href="https://coinmarketcap.com" target="_blank" rel="noopener">CoinMarketCap</a><a class="link-btn" href="https://www.coingecko.com" target="_blank" rel="noopener">CoinGecko</a></div>
+          <div class="util-card">
+            <h3>Crypto</h3>
+            <div class="link-group">
+              <a class="link small" href="https://coinmarketcap.com" target="_blank" rel="noopener">CoinMarketCap</a>
+              <a class="link small" href="https://www.coingecko.com" target="_blank" rel="noopener">CoinGecko</a>
+            </div>
           </div>
 
-          <div class="util-card"><h3>Commodities &amp; Metals</h3>
-            <div class="link-group"><a class="link-btn" href="https://www.kitco.com" target="_blank" rel="noopener">Kitco</a><a class="link-btn" href="https://tradingeconomics.com/commodities" target="_blank" rel="noopener">TradingEconomics</a></div>
+          <div class="util-card">
+            <h3>Commodities & Precious Metals</h3>
+            <div class="link-group">
+              <a class="link small" href="https://www.kitco.com" target="_blank" rel="noopener">Kitco</a>
+              <a class="link small" href="https://tradingeconomics.com/commodities" target="_blank" rel="noopener">TradingEconomics</a>
+            </div>
           </div>
 
-          <div class="util-card"><h3>Alternative Investments</h3>
-            <div class="link-group"><a class="link-btn" href="https://www.crunchbase.com/discover" target="_blank" rel="noopener">Crunchbase</a><a class="link-btn" href="https://pitchbook.com" target="_blank" rel="noopener">PitchBook</a><a class="link-btn" href="https://acretrader.com" target="_blank" rel="noopener">AcreTrader</a></div>
+          <div class="util-card">
+            <h3>Art & Collectibles</h3>
+            <div class="link-group">
+              <a class="link small" href="https://www.artnet.com/price-database" target="_blank" rel="noopener">Artnet</a>
+              <a class="link small" href="https://www.wine-searcher.com" target="_blank" rel="noopener">Wine-Searcher</a>
+              <a class="link small" href="https://www.chrono24.com" target="_blank" rel="noopener">Chrono24</a>
+            </div>
           </div>
 
-          <div class="util-card"><h3>Retirement &amp; Insurance</h3>
-            <div class="link-group"><a class="link-btn" href="https://www.irs.gov/retirement-plans" target="_blank" rel="noopener">IRS (401k/IRA)</a><a class="link-btn" href="https://immediateannuities.com" target="_blank" rel="noopener">ImmediateAnnuities</a></div>
+          <div class="util-card">
+            <h3>Alternative Investments</h3>
+            <div class="link-group">
+              <a class="link small" href="https://www.crunchbase.com/discover" target="_blank" rel="noopener">Crunchbase (VC)</a>
+              <a class="link small" href="https://pitchbook.com" target="_blank" rel="noopener">PitchBook (PE)</a>
+              <a class="link small" href="https://www.ncreif.org" target="_blank" rel="noopener">NCREIF (Commingled)</a>
+              <a class="link small" href="https://acretrader.com" target="_blank" rel="noopener">AcreTrader (Farmland)</a>
+              <a class="link small" href="https://hfr.com/industry-indices" target="_blank" rel="noopener">HFR (Hedge Funds)</a>
+            </div>
           </div>
 
+          <div class="util-card">
+            <h3>Retirement & Insurance</h3>
+            <div class="link-group">
+              <a class="link small" href="https://www.irs.gov/retirement-plans" target="_blank" rel="noopener">IRS.gov (401k/IRA)</a>
+              <a class="link small" href="https://immediateannuities.com" target="_blank" rel="noopener">ImmediateAnnuities.com</a>
+              <a class="link small" href="https://www.investopedia.com/terms/s/sma.asp" target="_blank" rel="noopener">Investopedia (SMAs)</a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- PIXEL ART STUDIO -->
-    <section id="game" class="section" aria-labelledby="game-title" data-accent="sky">
-      <div class="section-bar" aria-hidden="true"></div>
-      <div class="card reveal">
+    <section id="game" class="section reveal" data-accent="ocean" aria-labelledby="game-title">
+      <div class="card card-game">
         <h2 id="game-title">Pixel Art Studio Max</h2>
-        <p class="lead small">A playful 16×16 grid — pick a color, click to paint, use the eraser, undo, clear, and save your masterpiece as PNG. Controls and pixels react on hover and click.</p>
+        <p class="lead small">
+          A fun 16×16 pixel studio — choose a color, click to paint, use Eraser, Undo or Clear, and save your creation as a PNG.
+        </p>
 
         <div class="game-controls">
           <label for="color-picker">Color</label>
-          <input id="color-picker" type="color" value="#000000" aria-label="Choose color">
-          <button id="eraser-btn" class="btn" title="Toggle eraser">Eraser</button>
-          <button id="undo-btn" class="btn" title="Undo last">Undo</button>
-          <button id="clear-btn" class="btn" title="Clear canvas">Clear</button>
-          <button id="save-btn" class="btn primary" title="Save PNG">Save PNG</button>
+          <input id="color-picker" type="color" value="#000000" title="Pick color">
+          <button id="eraser-btn" class="btn">Eraser</button>
+          <button id="undo-btn" class="btn">Undo</button>
+          <button id="clear-btn" class="btn">Clear</button>
+          <button id="save-btn" class="btn primary">Save PNG</button>
         </div>
 
         <div class="canvas-wrap">
-          <div id="pixelCanvas" class="pixel-canvas" role="application" aria-label="16 by 16 pixel canvas"></div>
+          <div id="pixelCanvas" class="pixel-canvas" aria-label="Pixel art canvas" role="application"></div>
         </div>
       </div>
     </section>
 
     <!-- CONNECT -->
-    <section id="connect" class="section" aria-labelledby="connect-title" data-accent="ocean">
-      <div class="section-bar" aria-hidden="true"></div>
-      <div class="card reveal">
+    <section id="connect" class="section reveal" data-accent="sun" aria-labelledby="connect-title">
+      <div class="card card-connect">
         <h2 id="connect-title">Connect</h2>
-        <p class="lead small">Find my links and projects here.</p>
-        <div class="embed-wrap linktree">
-          <iframe src="https://linktr.ee/maxgarcia642" title="LinkTree" loading="lazy" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
-        </div>
+        <p class="lead small">Find my social links and projects via Linktree.</p>
+
+        <p>
+          <a class="linktree-button" href="https://linktr.ee/maxgarcia642" target="_blank" rel="noopener">Visit my Linktree</a>
+        </p>
       </div>
     </section>
-
   </main>
 
-  <footer class="site-footer" role="contentinfo">
+  <footer class="site-footer">
     <div class="footer-inner container">
-      <div class="muted">© <span id="year"></span> Maximiliano Garcia · Hosted on GitHub Pages</div>
+      <div>© 2025 Maximiliano Garcia — Hosted on GitHub Pages</div>
+      <div class="muted">Made with Frutiger-inspired Aero style</div>
     </div>
   </footer>
 
