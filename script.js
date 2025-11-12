@@ -4,6 +4,7 @@
    - Terminal snippet fetching + fallback + copy-to-clipboard + minimal highlight
    - Posts carousel simple controls
    - Pixel art game (16x16) with touch/mouse, eraser, undo (single step), clear, save PNG, localStorage
+   - Accent management: sets --global-accent according to visible section (Frutiger Aero feel)
 */
 
 /* ---------- Utility helpers ---------- */
@@ -27,6 +28,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 /* IntersectionObserver to reveal sections & highlight nav pills */
 const sections = Array.from(document.querySelectorAll('section'));
 const navPills = Array.from(document.querySelectorAll('.nav-pill'));
+const root = document.documentElement;
 
 const io = new IntersectionObserver(entries => {
   entries.forEach(entry => {
@@ -36,6 +38,24 @@ const io = new IntersectionObserver(entries => {
       entry.target.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
       navPills.forEach(p => p.removeAttribute('aria-current'));
       if (pill) pill.setAttribute('aria-current','true');
+
+      // Accent override: pick the first .card inside this section and read its data-accent
+      const card = entry.target.querySelector('.card');
+      if (card && card.dataset.accent) {
+        const accentName = card.dataset.accent;
+        // try to read CSS var for that accent
+        const varName = {
+          'teal': '--accent-teal',
+          'purple': '--accent-purple',
+          'coral': '--accent-coral',
+          'mint': '--accent-mint',
+          'blue': '--accent-aqua'
+        }[accentName] || '--accent-aqua';
+        const val = getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || '';
+        if (val) {
+          root.style.setProperty('--global-accent', val);
+        }
+      }
     }
   });
 }, {root: null, threshold: 0.18});
@@ -378,4 +398,16 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.key === 'ArrowRight') $('.carousel-btn.next').click();
     });
   }
+
+  // Optional accent cycling (commented by default). If you prefer continuous cycling, uncomment.
+  /*
+  (function cycleAccent(){
+    const colors = ['#37C9FF','#00B7A5','#8A7AFE','#FF8A80','#7AF6D6'];
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % colors.length;
+      root.style.setProperty('--global-accent', colors[i]);
+    }, 6000);
+  })();
+  */
 });
