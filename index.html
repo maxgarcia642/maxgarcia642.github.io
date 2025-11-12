@@ -4,19 +4,35 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Maximiliano Garcia — Frutiger Aero Portfolio</title>
-  <meta name="description" content="Maximiliano Garcia — Frutiger Aero portfolio with coding showcase, posts, utilities, connect, and a 16×16 pixel art game." />
+  <meta name="description" content="Maximiliano Garcia — Frutiger Aero portfolio: programming, projects, investment utilities, and a 16×16 Pixel Art Studio." />
   <link rel="stylesheet" href="styles.css">
-  <!-- Use the provided local asset icons -->
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
 </head>
 <body>
-  <!-- Ambient aura used for soft drifting parallax -->
+  <!-- Ambient aura -->
   <div class="aura" aria-hidden="true"></div>
 
   <header class="site-header" role="banner">
     <div class="header-inner container">
+      <!-- Colorful icon + title (top-left) -->
       <a class="brand" href="#introduction" aria-label="Home">
-        <img src="assets/logo.svg" alt="" class="logo" width="40" height="40" />
+        <!-- Inline colorful glossy icon (keeps the site self-contained) -->
+        <svg class="logo" width="44" height="44" viewBox="0 0 64 64" aria-hidden="true">
+          <defs>
+            <linearGradient id="lg1" x1="0" x2="1">
+              <stop offset="0" stop-color="#1098ba"/>
+              <stop offset="1" stop-color="#000bbe"/>
+            </linearGradient>
+            <radialGradient id="rg1" cx="30%" cy="25%" r="80%">
+              <stop offset="0" stop-color="rgba(255,255,255,0.9)"/>
+              <stop offset="0.6" stop-color="rgba(255,255,255,0.25)"/>
+              <stop offset="1" stop-color="rgba(255,255,255,0)"/>
+            </radialGradient>
+          </defs>
+          <rect x="6" y="6" width="52" height="52" rx="12" fill="url(#lg1)"/>
+          <circle cx="22" cy="20" r="9" fill="url(#rg1)" opacity="0.95"/>
+          <circle cx="34" cy="34" r="8" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+        </svg>
         <div class="site-title">Maximiliano Garcia</div>
       </a>
 
@@ -24,9 +40,9 @@
         <ul>
           <li><a class="nav-pill" href="#introduction">Introduction</a></li>
           <li><a class="nav-pill" href="#programming">Programming</a></li>
-          <li><a class="nav-pill" href="#posts">Posts</a></li>
+          <li><a class="nav-pill" href="#posts">Articles &amp; Projects</a></li>
           <li><a class="nav-pill" href="#utilities">Utilities</a></li>
-          <li><a class="nav-pill" href="#game">Game</a></li>
+          <li><a class="nav-pill" href="#game">Pixel Art Studio</a></li>
           <li><a class="nav-pill" href="#connect">Connect</a></li>
         </ul>
       </nav>
@@ -34,18 +50,20 @@
   </header>
 
   <main id="main" tabindex="-1">
-    <!-- INTRODUCTION (About Me + Resume) -->
+    <!-- INTRODUCTION -->
     <section id="introduction" class="section" aria-labelledby="intro-title" data-accent="sky">
+      <div class="section-bar" aria-hidden="true"></div>
       <div class="card reveal">
-        <h1 id="intro-title">Hello — welcome to my website</h1>
+        <h1 id="intro-title">Hello and Welcome to my Website!</h1>
         <p class="lead">
-          I’m Maximiliano. This portfolio is built with a Frutiger Aero aesthetic — glossy surfaces,
-          bright gradients and optimistic motion. Scroll to explore programming samples, articles,
-          utilities, social links, and a 16×16 pixel-art drawing studio.
+          This is my portfolio — a clean, glassy showcase of my work, projects, and useful tools.
+          You’ll find code samples, important project write-ups, live financial utilities, and a small 16×16 pixel art studio.
         </p>
 
-        <h2>My Resume</h2>
-        <p>If the embed doesn't work for any reason, use the download link below.</p>
+        <h2>Resume</h2>
+        <p>
+          Below is my resume embedded for convenience; if the preview doesn't load, use the download link.
+        </p>
         <div class="pdf-frame">
           <iframe src="assets/resume.pdf" title="Resume PDF (Maximiliano Garcia)" loading="lazy"></iframe>
         </div>
@@ -53,18 +71,21 @@
       </div>
     </section>
 
-    <!-- PROGRAMMING / TERMINALS -->
+    <!-- PROGRAMMING -->
     <section id="programming" class="section" aria-labelledby="programming-title" data-accent="ocean">
+      <div class="section-bar" aria-hidden="true"></div>
       <div class="card reveal">
-        <h2 id="programming-title">Programming Projects</h2>
-        <p class="lead small">Examples of code (Python, Java, C++). These panels try to fetch raw snippets from GitHub and will fall back to local examples if blocked.</p>
+        <h2 id="programming-title">Programming Works</h2>
+        <p class="lead small">Examples of my code — Python, Java and C++. These are for demonstration; I will be updating and refining these samples over time.</p>
 
         <div class="terminals">
           <article class="terminal-card reveal" data-raw="https://raw.githubusercontent.com/example-user/example-repo/main/snippets/python/hello_world.py">
             <header class="term-header">
               <div class="traffic" aria-hidden="true"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-              <div class="term-title">Python — High School</div>
-              <button class="btn copy-btn" aria-label="Copy Python code">Copy</button>
+              <div class="term-title">Python — High School Computer Science</div>
+              <div class="term-actions">
+                <button class="btn copy-btn" aria-label="Copy Python code">Copy</button>
+              </div>
             </header>
             <pre class="terminal"><code data-lang="python"># Loading...</code></pre>
           </article>
@@ -72,8 +93,10 @@
           <article class="terminal-card reveal" data-raw="https://raw.githubusercontent.com/example-user/example-repo/main/snippets/java/HelloWorld.java">
             <header class="term-header">
               <div class="traffic" aria-hidden="true"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-              <div class="term-title">Java — AP Computer Science</div>
-              <button class="btn copy-btn" aria-label="Copy Java code">Copy</button>
+              <div class="term-title">Java — High School AP Computer Science</div>
+              <div class="term-actions">
+                <button class="btn copy-btn" aria-label="Copy Java code">Copy</button>
+              </div>
             </header>
             <pre class="terminal"><code data-lang="java">// Loading...</code></pre>
           </article>
@@ -81,8 +104,10 @@
           <article class="terminal-card reveal" data-raw="https://raw.githubusercontent.com/example-user/example-repo/main/snippets/cpp/main.cpp">
             <header class="term-header">
               <div class="traffic" aria-hidden="true"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-              <div class="term-title">C++ — University Foundations</div>
-              <button class="btn copy-btn" aria-label="Copy C++ code">Copy</button>
+              <div class="term-title">C++ — University Programming Foundations</div>
+              <div class="term-actions">
+                <button class="btn copy-btn" aria-label="Copy C++ code">Copy</button>
+              </div>
             </header>
             <pre class="terminal"><code data-lang="cpp">// Loading...</code></pre>
           </article>
@@ -90,8 +115,10 @@
           <article class="terminal-card reveal" data-raw="https://raw.githubusercontent.com/example-user/example-repo/main/web/index-snippet.html">
             <header class="term-header">
               <div class="traffic" aria-hidden="true"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-              <div class="term-title">This Website (HTML/CSS/JS)</div>
-              <button class="btn copy-btn" aria-label="Copy HTML snippet">Copy</button>
+              <div class="term-title">This Website — HTML / CSS / JS</div>
+              <div class="term-actions">
+                <button class="btn copy-btn" aria-label="Copy HTML snippet">Copy</button>
+              </div>
             </header>
             <pre class="terminal"><code data-lang="html">&lt;!-- Loading... --&gt;</code></pre>
           </article>
@@ -99,30 +126,27 @@
       </div>
     </section>
 
-    <!-- POSTS / ARTICLES -->
+    <!-- POSTS -->
     <section id="posts" class="section" aria-labelledby="posts-title" data-accent="grass">
+      <div class="section-bar" aria-hidden="true"></div>
       <div class="card reveal">
         <h2 id="posts-title">Articles &amp; Projects</h2>
-        <p class="lead small">Some important write-ups and project PDFs.</p>
+        <p class="lead small">This is where I share my most personally important project works and updates — thoughtful write-ups and downloadable project reports.</p>
 
         <div class="posts-carousel">
           <button class="carousel-btn prev" aria-label="Previous">◀</button>
           <div class="carousel-track" role="list">
             <article class="post-card" role="listitem">
-              <div class="post-preview">
-                <iframe src="assets/project1.pdf" title="Project 1 preview" loading="lazy"></iframe>
-              </div>
+              <div class="post-preview"><iframe src="assets/project1.pdf" title="Project 1 preview" loading="lazy"></iframe></div>
               <h3>Project 1 Report</h3>
-              <p class="muted">Short description.</p>
+              <p class="muted">Short description of Project 1.</p>
               <p><a class="link" href="https://github.com/example-user/example-repo" target="_blank" rel="noopener">View on GitHub</a></p>
             </article>
 
             <article class="post-card" role="listitem">
-              <div class="post-preview">
-                <iframe src="assets/project2.pdf" title="Project 2 preview" loading="lazy"></iframe>
-              </div>
+              <div class="post-preview"><iframe src="assets/project2.pdf" title="Project 2 preview" loading="lazy"></iframe></div>
               <h3>Project 2 Report</h3>
-              <p class="muted">Short description.</p>
+              <p class="muted">Short description of Project 2.</p>
               <p><a class="link" href="https://github.com/example-user/example-repo-2" target="_blank" rel="noopener">View on GitHub</a></p>
             </article>
           </div>
@@ -131,25 +155,25 @@
       </div>
     </section>
 
-    <!-- UTILITIES: Full coverage of 18 investment vehicles -->
+    <!-- UTILITIES (Investment Vehicle Valuations) -->
     <section id="utilities" class="section" aria-labelledby="utilities-title" data-accent="ocean">
+      <div class="section-bar" aria-hidden="true"></div>
       <div class="card reveal">
         <h2 id="utilities-title">Investment Vehicle Valuations</h2>
-        <p class="lead small">Live market data & curated public, no-login resources for a wide range of investment vehicles.</p>
+        <p class="lead small">Live market data and curated links across many investment vehicle types. The main TradingView widget is emphasized for quick valuations.</p>
 
         <div class="utilities-grid">
-          <!-- Investment Valuations (TradingView) -->
-          <div class="util-card">
-            <h3>Investment Valuations</h3>
-            <p class="muted">Live markets (stocks, ETFs, crypto, commodities).</p>
-            <div class="embed-wrap">
-              <iframe src="https://s.tradingview.com/widgetembed/?symbol=NASDAQ%3AAAPL&interval=D&hidesidelegend=0&theme=light" title="TradingView" loading="lazy"></iframe>
+          <!-- TradingView Widget (bigger) -->
+          <div class="util-card util-main">
+            <h3>TradingView Widget</h3>
+            <p class="muted">Live valuations — stocks, ETFs, crypto, commodities.</p>
+            <div class="embed-wrap large">
+              <iframe src="https://s.tradingview.com/widgetembed/?symbol=NASDAQ%3AAAPL&interval=D&hidesidelegend=0&theme=light" title="TradingView Widget" loading="lazy"></iframe>
             </div>
           </div>
 
-          <!-- Markets: Stocks / ETFs / Mutual Funds / Index Funds -->
-          <div class="util-card">
-            <h3>Markets (Stocks, ETFs, Mutuals, Index)</h3>
+          <!-- other utilities -->
+          <div class="util-card"><h3>Markets (Stocks, ETFs, Index, Mutual Funds)</h3>
             <div class="link-group">
               <a class="link-btn" href="https://finance.yahoo.com" target="_blank" rel="noopener">Yahoo Finance</a>
               <a class="link-btn" href="https://www.marketwatch.com" target="_blank" rel="noopener">MarketWatch</a>
@@ -158,93 +182,51 @@
             </div>
           </div>
 
-          <!-- Bonds -->
-          <div class="util-card">
-            <h3>Bonds</h3>
+          <div class="util-card"><h3>Bonds</h3>
             <div class="link-group">
               <a class="link-btn" href="https://treasurydirect.gov" target="_blank" rel="noopener">TreasuryDirect</a>
               <a class="link-btn" href="https://finra-markets.morningstar.com/BondCenter" target="_blank" rel="noopener">FINRA Bond Center</a>
             </div>
           </div>
 
-          <!-- Real Estate / REITs / Commingled -->
-          <div class="util-card">
-            <h3>Real Estate &amp; REITs</h3>
+          <div class="util-card"><h3>Real Estate &amp; REITs</h3>
             <div class="link-group">
               <a class="link-btn" href="https://www.zillow.com" target="_blank" rel="noopener">Zillow</a>
               <a class="link-btn" href="https://www.realtor.com" target="_blank" rel="noopener">Realtor</a>
               <a class="link-btn" href="https://www.reit.com" target="_blank" rel="noopener">REIT.com</a>
-              <a class="link-btn" href="https://www.ncreif.org" target="_blank" rel="noopener">NCREIF (Commingled)</a>
-            </div>
-          </div>
-
-          <!-- Crypto -->
-          <div class="util-card">
-            <h3>Crypto</h3>
-            <div class="link-group">
-              <a class="link-btn" href="https://coinmarketcap.com" target="_blank" rel="noopener">CoinMarketCap</a>
-              <a class="link-btn" href="https://www.coingecko.com" target="_blank" rel="noopener">CoinGecko</a>
-            </div>
-          </div>
-
-          <!-- Commodities & Precious Metals -->
-          <div class="util-card">
-            <h3>Commodities &amp; Metals</h3>
-            <div class="link-group">
-              <a class="link-btn" href="https://www.kitco.com" target="_blank" rel="noopener">Kitco</a>
-              <a class="link-btn" href="https://tradingeconomics.com/commodities" target="_blank" rel="noopener">TradingEconomics</a>
-            </div>
-          </div>
-
-          <!-- Art & Collectibles -->
-          <div class="util-card">
-            <h3>Art &amp; Collectibles</h3>
-            <div class="link-group">
-              <a class="link-btn" href="https://www.artnet.com/price-database" target="_blank" rel="noopener">Artnet</a>
-              <a class="link-btn" href="https://www.wine-searcher.com" target="_blank" rel="noopener">Wine-Searcher</a>
-              <a class="link-btn" href="https://www.chrono24.com" target="_blank" rel="noopener">Chrono24 (Watches)</a>
-            </div>
-          </div>
-
-          <!-- Alternative Investments (VC / PE / Hedge / Farmland) -->
-          <div class="util-card">
-            <h3>Alternative Investments</h3>
-            <div class="link-group">
-              <a class="link-btn" href="https://www.crunchbase.com/discover" target="_blank" rel="noopener">Crunchbase (VC)</a>
-              <a class="link-btn" href="https://pitchbook.com/news" target="_blank" rel="noopener">PitchBook (PE)</a>
-              <a class="link-btn" href="https://hfr.com/industry-indices" target="_blank" rel="noopener">HFR (Hedge Funds)</a>
-              <a class="link-btn" href="https://acretrader.com/farms" target="_blank" rel="noopener">AcreTrader (Farmland)</a>
-            </div>
-          </div>
-
-          <!-- Private Equity / Commingled Funds / Timberland -->
-          <div class="util-card">
-            <h3>Private Equity &amp; Real Assets</h3>
-            <div class="link-group">
-              <a class="link-btn" href="https://pitchbook.com" target="_blank" rel="noopener">PitchBook</a>
               <a class="link-btn" href="https://www.ncreif.org" target="_blank" rel="noopener">NCREIF</a>
-              <a class="link-btn" href="https://www.acretrader.com" target="_blank" rel="noopener">AcreTrader (Timberland/Farmland)</a>
             </div>
           </div>
 
-          <!-- Annuities / Retirement / SMAs -->
-          <div class="util-card">
-            <h3>Retirement &amp; Insurance</h3>
-            <div class="link-group">
-              <a class="link-btn" href="https://www.irs.gov/retirement-plans" target="_blank" rel="noopener">IRS.gov (401k/IRA)</a>
-              <a class="link-btn" href="https://immediateannuities.com" target="_blank" rel="noopener">ImmediateAnnuities.com</a>
-              <a class="link-btn" href="https://www.investopedia.com/terms/s/sma.asp" target="_blank" rel="noopener">Investopedia (SMAs)</a>
-            </div>
+          <div class="util-card"><h3>Crypto</h3>
+            <div class="link-group"><a class="link-btn" href="https://coinmarketcap.com" target="_blank" rel="noopener">CoinMarketCap</a><a class="link-btn" href="https://www.coingecko.com" target="_blank" rel="noopener">CoinGecko</a></div>
+          </div>
+
+          <div class="util-card"><h3>Commodities &amp; Metals</h3>
+            <div class="link-group"><a class="link-btn" href="https://www.kitco.com" target="_blank" rel="noopener">Kitco</a><a class="link-btn" href="https://tradingeconomics.com/commodities" target="_blank" rel="noopener">TradingEconomics</a></div>
+          </div>
+
+          <div class="util-card"><h3>Art &amp; Collectibles</h3>
+            <div class="link-group"><a class="link-btn" href="https://www.artnet.com/price-database" target="_blank" rel="noopener">Artnet</a><a class="link-btn" href="https://www.wine-searcher.com" target="_blank" rel="noopener">Wine-Searcher</a><a class="link-btn" href="https://www.chrono24.com" target="_blank" rel="noopener">Chrono24</a></div>
+          </div>
+
+          <div class="util-card"><h3>Alternative Investments</h3>
+            <div class="link-group"><a class="link-btn" href="https://www.crunchbase.com/discover" target="_blank" rel="noopener">Crunchbase (VC)</a><a class="link-btn" href="https://pitchbook.com" target="_blank" rel="noopener">PitchBook (PE)</a><a class="link-btn" href="https://hfr.com/industry-indices" target="_blank" rel="noopener">HFR (Hedge)</a><a class="link-btn" href="https://acretrader.com" target="_blank" rel="noopener">AcreTrader</a></div>
+          </div>
+
+          <div class="util-card"><h3>Retirement &amp; Insurance</h3>
+            <div class="link-group"><a class="link-btn" href="https://www.irs.gov/retirement-plans" target="_blank" rel="noopener">IRS (401k/IRA)</a><a class="link-btn" href="https://immediateannuities.com" target="_blank" rel="noopener">ImmediateAnnuities</a><a class="link-btn" href="https://www.investopedia.com/terms/s/sma.asp" target="_blank" rel="noopener">Investopedia (SMAs)</a></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- PIXEL ART GAME -->
+    <!-- PIXEL ART STUDIO -->
     <section id="game" class="section" aria-labelledby="game-title" data-accent="sky">
+      <div class="section-bar" aria-hidden="true"></div>
       <div class="card reveal">
-        <h2 id="game-title">Game — Pixel Art Studio (16×16)</h2>
-        <p class="lead small">Choose a color and click or touch pixels to draw (16×16). Clear, Undo (multi-step), Eraser, and Save PNG.</p>
+        <h2 id="game-title">Pixel Art Studio Max</h2>
+        <p class="lead small">A playful 16×16 grid — pick a color, click to paint, use the eraser, undo, clear, and save your masterpiece as PNG. Hover or click controls to see subtle reactions.</p>
 
         <div class="game-controls">
           <label for="color-picker">Color</label>
@@ -263,14 +245,16 @@
 
     <!-- CONNECT -->
     <section id="connect" class="section" aria-labelledby="connect-title" data-accent="ocean">
+      <div class="section-bar" aria-hidden="true"></div>
       <div class="card reveal">
         <h2 id="connect-title">Connect</h2>
-        <p class="lead small">Check out my projects and social media via LinkTree (coming soon — replace with your LinkTree URL).</p>
+        <p class="lead small">Soon: embedded LinkTree to find my social links and project pages.</p>
         <div class="embed-wrap linktree">
           <iframe src="https://linktr.ee/YOUR_LINKTREE_URL" title="LinkTree" loading="lazy" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
         </div>
       </div>
     </section>
+
   </main>
 
   <footer class="site-footer" role="contentinfo">
