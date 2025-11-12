@@ -162,43 +162,45 @@
       </div>
     </section>
 
-    <!-- UTILITIES -->
+    <!-- UTILITIES (UPDATED: only TradingView + redirects) -->
     <section id="utilities" class="section section-utilities" aria-labelledby="utilities-title">
       <div class="card card-utilities reveal" data-accent="coral">
         <h2 id="utilities-title">Utilities</h2>
-        <p class="lead small">Handy tools for daily use: Weather, transportation, investment valuations, and ecological energy analysis.</p>
+        <p class="lead small">Investment Valuations — live market data & quick redirects for alternative investments.</p>
 
         <div class="utilities-grid">
-          <div class="util-card">
-            <h3>Weather</h3>
-            <p class="muted">Example widget — replace with your weatherwidget.io code.</p>
-            <div class="embed-wrap">
-              <iframe src="https://forecast7.com/en/n40d71n74d01/new-york/" title="Weather widget" loading="lazy"></iframe>
-            </div>
-          </div>
-
-          <div class="util-card">
-            <h3>Transportation</h3>
-            <p class="muted">Google Maps embed (edit coordinates for your routes).</p>
-            <div class="embed-wrap">
-              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193571.43852148858!2d-74.11808685!3d40.7056257!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1sen!2sus!4v1610000000000" title="Map embed" loading="lazy"></iframe>
-            </div>
-          </div>
-
+          <!-- TradingView Widget (Investment Valuations) -->
           <div class="util-card">
             <h3>Investment Valuations</h3>
-            <p class="muted">TradingView embed placeholder.</p>
+            <p class="muted">Live market data & analysis via TradingView.</p>
             <div class="embed-wrap">
-              <iframe src="https://s.tradingview.com/embed-widget/symbol-overview/?locale=en" title="Trading widget" loading="lazy"></iframe>
+              <!-- Example TradingView embed; you can change the symbol & params -->
+              <iframe src="https://s.tradingview.com/widgetembed/?symbol=BITSTAMP%3ABTCUSD&interval=D&hidesidelegend=0&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=%5B%5D&theme=light&style=1&timezone=Etc%2FUTC&locale=en" title="TradingView Widget" loading="lazy" style="width:100%;height:100%;border:none;"></iframe>
             </div>
           </div>
 
+          <!-- Art Gallery Collecting -->
           <div class="util-card">
-            <h3>Ecological Data</h3>
-            <p class="muted">NREL SCOUT embed / placeholder.</p>
-            <div class="embed-wrap">
-              <iframe src="https://scout.energy.gov/embedded-calculator" title="Ecological data" loading="lazy"></iframe>
-            </div>
+            <h3>Art Gallery Collecting</h3>
+            <p class="muted">Explore high-value art & auction marketplaces.</p>
+            <a href="https://www.sothebys.com" target="_blank" rel="noopener" class="link-btn">Visit Sotheby's</a>
+            <a href="https://www.christies.com" target="_blank" rel="noopener" class="link-btn">Visit Christie's</a>
+          </div>
+
+          <!-- Real Estate Listings -->
+          <div class="util-card">
+            <h3>Real Estate Listings</h3>
+            <p class="muted">Luxury properties and market insights.</p>
+            <a href="https://www.zillow.com" target="_blank" rel="noopener" class="link-btn">Browse Zillow</a>
+            <a href="https://www.realtor.com" target="_blank" rel="noopener" class="link-btn">Browse Realtor</a>
+          </div>
+
+          <!-- Alternative Investments -->
+          <div class="util-card">
+            <h3>Alternative Investments</h3>
+            <p class="muted">Fine wine, watches, and collectibles marketplaces.</p>
+            <a href="https://www.vivino.com" target="_blank" rel="noopener" class="link-btn">Fine Wine</a>
+            <a href="https://www.chrono24.com" target="_blank" rel="noopener" class="link-btn">Luxury Watches</a>
           </div>
         </div>
       </div>
