@@ -197,3 +197,20 @@ window.addEventListener('keydown', (e)=>{
   if (e.key === 'z') undo();
   if (e.key === 's') saveBtn.click();
 });
+
+// Gentle scroll-based background drift
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY || document.documentElement.scrollTop;
+  const body = document.body;
+  const drift1 = scrollY * 0.02;
+  const drift2 = scrollY * 0.015;
+  const drift3 = scrollY * 0.01;
+
+  body.style.backgroundPosition = `
+    ${30 + drift1}% ${15 + drift2}%,
+    ${70 - drift2}% ${80 - drift3}%,
+    ${40 + drift1 / 2}% ${65 - drift2 / 2}%,
+    ${60 - drift3}% ${30 + drift1 / 3}%,
+    center
+  `;
+});
