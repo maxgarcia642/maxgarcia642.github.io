@@ -1,18 +1,23 @@
-/* script.js — interaction layer
+/* script.js — interactions
    - smooth scroll
-   - reveal + nav active
-   - accent management (sets --global-accent from data-accent)
-   - gentle parallax (sets bg pos vars & moves aura)
-   - terminal snippet loader with fallbacks + copy
+   - reveal + nav highlight
+   - accent management (sets --global-accent)
+   - gentle parallax drift (moves bg positions & aura)
+   - terminal fetch + fallback + copy
    - posts carousel
-   - pixel-art 16x16 studio
+   - pixel art 16x16 studio with mouse/touch, eraser, undo, clear, save
+   - tiny UI pressed state for buttons
 */
 
 (() => {
   const root = document.documentElement;
 
-  /* ---------- Smooth scrolling for nav anchors ---------- */
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
+  /* utility selectors */
+  const $ = (s, ctx = document) => ctx.querySelector(s);
+  const $$ = (s, ctx = document) => Array.from((ctx || document).querySelectorAll(s));
+
+  /* smooth scroll for anchors */
+  $$('a[href^="#"]').forEach(a => {
     a.addEventListener('click', (e) => {
       const href = a.getAttribute('href');
       if (!href || href === '#') return;
@@ -20,51 +25,43 @@
       if (!target) return;
       e.preventDefault();
       target.scrollIntoView({behavior: 'smooth', block: 'start'});
-      // set focus for accessibility
       setTimeout(()=> target.querySelector('h1,h2,h3,button,input')?.focus?.(), 600);
     });
   });
 
-  /* ---------- Reveal (IntersectionObserver) + active nav ---------- */
+  /* reveal + nav active */
   const sections = Array.from(document.querySelectorAll('section'));
   const navPills = Array.from(document.querySelectorAll('.nav-pill'));
-
   const revealObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
-        // highlight nav
         navPills.forEach(p => p.removeAttribute('aria-current'));
         const pill = document.querySelector(`.nav-pill[href="#${entry.target.id}"]`);
-        if (pill) pill.setAttribute('aria-current','true');
+        if (pill) pill.setAttribute('aria-current', 'true');
 
-        // accent management: read data-accent from section or use default
-        const firstCard = entry.target.querySelector('.card');
-        if (firstCard && firstCard.dataset.accent) {
-          const accentMap = { sky: '--sky', ocean: '--ocean', grass: '--grass', sun: '--sun' };
-          const varName = accentMap[firstCard.dataset.accent] || '--sky';
+        // accent management: pick card inside
+        const card = entry.target.querySelector('.card');
+        if (card && card.dataset.accent) {
+          const map = { sky: '--sky', ocean: '--ocean', grass: '--grass', sun: '--sun' };
+          const varName = map[card.dataset.accent] || '--sky';
           const val = getComputedStyle(root).getPropertyValue(varName).trim();
           if (val) root.style.setProperty('--global-accent', val);
         }
       }
     });
-  }, {threshold: 0.22});
+  }, { threshold: 0.22 });
   sections.forEach(s => revealObserver.observe(s));
 
-  /* ---------- Parallax / gentle background drift ---------- */
+  /* parallax drift — update css vars and aura transform */
   const aura = document.querySelector('.aura');
-  function onScrollParallax() {
+  function onScrollParallax(){
     const docH = document.documentElement.scrollHeight - window.innerHeight;
     const sc = docH > 0 ? window.scrollY / docH : 0;
-    // compute offsets
-    const x1 = 20 + sc * 6;
-    const y1 = 10 + sc * 8;
-    const x2 = 80 - sc * 6;
-    const y2 = 20 - sc * 6;
-    const x3 = 40 + sc * 4;
-    const y3 = 85 - sc * 6;
-    const x4 = 70 - sc * 3;
-    const y4 = 70 - sc * 3;
+    const x1 = 20 + sc * 6; const y1 = 10 + sc * 8;
+    const x2 = 80 - sc * 6; const y2 = 20 - sc * 6;
+    const x3 = 40 + sc * 4; const y3 = 85 - sc * 6;
+    const x4 = 70 - sc * 3; const y4 = 70 - sc * 3;
 
     root.style.setProperty('--bg-pos-x', `${x1}%`);
     root.style.setProperty('--bg-pos-y', `${y1}%`);
@@ -76,26 +73,35 @@
     root.style.setProperty('--bg-pos-y4', `${y4}%`);
 
     if (aura) {
-      const translateY = sc * 40; // up to 40px
+      const translateY = sc * 40;
       aura.style.transform = `translateX(-50%) translateY(${translateY}px)`;
     }
   }
   window.addEventListener('scroll', onScrollParallax, {passive:true});
   onScrollParallax();
 
-  /* ---------- Terminal snippet loader + copy ---------- */
+  /* small pressed state for buttons (pointer) */
+  document.addEventListener('pointerdown', (e) => {
+    const b = e.target.closest('.btn');
+    if (b) b.classList.add('pressed');
+  });
+  document.addEventListener('pointerup', (e) => {
+    $$('.btn.pressed').forEach(n => n.classList.remove('pressed'));
+  });
+
+  /* terminals: fetch raw with timeout, fallback, highlight, copy */
   const terminalCards = document.querySelectorAll('.terminal-card');
   const FALLBACK = {
-    python: `# Example Python\ndef hello_world():\n    print("Hello, World!")\n\nhello_world()`,
-    java: `// Example Java\npublic class HelloWorld {\n  public static void main(String[] args){\n    System.out.println("Hello, World!");\n  }\n}`,
-    cpp: `// Example C++\n#include <iostream>\nint main(){\n  std::cout << "Hello, World!\\n";\n  return 0;\n}`,
+    python: `# Example Python\n\ndef hello_world():\n    print("Hello, World!")\n\nhello_world()`,
+    java: `// Example Java\n\npublic class HelloWorld {\n  public static void main(String[] args){\n    System.out.println("Hello, World!");\n  }\n}`,
+    cpp: `// Example C++\n\n#include <iostream>\nint main(){\n  std::cout << "Hello, World!\\n";\n  return 0;\n}`,
     html: `<!-- Example HTML snippet -->\n<section>\n  <h1>Welcome</h1>\n</section>`
   };
 
-  async function fetchWithTimeout(url, ms=3500) {
+  async function fetchWithTimeout(url, ms=3500){
     try {
       const ctrl = new AbortController();
-      const id = setTimeout(()=>ctrl.abort(), ms);
+      const id = setTimeout(()=> ctrl.abort(), ms);
       const res = await fetch(url, {signal: ctrl.signal});
       clearTimeout(id);
       if (!res.ok) return null;
@@ -110,51 +116,43 @@
     let content = null;
     if (raw) content = await fetchWithTimeout(raw, 3500);
     if (!content) content = FALLBACK[lang] || '// snippet unavailable';
-    // minimal escape + highlight (small)
     const esc = content.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
-    if (lang === 'python') {
-      codeEl.innerHTML = esc.replace(/\b(def|return|if|else|elif|for|while|import|from|class|print)\b/g, '<span class="kw">$1</span>');
-    } else if (lang === 'java' || lang === 'cpp') {
-      codeEl.innerHTML = esc.replace(/\b(public|static|void|class|new|return|if|else|for|while)\b/g, '<span class="kw">$1</span>');
-    } else {
-      codeEl.innerHTML = esc;
-    }
+    // tiny highlight
+    if (lang === 'python') codeEl.innerHTML = esc.replace(/\b(def|return|if|else|elif|for|while|import|from|class|print)\b/g, '<span class="kw">$1</span>');
+    else if (lang === 'java' || lang === 'cpp') codeEl.innerHTML = esc.replace(/\b(public|static|void|class|new|return|if|else|for|while)\b/g, '<span class="kw">$1</span>');
+    else codeEl.innerHTML = esc;
+
     const copyBtn = card.querySelector('.copy-btn');
     copyBtn?.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(content);
-        copyBtn.textContent = 'Copied!';
-        setTimeout(()=> copyBtn.textContent = 'Copy', 1400);
-      } catch (err) {
-        alert('Copy failed — clipboard restricted.');
-      }
+      try { await navigator.clipboard.writeText(content); copyBtn.textContent = 'Copied!'; setTimeout(()=> copyBtn.textContent = 'Copy', 1400); }
+      catch (err) { alert('Copy failed — clipboard may be restricted.'); }
     });
   });
 
-  // add tiny styles for code tokens
-  const tokenStyle = document.createElement('style');
-  tokenStyle.textContent = `.kw{color:#ffd66b;font-weight:700}`;
-  document.head.appendChild(tokenStyle);
+  // token styles for highlights
+  const ts = document.createElement('style');
+  ts.textContent = `.kw{color:#ffd66b;font-weight:700}`;
+  document.head.appendChild(ts);
 
-  /* ---------- Posts carousel (simple) ---------- */
+  /* posts carousel simple controls */
   (function(){
-    const prev = document.querySelector('.carousel-btn.prev');
-    const next = document.querySelector('.carousel-btn.next');
-    const track = document.querySelector('.carousel-track');
+    const prev = $('.carousel-btn.prev');
+    const next = $('.carousel-btn.next');
+    const track = $('.carousel-track');
     if (!track || !prev || !next) return;
     const items = Array.from(track.children);
     let index = 0;
     const gap = 12;
-    function itemWidth() { return items[0].getBoundingClientRect().width + gap; }
-    function update() { track.style.transform = `translateX(${-index * itemWidth()}px)`; }
-    prev.addEventListener('click', ()=>{ index = Math.max(0, index-1); update(); });
-    next.addEventListener('click', ()=>{ index = Math.min(items.length-1, index+1); update(); });
+    function itemWidth(){ return items[0].getBoundingClientRect().width + gap; }
+    function update(){ track.style.transform = `translateX(${-index * itemWidth()}px)`; }
+    prev.addEventListener('click', ()=> { index = Math.max(0, index-1); update(); });
+    next.addEventListener('click', ()=> { index = Math.min(items.length-1, index+1); update(); });
     window.addEventListener('resize', update);
   })();
 
-  /* ---------- Pixel Art 16x16 Studio ---------- */
+  /* Pixel Art Studio 16x16 */
   class PixelStudio {
-    constructor(opts = {}) {
+    constructor(){
       this.GRID = 16;
       this.canvasEl = document.getElementById('pixelCanvas');
       this.colorPicker = document.getElementById('color-picker') || document.getElementById('color-picker');
@@ -167,18 +165,15 @@
       this.isEraser = false;
       this.isDown = false;
       this.history = [];
-      this.maxHistory = 36;
 
       this._makeGrid();
-      this._bindEvents();
+      this._bind();
       this._loadFromLocal();
-      this._render(); // initial
     }
 
-    _makeGrid() {
-      // create 16x16 pixel divs inside canvasEl (grid-auto rows maintained by CSS)
+    _makeGrid(){
       this.canvasEl.innerHTML = '';
-      for (let i=0;i<this.GRID * this.GRID;i++){
+      for (let i=0;i<this.GRID*this.GRID;i++){
         const cell = document.createElement('div');
         cell.className = 'pixel';
         cell.dataset.index = i;
@@ -188,23 +183,23 @@
     }
 
     _pushHistory(){
-      const snap = Array.from(this.canvasEl.children).map(c => c.style.background || '#ffffff');
-      this.history.push(snap);
-      if (this.history.length > this.maxHistory) this.history.shift();
-      this._saveToLocal();
+      const snapshot = Array.from(this.canvasEl.children).map(c => c.style.background || '#ffffff');
+      this.history.push(snapshot);
+      if (this.history.length > 50) this.history.shift();
+      try { localStorage.setItem('pixelStudio_v1', JSON.stringify(snapshot)); } catch(e){}
     }
 
     _undo(){
       if (!this.history.length) return;
       const arr = this.history.pop();
-      Array.from(this.canvasEl.children).forEach((c, i) => c.style.background = arr[i] || '#ffffff');
-      this._saveToLocal();
+      Array.from(this.canvasEl.children).forEach((c,i)=> c.style.background = arr[i] || '#ffffff');
+      try { localStorage.setItem('pixelStudio_v1', JSON.stringify(arr)); } catch(e){}
     }
 
     _clear(){
       this._pushHistory();
       Array.from(this.canvasEl.children).forEach(c => c.style.background = '#ffffff');
-      this._saveToLocal();
+      try { localStorage.removeItem('pixelStudio_v1'); } catch(e){}
     }
 
     _paint(target){
@@ -212,19 +207,11 @@
       target.style.background = this.isEraser ? '#ffffff' : this.currentColor;
     }
 
-    _bindEvents(){
-      // color input
-      if (this.colorPicker) {
-        this.colorPicker.addEventListener('input', (e) => { this.currentColor = e.target.value; this.isEraser = false; this.eraserBtn?.classList.remove('active'); });
+    _bind(){
+      if (this.colorPicker){
+        this.colorPicker.addEventListener('input', (e)=> { this.currentColor = e.target.value; this.isEraser = false; this.eraserBtn?.classList.remove('active'); });
       }
-
-      // eraser
-      this.eraserBtn?.addEventListener('click', () => {
-        this.isEraser = !this.isEraser;
-        this.eraserBtn.classList.toggle('active', this.isEraser);
-      });
-
-      // undo/clear/save
+      this.eraserBtn?.addEventListener('click', ()=> { this.isEraser = !this.isEraser; this.eraserBtn.classList.toggle('active', this.isEraser); });
       this.undoBtn?.addEventListener('click', ()=> this._undo());
       this.clearBtn?.addEventListener('click', ()=> this._clear());
       this.saveBtn?.addEventListener('click', ()=> this._savePNG());
@@ -239,22 +226,19 @@
         this._paint(t);
       });
       window.addEventListener('pointerup', ()=> this.isDown = false);
-
       this.canvasEl.addEventListener('pointermove', (e) => {
         if (!this.isDown) return;
         const el = document.elementFromPoint(e.clientX, e.clientY);
         if (el && el.classList.contains('pixel')) this._paint(el);
       });
-
-      // click paint (single)
-      this.canvasEl.addEventListener('click', (e) => {
+      this.canvasEl.addEventListener('click', (e)=> {
         const t = e.target;
         if (!t.classList.contains('pixel')) return;
         this._pushHistory();
         this._paint(t);
       });
 
-      // keyboard shortcuts
+      // hotkeys
       window.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'z') { e.preventDefault(); this._undo(); }
         if (e.key === 'c') { e.preventDefault(); this._clear(); }
@@ -262,63 +246,44 @@
       });
     }
 
-    _saveToLocal(){
-      try { localStorage.setItem('pixelStudioGrid_v1', JSON.stringify(Array.from(this.canvasEl.children).map(c => c.style.background))); }
-      catch (e) {}
-    }
-    _loadFromLocal(){
-      try {
-        const raw = localStorage.getItem('pixelStudioGrid_v1');
-        if (!raw) return;
-        const arr = JSON.parse(raw);
-        if (!Array.isArray(arr) || arr.length !== this.GRID * this.GRID) return;
-        Array.from(this.canvasEl.children).forEach((c, i) => c.style.background = arr[i] || '#ffffff');
-      } catch (e) {}
-    }
-
     _savePNG(){
-      // draw small canvas of GRID x GRID and upscale to keep sharp edges
       const off = document.createElement('canvas');
-      off.width = this.GRID;
-      off.height = this.GRID;
+      off.width = this.GRID; off.height = this.GRID;
       const ctx = off.getContext('2d');
-      Array.from(this.canvasEl.children).forEach((c, i) => {
-        const x = i % this.GRID;
-        const y = Math.floor(i / this.GRID);
+      Array.from(this.canvasEl.children).forEach((c,i)=>{
+        const x = i % this.GRID; const y = Math.floor(i / this.GRID);
         ctx.fillStyle = window.getComputedStyle(c).backgroundColor || '#ffffff';
         ctx.fillRect(x, y, 1, 1);
       });
-      // upscale
       const scale = 16;
       const out = document.createElement('canvas');
-      out.width = this.GRID * scale;
-      out.height = this.GRID * scale;
+      out.width = this.GRID * scale; out.height = this.GRID * scale;
       const octx = out.getContext('2d');
       octx.imageSmoothingEnabled = false;
       octx.drawImage(off, 0, 0, out.width, out.height);
       out.toBlob(blob => {
         const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'pixel-art.png';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
+        const a = document.createElement('a'); a.href = url; a.download = 'pixel-art.png';
+        document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
       }, 'image/png');
     }
 
-    _render() {
-      // not needed as we manipulate actual DOM cells directly
+    _loadFromLocal(){
+      try {
+        const raw = localStorage.getItem('pixelStudio_v1');
+        if (!raw) return;
+        const arr = JSON.parse(raw);
+        if (!Array.isArray(arr) || arr.length !== this.GRID*this.GRID) return;
+        Array.from(this.canvasEl.children).forEach((c,i)=> c.style.background = arr[i] || '#ffffff');
+      } catch(e){}
     }
   }
 
-  // instantiate pixel studio after DOM ready
+  // instantiate on DOM ready
   document.addEventListener('DOMContentLoaded', () => {
-    // set year in footer
-    const yearEl = document.getElementById('year');
-    if (yearEl) yearEl.textContent = new Date().getFullYear();
-
+    // year
+    const yearEl = document.getElementById('year'); if (yearEl) yearEl.textContent = new Date().getFullYear();
+    // pixel studio
     window.pixelStudio = new PixelStudio();
   });
 
