@@ -19,7 +19,7 @@
   <header class="site-header" role="banner">
     <div class="header-inner">
       <div class="brand">
-        <!-- Glassy circular logo (replaces the rectangle) -->
+        <!-- Glassy circular logo -->
         <svg class="logo" width="36" height="36" viewBox="0 0 36 36" aria-hidden="true" focusable="false">
           <defs>
             <linearGradient id="g" x1="0" x2="1">
@@ -33,11 +33,8 @@
             </radialGradient>
           </defs>
 
-          <!-- outer soft aqua circle -->
           <circle cx="18" cy="18" r="15" fill="url(#g)" />
-          <!-- glossy highlight -->
           <circle cx="12" cy="11" r="8" fill="url(#glass)" opacity="0.9" />
-          <!-- inner emblem (subtle) -->
           <circle cx="18" cy="18" r="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.18)" stroke-width="1" />
         </svg>
 
@@ -87,7 +84,6 @@
         </p>
 
         <div class="terminals">
-          <!-- Terminal Template: each will try to fetch from GitHub raw URL, then fallback to embedded snippet -->
           <article class="terminal-card" data-raw="https://raw.githubusercontent.com/example-user/example-repo/main/snippets/python/hello_world.py">
             <header class="term-header">
               <div class="traffic">
@@ -152,7 +148,6 @@
         <div class="posts-carousel" aria-roledescription="carousel">
           <button class="carousel-btn prev" aria-label="Previous project">◀</button>
           <div class="carousel-track" role="list">
-            <!-- Example card 1 -->
             <article class="post-card" role="listitem">
               <div class="post-preview">
                 <iframe src="assets/project1.pdf" title="Project 1 preview" loading="lazy"></iframe>
@@ -162,7 +157,6 @@
               <p><a class="link" href="https://github.com/example-user/example-repo" target="_blank" rel="noopener">View on GitHub</a></p>
             </article>
 
-            <!-- Example card 2 -->
             <article class="post-card" role="listitem">
               <div class="post-preview">
                 <iframe src="assets/project2.pdf" title="Project 2 preview" loading="lazy"></iframe>
@@ -177,14 +171,14 @@
       </div>
     </section>
 
-    <!-- UTILITIES (TradingView + public redirects for investment vehicles) -->
+    <!-- UTILITIES (UPDATED: full 18-vehicle coverage, grouped cleanly) -->
     <section id="utilities" class="section section-utilities" aria-labelledby="utilities-title">
       <div class="card card-utilities reveal" data-accent="coral">
         <h2 id="utilities-title">Utilities</h2>
-        <p class="lead small">Investment Valuations — live market data & quick redirects for alternative investments.</p>
+        <p class="lead small">Investment Valuations & curated, no-login public resources across 18 investment vehicle categories.</p>
 
         <div class="utilities-grid">
-          <!-- TradingView (investment valuations) -->
+          <!-- Investment Valuations (TradingView) -->
           <div class="util-card">
             <h3>Investment Valuations</h3>
             <p class="muted">Live market data & analysis via TradingView (stocks, ETFs, crypto, commodities).</p>
@@ -193,14 +187,15 @@
             </div>
           </div>
 
-          <!-- Markets (stocks/ETFs/indices) -->
+          <!-- Markets: Stocks / ETFs / Index Funds / Mutual Funds -->
           <div class="util-card">
-            <h3>Markets (Stocks / ETFs)</h3>
-            <p class="muted">Quick market dashboards.</p>
+            <h3>Markets (Stocks / ETFs / Index / Mutual)</h3>
+            <p class="muted">Comprehensive market dashboards & fund research.</p>
             <div style="margin-top:8px;">
               <a class="link-btn" href="https://finance.yahoo.com" target="_blank" rel="noopener">Yahoo Finance</a>
               <a class="link-btn" href="https://www.marketwatch.com" target="_blank" rel="noopener">MarketWatch</a>
               <a class="link-btn" href="https://www.etf.com" target="_blank" rel="noopener">ETF.com</a>
+              <a class="link-btn" href="https://www.morningstar.com" target="_blank" rel="noopener">Morningstar</a>
             </div>
           </div>
 
@@ -216,8 +211,8 @@
 
           <!-- Real Estate & REITs -->
           <div class="util-card">
-            <h3>Real Estate</h3>
-            <p class="muted">Listings, REIT research & trends.</p>
+            <h3>Real Estate & REITs</h3>
+            <p class="muted">Property listings and REIT research.</p>
             <div style="margin-top:8px;">
               <a class="link-btn" href="https://www.zillow.com" target="_blank" rel="noopener">Zillow</a>
               <a class="link-btn" href="https://www.realtor.com" target="_blank" rel="noopener">Realtor</a>
@@ -228,27 +223,27 @@
           <!-- Crypto -->
           <div class="util-card">
             <h3>Crypto</h3>
-            <p class="muted">Market overviews & coin data.</p>
+            <p class="muted">Coin data, market caps & charts.</p>
             <div style="margin-top:8px;">
               <a class="link-btn" href="https://coinmarketcap.com" target="_blank" rel="noopener">CoinMarketCap</a>
               <a class="link-btn" href="https://www.coingecko.com" target="_blank" rel="noopener">CoinGecko</a>
             </div>
           </div>
 
-          <!-- Commodities & Metals -->
+          <!-- Commodities & Precious Metals -->
           <div class="util-card">
-            <h3>Commodities & Metals</h3>
-            <p class="muted">Spot prices & charts.</p>
+            <h3>Commodities & Precious Metals</h3>
+            <p class="muted">Spot prices, futures & metals charts.</p>
             <div style="margin-top:8px;">
               <a class="link-btn" href="https://www.kitco.com" target="_blank" rel="noopener">Kitco</a>
               <a class="link-btn" href="https://tradingeconomics.com/commodities" target="_blank" rel="noopener">TradingEconomics</a>
             </div>
           </div>
 
-          <!-- Collectibles & Art -->
+          <!-- Art & Collectibles -->
           <div class="util-card">
             <h3>Art & Collectibles</h3>
-            <p class="muted">Auction databases & price-search.</p>
+            <p class="muted">Auction databases & price-search for art, wine, watches.</p>
             <div style="margin-top:8px;">
               <a class="link-btn" href="https://www.artnet.com/price-database" target="_blank" rel="noopener">Artnet</a>
               <a class="link-btn" href="https://www.wine-searcher.com" target="_blank" rel="noopener">Wine-Searcher</a>
@@ -256,14 +251,27 @@
             </div>
           </div>
 
-          <!-- Alternatives / VC / Farmland -->
+          <!-- Alternative Investments: VC, PE, Commingled, Hedge Funds, Timberland/Farmland -->
           <div class="util-card">
             <h3>Alternative Investments</h3>
-            <p class="muted">VC news, farmland & private fund info.</p>
+            <p class="muted">VC, PE, commingled real estate, hedge funds, and farmland resources.</p>
             <div style="margin-top:8px;">
-              <a class="link-btn" href="https://www.crunchbase.com" target="_blank" rel="noopener">Crunchbase</a>
-              <a class="link-btn" href="https://www.ncreif.org" target="_blank" rel="noopener">NCREIF</a>
-              <a class="link-btn" href="https://www.acretrader.com" target="_blank" rel="noopener">AcreTrader</a>
+              <a class="link-btn" href="https://www.crunchbase.com" target="_blank" rel="noopener">Crunchbase (VC)</a>
+              <a class="link-btn" href="https://pitchbook.com/news" target="_blank" rel="noopener">PitchBook (PE news)</a>
+              <a class="link-btn" href="https://www.ncreif.org" target="_blank" rel="noopener">NCREIF (Commingled)</a>
+              <a class="link-btn" href="https://www.acretrader.com" target="_blank" rel="noopener">AcreTrader (Farmland)</a>
+              <a class="link-btn" href="https://www.hfr.com/industry-indices" target="_blank" rel="noopener">HFR (Hedge Funds)</a>
+            </div>
+          </div>
+
+          <!-- Retirement & Insurance: Annuities, 401k/IRA, SMAs -->
+          <div class="util-card">
+            <h3>Retirement & Insurance</h3>
+            <p class="muted">Guides and official resources for retirement accounts, annuities, and SMAs.</p>
+            <div style="margin-top:8px;">
+              <a class="link-btn" href="https://www.irs.gov/retirement-plans" target="_blank" rel="noopener">IRS.gov (401k/IRA)</a>
+              <a class="link-btn" href="https://immediateannuities.com" target="_blank" rel="noopener">ImmediateAnnuities.com</a>
+              <a class="link-btn" href="https://www.investopedia.com/terms/s/sma.asp" target="_blank" rel="noopener">Investopedia (SMAs)</a>
             </div>
           </div>
         </div>
