@@ -23,130 +23,165 @@
             </ul>
         </nav>
     </header>
-    <!-- Introduction section: This is the first content area, welcoming visitors and showing your resume. -->
-    <section id="introduction" class="aero-section intro-color">
+    <!-- Introduction section: Welcomes visitors with a bio and resume, showcasing professional background in a playful Wii-inspired Frutiger Aero style. -->
+    <section id="introduction" class="frutiger-aero">
         <h1>Welcome to My Website</h1>
-        <p>This is your introduction paragraph. Tell visitors about yourself!</p>
+        <p>This is your detailed introduction: Share your story, passions in fintech/blockchain, and how visitors can explore your work through sections below.</p>
         <h2>My Resume</h2>
-        <!-- Resume container: Styles this as a boxed area for better readability. Replace placeholders with your actual details. -->
         <div class="resume aero-card">
             <p><strong>Name:</strong> Maximiliano Garcia</p>
-            <p><strong>Experience:</strong> List your jobs, skills, etc. here. You can format this as a full resume. Note: PDF resume and cover letter for job applications coming soon.</p>
-            <!-- Optional: Uncomment to embed a PDF resume instead of text. The src should point to your uploaded PDF file. -->
+            <p><strong>Experience:</strong> List your jobs, skills (e.g., full-stack dev, AI coding), education, and achievements here in detail.</p>
             <!-- <iframe src="your-resume.pdf" width="100%" height="600px"></iframe> -->
         </div>
     </section>
-    <!-- Coding section: Displays your code snippets from GitHub in terminal-like boxes for a techy look. -->
-    <section id="coding" class="aero-section coding-color">
+    <!-- Coding section: Displays code snippets from GitHub repos in terminal windows, highlighting programming skills across education levels and this site's tech stack. -->
+    <section id="coding" class="frutiger-metro">
         <h2>Coding Projects</h2>
-        <p>Here are examples of my code in Python, Java, and C++, displayed in terminal-like windows. These are for showcase purposes (static display). If you want interactive running, consider embedding from services like Replit or linking to your GitHub repos.</p>
-        <p>Also including the website's own code for reference.</p>
-       
-        <!-- Each terminal-container holds a code snippet with a header. -->
+        <p>Detailed showcase of code from high school to university, plus the full tech behind this site (HTML structure, CSS styling, JS interactivity).</p>
         <div class="terminal-container aero-card">
             <h3>High School Computer Science Code (Python)</h3>
-            <!-- The terminal div styles this like a command-line window, with green text on black. -->
             <div class="terminal">
-                <pre><code># Paste your Python code here from your GitHub repository.
-# For example:
-def hello_world():
-    print("Hello, World!")
-hello_world()</code></pre>
+                <pre><code># Your Python code from GitHub repo here</code></pre>
             </div>
         </div>
-       
         <div class="terminal-container aero-card">
             <h3>High School AP Computer Science Code (Java)</h3>
             <div class="terminal">
-                <pre><code>// Paste your Java code here from your GitHub repository.
-// For example:
-public class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}</code></pre>
+                <pre><code>// Your Java code from GitHub repo here</code></pre>
             </div>
         </div>
-       
         <div class="terminal-container aero-card">
             <h3>University Programming Foundations Code (C++)</h3>
             <div class="terminal">
-                <pre><code>// Paste your C++ code here from your GitHub repository.
-// For example:
-#include &lt;iostream&gt;
-int main() {
-    std::cout &lt;&lt; "Hello, World!" &lt;&lt; std::endl;
-    return 0;
-}</code></pre>
+                <pre><code>// Your C++ code from GitHub repo here</code></pre>
             </div>
         </div>
-       
         <div class="terminal-container aero-card">
             <h3>This Very Website's Code (HTML, CSS, JS)</h3>
             <div class="terminal">
-                <pre><code>&lt;!-- This is a snippet from index.html --&gt;
-&lt;section id="introduction"&gt;
-    &lt;h1&gt;Welcome to My Website&lt;/h1&gt;
-    &lt;p&gt;This is your introduction paragraph.&lt;/p&gt;
-&lt;/section&gt;</code></pre>
+                <pre><code>&lt;!-- HTML example --&gt;
+&lt;section id="introduction"&gt;...&lt;/section&gt;
+
+ /* CSS example */
+body { background: linear-gradient(...); }
+
+ // JS example
+async function fetchWeather() { ... }</code></pre>
             </div>
         </div>
     </section>
-    <!-- Articles section: Embeds or links to your PDFs for easy viewing. -->
-    <section id="articles" class="aero-section articles-color">
+    <!-- Articles section: Embeds PDFs/reports with detailed project insights, in a glitchy 1980s/2016 Vaporwave aesthetic for nostalgic flair. -->
+    <section id="articles" class="vaporwave">
         <h2>Articles & Projects</h2>
-        <p>Here are my most valuable PDFs and reports.</p>
+        <p>Detailed PDFs and reports on valuable projects, including analyses, findings, and methodologies – explore for in-depth knowledge.</p>
         <ul>
             <li class="aero-card">
-                <!-- Anchor for direct linking, and iframe to embed the PDF inline. -->
                 <a href="#project1">Project 1 Report</a>
-                <!-- Embed PDF inline for easy reading (host in your repo) -->
                 <iframe src="project1.pdf" width="100%" height="400px"></iframe>
             </li>
             <li class="aero-card">
                 <a href="#project2">Project 2 Report</a>
                 <iframe src="project2.pdf" width="100%" height="400px"></iframe>
             </li>
-            <!-- Add more list items as needed for additional projects. -->
         </ul>
     </section>
-    <!-- Utilities section: Embedded interactive content from other sites for weather, transportation, investment, and ecological data. -->
-    <section id="utilities" class="aero-section utilities-color">
+    <!-- Utilities section: Handy interconnected tools for geo insights, global news, asset conversions, and energy rankings, in shiny Y2K style. -->
+    <section id="utilities" class="y2k">
         <h2>Utilities</h2>
-        <p>Handy tools for daily use: Weather, transportation, investment valuations, and ecological energy analysis – embedded from reliable sites.</p>
-        <div id="weather" class="aero-card">
-            <h3>Weather</h3>
-            <!-- Embedded from weatherwidget.io (generate your own free widget at weatherwidget.io and paste the iframe code here) -->
-            <iframe src="https://weatherwidget.io/w/01J5Z0Q0K" width="100%" height="300" frameborder="0"></iframe>
+        <p>Detailed dashboard: Geodata for real-world time/weather/transport; News for global headlines; Investments for cross-asset conversions with USD values; Ecofuel for efficiency rankings by use case.</p>
+        <div id="geodata" class="aero-card">
+            <h3>Geodata Collective</h3>
+            <label for="geo-city">City for Time/Weather/Forecast/Traffic:</label>
+            <input type="text" id="geo-city" list="cities" placeholder="e.g., New York">
+            <datalist id="cities">
+                <option value="New York">
+                <option value="Los Angeles">
+                <option value="Chicago">
+                <!-- Add more common cities -->
+            </datalist>
+            <label for="start-addr">Start Address for Routes:</label>
+            <input type="text" id="start-addr" placeholder="e.g., 123 Main St, New York, NY">
+            <label for="end-addr">End Address for Routes:</label>
+            <input type="text" id="end-addr" placeholder="e.g., 456 Elm St, Brooklyn, NY">
+            <label for="trans-mode">Transport Mode:</label>
+            <select id="trans-mode">
+                <option value="drive">Car</option>
+                <option value="bicycle">Bike</option>
+                <option value="flight">Flight</option>
+            </select>
+            <button onclick="fetchGeodata()" class="aero-button">Get Data</button>
+            <p id="geo-time"></p>
+            <p id="geo-weather"></p>
+            <p id="geo-trans"></p>
         </div>
-        <div id="transportation" class="aero-card">
-            <h3>Transportation</h3>
-            <!-- Embedded Google Maps for routes (customize with locations) -->
-            <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d3022.241264558923!2d-74.0060!3d40.7128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x89c25a1f2a8e4f5f%3A0x1234567890!2sNew%20York!3m2!1d40.7128!2d-74.0060!4m5!1s0x89c25b45b73f4b97%3A0x2bda3c067dacf38b!2sBrooklyn!3m2!1d40.6782!2d-73.9442" width="100%" height="300" frameborder="0" allowfullscreen="" loading="lazy"></iframe>
+        <div id="news" class="aero-card">
+            <h3>World News</h3>
+            <label for="country-select">Select Country:</label>
+            <select id="country-select">
+                <option value="us">USA</option>
+                <option value="gb">UK</option>
+                <option value="ca">Canada</option>
+                <!-- Add more -->
+            </select>
+            <button onclick="fetchNews()" class="aero-button">Get Top 5</button>
+            <ul id="news-list"></ul>
         </div>
         <div id="investment" class="aero-card">
-            <h3>Investment Valuations</h3>
-            <!-- Embedded TradingView widget for stocks/crypto (customize at tradingview.com/widget) -->
-            <iframe src="https://www.tradingview.com/widgetembed/?symbol=BITSTAMP%3ABTCUSD&interval=D&hidesidelegend=0&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=%5B%5D&theme=light&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en" width="100%" height="400" frameborder="0"></iframe>
+            <h3>Investment Vehicle Converter</h3>
+            <label for="from-type">From Type:</label>
+            <select id="from-type">
+                <option value="stock">Stock</option>
+                <option value="crypto">Crypto</option>
+                <option value="currency">Currency</option>
+                <option value="art">Art</option>
+                <option value="realestate">Real Estate</option>
+            </select>
+            <label for="from-asset">From Symbol/Name/Address/Art Piece:</label>
+            <input type="text" id="from-asset" list="assets" placeholder="e.g., AAPL, Bitcoin, USD, Mona Lisa, 123 Main St NY">
+            <datalist id="assets">
+                <option value="AAPL">
+                <option value="Bitcoin">
+                <!-- Add common -->
+            </datalist>
+            <label for="from-amount">From Amount (optional, defaults 1):</label>
+            <input type="number" id="from-amount" placeholder="1">
+            <label for="to-type">To Type:</label>
+            <select id="to-type">
+                <option value="stock">Stock</option>
+                <option value="crypto">Crypto</option>
+                <option value="currency">Currency</option>
+                <option value="art">Art</option>
+                <option value="realestate">Real Estate</option>
+            </select>
+            <label for="to-asset">To Symbol/Name:</label>
+            <input type="text" id="to-asset" placeholder="e.g., TSLA">
+            <button onclick="convertInvestment()" class="aero-button">Convert</button>
+            <p id="investment-result"></p>
+            <p id="from-desc"></p>
+            <p id="to-desc"></p>
         </div>
-        <div id="ecological" class="aero-card">
-            <h3>Ecological Data</h3>
-            <!-- Embedded NREL SCOUT energy calculator for ecological analysis -->
-            <iframe src="https://scout.energy.gov/embedded-calculator" width="100%" height="400" frameborder="0"></iframe>
+        <div id="ecofuel" class="aero-card">
+            <h3>Ecofuel Analysis</h3>
+            <label for="use-case">Use Case:</label>
+            <select id="use-case">
+                <option value="vehicles">Vehicles (Car/Boat)</option>
+                <option value="heating">Home Heating</option>
+                <option value="power">Power Generation</option>
+            </select>
+            <button onclick="analyzeEcofuel()" class="aero-button">Rank Sources</button>
+            <ul id="ecofuel-result"></ul>
         </div>
     </section>
-    <!-- Connect section: Embeds your LinkTree for social links. -->
-    <section id="connect" class="aero-section connect-color">
+    <!-- Connect section: Embeds LinkTree for social/professional connections, in clean corporate minimalist style. -->
+    <section id="connect" class="corporate-min">
         <h2>Connect with Me</h2>
-        <p>Check out my projects and social media via LinkTree.</p>
-        <!-- Iframe embeds the external page; replace src with your actual URL. -->
-        <!-- Replace 'YOUR_LINKTREE_URL' with your actual LinkTree link, e.g., https://linktr.ee/yourusername -->
+        <p>Detailed links to projects, profiles, and contact – reach out for collaborations!</p>
         <iframe src="YOUR_LINKTREE_URL" width="100%" height="600px" frameborder="0" class="aero-card"></iframe>
     </section>
-    <!-- Game section: A simple interactive 2D game using HTML canvas. -->
-    <section id="game" class="aero-section game-color">
+    <!-- Game section: Pixel art tool for creative expression, in retrofuturistic 50s aesthetic. -->
+    <section id="game" class="retrofuturistic-50s">
         <h2>Pixel Art Drawing Game</h2>
-        <p>Choose a color and click pixels to draw (16x16 grid). Clear or save as PNG.</p>
+        <p>Detailed creative tool: Select colors, paint on 16x16 grid, clear/save as PNG – express ideas visually!</p>
         <input type="color" id="color-picker" value="#000000">
         <button onclick="clearCanvas()" class="aero-button">Clear</button>
         <button onclick="saveDrawing()" class="aero-button">Save PNG</button>
@@ -154,7 +189,7 @@ int main() {
     </section>
     <!-- Footer: Displays copyright info at the bottom of the page. -->
     <footer class="aero-footer">
-        <p>&copy; 2025 Your Name. All rights reserved.</p>
+        <p>&copy; 2025 Maximiliano Garcia. All rights reserved.</p>
     </footer>
     <!-- Links to the external JavaScript file for interactivity. -->
     <script src="script.js"></script>
