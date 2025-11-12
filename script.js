@@ -1,22 +1,18 @@
-/* script.js — interactions
-   - smooth scroll
-   - reveal + nav highlight
-   - accent management (sets --global-accent)
-   - gentle parallax drift (moves bg positions & aura)
-   - terminal fetch + fallback + copy
+/* script.js updated:
+   - smooth scroll + nav highlight
+   - reveal + accent management
+   - gentle parallax (background positions + aura)
+   - terminal fetch + fallback + copy (prepared for raw.githubusercontent.com)
    - posts carousel
-   - pixel art 16x16 studio with mouse/touch, eraser, undo, clear, save
-   - tiny UI pressed state for buttons
+   - pixel art 16x16 studio (color, eraser, undo, clear, save, localStorage)
 */
 
 (() => {
   const root = document.documentElement;
-
-  /* utility selectors */
   const $ = (s, ctx = document) => ctx.querySelector(s);
   const $$ = (s, ctx = document) => Array.from((ctx || document).querySelectorAll(s));
 
-  /* smooth scroll for anchors */
+  /* smooth scroll anchors */
   $$('a[href^="#"]').forEach(a => {
     a.addEventListener('click', (e) => {
       const href = a.getAttribute('href');
@@ -24,12 +20,12 @@
       const target = document.querySelector(href);
       if (!target) return;
       e.preventDefault();
-      target.scrollIntoView({behavior: 'smooth', block: 'start'});
-      setTimeout(()=> target.querySelector('h1,h2,h3,button,input')?.focus?.(), 600);
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(() => target.querySelector('h1,h2,h3,button,input')?.focus?.(), 600);
     });
   });
 
-  /* reveal + nav active */
+  /* reveal and nav highlight */
   const sections = Array.from(document.querySelectorAll('section'));
   const navPills = Array.from(document.querySelectorAll('.nav-pill'));
   const revealObserver = new IntersectionObserver(entries => {
@@ -40,20 +36,18 @@
         const pill = document.querySelector(`.nav-pill[href="#${entry.target.id}"]`);
         if (pill) pill.setAttribute('aria-current', 'true');
 
-        // accent management: pick card inside
-        const card = entry.target.querySelector('.card');
-        if (card && card.dataset.accent) {
-          const map = { sky: '--sky', ocean: '--ocean', grass: '--grass', sun: '--sun' };
-          const varName = map[card.dataset.accent] || '--sky';
-          const val = getComputedStyle(root).getPropertyValue(varName).trim();
-          if (val) root.style.setProperty('--global-accent', val);
-        }
+        // accent management: use data-accent on section
+        const accent = entry.target.dataset.accent || 'sky';
+        const map = { sky: '--sky', ocean: '--ocean', grass: '--grass', sun: '--sun' };
+        const varName = map[accent] || '--sky';
+        const val = getComputedStyle(root).getPropertyValue(varName).trim();
+        if (val) root.style.setProperty('--global-accent', val);
       }
     });
   }, { threshold: 0.22 });
   sections.forEach(s => revealObserver.observe(s));
 
-  /* parallax drift — update css vars and aura transform */
+  /* gentle parallax: update CSS background positions and aura */
   const aura = document.querySelector('.aura');
   function onScrollParallax(){
     const docH = document.documentElement.scrollHeight - window.innerHeight;
@@ -77,19 +71,17 @@
       aura.style.transform = `translateX(-50%) translateY(${translateY}px)`;
     }
   }
-  window.addEventListener('scroll', onScrollParallax, {passive:true});
+  window.addEventListener('scroll', onScrollParallax, { passive: true });
   onScrollParallax();
 
-  /* small pressed state for buttons (pointer) */
+  /* simple pressed state */
   document.addEventListener('pointerdown', (e) => {
     const b = e.target.closest('.btn');
     if (b) b.classList.add('pressed');
   });
-  document.addEventListener('pointerup', (e) => {
-    $$('.btn.pressed').forEach(n => n.classList.remove('pressed'));
-  });
+  document.addEventListener('pointerup', (e) => $$('.btn.pressed').forEach(n => n.classList.remove('pressed')));
 
-  /* terminals: fetch raw with timeout, fallback, highlight, copy */
+  /* TERMINALS: fetch raw code, fallback, minimal highlight, copy */
   const terminalCards = document.querySelectorAll('.terminal-card');
   const FALLBACK = {
     python: `# Example Python\n\ndef hello_world():\n    print("Hello, World!")\n\nhello_world()`,
@@ -98,15 +90,17 @@
     html: `<!-- Example HTML snippet -->\n<section>\n  <h1>Welcome</h1>\n</section>`
   };
 
-  async function fetchWithTimeout(url, ms=3500){
+  async function fetchWithTimeout(url, ms = 4500){
     try {
       const ctrl = new AbortController();
       const id = setTimeout(()=> ctrl.abort(), ms);
-      const res = await fetch(url, {signal: ctrl.signal});
+      const res = await fetch(url, { signal: ctrl.signal });
       clearTimeout(id);
       if (!res.ok) return null;
       return await res.text();
-    } catch (e) { return null; }
+    } catch (e) {
+      return null;
+    }
   }
 
   terminalCards.forEach(async card => {
@@ -114,10 +108,14 @@
     const lang = codeEl?.dataset?.lang || 'text';
     const raw = card.dataset.raw || '';
     let content = null;
-    if (raw) content = await fetchWithTimeout(raw, 3500);
+    if (raw) {
+      // Prefer raw.githubusercontent.com links (no CORS on raw -> usually allowed). If embedding from repo page, use raw URL.
+      content = await fetchWithTimeout(raw, 4500);
+    }
     if (!content) content = FALLBACK[lang] || '// snippet unavailable';
     const esc = content.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
-    // tiny highlight
+
+    // basic highlight
     if (lang === 'python') codeEl.innerHTML = esc.replace(/\b(def|return|if|else|elif|for|while|import|from|class|print)\b/g, '<span class="kw">$1</span>');
     else if (lang === 'java' || lang === 'cpp') codeEl.innerHTML = esc.replace(/\b(public|static|void|class|new|return|if|else|for|while)\b/g, '<span class="kw">$1</span>');
     else codeEl.innerHTML = esc;
@@ -129,20 +127,19 @@
     });
   });
 
-  // token styles for highlights
-  const ts = document.createElement('style');
-  ts.textContent = `.kw{color:#ffd66b;font-weight:700}`;
-  document.head.appendChild(ts);
+  const tokStyle = document.createElement('style');
+  tokStyle.textContent = `.kw{color:#ffd66b;font-weight:700}`;
+  document.head.appendChild(tokStyle);
 
-  /* posts carousel simple controls */
+  /* posts carousel controls */
   (function(){
-    const prev = $('.carousel-btn.prev');
-    const next = $('.carousel-btn.next');
-    const track = $('.carousel-track');
+    const prev = document.querySelector('.carousel-btn.prev');
+    const next = document.querySelector('.carousel-btn.next');
+    const track = document.querySelector('.carousel-track');
     if (!track || !prev || !next) return;
     const items = Array.from(track.children);
     let index = 0;
-    const gap = 12;
+    const gap = 16;
     function itemWidth(){ return items[0].getBoundingClientRect().width + gap; }
     function update(){ track.style.transform = `translateX(${-index * itemWidth()}px)`; }
     prev.addEventListener('click', ()=> { index = Math.max(0, index-1); update(); });
@@ -150,12 +147,12 @@
     window.addEventListener('resize', update);
   })();
 
-  /* Pixel Art Studio 16x16 */
+  /* Pixel Art 16x16 Studio */
   class PixelStudio {
     constructor(){
       this.GRID = 16;
       this.canvasEl = document.getElementById('pixelCanvas');
-      this.colorPicker = document.getElementById('color-picker') || document.getElementById('color-picker');
+      this.colorPicker = document.getElementById('color-picker');
       this.eraserBtn = document.getElementById('eraser-btn');
       this.undoBtn = document.getElementById('undo-btn');
       this.clearBtn = document.getElementById('clear-btn');
@@ -185,7 +182,7 @@
     _pushHistory(){
       const snapshot = Array.from(this.canvasEl.children).map(c => c.style.background || '#ffffff');
       this.history.push(snapshot);
-      if (this.history.length > 50) this.history.shift();
+      if (this.history.length > 60) this.history.shift();
       try { localStorage.setItem('pixelStudio_v1', JSON.stringify(snapshot)); } catch(e){}
     }
 
@@ -238,7 +235,7 @@
         this._paint(t);
       });
 
-      // hotkeys
+      // keyboard hotkeys
       window.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'z') { e.preventDefault(); this._undo(); }
         if (e.key === 'c') { e.preventDefault(); this._clear(); }
@@ -279,11 +276,9 @@
     }
   }
 
-  // instantiate on DOM ready
+  /* initialize */
   document.addEventListener('DOMContentLoaded', () => {
-    // year
     const yearEl = document.getElementById('year'); if (yearEl) yearEl.textContent = new Date().getFullYear();
-    // pixel studio
     window.pixelStudio = new PixelStudio();
   });
 
