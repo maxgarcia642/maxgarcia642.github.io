@@ -30,13 +30,17 @@ body{
   margin:0;
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   background:
-    radial-gradient(1200px 600px at 10% 10%, rgba(55,201,255,0.06), transparent 8%),
-    linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+    radial-gradient(1200px 600px at 10% 10%, rgba(55,201,255,0.18), transparent 40%),
+    radial-gradient(1000px 800px at 80% 20%, rgba(122,246,214,0.16), transparent 45%),
+    radial-gradient(900px 600px at 30% 85%, rgba(255,138,128,0.14), transparent 50%),
+    radial-gradient(800px 700px at 70% 70%, rgba(138,122,254,0.12), transparent 50%),
+    linear-gradient(180deg, #f8fcff 0%, #f0f8ff 100%);
   color:var(--text);
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   line-height:1.5;
   padding-bottom: 48px;
+  min-height: 100vh;
 }
 
 /* ---------- Aura (Frutiger Aero ambient glow) ---------- */
@@ -130,13 +134,18 @@ body{
 main{max-width:var(--max-width);margin:28px auto;padding:0 20px}
 .section{margin-bottom:22px}
 .card{
-  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(250,250,252,0.85));
+  background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,252,255,0.88));
   border-radius:var(--card-radius);
   padding:var(--card-pad);
   box-shadow: var(--shadow);
   border: var(--glass-border);
   position:relative;
   overflow:visible;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(15,20,34,0.14);
 }
 
 /* Accent glow based on data-accent attribute; card::before uses --global-accent if provided */
@@ -148,17 +157,23 @@ main{max-width:var(--max-width);margin:28px auto;padding:0 20px}
 .card::before{
   content:"";
   position:absolute;
-  left:-10%;
-  top:-20%;
-  width:140%;
-  height:120%;
-  background: radial-gradient(600px 200px at 10% 10%,
-    color-mix(in srgb, var(--global-accent, var(--accent)) 18%, white),
-    transparent 12%);
-  opacity:0.65;
+  left:-15%;
+  top:-25%;
+  width:130%;
+  height:140%;
+  background: radial-gradient(600px 300px at 15% 15%,
+    color-mix(in srgb, var(--global-accent, var(--accent)) 25%, white),
+    transparent 30%);
+  opacity:0.7;
   pointer-events:none;
-  filter: blur(30px);
+  filter: blur(40px);
   z-index:-1;
+  transition: all 0.4s ease;
+}
+.card:hover::before {
+  opacity:0.9;
+  filter: blur(50px);
+  transform: scale(1.05);
 }
 
 /* Headings */
