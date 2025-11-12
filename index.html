@@ -1,162 +1,225 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Maximiliano Garcia Portfolio</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Maximiliano Garcia — Frutiger Aero Portfolio</title>
+  <meta name="description" content="Maximiliano Garcia — Frutiger Aero portfolio with projects, utilities, and a 16×16 pixel art game." />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="nav">
-    <h1 class="logo">Maximiliano Garcia</h1>
-    <nav>
-      <a href="#about">About</a>
-      <a href="#projects">Projects</a>
-      <a href="#utilities">Utilities</a>
-      <a href="#art">Pixel Art</a>
-      <a href="#contact">Contact</a>
-    </nav>
+  <!-- Ambient aura for parallax color drift -->
+  <div class="aura" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <svg class="logo" width="40" height="40" viewBox="0 0 36 36" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="g" x1="0" x2="1">
+              <stop offset="0" stop-color="#E6FBFF"/>
+              <stop offset="1" stop-color="#BEEBFF"/>
+            </linearGradient>
+            <radialGradient id="glass" cx="30%" cy="25%" r="80%">
+              <stop offset="0" stop-color="rgba(255,255,255,0.85)"/>
+              <stop offset="0.45" stop-color="rgba(255,255,255,0.25)"/>
+              <stop offset="1" stop-color="rgba(255,255,255,0)"/>
+            </radialGradient>
+          </defs>
+          <circle cx="18" cy="18" r="15" fill="url(#g)"></circle>
+          <circle cx="12" cy="11" r="8" fill="url(#glass)" opacity="0.9"></circle>
+          <circle cx="18" cy="18" r="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+        </svg>
+        <div class="site-title">Maximiliano Garcia</div>
+      </div>
+
+      <nav class="main-nav" aria-label="Main">
+        <a class="nav-pill" href="#about">About</a>
+        <a class="nav-pill" href="#posts">Posts</a>
+        <a class="nav-pill" href="#utilities">Utilities</a>
+        <a class="nav-pill" href="#game">Game</a>
+        <a class="nav-pill" href="#contact">Contact</a>
+      </nav>
+    </div>
   </header>
 
-  <main>
-    <!-- ABOUT -->
-    <section id="about" class="section reveal" data-accent="sky">
-      <div class="card">
-        <h2>About Me</h2>
-        <p>Designer & developer inspired by the Frutiger Aero era — blending optimism, glass, and life-infused design into modern interfaces.</p>
+  <main id="main">
+    <!-- ABOUT (Introduction) -->
+    <section id="about" class="section" data-accent="sky" aria-labelledby="about-title">
+      <div class="card reveal">
+        <h2 id="about-title">Introduction</h2>
+        <p class="lead">Hello — welcome to my website. I build glassy UIs, small interactive experiments, and neat tools. Scroll to explore projects, utilities, and a small pixel-art studio.</p>
+
+        <h3>My Resume</h3>
+        <p>If the embedded PDF doesn't render, use the download link below.</p>
+        <div class="pdf-frame">
+          <iframe src="assets/resume.pdf" title="Resume (Maximiliano Garcia)" loading="lazy"></iframe>
+        </div>
+        <p><a class="link-btn" href="assets/resume.pdf" download>Download Resume (PDF)</a></p>
       </div>
     </section>
 
-    <!-- PROJECTS -->
-    <section id="projects" class="section reveal" data-accent="ocean">
-      <div class="card">
-        <h2>Projects</h2>
-        <p>A few selected works ranging from UI experiments to interactive visualizations.</p>
+    <!-- POSTS (Articles and Projects) -->
+    <section id="posts" class="section" data-accent="ocean" aria-labelledby="posts-title">
+      <div class="card reveal">
+        <h2 id="posts-title">Articles &amp; Projects</h2>
+        <p class="lead">Selected reports and writeups — click a card to open the PDF preview.</p>
+
+        <div class="posts-carousel">
+          <div class="carousel-track">
+            <article class="post-card">
+              <div class="post-preview"><iframe src="assets/project1.pdf" title="Project 1 preview" loading="lazy"></iframe></div>
+              <h3>Project 1 Report</h3>
+              <p class="muted">Short summary for Project 1.</p>
+              <p><a class="link" href="assets/project1.pdf" target="_blank" rel="noopener">Open PDF</a></p>
+            </article>
+
+            <article class="post-card">
+              <div class="post-preview"><iframe src="assets/project2.pdf" title="Project 2 preview" loading="lazy"></iframe></div>
+              <h3>Project 2 Report</h3>
+              <p class="muted">Short summary for Project 2.</p>
+              <p><a class="link" href="assets/project2.pdf" target="_blank" rel="noopener">Open PDF</a></p>
+            </article>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- UTILITIES -->
-    <section id="utilities" class="section reveal" data-accent="grass">
-      <div class="card card-utilities">
-        <h2>Investment Valuations</h2>
-        <p class="lead small">Live market data & quick redirects for alternative investments.</p>
+    <!-- UTILITIES (Investment Vehicle Valuations) -->
+    <section id="utilities" class="section" data-accent="grass" aria-labelledby="utilities-title">
+      <div class="card card-utilities reveal">
+        <h2 id="utilities-title">Investment Vehicle Valuations</h2>
+        <p class="lead">Live market data & analysis via TradingView. Additional quick-links (no-login) to major public resources grouped by vehicle.</p>
 
         <div class="utilities-grid">
-          <!-- TradingView -->
           <div class="util-card">
-            <h3>Live Markets</h3>
-            <p class="muted">Stocks, ETFs, Crypto, Commodities</p>
+            <h3>Live Markets (TradingView)</h3>
+            <p class="muted">Stocks, ETFs, Crypto, Commodities (interactive widget).</p>
             <div class="embed-wrap">
               <iframe src="https://s.tradingview.com/embed-widget/symbol-overview/?locale=en" title="TradingView" loading="lazy"></iframe>
             </div>
           </div>
 
-          <!-- Bonds -->
+          <div class="util-card">
+            <h3>Markets (Stocks / ETFs / Index / Mutual Funds)</h3>
+            <div class="link-group">
+              <a class="link-btn" href="https://finance.yahoo.com" target="_blank" rel="noopener">Yahoo Finance</a>
+              <a class="link-btn" href="https://www.marketwatch.com" target="_blank" rel="noopener">MarketWatch</a>
+              <a class="link-btn" href="https://www.etf.com" target="_blank" rel="noopener">ETF.com</a>
+              <a class="link-btn" href="https://www.morningstar.com" target="_blank" rel="noopener">Morningstar</a>
+            </div>
+          </div>
+
           <div class="util-card">
             <h3>Bonds</h3>
-            <p class="muted">Treasury yields & bond center tools.</p>
             <div class="link-group">
-              <a href="https://treasurydirect.gov" class="link">TreasuryDirect</a>
-              <a href="https://finra-markets.morningstar.com/BondCenter" class="link">FINRA Bond Center</a>
+              <a class="link-btn" href="https://treasurydirect.gov" target="_blank" rel="noopener">TreasuryDirect</a>
+              <a class="link-btn" href="https://finra-markets.morningstar.com/BondCenter" target="_blank" rel="noopener">FINRA Bond Center</a>
             </div>
           </div>
 
-          <!-- Real Estate & REITs -->
           <div class="util-card">
             <h3>Real Estate & REITs</h3>
-            <p class="muted">Property listings and REIT research.</p>
             <div class="link-group">
-              <a href="https://www.zillow.com" class="link">Zillow</a>
-              <a href="https://www.realtor.com" class="link">Realtor</a>
-              <a href="https://www.reit.com" class="link">REIT.com</a>
+              <a class="link-btn" href="https://www.zillow.com" target="_blank" rel="noopener">Zillow</a>
+              <a class="link-btn" href="https://www.realtor.com" target="_blank" rel="noopener">Realtor</a>
+              <a class="link-btn" href="https://www.reit.com" target="_blank" rel="noopener">REIT.com</a>
             </div>
           </div>
 
-          <!-- Crypto -->
           <div class="util-card">
             <h3>Crypto</h3>
-            <p class="muted">Coin data, market caps & charts.</p>
             <div class="link-group">
-              <a href="https://coinmarketcap.com" class="link">CoinMarketCap</a>
-              <a href="https://www.coingecko.com" class="link">CoinGecko</a>
+              <a class="link-btn" href="https://coinmarketcap.com" target="_blank" rel="noopener">CoinMarketCap</a>
+              <a class="link-btn" href="https://www.coingecko.com" target="_blank" rel="noopener">CoinGecko</a>
             </div>
           </div>
 
-          <!-- Commodities & Metals -->
           <div class="util-card">
             <h3>Commodities & Precious Metals</h3>
-            <p class="muted">Spot prices, futures & metals charts.</p>
             <div class="link-group">
-              <a href="https://www.kitco.com" class="link">Kitco</a>
-              <a href="https://tradingeconomics.com/commodities" class="link">TradingEconomics</a>
+              <a class="link-btn" href="https://www.kitco.com" target="_blank" rel="noopener">Kitco</a>
+              <a class="link-btn" href="https://tradingeconomics.com/commodities" target="_blank" rel="noopener">TradingEconomics</a>
             </div>
           </div>
 
-          <!-- Art & Collectibles -->
           <div class="util-card">
             <h3>Art & Collectibles</h3>
-            <p class="muted">Auction databases & price-search for art, wine, watches.</p>
             <div class="link-group">
-              <a href="https://www.artnet.com/price-database" class="link">Artnet</a>
-              <a href="https://www.wine-searcher.com" class="link">Wine-Searcher</a>
-              <a href="https://www.chrono24.com" class="link">Chrono24</a>
+              <a class="link-btn" href="https://www.artnet.com/price-database" target="_blank" rel="noopener">Artnet</a>
+              <a class="link-btn" href="https://www.wine-searcher.com" target="_blank" rel="noopener">Wine-Searcher</a>
+              <a class="link-btn" href="https://www.chrono24.com" target="_blank" rel="noopener">Chrono24</a>
             </div>
           </div>
 
-          <!-- Alternative Investments -->
           <div class="util-card">
             <h3>Alternative Investments</h3>
-            <p class="muted">VC, PE, commingled real estate, hedge funds, and farmland resources.</p>
             <div class="link-group">
-              <a href="https://www.crunchbase.com/discover" class="link">Crunchbase (VC)</a>
-              <a href="https://pitchbook.com/news" class="link">PitchBook (PE)</a>
-              <a href="https://www.ncreif.org" class="link">NCREIF (Commingled)</a>
-              <a href="https://acretrader.com/farms" class="link">AcreTrader (Farmland)</a>
-              <a href="https://hfr.com/industry-indices" class="link">HFR (Hedge Funds)</a>
+              <a class="link-btn" href="https://www.crunchbase.com/discover" target="_blank" rel="noopener">Crunchbase (VC)</a>
+              <a class="link-btn" href="https://pitchbook.com/news" target="_blank" rel="noopener">PitchBook (PE)</a>
+              <a class="link-btn" href="https://www.ncreif.org" target="_blank" rel="noopener">NCREIF (Commingled)</a>
+              <a class="link-btn" href="https://acretrader.com/farms" target="_blank" rel="noopener">AcreTrader</a>
+              <a class="link-btn" href="https://hfr.com/industry-indices" target="_blank" rel="noopener">HFR (Hedge Funds)</a>
             </div>
           </div>
 
-          <!-- Retirement & Insurance -->
           <div class="util-card">
             <h3>Retirement & Insurance</h3>
-            <p class="muted">Guides and official resources for retirement accounts, annuities, and SMAs.</p>
             <div class="link-group">
-              <a href="https://www.irs.gov/retirement-plans" class="link">IRS.gov (401k/IRA)</a>
-              <a href="https://immediateannuities.com" class="link">ImmediateAnnuities.com</a>
-              <a href="https://www.investopedia.com/terms/s/sma.asp" class="link">Investopedia (SMAs)</a>
+              <a class="link-btn" href="https://www.irs.gov/retirement-plans" target="_blank" rel="noopener">IRS.gov (401k/IRA)</a>
+              <a class="link-btn" href="https://immediateannuities.com" target="_blank" rel="noopener">ImmediateAnnuities.com</a>
+              <a class="link-btn" href="https://www.investopedia.com/terms/s/sma.asp" target="_blank" rel="noopener">Investopedia (SMAs)</a>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- PIXEL ART DRAWING GAME -->
-    <section id="art" class="section reveal" data-accent="sun">
-      <div class="card">
-        <h2>Pixel Art Studio</h2>
-        <p>Create small pixel drawings — choose a color, paint, erase, and save your art!</p>
+    <!-- GAME (Pixel Art Studio renamed) -->
+    <section id="game" class="section" data-accent="sun" aria-labelledby="game-title">
+      <div class="card reveal">
+        <h2 id="game-title">Game</h2>
+        <p class="lead">Draw pixel art on a 16×16 canvas. Pick a color, paint, erase, clear, and save/export your image.</p>
 
         <div class="pixel-controls">
-          <input type="color" id="colorPicker" value="#000000" title="Pick color" />
-          <button id="eraser">Eraser</button>
-          <button id="clearCanvas">Clear</button>
-          <button id="saveImage">Save Image</button>
+          <input id="colorPicker" type="color" value="#000000" aria-label="Choose color">
+          <button id="eraser" class="btn">Eraser</button>
+          <button id="undo" class="btn">Undo</button>
+          <button id="clearCanvas" class="btn">Clear</button>
+          <button id="saveImage" class="btn primary">Save PNG</button>
         </div>
 
-        <div id="pixelCanvas" class="pixel-canvas"></div>
+        <div id="pixelCanvas" class="pixel-canvas" aria-label="Pixel art canvas"></div>
       </div>
     </section>
 
     <!-- CONTACT -->
-    <section id="contact" class="section reveal" data-accent="ocean">
-      <div class="card">
-        <h2>Contact</h2>
-        <p>Connect or view more links:</p>
-        <a href="https://linktr.ee/YOUR_LINKTREE_URL" target="_blank" class="btn">Linktree</a>
+    <section id="contact" class="section" data-accent="ocean" aria-labelledby="contact-title">
+      <div class="card reveal">
+        <h2 id="contact-title">Contact</h2>
+        <p class="lead">Soon: embedded LinkTree for easy contact & socials. Meanwhile, use the Linktree link below.</p>
+        <p><a class="link-btn" href="https://linktr.ee/YOUR_LINKTREE_URL" target="_blank" rel="noopener">Open LinkTree</a></p>
       </div>
     </section>
   </main>
 
-  <script src="script.js"></script>
+  <!-- Upper footer: bubble redirects (quick links to site sections) -->
+  <div class="upper-footer" aria-hidden="false">
+    <nav class="footer-nav" aria-label="Quick links">
+      <a class="footer-bubble" href="#about">About</a>
+      <a class="footer-bubble" href="#posts">Posts</a>
+      <a class="footer-bubble" href="#utilities">Utilities</a>
+      <a class="footer-bubble" href="#game">Game</a>
+      <a class="footer-bubble" href="#contact">Contact</a>
+    </nav>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>© 2025 Maximiliano Garcia. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
 </body>
 </html>
