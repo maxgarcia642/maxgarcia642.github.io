@@ -5,11 +5,9 @@
    - pixel art 16x16 editor (div grid): color, eraser, undo, clear, save
    - gentle background drift on scroll
 */
-
 /* ---------- Utilities ---------- */
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
 const $$ = (sel, ctx = document) => Array.from((ctx || document).querySelectorAll(sel));
-
 /* ---------- Smooth scroll for nav links ---------- */
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', (e) => {
@@ -23,7 +21,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     setTimeout(() => { target.querySelector('h1,h2,h3,p')?.focus?.(); }, 400);
   });
 });
-
 /* ---------- Reveal sections ---------- */
 const reveals = Array.from(document.querySelectorAll('.reveal'));
 const revealObserver = new IntersectionObserver((entries) => {
@@ -34,15 +31,12 @@ const revealObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.16 });
 reveals.forEach(r => revealObserver.observe(r));
-
 /* ---------- Terminals: fetch raw content or fallback ---------- */
 const terminalCards = Array.from(document.querySelectorAll('.terminal-card'));
-
 const FALLBACK = {
   python: `# Example Python (fallback)
 def hello_world():
     print("Hello, World!")
-
 hello_world()`,
   java: `// Example Java (fallback)
 public class HelloWorld {
@@ -63,7 +57,6 @@ console.log('Hello, world!');`,
   css: `/* Example CSS (fallback) */
 body { font-family: sans-serif; }`
 };
-
 async function fetchWithTimeout(url, ms = 4000) {
   try {
     const ctrl = new AbortController();
@@ -77,7 +70,6 @@ async function fetchWithTimeout(url, ms = 4000) {
     return null;
   }
 }
-
 function tinyHighlight(code, lang) {
   if (!code) return '';
   const esc = code.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
@@ -89,7 +81,6 @@ function tinyHighlight(code, lang) {
   if (lang === 'css') return esc.replace(/([.#]?[a-zA-Z0-9\-_]+)(\s*\{)/g, '<span class="tag">$1</span>$2');
   return esc;
 }
-
 terminalCards.forEach(async card => {
   const codeEl = card.querySelector('code');
   const lang = codeEl.getAttribute('data-lang') || 'text';
@@ -101,9 +92,7 @@ terminalCards.forEach(async card => {
   if (!content) {
     content = FALLBACK[lang] || FALLBACK['html'];
   }
-
   codeEl.innerHTML = tinyHighlight(content, lang);
-
   // Add copy button if not present
   let copyBtn = card.querySelector('.copy-btn');
   if (!copyBtn) {
@@ -122,7 +111,6 @@ terminalCards.forEach(async card => {
     }
   });
 });
-
 /* ---------- Posts carousel (horizontal) ---------- */
 (() => {
   const prev = $('.carousel-btn.prev'), next = $('.carousel-btn.next'), track = $('.carousel-track');
@@ -137,7 +125,6 @@ terminalCards.forEach(async card => {
   next.addEventListener('click', () => { idx = Math.min(items.length - 1, idx + 1); update(); });
   window.addEventListener('resize', update);
 })();
-
 /* ---------- Pixel Art 16x16 (div-grid) ---------- */
 class PixelStudio {
   constructor() {
@@ -148,16 +135,13 @@ class PixelStudio {
     this.clearBtn = document.getElementById('clearCanvas');
     this.undoBtn = document.getElementById('undo');
     this.saveBtn = document.getElementById('saveImage');
-
     this.currentColor = this.colorPicker?.value || '#000000';
     this.isEraser = false;
     this.isDown = false;
     this.history = [];
-
     this._createGrid();
     this._bind();
   }
-
   _createGrid() {
     this.gridEl.innerHTML = '';
     for (let i = 0; i < this.GRID * this.GRID; i++) {
@@ -168,19 +152,16 @@ class PixelStudio {
       this.gridEl.appendChild(cell);
     }
   }
-
   _pushHistory() {
     const snap = Array.from(this.gridEl.children).map(c => c.style.background || '#ffffff');
     this.history.push(snap);
     if (this.history.length > 60) this.history.shift();
   }
-
   _undo() {
     if (!this.history.length) return;
     const arr = this.history.pop();
     Array.from(this.gridEl.children).forEach((c, i) => c.style.background = arr[i] || '#ffffff');
   }
-
   _bind() {
     const cells = this.gridEl;
     // pointer painting
@@ -204,7 +185,6 @@ class PixelStudio {
       this._pushHistory();
       this._paint(t);
     });
-
     // controls
     this.colorPicker?.addEventListener('input', (e) => {
       this.currentColor = e.target.value;
@@ -221,7 +201,6 @@ class PixelStudio {
     });
     this.undoBtn?.addEventListener('click', () => this._undo());
     this.saveBtn?.addEventListener('click', () => this._savePNG());
-
     // keyboard shortcuts
     window.addEventListener('keydown', (e) => {
       if (e.key === 'c') { this._pushHistory(); Array.from(this.gridEl.children).forEach(c => c.style.background = '#ffffff'); }
@@ -229,11 +208,9 @@ class PixelStudio {
       if (e.key === 's') this._savePNG();
     });
   }
-
   _paint(cell) {
     cell.style.background = this.isEraser ? '#ffffff' : this.currentColor;
   }
-
   _savePNG() {
     // make tiny canvas, paint each pixel, upscale
     const off = document.createElement('canvas');
@@ -261,7 +238,6 @@ class PixelStudio {
     }, 'image/png');
   }
 }
-
 /* ---------- Gentle scroll-based drift (subtle) ---------- */
 function onScrollDrift() {
   const docH = document.documentElement.scrollHeight - window.innerHeight;
@@ -273,14 +249,12 @@ function onScrollDrift() {
 }
 window.addEventListener('scroll', onScrollDrift, { passive: true });
 onScrollDrift();
-
 /* ---------- Init on DOMContentLoaded ---------- */
 document.addEventListener('DOMContentLoaded', () => {
   // reveal already visible
   document.querySelectorAll('.reveal').forEach(el => {
     if (el.getBoundingClientRect().top < window.innerHeight * 0.86) el.classList.add('in-view');
   });
-
   // start pixel studio
   window.pixelStudio = new PixelStudio();
 });
