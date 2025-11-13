@@ -111,19 +111,50 @@ terminalCards.forEach(async card => {
     }
   });
 });
-/* ---------- Posts carousel (horizontal) ---------- */
+/* ---------- Posts carousel (horizontal, responsive) ---------- */
 (() => {
-  const prev = $('.carousel-btn.prev'), next = $('.carousel-btn.next'), track = $('.carousel-track');
+  const prev = $('.carousel-btn.prev'),
+        next = $('.carousel-btn.next'),
+        track = $('.carousel-track');
   if (!track) return;
+
   const items = Array.from(track.children);
   let idx = 0;
-  const itemWidth = () => items[0].getBoundingClientRect().width + 16;
-  function update() {
-    track.style.transform = `translateX(${-idx * itemWidth()}px)`;
-  }
-  prev.addEventListener('click', () => { idx = Math.max(0, idx - 1); update(); });
-  next.addEventListener('click', () => { idx = Math.min(items.length - 1, idx + 1); update(); });
-  window.addEventListener('resize', update);
+
+  const getVisibleCount = () => {
+    const trackW = track.clientWidth;
+    const cardW = items[0].getBoundingClientRect().width + 16; // + gap
+    return Math.floor(trackW / cardW);
+  };
+
+  const scrollToIndex = () => {
+    const cardW = items[0].getBoundingClientRect().width + 16;
+    track.scrollLeft = idx * cardW;
+  };
+
+  prev.addEventListener('click', () => {
+    idx = Math.max(0, idx - 1);
+    scrollToIndex();
+  });
+  next.addEventListener('click', () => {
+    const maxIdx = items.length - getVisibleCount();
+    idx = Math.min(maxIdx, idx + 1);
+    scrollToIndex();
+  });
+
+  // recalc on resize / orientation change
+  const debounce = (fn, wait) => {
+    let t; return () => { clearTimeout(t); t = setTimeout(fn, wait); };
+  };
+  window.addEventListener('resize', debounce(() => {
+    // keep current scroll position proportional
+    const ratio = track.scrollLeft / track.scrollWidth;
+    scrollToIndex();
+    track.scrollLeft = ratio * track.scrollWidth;
+  }, 150));
+
+  // initial position
+  scrollToIndex();
 })();
 /* ---------- Pixel Art 16x16 (div-grid) ---------- */
 class PixelStudio {
