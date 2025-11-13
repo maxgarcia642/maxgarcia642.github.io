@@ -84,6 +84,9 @@ body{
 /* Headings */
 h1,h2,h3{margin:0 0 10px 0;font-weight:700}
 .lead{margin:0 0 16px 0;color:var(--muted)}
+/* resume pdf */
+.pdf-frame{width:90%;margin:0 auto;border-radius:10px;overflow:hidden;border:1px solid rgba(16,24,32,0.03)}
+.pdf-frame iframe{width:100%;border:none}
 /* ===== Programming terminals grid: 2 rows x 3 cols ===== */
 .terminals-grid{
   display:grid;
@@ -134,6 +137,7 @@ h1,h2,h3{margin:0 0 10px 0;font-weight:700}
 /* ===== Utilities grid ===== */
 .utilities-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:12px}
 .util-card{padding:12px;border-radius:10px;background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid rgba(16,24,32,0.04);transition:transform .18s ease, box-shadow .18s ease}
+.util-wide{grid-column:span 3;}
 .util-card:hover{transform:translateY(-6px);box-shadow:0 12px 28px rgba(16,24,32,0.12)}
 .embed-wrap{height:240px;border-radius:10px;overflow:hidden;border:1px solid rgba(16,24,32,0.03);margin-top:8px}
 .link-btn{display:inline-block;margin:6px 6px 0 0;padding:8px 12px;background:linear-gradient(180deg,#fff,#f6fbff);border:1px solid rgba(16,24,32,0.08);border-radius:12px;color:var(--text);text-decoration:none;font-weight:600;transition:transform .18s ease, box-shadow .18s ease}
@@ -167,4 +171,6 @@ h1,h2,h3{margin:0 0 10px 0;font-weight:700}
   .utilities-grid{grid-template-columns:1fr}
   .posts-carousel{flex-direction:column}
   .pixel-grid{transform:scale(0.9)}
+  .util-wide{grid-column:auto;}
+  .pdf-frame{width:100%;}
 }
