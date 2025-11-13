@@ -258,3 +258,89 @@ document.addEventListener('DOMContentLoaded', () => {
   // start pixel studio
   window.pixelStudio = new PixelStudio();
 });
+/* ---------- Project viewer modal (preview-only) ---------- */
+(function(){
+  // create modal element once
+  const modal = document.createElement('div');
+  modal.className = 'viewer-modal';
+  modal.innerHTML = `
+    <div class="viewer-panel" role="dialog" aria-modal="true" tabindex="-1">
+      <div class="viewer-header">
+        <div class="viewer-title">Project Preview</div>
+        <div>
+          <button class="viewer-close" aria-label="Close preview">✕</button>
+        </div>
+      </div>
+      <div class="viewer-body">
+        <iframe src="" title="Project preview" sandbox></iframe>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  const panel = modal.querySelector('.viewer-panel');
+  const iframe = modal.querySelector('iframe');
+  const closeBtn = modal.querySelector('.viewer-close');
+  const titleEl = modal.querySelector('.viewer-title');
+
+  // open modal with src and optional title
+  function openViewer(src, title = 'Project Preview') {
+    iframe.src = src;
+    titleEl.textContent = title;
+    // hide pointer-events so built-in pdf UI is not usable (viewer becomes read-only)
+    modal.classList.add('open');
+    // focus trap start
+    panel.focus();
+    // prevent body scroll while modal open
+    document.documentElement.style.overflow = 'hidden';
+  }
+
+  function closeViewer() {
+    modal.classList.remove('open');
+    // clear iframe src to free memory
+    iframe.src = '';
+    document.documentElement.style.overflow = '';
+  }
+
+  // close handlers
+  closeBtn.addEventListener('click', closeViewer);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeViewer();
+  });
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeViewer();
+  });
+
+  // wire expand buttons & card clicks
+  document.addEventListener('click', (e) => {
+    const exp = e.target.closest('.expand-btn');
+    if (exp) {
+      const card = exp.closest('.post-card');
+      if (!card) return;
+      const src = card.dataset.src;
+      const title = card.querySelector('h3')?.innerText || 'Project Preview';
+      if (src) openViewer(src, title);
+      e.preventDefault();
+      return;
+    }
+    // optionally, allow clicking the whole card to expand
+    const post = e.target.closest('.post-card');
+    if (post && !e.target.classList.contains('expand-btn') && !e.target.closest('.post-preview iframe')) {
+      // open on card click
+      const src = post.dataset.src;
+      const title = post.querySelector('h3')?.innerText || 'Project Preview';
+      if (src) openViewer(src, title);
+    }
+  });
+
+  // touch and keyboard focus accessibility
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && document.activeElement && document.activeElement.classList.contains('post-card')) {
+      const card = document.activeElement;
+      const src = card.dataset.src;
+      const title = card.querySelector('h3')?.innerText || 'Project Preview';
+      if (src) openViewer(src, title);
+    }
+  });
+
+})();
