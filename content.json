@@ -28,23 +28,17 @@
   "adminPassword": "$2a$10$XAbGVUmdHjwhcSVeFial9Oq6ujYfL8c29oBaRi70UdLRTgBMtswZ2",
   "projects": [
     {
-      "id": 4,
-      "title": "acnfdkja",
-      "description": "fhsadkjf",
-      "file": "project4.pdf"
+      "id": 7,
+      "title": "Testing 123",
+      "description": "lalalal",
+      "file": "project7.pdf"
     },
     {
-      "id": 5,
-      "title": "fhsjkdf",
-      "description": "fhsjkbvljas",
-      "file": null
-    },
-    {
-      "id": 6,
-      "title": "yadaya",
-      "description": "bluabja",
-      "file": "project6.pdf"
+      "id": 8,
+      "title": "Hello hello is there anybody in there????",
+      "description": "I describe to you some other doc",
+      "file": "project8.pdf"
     }
   ],
-  "resumeFile": "resume.pdf"
+  "resumeFile": null
 }
