@@ -30,7 +30,7 @@ A fully functional Frutiger Aero style personal portfolio website with admin aut
 5. **Dynamic Loading** - Content loads from backend API
 
 ## Admin Login
-- **Default Password**: `admin123`
+- **Default Password**: `Websiteadmin12`
 - Change it via `ADMIN_PASSWORD` environment variable
 - Admin panel: `/admin.html`
 - Edit all section titles and descriptions

@@ -10,7 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 5000;
 const SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Websiteadmin12';
 const DATA_FILE = path.join(__dirname, 'content.json');
 const UPLOADS_DIR = path.join(__dirname, 'uploads');
 
