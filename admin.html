@@ -512,7 +512,7 @@
         if (file) {
           const reader = new FileReader();
           reader.onerror = () => {
-            showSuccess('Project created, but file upload failed: ' + reader.error);
+            showSuccess('⚠️ Project created, but file upload failed: ' + reader.error);
             closeAddProject();
             loadContent();
           };
@@ -536,7 +536,7 @@
               loadContent();
             } catch (e) {
               console.error('Upload error:', e);
-              showSuccess('Project created, but PDF upload failed: ' + e.message);
+              showSuccess('⚠️ Project created, but PDF upload failed: ' + e.message);
               closeAddProject();
               loadContent();
             }
