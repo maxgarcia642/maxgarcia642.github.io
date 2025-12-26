@@ -228,6 +228,18 @@
       border-radius: 8px;
       border: 1px dashed #1098ba;
     }
+    .modal-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   </style>
 </head>
 <body>
@@ -274,7 +286,7 @@
   </div>
 
   <!-- Password Change Modal -->
-  <div id="passwordModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;">
+  <div id="passwordModal" class="modal-container" style="display: none;">
     <div style="background: white; padding: 30px; border-radius: 15px; max-width: 400px; width: 90%;">
       <h2 style="margin-top: 0; color: #1098ba;">Change Password</h2>
       <div id="passError" style="display: none; color: #d32f2f; padding: 12px; background: #ffebee; border-radius: 8px; margin-bottom: 15px;"></div>
@@ -298,7 +310,7 @@
   </div>
 
   <!-- File Upload Modal for Projects -->
-  <div id="fileUploadModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;">
+  <div id="fileUploadModal" class="modal-container" style="display: none;">
     <div style="background: white; padding: 30px; border-radius: 15px; max-width: 400px; width: 90%;">
       <h2 style="margin-top: 0; color: #1098ba;">Upload Project PDF</h2>
       <p id="uploadProjectName" style="color: #666; margin-bottom: 15px;"></p>
@@ -311,7 +323,7 @@
   </div>
 
   <!-- Add Project Modal -->
-  <div id="addProjectModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;">
+  <div id="addProjectModal" class="modal-container" style="display: none;">
     <div style="background: white; padding: 30px; border-radius: 15px; max-width: 500px; width: 90%;">
       <h2 style="margin-top: 0; color: #1098ba;">Add New Project</h2>
       <div id="addProjectError" style="display: none; color: #d32f2f; padding: 12px; background: #ffebee; border-radius: 8px; margin-bottom: 15px;"></div>
