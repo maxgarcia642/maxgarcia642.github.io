@@ -1,0 +1,17 @@
+{
+  "name": "aero-portfolio",
+  "version": "1.0.0",
+  "description": "Frutiger Aero portfolio with admin CMS",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^8.5.1"
+  }
+}

@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Aero Portfolio</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #1098ba 0%, #000bbe 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .login-container {
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      width: 100%;
+      max-width: 400px;
+    }
+    .login-container h1 {
+      margin: 0 0 30px;
+      color: #0f1720;
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #0f1720;
+      font-weight: 600;
+    }
+    input[type="password"], input[type="text"], input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    input:focus {
+      outline: none;
+      border-color: #1098ba;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(90deg, #1098ba, #000bbe);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: transform 0.2s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+    }
+    .error {
+      color: #d32f2f;
+      padding: 12px;
+      background: #ffebee;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+    .admin-panel {
+      display: none;
+      max-width: 900px;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .admin-panel h1 {
+      color: #1098ba;
+      margin-top: 0;
+    }
+    .edit-section {
+      background: #f5f7fa;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 15px;
+      border-left: 4px solid #1098ba;
+    }
+    .edit-section h2 {
+      margin-top: 0;
+      color: #1098ba;
+      font-size: 1.1rem;
+    }
+    textarea {
+      width: 100%;
+      min-height: 80px;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      resize: vertical;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: #1098ba;
+    }
+    .btn-save {
+      flex: 1;
+      min-width: 150px;
+      padding: 10px;
+      background: #308a11;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn-save:hover {
+      background: #2a7810;
+    }
+    .btn-logout {
+      padding: 10px 20px;
+      background: #d32f2f;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .btn-delete {
+      padding: 5px 10px;
+      font-size: 0.85rem;
+      width: auto;
+      background: #d32f2f;
+    }
+    .success {
+      color: #388e3c;
+      padding: 12px;
+      background: #e8f5e9;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .project-list {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 10px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .project-item {
+      padding: 15px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      background: #f9f9f9;
+    }
+    .project-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+    .project-item-info strong {
+      display: block;
+      color: #0f1720;
+      margin-bottom: 5px;
+    }
+    .project-item-info small {
+      color: #666;
+      display: block;
+      margin-bottom: 5px;
+    }
+    .project-item-buttons {
+      display: flex;
+      gap: 5px;
+      flex-direction: column;
+    }
+    .project-item-buttons button {
+      padding: 5px 10px;
+      font-size: 0.85rem;
+      width: auto;
+    }
+    .header-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    input[type="file"] {
+      padding: 8px;
+    }
+    .resume-section {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+    .resume-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background: #f9f9f9;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+    }
+    .file-upload-group {
+      margin-top: 10px;
+      padding: 10px;
+      background: white;
+      border-radius: 8px;
+      border: 1px dashed #1098ba;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container" id="loginForm">
+    <h1>Admin Login</h1>
+    <div id="error"></div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" id="password" placeholder="Enter admin password">
+    </div>
+    <button onclick="login()">Login</button>
+  </div>
+
+  <div class="admin-panel" id="adminPanel">
+    <div class="header-buttons">
+      <button class="btn-logout" onclick="openPasswordChange()" style="background: #ff9800; flex: 1;">Change Password</button>
+      <button class="btn-logout" onclick="logout()">Logout</button>
+    </div>
+    <h1>Admin Panel</h1>
+    <div id="successMsg"></div>
+
+    <!-- Resume Upload & Management -->
+    <div class="edit-section">
+      <h2>Resume</h2>
+      <p style="color: #666; margin: 0 0 10px;">Upload or replace your resume. It will be displayed on your portfolio.</p>
+      <input type="file" id="resumeFile" accept=".pdf" style="margin-bottom: 10px;">
+      <button class="btn-save" onclick="uploadResume()">Upload Resume</button>
+      
+      <div id="resumeStatus" style="margin-top: 15px;">
+        <!-- Resume status will be shown here -->
+      </div>
+    </div>
+
+    <!-- Articles & Projects -->
+    <div class="edit-section">
+      <div class="section-header">
+        <h2>Articles & Projects</h2>
+        <button style="width: auto; padding: 8px 16px; font-size: 0.9rem;" onclick="addProject()">+ Add Project</button>
+      </div>
+      
+      <h3 style="margin-bottom: 10px;">Your Projects:</h3>
+      <div class="project-list" id="projectsList"></div>
+    </div>
+  </div>
+
+  <!-- Password Change Modal -->
+  <div id="passwordModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;">
+    <div style="background: white; padding: 30px; border-radius: 15px; max-width: 400px; width: 90%;">
+      <h2 style="margin-top: 0; color: #1098ba;">Change Password</h2>
+      <div id="passError" style="display: none; color: #d32f2f; padding: 12px; background: #ffebee; border-radius: 8px; margin-bottom: 15px;"></div>
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 8px; color: #0f1720; font-weight: 600;">Current Password:</label>
+        <input type="password" id="oldPass" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
+      </div>
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 8px; color: #0f1720; font-weight: 600;">New Password:</label>
+        <input type="password" id="newPass" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
+      </div>
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 8px; color: #0f1720; font-weight: 600;">Confirm New Password:</label>
+        <input type="password" id="confirmPass" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <button onclick="changePassword()" style="flex: 1;">Change Password</button>
+        <button onclick="closePasswordChange()" style="flex: 1; background: #ccc;">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- File Upload Modal for Projects -->
+  <div id="fileUploadModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;">
+    <div style="background: white; padding: 30px; border-radius: 15px; max-width: 400px; width: 90%;">
+      <h2 style="margin-top: 0; color: #1098ba;">Upload Project PDF</h2>
+      <p id="uploadProjectName" style="color: #666; margin-bottom: 15px;"></p>
+      <input type="file" id="projectFile" accept=".pdf" style="margin-bottom: 15px; width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
+      <div style="display: flex; gap: 10px;">
+        <button onclick="confirmProjectUpload()" style="flex: 1;">Upload</button>
+        <button onclick="closeFileUpload()" style="flex: 1; background: #ccc;">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = '/api';
+    let token = localStorage.getItem('adminToken');
+    let currentData = null;
+    let fileUploadProjectId = null;
+
+    if (token) showAdminPanel();
+
+    async function login() {
+      const password = document.getElementById('password').value;
+      const errorDiv = document.getElementById('error');
+      errorDiv.textContent = '';
+
+      try {
+        const res = await fetch(`${API_URL}/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password })
+        });
+        const data = await res.json();
+        
+        if (!res.ok) throw new Error(data.error);
+        
+        token = data.token;
+        localStorage.setItem('adminToken', token);
+        showAdminPanel();
+      } catch (e) {
+        errorDiv.textContent = 'Invalid password';
+      }
+    }
+
+    async function showAdminPanel() {
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('adminPanel').style.display = 'block';
+      await loadContent();
+    }
+
+    async function loadContent() {
+      try {
+        const res = await fetch(`${API_URL}/content`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        currentData = await res.json();
+        if (!currentData) {
+          console.error('Content is null');
+          showSuccess('Error: Unable to load content from server');
+          return;
+        }
+        renderResume();
+        renderProjects();
+      } catch (e) {
+        console.error('Failed to load content:', e);
+        showSuccess('Error loading content: ' + e.message);
+      }
+    }
+
+    function renderResume() {
+      const status = document.getElementById('resumeStatus');
+      if (currentData.resumeFile) {
+        status.innerHTML = `
+          <div class="resume-item">
+            <div>
+              <strong>Resume:</strong>
+              <small>📄 ${currentData.resumeFile}</small>
+              <small style="color: #1098ba;">Currently uploaded</small>
+            </div>
+            <button class="btn-delete" onclick="deleteResume()">Delete</button>
+          </div>
+        `;
+      } else {
+        status.innerHTML = '<small style="color: #999;">No resume uploaded yet</small>';
+      }
+    }
+
+    function renderProjects() {
+      const list = document.getElementById('projectsList');
+      list.innerHTML = '';
+      if (!currentData.projects) currentData.projects = [];
+      
+      if (currentData.projects.length === 0) {
+        list.innerHTML = '<small style="color: #999;">No projects added yet. Click "+ Add Project" to get started.</small>';
+        return;
+      }
+      
+      currentData.projects.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'project-item';
+        div.innerHTML = `
+          <div class="project-item-header">
+            <div class="project-item-info">
+              <strong>${p.title}</strong>
+              <small>${p.description}</small>
+              ${p.file ? `<small style="color: #1098ba;">📄 ${p.file}</small>` : '<small style="color: #999;">No PDF attached</small>'}
+            </div>
+            <div class="project-item-buttons">
+              <button class="btn-delete" style="background: #1098ba; width: 120px;" onclick="editProject(${p.id})">Edit Info</button>
+              <button class="btn-delete" style="background: #ff9800; width: 120px;" onclick="promptFileUpload(${p.id})">Upload PDF</button>
+              <button class="btn-delete" onclick="deleteProject(${p.id})">Delete</button>
+            </div>
+          </div>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    function addProject() {
+      const title = prompt('Project title:');
+      if (!title) return;
+      const desc = prompt('Project description:');
+      if (desc === null) return;
+      
+      fetch(`${API_URL}/projects`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ title, description: desc })
+      }).then(() => {
+        showSuccess('Project added!');
+        loadContent();
+      });
+    }
+
+    function editProject(id) {
+      const project = currentData.projects.find(p => p.id === id);
+      if (!project) return;
+      
+      const title = prompt('Project title:', project.title);
+      if (!title) return;
+      const desc = prompt('Project description:', project.description);
+      if (desc === null) return;
+      
+      fetch(`${API_URL}/projects/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ title, description: desc })
+      }).then(() => {
+        showSuccess('Project updated!');
+        loadContent();
+      });
+    }
+
+    function deleteProject(id) {
+      if (!confirm('Delete this project?')) return;
+      
+      fetch(`${API_URL}/projects/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      }).then(() => {
+        showSuccess('Project deleted!');
+        loadContent();
+      });
+    }
+
+    function promptFileUpload(projectId) {
+      const project = currentData.projects.find(p => p.id === projectId);
+      if (!project) return;
+      
+      fileUploadProjectId = projectId;
+      document.getElementById('uploadProjectName').textContent = `Upload PDF for: ${project.title}`;
+      document.getElementById('fileUploadModal').style.display = 'flex';
+      document.getElementById('projectFile').value = '';
+    }
+
+    function closeFileUpload() {
+      document.getElementById('fileUploadModal').style.display = 'none';
+      fileUploadProjectId = null;
+    }
+
+    function confirmProjectUpload() {
+      const file = document.getElementById('projectFile').files[0];
+      if (!file) {
+        showSuccess('Please select a PDF file');
+        return;
+      }
+      
+      if (!fileUploadProjectId) {
+        showSuccess('Error: No project selected');
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onerror = () => {
+        showSuccess('Error reading file: ' + reader.error);
+      };
+      reader.onload = async (e) => {
+        try {
+          const res = await fetch(`${API_URL}/upload/project/${fileUploadProjectId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ file: e.target.result })
+          });
+          
+          const data = await res.json();
+          if (!res.ok) {
+            throw new Error(data.error || `HTTP ${res.status}`);
+          }
+          
+          showSuccess('PDF uploaded successfully!');
+          closeFileUpload();
+          loadContent();
+        } catch (e) {
+          console.error('Upload error:', e);
+          showSuccess('Upload failed: ' + e.message);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function uploadResume() {
+      const file = document.getElementById('resumeFile').files[0];
+      if (!file) {
+        showSuccess('Please select a PDF file');
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onerror = () => {
+        showSuccess('Error reading file: ' + reader.error);
+      };
+      reader.onload = async (e) => {
+        try {
+          const res = await fetch(`${API_URL}/upload/resume`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ file: e.target.result, filename: file.name })
+          });
+          
+          const data = await res.json();
+          if (!res.ok) {
+            throw new Error(data.error || `HTTP ${res.status}`);
+          }
+          
+          showSuccess('Resume uploaded successfully!');
+          document.getElementById('resumeFile').value = '';
+          loadContent();
+        } catch (e) {
+          console.error('Upload error:', e);
+          showSuccess('Upload failed: ' + e.message);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function deleteResume() {
+      if (!confirm('Delete your resume? It will be removed from your portfolio.')) return;
+      
+      try {
+        const res = await fetch(`${API_URL}/delete-resume`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (res.ok) {
+          showSuccess('Resume deleted!');
+          loadContent();
+        } else {
+          alert('Failed to delete');
+        }
+      } catch (e) {
+        alert('Error: ' + e.message);
+      }
+    }
+
+    function openPasswordChange() {
+      document.getElementById('passwordModal').style.display = 'flex';
+    }
+
+    function closePasswordChange() {
+      document.getElementById('passwordModal').style.display = 'none';
+      document.getElementById('oldPass').value = '';
+      document.getElementById('newPass').value = '';
+      document.getElementById('confirmPass').value = '';
+      document.getElementById('passError').style.display = 'none';
+    }
+
+    async function changePassword() {
+      const oldPass = document.getElementById('oldPass').value;
+      const newPass = document.getElementById('newPass').value;
+      const confirmPass = document.getElementById('confirmPass').value;
+      const errorDiv = document.getElementById('passError');
+      
+      errorDiv.style.display = 'none';
+      errorDiv.textContent = '';
+      
+      if (!oldPass || !newPass || !confirmPass) {
+        errorDiv.textContent = 'Please fill in all fields';
+        errorDiv.style.display = 'block';
+        return;
+      }
+      
+      if (newPass !== confirmPass) {
+        errorDiv.textContent = 'New passwords do not match';
+        errorDiv.style.display = 'block';
+        return;
+      }
+      
+      if (newPass.length < 6) {
+        errorDiv.textContent = 'New password must be at least 6 characters';
+        errorDiv.style.display = 'block';
+        return;
+      }
+      
+      try {
+        const res = await fetch(`${API_URL}/change-password`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ oldPassword: oldPass, newPassword: newPass })
+        });
+        
+        if (!res.ok) {
+          const data = await res.json();
+          errorDiv.textContent = data.error || 'Failed to change password';
+          errorDiv.style.display = 'block';
+          return;
+        }
+        
+        showSuccess('Password changed successfully!');
+        closePasswordChange();
+      } catch (e) {
+        errorDiv.textContent = 'Error changing password';
+        errorDiv.style.display = 'block';
+      }
+    }
+
+    function showSuccess(msg) {
+      const successDiv = document.getElementById('successMsg');
+      successDiv.textContent = msg;
+      successDiv.className = 'success';
+      setTimeout(() => successDiv.textContent = '', 3000);
+    }
+
+    function logout() {
+      localStorage.removeItem('adminToken');
+      location.reload();
+    }
+
+    document.getElementById('password')?.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') login();
+    });
+  </script>
+</body>
+</html>

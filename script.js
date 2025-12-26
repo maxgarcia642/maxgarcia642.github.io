@@ -185,23 +185,29 @@ terminalCards.forEach(async card => {
 });
 
 /* ---------- Posts carousel (smooth & responsive) ---------- */
-(() => {
+function initCarousel() {
   const prev = $('.carousel-btn.prev'),
         next = $('.carousel-btn.next'),
         track = $('.carousel-track');
-  if (!track) return;
+  if (!track || !prev || !next) return;
 
   const items = Array.from(track.children);
+  if (items.length === 0) return;
+  
   let idx = 0;
 
   const getVisibleCount = () => {
     const trackW = track.clientWidth;
-    const cardW = items[0].getBoundingClientRect().width + 18;
-    return Math.floor(trackW / cardW);
+    const firstItem = items[0];
+    if (!firstItem) return 1;
+    const cardW = firstItem.getBoundingClientRect().width + 18;
+    return Math.max(1, Math.floor(trackW / cardW));
   };
 
   const scrollToIndex = () => {
-    const cardW = items[0].getBoundingClientRect().width + 18;
+    if (items.length === 0) return;
+    const firstItem = items[0];
+    const cardW = firstItem.getBoundingClientRect().width + 18;
     track.scrollTo({
       left: idx * cardW,
       behavior: 'smooth'
@@ -214,7 +220,7 @@ terminalCards.forEach(async card => {
   });
   
   next.addEventListener('click', () => {
-    const maxIdx = items.length - getVisibleCount();
+    const maxIdx = Math.max(0, items.length - getVisibleCount());
     idx = Math.min(maxIdx, idx + 1);
     scrollToIndex();
   });
@@ -230,7 +236,10 @@ terminalCards.forEach(async card => {
   }, 150));
 
   scrollToIndex();
-})();
+}
+
+// Initialize carousel on load and when projects are updated
+initCarousel();
 
 /* ---------- Pixel Art 16x16 with enhanced animations ---------- */
 class PixelStudio {
@@ -454,6 +463,16 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('click', (e) => {
     const exp = e.target.closest('.expand-btn');
     if (exp) {
+      // Handle resume expand
+      if (exp.id === 'resumeExpand') {
+        const src = document.getElementById('resumeFrame').src;
+        if (src && src !== 'about:blank') {
+          openViewer(src, 'Resume Preview');
+          e.preventDefault();
+          return;
+        }
+      }
+      // Handle project card expand
       const card = exp.closest('.post-card');
       if (!card) return;
       const src = card.dataset.src;

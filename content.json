@@ -1,0 +1,50 @@
+{
+  "intro": {
+    "title": "Hello and Welcome to my Website!",
+    "description": "Yo gabba gabba!"
+  },
+  "sections": {
+    "programming": {
+      "title": "Programming Works",
+      "description": "Code examples from school and site sources"
+    },
+    "posts": {
+      "title": "Testing blurrrr",
+      "description": "duhhhhhhh"
+    },
+    "utilities": {
+      "title": "Investment Vehicle Valuations",
+      "description": "Live market data & quick redirects"
+    },
+    "game": {
+      "title": "Pixel Art Studio Max",
+      "description": "A fun 16×16 Pixel Art Studio"
+    },
+    "connect": {
+      "title": "Connect",
+      "description": "Find my social links and projects"
+    }
+  },
+  "adminPassword": "$2a$10$XAbGVUmdHjwhcSVeFial9Oq6ujYfL8c29oBaRi70UdLRTgBMtswZ2",
+  "projects": [
+    {
+      "id": 4,
+      "title": "acnfdkja",
+      "description": "fhsadkjf",
+      "file": "project4.pdf"
+    },
+    {
+      "id": 5,
+      "title": "fhsjkdf",
+      "description": "fhsjkbvljas",
+      "file": null
+    },
+    {
+      "id": 6,
+      "title": "yadaya",
+      "description": "bluabja",
+      "file": "project6.pdf"
+    }
+  ],
+  "resumeFile": "resume.pdf"
+}
