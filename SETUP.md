@@ -5,7 +5,7 @@
 2. `npm start` - Start the server on port 5000
 
 ## Default Admin Credentials
-- **Password**: `admin123`
+- **Password**: `Websiteadmin12`
 - **Admin URL**: `http://localhost:5000/admin.html`
 
 ## Change Admin Password
@@ -17,7 +17,7 @@ npm start
 
 ## Using the Admin Panel
 1. Click the **⚙️ Admin** button in the top navigation
-2. Enter the admin password (`admin123` by default)
+2. Enter the admin password (`Websiteadmin12` by default)
 3. Edit any section title or description
 4. Click "Save" to update content in real-time
 5. Changes appear instantly on the main portfolio
@@ -32,5 +32,5 @@ npm start
 
 ## Environment Variables (Optional)
 - `JWT_SECRET` - Change JWT signing key (default: unsafe, change in production)
-- `ADMIN_PASSWORD` - Set admin password (default: admin123)
+- `ADMIN_PASSWORD` - Set admin password (default: Websiteadmin12)
 - `PORT` - Server port (default: 5000)

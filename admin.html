@@ -261,6 +261,29 @@
       </div>
     </div>
 
+    <!-- Quick Document Upload -->
+    <div class="edit-section">
+      <h2>Quick Document Upload</h2>
+      <p style="color: #666; margin: 0 0 15px;">Upload a document with all details in one step - no more prompts!</p>
+      
+      <div class="form-group">
+        <label for="quickTitle">Document Title:</label>
+        <input type="text" id="quickTitle" placeholder="Enter document title">
+      </div>
+      
+      <div class="form-group">
+        <label for="quickDescription">Description:</label>
+        <textarea id="quickDescription" placeholder="Enter description" style="min-height: 60px;"></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="quickFile">PDF File:</label>
+        <input type="file" id="quickFile" accept=".pdf">
+      </div>
+      
+      <button class="btn-save" onclick="quickUploadDocument()">Upload Document</button>
+    </div>
+
     <!-- Articles & Projects -->
     <div class="edit-section">
       <div class="section-header">
@@ -519,6 +542,64 @@
           loadContent();
         } catch (e) {
           console.error('Upload error:', e);
+          showSuccess('Upload failed: ' + e.message);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function quickUploadDocument() {
+      const title = document.getElementById('quickTitle').value.trim();
+      const description = document.getElementById('quickDescription').value.trim();
+      const file = document.getElementById('quickFile').files[0];
+      
+      if (!title) {
+        showSuccess('Please enter a document title');
+        return;
+      }
+      
+      if (!description) {
+        showSuccess('Please enter a description');
+        return;
+      }
+      
+      if (!file) {
+        showSuccess('Please select a PDF file');
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onerror = () => {
+        showSuccess('Error reading file: ' + reader.error);
+      };
+      reader.onload = async (e) => {
+        try {
+          const res = await fetch(`${API_URL}/projects/quick-upload`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ 
+              title, 
+              description, 
+              file: e.target.result 
+            })
+          });
+          
+          const data = await res.json();
+          if (!res.ok) {
+            throw new Error(data.error || `HTTP ${res.status}`);
+          }
+          
+          showSuccess('Document uploaded successfully!');
+          // Clear form
+          document.getElementById('quickTitle').value = '';
+          document.getElementById('quickDescription').value = '';
+          document.getElementById('quickFile').value = '';
+          loadContent();
+        } catch (e) {
+          console.error('Quick upload error:', e);
           showSuccess('Upload failed: ' + e.message);
         }
       };

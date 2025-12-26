@@ -10,7 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 5000;
 const SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Websiteadmin12';
 const DATA_FILE = path.join(__dirname, 'content.json');
 const UPLOADS_DIR = path.join(__dirname, 'uploads');
 
@@ -219,6 +219,47 @@ app.delete('/api/projects/:id', verifyToken, (req, res) => {
   writeData(data);
   
   res.json({ success: true });
+});
+
+// Quick document upload - create project with PDF in one request
+app.post('/api/projects/quick-upload', verifyToken, (req, res) => {
+  try {
+    const { title, description, file } = req.body;
+    
+    if (!title || !description) {
+      return res.status(400).json({ error: 'Title and description are required' });
+    }
+    
+    if (!file) {
+      return res.status(400).json({ error: 'PDF file is required' });
+    }
+    
+    const data = readData();
+    if (!data.projects) data.projects = [];
+    
+    // Create new project
+    const newProject = {
+      id: Math.max(0, ...data.projects.map(p => p.id)) + 1,
+      title,
+      description,
+      file: null
+    };
+    
+    // Upload PDF file
+    const filename = `project${newProject.id}.pdf`;
+    const buffer = Buffer.from(file.split(',')[1] || file, 'base64');
+    const filepath = path.join(UPLOADS_DIR, filename);
+    fs.writeFileSync(filepath, buffer);
+    
+    newProject.file = filename;
+    data.projects.push(newProject);
+    writeData(data);
+    
+    res.json(newProject);
+  } catch (e) {
+    console.error('Quick upload error:', e);
+    res.status(500).json({ error: 'Failed to upload document: ' + e.message });
+  }
 });
 
 // Upload resume
