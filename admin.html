@@ -228,6 +228,18 @@
       border-radius: 8px;
       border: 1px dashed #1098ba;
     }
+    .modal-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   </style>
 </head>
 <body>
@@ -274,7 +286,7 @@
   </div>
 
   <!-- Password Change Modal -->
-  <div id="passwordModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;">
+  <div id="passwordModal" class="modal-container" style="display: none;">
     <div style="background: white; padding: 30px; border-radius: 15px; max-width: 400px; width: 90%;">
       <h2 style="margin-top: 0; color: #1098ba;">Change Password</h2>
       <div id="passError" style="display: none; color: #d32f2f; padding: 12px; background: #ffebee; border-radius: 8px; margin-bottom: 15px;"></div>
@@ -298,7 +310,7 @@
   </div>
 
   <!-- File Upload Modal for Projects -->
-  <div id="fileUploadModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;">
+  <div id="fileUploadModal" class="modal-container" style="display: none;">
     <div style="background: white; padding: 30px; border-radius: 15px; max-width: 400px; width: 90%;">
       <h2 style="margin-top: 0; color: #1098ba;">Upload Project PDF</h2>
       <p id="uploadProjectName" style="color: #666; margin-bottom: 15px;"></p>
@@ -306,6 +318,31 @@
       <div style="display: flex; gap: 10px;">
         <button onclick="confirmProjectUpload()" style="flex: 1;">Upload</button>
         <button onclick="closeFileUpload()" style="flex: 1; background: #ccc;">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Project Modal -->
+  <div id="addProjectModal" class="modal-container" style="display: none;">
+    <div style="background: white; padding: 30px; border-radius: 15px; max-width: 500px; width: 90%;">
+      <h2 style="margin-top: 0; color: #1098ba;">Add New Project</h2>
+      <div id="addProjectError" style="display: none; color: #d32f2f; padding: 12px; background: #ffebee; border-radius: 8px; margin-bottom: 15px;"></div>
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 8px; color: #0f1720; font-weight: 600;">Project Title:</label>
+        <input type="text" id="newProjectTitle" placeholder="Enter project title" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
+      </div>
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 8px; color: #0f1720; font-weight: 600;">Description:</label>
+        <textarea id="newProjectDescription" placeholder="Enter project description" style="width: 100%; min-height: 100px; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-family: inherit; resize: vertical;"></textarea>
+      </div>
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 8px; color: #0f1720; font-weight: 600;">PDF File (Optional):</label>
+        <input type="file" id="newProjectFile" accept=".pdf" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
+        <small style="color: #666; display: block; margin-top: 5px;">You can add or update the PDF later if needed</small>
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <button onclick="createProject()" style="flex: 1; background: #308a11;">Create</button>
+        <button onclick="closeAddProject()" style="flex: 1; background: #ccc;">Cancel</button>
       </div>
     </div>
   </div>
@@ -415,22 +452,107 @@
     }
 
     function addProject() {
-      const title = prompt('Project title:');
-      if (!title) return;
-      const desc = prompt('Project description:');
-      if (desc === null) return;
+      // Open the add project modal instead of using prompts
+      document.getElementById('addProjectModal').style.display = 'flex';
+      document.getElementById('newProjectTitle').value = '';
+      document.getElementById('newProjectDescription').value = '';
+      document.getElementById('newProjectFile').value = '';
+      document.getElementById('addProjectError').style.display = 'none';
+    }
+
+    function closeAddProject() {
+      document.getElementById('addProjectModal').style.display = 'none';
+      document.getElementById('newProjectTitle').value = '';
+      document.getElementById('newProjectDescription').value = '';
+      document.getElementById('newProjectFile').value = '';
+      document.getElementById('addProjectError').style.display = 'none';
+    }
+
+    async function createProject() {
+      const title = document.getElementById('newProjectTitle').value.trim();
+      const description = document.getElementById('newProjectDescription').value.trim();
+      const fileInput = document.getElementById('newProjectFile');
+      const file = fileInput.files[0];
+      const errorDiv = document.getElementById('addProjectError');
       
-      fetch(`${API_URL}/projects`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ title, description: desc })
-      }).then(() => {
-        showSuccess('Project added!');
-        loadContent();
-      });
+      errorDiv.style.display = 'none';
+      errorDiv.textContent = '';
+      
+      // Validate inputs
+      if (!title) {
+        errorDiv.textContent = 'Please enter a project title';
+        errorDiv.style.display = 'block';
+        return;
+      }
+      
+      if (!description) {
+        errorDiv.textContent = 'Please enter a project description';
+        errorDiv.style.display = 'block';
+        return;
+      }
+      
+      try {
+        // Step 1: Create the project
+        const res = await fetch(`${API_URL}/projects`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ title, description })
+        });
+        
+        if (!res.ok) {
+          throw new Error('Failed to create project');
+        }
+        
+        const newProject = await res.json();
+        
+        // Step 2: If a file was selected, upload it
+        if (file) {
+          const reader = new FileReader();
+          reader.onerror = () => {
+            showSuccess('⚠️ Project created, but file upload failed: ' + reader.error);
+            closeAddProject();
+            loadContent();
+          };
+          reader.onload = async (e) => {
+            try {
+              const uploadRes = await fetch(`${API_URL}/upload/project/${newProject.id}`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ file: e.target.result })
+              });
+              
+              if (!uploadRes.ok) {
+                throw new Error('Failed to upload file');
+              }
+              
+              showSuccess('Project created with PDF successfully!');
+              closeAddProject();
+              loadContent();
+            } catch (e) {
+              console.error('Upload error:', e);
+              showSuccess('⚠️ Project created, but PDF upload failed: ' + e.message);
+              closeAddProject();
+              loadContent();
+            }
+          };
+          reader.readAsDataURL(file);
+        } else {
+          // No file to upload, just close and refresh
+          showSuccess('Project created successfully!');
+          closeAddProject();
+          loadContent();
+        }
+      } catch (e) {
+        console.error('Create project error:', e);
+        errorDiv.textContent = 'Failed to create project: ' + e.message;
+        errorDiv.style.display = 'block';
+      }
     }
 
     function editProject(id) {
