@@ -428,7 +428,7 @@ async function initGitHubCode() {
     const files = await res.json();
     
     // Filter for code files and limit to prevent massive API usage if repo grows huge
-    const allowedExts = ['.html', '.css', '.js', '.json', '.py', '.java', '.cpp'];
+    const allowedExts = ['.html', '.css', '.js', '.json', '.py', '.java', '.cpp', '.md', '.replit', '.gitignore'];
     const codeFiles = files.filter(f => f.type === 'file' && allowedExts.some(ext => f.name.endsWith(ext)));
 
     grid.innerHTML = '';
@@ -439,7 +439,7 @@ async function initGitHubCode() {
       card.dataset.raw = file.download_url;
       
       const ext = file.name.split('.').pop();
-      const langMap = { 'js': 'js', 'html': 'html', 'css': 'css', 'py': 'python', 'java': 'java', 'cpp': 'cpp', 'json': 'js' };
+      const langMap = { 'js': 'js', 'html': 'html', 'css': 'css', 'py': 'python', 'java': 'java', 'cpp': 'cpp', 'json': 'js', 'md': 'markdown', 'replit': 'text', 'gitignore': 'text' };
       const lang = langMap[ext] || 'text';
 
       card.innerHTML = `
