@@ -127,8 +127,9 @@ function tinyHighlight(code, lang) {
   if (lang === 'java') return esc.replace(/\b(public|static|void|class|new|return|if|else|for|while|System\.out\.println)\b/g, '<span class="kw">$1</span>');
   if (lang === 'cpp') return esc.replace(/\b(int|return|#include|std::cout|using|namespace|class|for|while)\b/g, '<span class="kw">$1</span>');
   if (lang === 'html') return esc.replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="comm">$1</span>').replace(/(&lt;\/?[a-zA-Z0-9-:]+)(\s|&gt;)/g, '<span class="tag">$1</span>$2');
-  if (lang === 'js') return esc.replace(/\b(function|return|var|let|const|if|else|for|while|console\.log)\b/g, '<span class="kw">$1</span>');
-  if (lang === 'css') return esc.replace(/([.#]?[a-zA-Z0-9\-_]+)(\s*\{)/g, '<span class="tag">$1</span>$2');
+  if (lang === 'js') return esc.replace(/\b(function|return|var|let|const|if|else|for|while|console\.log)\b/g, '<span class="kw">$1</span>').replace(/(\/\/.+)/g, '<span class="comm">$1</span>');
+  if (lang === 'css') return esc.replace(/([.#]?[a-zA-Z0-9\-_]+)(\s*\{)/g, '<span class="tag">$1</span>$2').replace(/(\/\*.+?\*\/)/g, '<span class="comm">$1</span>');
+  if (lang === 'markdown') return esc.replace(/^(#+ .+)$/gm, '<span class="tag">$1</span>').replace(/(\*\*.+?\*\*)/g, '<span class="kw">$1</span>');
   return esc;
 }
 
@@ -412,7 +413,77 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
   window.pixelStudio = new PixelStudio();
+  
+  // Dynamic GitHub Code Fetcher
+  initGitHubCode();
 });
+
+async function initGitHubCode() {
+  const repo = 'maxgarcia642/maxgarcia642.github.io';
+  const grid = document.getElementById('github-terminals');
+  if (!grid) return;
+
+  try {
+    const res = await fetch(`https://api.github.com/repos/${repo}/contents`);
+    if (!res.ok) throw new Error('Failed to fetch repo contents');
+    const files = await res.json();
+    
+    // Filter for code files and limit to prevent massive API usage if repo grows huge
+    const allowedExts = ['.html', '.css', '.js', '.json', '.py', '.java', '.cpp', '.md', '.replit', '.gitignore'];
+    const codeFiles = files.filter(f => f.type === 'file' && allowedExts.some(ext => f.name.endsWith(ext)));
+
+    grid.innerHTML = '';
+    
+    for (const file of codeFiles) {
+      const card = document.createElement('article');
+      card.className = 'terminal-card floating';
+      card.dataset.raw = file.download_url;
+      
+      const ext = file.name.split('.').pop();
+      const langMap = { 'js': 'js', 'html': 'html', 'css': 'css', 'py': 'python', 'java': 'java', 'cpp': 'cpp', 'json': 'js', 'md': 'markdown', 'replit': 'text', 'gitignore': 'text' };
+      const lang = langMap[ext] || 'text';
+
+      card.innerHTML = `
+        <header class="term-header">
+          <div class="traffic"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+          <div class="term-title">${file.name}</div>
+        </header>
+        <pre class="terminal"><code data-lang="${lang}">// Loading...</code></pre>
+        <a class="code-link" href="${file.html_url}" target="_blank" rel="noopener">Open on GitHub</a>
+      `;
+      
+      grid.appendChild(card);
+      fetchAndHighlight(card);
+    }
+  } catch (e) {
+    console.error('GitHub fetch error:', e);
+    grid.innerHTML = '<p class="muted">Failed to load live code from GitHub.</p>';
+  }
+}
+
+async function fetchAndHighlight(card) {
+  const codeEl = card.querySelector('code');
+  const lang = codeEl.getAttribute('data-lang') || 'text';
+  const raw = card.dataset.raw || '';
+  
+  const content = await fetchWithTimeout(raw, 5000);
+  if (content) {
+    codeEl.innerHTML = tinyHighlight(content, lang);
+    
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'copy-btn';
+    copyBtn.textContent = 'Copy';
+    card.querySelector('.term-header')?.appendChild(copyBtn);
+    
+    copyBtn.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(content);
+      copyBtn.textContent = '✓ Copied!';
+      setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1600);
+    });
+  } else {
+    codeEl.textContent = '// Failed to load code.';
+  }
+}
 
 /* ---------- Project viewer modal ---------- */
 (function(){
