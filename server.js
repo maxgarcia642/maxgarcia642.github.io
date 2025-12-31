@@ -92,7 +92,21 @@ app.post('/api/login', (req, res) => {
   
   if (!data) return res.status(500).json({ error: 'Server error' });
   
-  const match = bcrypt.compareSync(password, data.adminPassword) || password === ADMIN_PASSWORD;
+  // First, try to compare with the hash in content.json
+  let match = false;
+  if (data.adminPassword) {
+    try {
+      match = bcrypt.compareSync(password, data.adminPassword);
+    } catch (e) {
+      console.error('Bcrypt comparison error:', e);
+    }
+  }
+  
+  // If hash comparison fails, check against ADMIN_PASSWORD environment variable as fallback
+  if (!match && password === ADMIN_PASSWORD) {
+    match = true;
+  }
+  
   if (!match) return res.status(401).json({ error: 'Invalid password' });
   
   const token = jwt.sign({ admin: true }, SECRET, { expiresIn: '7d' });
