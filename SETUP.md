@@ -1,4 +1,4 @@
-# Setup Instructions
+[SETUP.md](https://github.com/user-attachments/files/24398212/SETUP.md)# Setup Instructions
 
 ## Installation
 1. `npm install` - Install all dependencies
@@ -34,3 +34,4 @@ npm start
 - `JWT_SECRET` - Change JWT signing key (default: unsafe, change in production)
 - `ADMIN_PASSWORD` - Set admin password (default: Websiteadmin12)
 - `PORT` - Server port (default: 5000)
+
