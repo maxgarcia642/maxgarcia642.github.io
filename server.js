@@ -104,6 +104,7 @@ app.post('/api/login', (req, res) => {
   
   // If hash comparison fails, check against ADMIN_PASSWORD environment variable as fallback
   if (!match && password === ADMIN_PASSWORD) {
+    console.warn('Admin login using ADMIN_PASSWORD fallback - consider updating hash in content.json');
     match = true;
   }
   
