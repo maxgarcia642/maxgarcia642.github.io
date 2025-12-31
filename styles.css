@@ -270,6 +270,18 @@ h3{ font-size: 1.1rem; }
   margin-top: 16px;
 }
 
+@media (max-width: 980px) {
+  .terminals-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .terminals-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .terminal-card{
   border-radius: 12px;
   overflow: hidden;
@@ -688,4 +700,4 @@ h3{ font-size: 1.1rem; }
 /* Color syntax highlighting */
 .kw{ color: #a8e6fc; font-weight: 600; }
 .tag{ color: #ffb86c; font-weight: 600; }
-.comm{ color: #6272a4; font-style: italic; }
+.comm { color: #6272a4; font-style: italic; }
