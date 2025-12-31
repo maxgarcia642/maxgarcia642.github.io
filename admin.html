@@ -307,6 +307,7 @@
       <div class="project-list" id="projectsList"></div>
     </div>
   </div>
+  </div>
 
   <!-- Password Change Modal -->
   <div id="passwordModal" class="modal-container" style="display: none;">
@@ -422,6 +423,92 @@
       } catch (e) {
         console.error('Failed to load content:', e);
         showSuccess('Error loading content: ' + e.message);
+      }
+    }
+
+    function renderSections() {
+      const container = document.getElementById('sectionsContainer');
+      container.innerHTML = '';
+      
+      // Intro section
+      const introDiv = document.createElement('div');
+      introDiv.className = 'edit-section';
+      introDiv.style.background = 'white';
+      introDiv.style.border = '1px solid #eee';
+      introDiv.innerHTML = `
+        <h3>Introduction</h3>
+        <div class="form-group">
+          <label>Title:</label>
+          <input type="text" id="intro-title" value="${currentData.intro.title}">
+        </div>
+        <div class="form-group">
+          <label>Description:</label>
+          <textarea id="intro-desc">${currentData.intro.description}</textarea>
+        </div>
+        <button class="btn-save" onclick="saveSection('intro')">Save Introduction</button>
+      `;
+      container.appendChild(introDiv);
+      
+      // Other sections
+      const sections = [
+        { id: 'programming', label: 'Programming Works' },
+        { id: 'posts', label: 'Articles & Projects' },
+        { id: 'utilities', label: 'Investment Utilities' },
+        { id: 'game', label: 'Pixel Art Game' },
+        { id: 'connect', label: 'Connect' }
+      ];
+      
+      sections.forEach(s => {
+        const secData = currentData.sections[s.id] || { title: '', description: '' };
+        const div = document.createElement('div');
+        div.className = 'edit-section';
+        div.style.background = 'white';
+        div.style.border = '1px solid #eee';
+        div.innerHTML = `
+          <h3>${s.label}</h3>
+          <div class="form-group">
+            <label>Title:</label>
+            <input type="text" id="${s.id}-title" value="${secData.title}">
+          </div>
+          <div class="form-group">
+            <label>Description:</label>
+            <textarea id="${s.id}-desc">${secData.description}</textarea>
+          </div>
+          <button class="btn-save" onclick="saveSection('${s.id}')">Save ${s.label}</button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    async function saveSection(sectionId) {
+      const title = document.getElementById(`${sectionId}-title`)?.value;
+      const desc = document.getElementById(`${sectionId}-desc`)?.value;
+      
+      try {
+        if (sectionId === 'intro') {
+          // Update title
+          await fetch(`${API_URL}/content`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ section: 'intro', field: 'title', value: title })
+          });
+          // Update desc
+          await fetch(`${API_URL}/content`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ section: 'intro', field: 'description', value: desc })
+          });
+        } else {
+          await fetch(`${API_URL}/content/section`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ section: sectionId, title: title, description: desc })
+          });
+        }
+        showSuccess('Section updated successfully!');
+        loadContent();
+      } catch (e) {
+        alert('Failed to save section: ' + e.message);
       }
     }
 
