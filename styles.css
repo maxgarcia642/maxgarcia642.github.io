@@ -700,4 +700,5 @@ h3{ font-size: 1.1rem; }
 /* Color syntax highlighting */
 .kw{ color: #a8e6fc; font-weight: 600; }
 .tag{ color: #ffb86c; font-weight: 600; }
-.comm{ color: #6272a4; font-style: italic; }
+.comm { color: #6272a4; font-style: italic; }
+.info-text { color: #ffffff; font-size: 0.85rem; margin-top: 5px; opacity: 0.9; }

@@ -127,8 +127,9 @@ function tinyHighlight(code, lang) {
   if (lang === 'java') return esc.replace(/\b(public|static|void|class|new|return|if|else|for|while|System\.out\.println)\b/g, '<span class="kw">$1</span>');
   if (lang === 'cpp') return esc.replace(/\b(int|return|#include|std::cout|using|namespace|class|for|while)\b/g, '<span class="kw">$1</span>');
   if (lang === 'html') return esc.replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="comm">$1</span>').replace(/(&lt;\/?[a-zA-Z0-9-:]+)(\s|&gt;)/g, '<span class="tag">$1</span>$2');
-  if (lang === 'js') return esc.replace(/\b(function|return|var|let|const|if|else|for|while|console\.log)\b/g, '<span class="kw">$1</span>');
-  if (lang === 'css') return esc.replace(/([.#]?[a-zA-Z0-9\-_]+)(\s*\{)/g, '<span class="tag">$1</span>$2');
+  if (lang === 'js') return esc.replace(/\b(function|return|var|let|const|if|else|for|while|console\.log)\b/g, '<span class="kw">$1</span>').replace(/(\/\/.+)/g, '<span class="comm">$1</span>');
+  if (lang === 'css') return esc.replace(/([.#]?[a-zA-Z0-9\-_]+)(\s*\{)/g, '<span class="tag">$1</span>$2').replace(/(\/\*.+?\*\/)/g, '<span class="comm">$1</span>');
+  if (lang === 'markdown') return esc.replace(/^(#+ .+)$/gm, '<span class="tag">$1</span>').replace(/(\*\*.+?\*\*)/g, '<span class="kw">$1</span>');
   return esc;
 }
 

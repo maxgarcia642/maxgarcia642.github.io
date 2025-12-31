@@ -26,19 +26,6 @@
     }
   },
   "adminPassword": "$2a$10$XAbGVUmdHjwhcSVeFial9Oq6ujYfL8c29oBaRi70UdLRTgBMtswZ2",
-  "projects": [
-    {
-      "id": 9,
-      "title": "blah baklfndksja f",
-      "description": "fdsah ue",
-      "file": "project9.pdf"
-    },
-    {
-      "id": 10,
-      "title": "vbdhber",
-      "description": "grbewhrv",
-      "file": "project10.pdf"
-    }
-  ],
-  "resumeFile": "resume.pdf"
+  "projects": [],
+  "resumeFile": null
 }
