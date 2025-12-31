@@ -26,25 +26,6 @@
     }
   },
   "adminPassword": "$2a$10$XAbGVUmdHjwhcSVeFial9Oq6ujYfL8c29oBaRi70UdLRTgBMtswZ2",
-  "projects": [
-    {
-      "id": 4,
-      "title": "acnfdkja",
-      "description": "fhsadkjf",
-      "file": "project4.pdf"
-    },
-    {
-      "id": 5,
-      "title": "fhsjkdf",
-      "description": "fhsjkbvljas",
-      "file": null
-    },
-    {
-      "id": 6,
-      "title": "yadaya",
-      "description": "bluabja",
-      "file": "project6.pdf"
-    }
-  ],
-  "resumeFile": "resume.pdf"
+  "projects": [],
+  "resumeFile": null
 }
