@@ -1,16 +1,17 @@
 {
   "intro": {
     "title": "Hello and Welcome to my Website!",
-    "description": "Yo gabba gabba!"
+    "description": "This is my personal portfolio where I share programming projects, articles, useful finance tools, and a small pixel art studio. Scroll to explore my work — my resume is embedded below for quick viewing and is available to download."
   },
+  "resumeFile": null,
   "sections": {
     "programming": {
       "title": "Programming Works",
       "description": "Code examples from school and site sources"
     },
     "posts": {
-      "title": "Testing blurrrr",
-      "description": "duhhhhhhh"
+      "title": "Articles & Projects",
+      "description": "Project reports and updates"
     },
     "utilities": {
       "title": "Investment Vehicle Valuations",
@@ -25,7 +26,13 @@
       "description": "Find my social links and projects"
     }
   },
-  "adminPassword": "$2a$10$XAbGVUmdHjwhcSVeFial9Oq6ujYfL8c29oBaRi70UdLRTgBMtswZ2",
-  "projects": [],
-  "resumeFile": null
+  "projects": [
+    {
+      "id": 1,
+      "title": "Project Report 1",
+      "description": "Short description for Project 1.",
+      "file": "project1.pdf"
+    }
+  ],
+  "adminPassword": "$2a$10$FCemUU/QTZnU9NxfMVzCB.ZOPdB9tjr2h.gUfQ4jwWJ4kfSoXgWKm"
 }
