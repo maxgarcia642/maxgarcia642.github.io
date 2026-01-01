@@ -372,7 +372,11 @@
   </div>
 
   <script>
-    const API_URL = '/api';
+    // Automatically determine the API URL. 
+    // If hosted on GitHub Pages, it should point back to your Replit URL.
+    const REPLIT_URL = 'https://workspace.maxgarcia642.repl.co'; // Replace with your actual Replit public URL if different
+    const API_URL = window.location.hostname.includes('github.io') ? REPLIT_URL + '/api' : '/api';
+    
     let token = localStorage.getItem('adminToken');
     let currentData = null;
     let fileUploadProjectId = null;

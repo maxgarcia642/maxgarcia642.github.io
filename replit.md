@@ -35,12 +35,11 @@ A fully functional Frutiger Aero style personal portfolio website with admin aut
 - Admin panel: `/admin.html`
 - Edit all section titles and descriptions
 
-## Running the Project
-```bash
-npm install
-npm start
-```
-Server runs on `http://0.0.0.0:5000`
+## GitHub Pages Deployment
+Since GitHub Pages is a static hosting service, it cannot run the Node.js backend. The project is configured to automatically connect to your Replit backend even when hosted on GitHub:
+1. Ensure your Replit project is running (or set to "Always On").
+2. The frontend code in `admin.html`, `content-loader.js`, and `project-loader.js` detects the GitHub environment and redirects API calls to `https://workspace.maxgarcia642.repl.co`.
+3. If your Replit URL changes, you'll need to update the `REPLIT_URL` constant in those three files.
 
 ## API Endpoints
 - `GET /api/content` - Get all editable content
