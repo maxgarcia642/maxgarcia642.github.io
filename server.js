@@ -92,7 +92,8 @@ app.post('/api/login', (req, res) => {
   
   if (!data) return res.status(500).json({ error: 'Server error' });
   
-  const match = bcrypt.compareSync(password, data.adminPassword) || password === ADMIN_PASSWORD;
+  // Try plaintext match first (for default password), then bcrypt for custom passwords
+  const match = password === ADMIN_PASSWORD || bcrypt.compareSync(password, data.adminPassword);
   if (!match) return res.status(401).json({ error: 'Invalid password' });
   
   const token = jwt.sign({ admin: true }, SECRET, { expiresIn: '7d' });
@@ -172,7 +173,8 @@ app.post('/api/change-password', verifyToken, (req, res) => {
   const { oldPassword, newPassword } = req.body;
   const data = readData();
   
-  const match = bcrypt.compareSync(oldPassword, data.adminPassword);
+  // Try plaintext match first (for default password), then bcrypt for custom passwords
+  const match = oldPassword === ADMIN_PASSWORD || bcrypt.compareSync(oldPassword, data.adminPassword);
   if (!match) return res.status(401).json({ error: 'Current password is incorrect' });
   
   data.adminPassword = bcrypt.hashSync(newPassword, 10);
