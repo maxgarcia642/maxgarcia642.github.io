@@ -173,7 +173,8 @@ app.post('/api/change-password', verifyToken, (req, res) => {
   const { oldPassword, newPassword } = req.body;
   const data = readData();
   
-  const match = bcrypt.compareSync(oldPassword, data.adminPassword);
+  // Try plaintext match first (for default password), then bcrypt for custom passwords
+  const match = oldPassword === ADMIN_PASSWORD || bcrypt.compareSync(oldPassword, data.adminPassword);
   if (!match) return res.status(401).json({ error: 'Current password is incorrect' });
   
   data.adminPassword = bcrypt.hashSync(newPassword, 10);
