@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 5000;
+<<<<<<< HEAD
 
 // Load environment variables for security
 // In production, these MUST be set via environment variables
@@ -23,6 +24,11 @@ if (!ADMIN_PASSWORD) {
   console.warn('⚠️  WARNING: ADMIN_PASSWORD not set. Using insecure default. Set ADMIN_PASSWORD environment variable in production!');
 }
 
+=======
+// Load environment variables for security
+const SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Websiteadmin12';
+>>>>>>> origin/main
 // Content storage path (JSON based CMS)
 const DATA_FILE = path.join(__dirname, 'content.json');
 const UPLOADS_DIR = path.join(__dirname, 'uploads');
@@ -120,6 +126,7 @@ app.post('/api/login', (req, res) => {
     return res.status(500).json({ error: 'Server configuration error' });
   }
   
+<<<<<<< HEAD
   // Only use bcrypt comparison for security
   const match = bcrypt.compareSync(password, data.adminPassword);
   if (!match) {
@@ -129,6 +136,10 @@ app.post('/api/login', (req, res) => {
   if (!SECRET) {
     return res.status(500).json({ error: 'Server configuration error' });
   }
+=======
+  const match = bcrypt.compareSync(password, data.adminPassword) || password === ADMIN_PASSWORD;
+  if (!match) return res.status(401).json({ error: 'Invalid password' });
+>>>>>>> origin/main
   
   const token = jwt.sign({ admin: true }, SECRET, { expiresIn: '7d' });
   res.json({ token });

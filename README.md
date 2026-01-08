@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/24398206/README.md)
 # maximiliano-garcia-portfolio
 
 Frutiger Aero portfolio (Wii + transparent Mac aesthetic) — static site ready for GitHub Pages.
