@@ -1,15 +1,19 @@
 // Load projects and resume dynamically
 document.addEventListener('DOMContentLoaded', async () => {
+  const REPLIT_URL = 'https://workspace.maxgarcia642.repl.co'; 
+  const API_URL = window.location.hostname.includes('github.io') ? REPLIT_URL + '/api' : '/api';
+  const BASE_URL = window.location.hostname.includes('github.io') ? REPLIT_URL : '';
+
   try {
-    const res = await fetch('/api/content');
+    const res = await fetch(`${API_URL}/content`);
     const data = await res.json();
     
     // Load resume if available
     if (data.resumeFile) {
       const resumeFrame = document.getElementById('resumeFrame');
       const resumeDownload = document.getElementById('resumeDownload');
-      if (resumeFrame) resumeFrame.src = `/uploads/${data.resumeFile}`;
-      if (resumeDownload) resumeDownload.href = `/uploads/${data.resumeFile}`;
+      if (resumeFrame) resumeFrame.src = `${BASE_URL}/uploads/${data.resumeFile}`;
+      if (resumeDownload) resumeDownload.href = `${BASE_URL}/uploads/${data.resumeFile}`;
     }
     
     // Load projects
@@ -17,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (projectTrack && data.projects && data.projects.length > 0) {
       projectTrack.innerHTML = '';
       data.projects.forEach((project, idx) => {
-        const fileUrl = project.file ? `/uploads/${project.file}` : 'about:blank';
+        const fileUrl = project.file ? `${BASE_URL}/uploads/${project.file}` : 'about:blank';
         const article = document.createElement('article');
         article.className = 'post-card';
         article.setAttribute('role', 'listitem');

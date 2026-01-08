@@ -1,63 +1,39 @@
-# Maximiliano Garcia - Aero Portfolio with CMS
+modules = ["web", "nodejs-20"]
+[agent]
+expertMode = true
 
-## Overview
-A fully functional Frutiger Aero style personal portfolio website with admin authentication and content management system. Users can sign in with a password to edit all website text dynamically.
+[nix]
+channel = "stable-25_05"
 
-## Tech Stack
-- **Frontend**: HTML5, CSS3 (Frutiger Aero design), JavaScript
-- **Backend**: Node.js + Express
-- **Authentication**: JWT (JSON Web Tokens) + bcryptjs password hashing
-- **Data Storage**: JSON file (content.json)
+[workflows]
+runButton = "Project"
 
-## Project Structure
-```
-.
-├── index.html              - Main portfolio website
-├── admin.html              - Admin login & content editor
-├── styles.css              - Frutiger Aero styling
-├── script.js               - Frontend interactions
-├── content-loader.js       - Load editable content from API
-├── server.js               - Express backend with auth & API
-├── package.json            - Dependencies
-└── assets/                 - PDF files (resume, projects)
-```
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
 
-## Features
-1. **Frutiger Aero Design** - Colorful, glossy interface with smooth animations
-2. **Admin Panel** - Password-protected admin interface at `/admin.html`
-3. **Editable Content** - Change section titles and descriptions in real-time
-4. **Pixel Art Game** - 16x16 pixel editor built into the site
-5. **Dynamic Loading** - Content loads from backend API
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Portfolio Server"
 
-## Admin Login
-- **Default Password**: `Websiteadmin12`
-- Change it via `ADMIN_PASSWORD` environment variable
-- Admin panel: `/admin.html`
-- Edit all section titles and descriptions
+[[workflows.workflow]]
+name = "Portfolio Server"
+author = "agent"
 
-## Running the Project
-```bash
-npm install
-npm start
-```
-Server runs on `http://0.0.0.0:5000`
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node server.js"
+waitForPort = 5000
 
-## API Endpoints
-- `GET /api/content` - Get all editable content
-- `POST /api/login` - Authenticate with password
-- `POST /api/logout` - Logout (requires token)
-- `PUT /api/content` - Update specific content (requires auth)
-- `POST /api/content/section` - Update section (requires auth)
+[workflows.workflow.metadata]
+outputType = "webview"
 
-## Sections Customizable Via Admin
-- Introduction (title & description)
-- Programming Works (title & description)
-- Articles & Projects (title & description)
-- Investment Utilities (title & description)
-- Pixel Art Game (title & description)
-- Connect (title & description)
+[[ports]]
+localPort = 5000
+externalPort = 80
 
-## Security Notes
-- Change `JWT_SECRET` in production
-- Change `ADMIN_PASSWORD` via environment variables
-- Never commit `content.json` with sensitive data
+[deployment]
+deploymentTarget = "vm"
+publicDir = "."
+run = ["node", "server.js"]

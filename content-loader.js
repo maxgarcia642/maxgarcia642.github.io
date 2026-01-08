@@ -1,7 +1,10 @@
 // Load content from backend on page load
 document.addEventListener('DOMContentLoaded', async () => {
+  const REPLIT_URL = 'https://workspace.maxgarcia642.repl.co'; 
+  const API_URL = window.location.hostname.includes('github.io') ? REPLIT_URL + '/api' : '/api';
+
   try {
-    const res = await fetch('/api/content');
+    const res = await fetch(`${API_URL}/content`);
     const data = await res.json();
     
     // Update intro section
