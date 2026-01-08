@@ -371,6 +371,26 @@
     </div>
   </div>
 
+  <!-- Manual Help Modal -->
+  <div id="helpModal" class="modal-container" style="display: none;">
+    <div style="background: white; padding: 30px; border-radius: 15px; max-width: 500px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+      <h2 style="margin-top: 0; color: #d32f2f;">Admin Access Instructions</h2>
+      <p><strong>Note:</strong> The CMS requires your Replit backend to be active. If you see "Invalid Password" or cannot login while on GitHub, follow these steps to manually update your content on GitHub Pages:</p>
+      
+      <div style="background: #f5f7fa; padding: 15px; border-radius: 10px; margin-bottom: 20px; font-size: 0.9rem;">
+        <ol style="padding-left: 20px; line-height: 1.6;">
+          <li>Go to your GitHub repository: <code>maxgarcia642.github.io</code></li>
+          <li><strong>For Resume:</strong> Upload your <code>resume.pdf</code> into a folder named <code>uploads/</code> in the root.</li>
+          <li><strong>For Projects:</strong> Add your PDF files into the <code>uploads/</code> folder.</li>
+          <li><strong>For Data:</strong> Edit <code>content.json</code> directly in GitHub to add project titles and descriptions.</li>
+        </ol>
+      </div>
+      
+      <p style="font-size: 0.85rem; color: #666;">This ensures your site remains functional even if the Replit backend is temporarily offline.</p>
+      <button onclick="document.getElementById('helpModal').style.display='none'" style="background: #1098ba;">Close</button>
+    </div>
+  </div>
+
   <script>
     // Automatically determine the API URL. 
     // If hosted on GitHub Pages, it should point back to your Replit URL.
@@ -403,6 +423,7 @@
         showAdminPanel();
       } catch (e) {
         errorDiv.textContent = 'Invalid password';
+        document.getElementById('helpModal').style.display = 'flex';
       }
     }
 
