@@ -1,0 +1,4 @@
+# This file ensures the uploads folder is tracked by git
+# Upload your PDF files here:
+# - resume.pdf (your resume)
+# - project-001.pdf, project-002.pdf, etc. (your project PDFs)
