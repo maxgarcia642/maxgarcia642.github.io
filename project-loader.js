@@ -77,21 +77,25 @@ document.addEventListener('DOMContentLoaded', async () => {
       let fileUrl;
       
       if (project.driveLink) {
-        // Handle OneDrive links (1drv.ms format)
+        // Handle OneDrive links (1drv.ms format or direct onedrive.live.com links)
         if (project.driveLink.includes('1drv.ms') || project.driveLink.includes('onedrive.live.com')) {
-          // Convert OneDrive sharing link to embeddable format
-          // Try multiple methods for best compatibility
-          const encodedUrl = encodeURIComponent(project.driveLink);
+          // Extract file ID and container ID from OneDrive URL for proper embedding
+          const urlParams = new URLSearchParams(project.driveLink.split('?')[1] || '');
+          const cid = urlParams.get('cid') || project.driveLink.match(/cid=([^&]+)/)?.[1];
+          const fileId = urlParams.get('id') || project.driveLink.match(/id=([^&]+)/)?.[1];
           
-          // Method 1: Use Google Docs Viewer for OneDrive PDFs (better thumbnails/tabs support)
-          // This works well for PDFs and provides document navigation
-          fileUrl = `https://docs.google.com/viewer?url=${encodedUrl}&embedded=true`;
-          
-          // Alternative methods (commented out, can be used as fallback):
-          // Method 2: Office Online viewer (simpler but less features)
-          // fileUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodedUrl}`;
-          // Method 3: Direct OneDrive embed (requires file ID extraction)
-          // This would need the full OneDrive URL with file ID
+          if (cid && fileId) {
+            // Decode the file ID (replace %21 with !)
+            const decodedFileId = decodeURIComponent(fileId);
+            // Construct OneDrive embed URL
+            // Format: https://onedrive.live.com/embed?cid=CID&resid=RESID&authkey=AUTHKEY
+            // For public files, we can use the embed format without authkey
+            fileUrl = `https://onedrive.live.com/embed?cid=${cid}&resid=${decodedFileId}`;
+          } else {
+            // Fallback: Use Office Online viewer with the direct link
+            const encodedUrl = encodeURIComponent(project.driveLink);
+            fileUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodedUrl}`;
+          }
         }
         // Handle Google Drive/Google Docs links
         else if (project.driveLink.includes('drive.google.com') || project.driveLink.includes('docs.google.com')) {
