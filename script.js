@@ -498,7 +498,7 @@ async function fetchAndHighlight(card) {
         </div>
       </div>
       <div class="viewer-body">
-        <iframe src="" title="Project preview" sandbox="allow-same-origin allow-scripts allow-popups" allow="fullscreen"></iframe>
+        <iframe src="" title="Project preview" sandbox="allow-same-origin allow-scripts allow-popups allow-forms" allow="fullscreen"></iframe>
       </div>
     </div>
   `;
