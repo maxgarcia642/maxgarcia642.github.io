@@ -498,7 +498,7 @@ async function fetchAndHighlight(card) {
         </div>
       </div>
       <div class="viewer-body">
-        <iframe src="" title="Project preview" sandbox></iframe>
+        <iframe src="" title="Project preview" allow="fullscreen; clipboard-read; clipboard-write"></iframe>
       </div>
     </div>
   `;
@@ -508,10 +508,35 @@ async function fetchAndHighlight(card) {
   const iframe = modal.querySelector('iframe');
   const closeBtn = modal.querySelector('.viewer-close');
   const titleEl = modal.querySelector('.viewer-title');
+  let currentOriginalUrl = null;
+  let currentIsGoogleDocs = false;
 
-  function openViewer(src, title = 'Project Preview') {
+  function openViewer(src, title = 'Project Preview', originalUrl = null, isGoogleDocs = false) {
     iframe.src = src;
+    currentOriginalUrl = originalUrl || src;
+    currentIsGoogleDocs = isGoogleDocs;
     titleEl.textContent = title;
+    
+    // Update or create "Open in new tab" button
+    let openBtn = panel.querySelector('.viewer-open-new');
+    if (isGoogleDocs && originalUrl) {
+      if (!openBtn) {
+        openBtn = document.createElement('a');
+        openBtn.className = 'viewer-open-new';
+        openBtn.href = originalUrl;
+        openBtn.target = '_blank';
+        openBtn.rel = 'noopener';
+        openBtn.textContent = 'Open in Google Docs';
+        // Styles are handled by CSS class
+        panel.querySelector('.viewer-header > div').insertBefore(openBtn, closeBtn);
+      } else {
+        openBtn.href = originalUrl;
+        openBtn.style.display = 'block';
+      }
+    } else if (openBtn) {
+      openBtn.style.display = 'none';
+    }
+    
     modal.classList.add('open');
     panel.focus();
     document.documentElement.style.overflow = 'hidden';
@@ -547,17 +572,21 @@ async function fetchAndHighlight(card) {
       const card = exp.closest('.post-card');
       if (!card) return;
       const src = card.dataset.src;
+      const originalUrl = card.dataset.originalUrl || src;
+      const isGoogleDocs = card.dataset.isGoogledocs === 'true';
       const title = card.querySelector('h3')?.innerText || 'Project Preview';
-      if (src) openViewer(src, title);
+      if (src) openViewer(src, title, originalUrl, isGoogleDocs);
       e.preventDefault();
       return;
     }
     
     const post = e.target.closest('.post-card');
-    if (post && !e.target.classList.contains('expand-btn') && !e.target.closest('.post-preview iframe')) {
+    if (post && !e.target.classList.contains('expand-btn') && !e.target.closest('.post-preview iframe') && !e.target.closest('a')) {
       const src = post.dataset.src;
+      const originalUrl = post.dataset.originalUrl || src;
+      const isGoogleDocs = post.dataset.isGoogledocs === 'true';
       const title = post.querySelector('h3')?.innerText || 'Project Preview';
-      if (src) openViewer(src, title);
+      if (src) openViewer(src, title, originalUrl, isGoogleDocs);
     }
   });
 
@@ -565,8 +594,10 @@ async function fetchAndHighlight(card) {
     if (e.key === 'Enter' && document.activeElement && document.activeElement.classList.contains('post-card')) {
       const card = document.activeElement;
       const src = card.dataset.src;
+      const originalUrl = card.dataset.originalUrl || src;
+      const isGoogleDocs = card.dataset.isGoogledocs === 'true';
       const title = card.querySelector('h3')?.innerText || 'Project Preview';
-      if (src) openViewer(src, title);
+      if (src) openViewer(src, title, originalUrl, isGoogleDocs);
     }
   });
 })();

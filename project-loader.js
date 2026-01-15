@@ -75,18 +75,50 @@ document.addEventListener('DOMContentLoaded', async () => {
       
       // Prioritize driveLink over file if both exist
       let fileUrl;
+      let originalUrl = null; // Store original URL for opening in new tab
+      let isGoogleDocs = false;
+      
       if (project.driveLink) {
+        originalUrl = project.driveLink;
+        isGoogleDocs = project.driveLink.includes('docs.google.com') || project.driveLink.includes('drive.google.com');
+        
         // Convert Google Docs/Drive sharing links to embeddable preview format
         // Handle both /edit and /view variants with or without query parameters
         // If already in /preview format, leave it unchanged
         fileUrl = project.driveLink;
         if (!fileUrl.includes('/preview')) {
-          fileUrl = fileUrl
-            .replace(/\/edit(\?.*)?$/, '/preview')
-            .replace(/\/view(\?.*)?$/, '/preview');
+          // Extract file ID from Google Docs/Drive URL
+          const docIdMatch = fileUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+          if (docIdMatch && docIdMatch[1]) {
+            const fileId = docIdMatch[1];
+            if (fileUrl.includes('docs.google.com/document')) {
+              // Google Docs document
+              fileUrl = `https://docs.google.com/document/d/${fileId}/preview`;
+            } else if (fileUrl.includes('docs.google.com/spreadsheets')) {
+              // Google Sheets
+              fileUrl = `https://docs.google.com/spreadsheets/d/${fileId}/preview`;
+            } else if (fileUrl.includes('docs.google.com/presentation')) {
+              // Google Slides
+              fileUrl = `https://docs.google.com/presentation/d/${fileId}/preview`;
+            } else if (fileUrl.includes('drive.google.com')) {
+              // Generic Drive file
+              fileUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+            } else {
+              // Fallback: try to replace /edit or /view with /preview
+              fileUrl = fileUrl
+                .replace(/\/edit(\?.*)?$/, '/preview')
+                .replace(/\/view(\?.*)?$/, '/preview');
+            }
+          } else {
+            // Fallback: try to replace /edit or /view with /preview
+            fileUrl = fileUrl
+              .replace(/\/edit(\?.*)?$/, '/preview')
+              .replace(/\/view(\?.*)?$/, '/preview');
+          }
         }
       } else if (project.file) {
         fileUrl = `${BASE_URL}/uploads/${project.file}`;
+        originalUrl = fileUrl;
       }
       
       const article = document.createElement('article');
@@ -94,6 +126,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       article.setAttribute('role', 'listitem');
       article.setAttribute('tabindex', '0');
       article.setAttribute('data-src', fileUrl);
+      article.setAttribute('data-original-url', originalUrl || fileUrl);
+      article.setAttribute('data-is-googledocs', isGoogleDocs ? 'true' : 'false');
       article.setAttribute('data-id', project.id || idx + 1);
       
       // Format date for display
@@ -106,12 +140,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       
       article.innerHTML = `
         <div class="post-preview">
-          <iframe src="${fileUrl}" title="${project.title} preview" loading="lazy" allow="fullscreen"></iframe>
+          <iframe src="${fileUrl}" title="${project.title} preview" loading="lazy" allow="fullscreen; clipboard-read; clipboard-write"></iframe>
         </div>
         <h3>${project.title}</h3>
         <p class="muted">${project.description || ''}</p>
         ${displayDate ? `<p class="muted small" style="font-size:0.75rem;opacity:0.7">Updated: ${displayDate}</p>` : ''}
-        <button class="btn ghost expand-btn" type="button" aria-label="Open ${project.title}">Expand</button>
+        <div style="display: flex; gap: 8px; margin-top: 8px;">
+          <button class="btn ghost expand-btn" type="button" aria-label="Open ${project.title}">Expand</button>
+          ${isGoogleDocs ? `<a href="${originalUrl}" target="_blank" rel="noopener" class="btn ghost" style="text-decoration: none;">Open in Docs</a>` : ''}
+        </div>
       `;
       projectTrack.appendChild(article);
     });
