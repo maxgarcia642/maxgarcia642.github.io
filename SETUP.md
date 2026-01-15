@@ -10,10 +10,14 @@ When hosting on GitHub Pages, the admin panel requires a backend server which is
 3. The resume will automatically appear in the Introduction section
 
 ### Articles & Projects (up to 100 files)
+
+You can use either local PDF files or Google Drive/Docs links for your projects.
+
+#### Option 1: Local PDF Files
 1. **Upload PDF files** to the `uploads/` folder
    - Name them: `project-001.pdf`, `project-002.pdf`, etc.
 2. **Edit `content.json`** in the root directory
-3. Add your project to the `projects` array:
+3. Add your project to the `projects` array with the `file` field:
 
 ```json
 {
@@ -25,6 +29,31 @@ When hosting on GitHub Pages, the admin panel requires a backend server which is
   "dateUpdated": "2026-01-15T00:00:00Z"
 }
 ```
+
+#### Option 2: Google Drive/Docs Links (Recommended for large files)
+1. Upload your document to Google Drive or create a Google Doc
+2. Click "Share" and set permissions to "Anyone with the link can view"
+3. Copy the shareable link
+4. **Edit `content.json`** in the root directory
+5. Add your project to the `projects` array with the `driveLink` field:
+
+```json
+{
+  "id": 5,
+  "title": "Your Google Doc Project",
+  "description": "Brief description of the project",
+  "driveLink": "https://docs.google.com/document/d/YOUR_DOC_ID/edit?usp=sharing",
+  "dateAdded": "2026-01-15T00:00:00Z",
+  "dateUpdated": "2026-01-15T00:00:00Z"
+}
+```
+
+**Note:** You can mix both local files and Google Drive links in your projects. If a project has both `file` and `driveLink`, the `driveLink` will be used.
+
+**Benefits of Google Drive/Docs:**
+- No file size limits (GitHub has limits on file uploads)
+- Easy to update content (just edit the Google Doc)
+- Supports both Google Docs and Google Drive PDF files
 
 ### Ordering Projects
 Projects are sorted by `dateUpdated` (most recent first). To reorder:

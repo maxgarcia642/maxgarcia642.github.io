@@ -1,56 +1,56 @@
 {
-  "lastUpdated": "2026-01-11T00:00:00Z",
-  "resumeFile": "resume.pdf",
   "intro": {
-    "title": "👋 Hello and Welcome to my Website!",
+    "title": "Hello and Welcome to my Website!",
     "description": "This is my personal portfolio where I share programming projects, articles, useful finance tools, and a small pixel art studio. Scroll to explore my work — my resume is embedded below for quick viewing and is available to download."
   },
+  "resumeFile": "Maximiliano Garcia - Resume.pdf",
   "sections": {
     "programming": {
-      "title": "💻 Programming Works",
-      "description": "Code from this portfolio's repository — fetched live from GitHub."
+      "title": "Programming Works",
+      "description": "Code examples from school and site sources"
     },
     "posts": {
-      "title": "📄 Articles & Projects",
-      "description": "This is where my most personally important project reports and updates will be posted and shared."
+      "title": "Articles & Projects",
+      "description": "Project reports and updates"
     },
     "utilities": {
-      "title": "📊 Investment Vehicle Valuations",
-      "description": "Live market data & quick redirects for alternative investments."
+      "title": "Investment Vehicle Valuations",
+      "description": "Live market data & quick redirects"
     },
     "game": {
-      "title": "🎨 Pixel Art Studio Max",
-      "description": "A fun 16×16 Pixel Art Studio — pick a color, paint pixels, erase, undo, clear, and save your work as a PNG."
+      "title": "Pixel Art Studio Max",
+      "description": "A fun 16×16 Pixel Art Studio"
     },
     "connect": {
-      "title": "🌐 Connect",
-      "description": "Find my social links and projects via Linktree."
+      "title": "Connect",
+      "description": "Find my social links and projects"
     }
   },
   "projects": [
     {
       "id": 1,
-      "title": "Project 1 - Sample Title",
-      "description": "Replace this with your project description. Upload a PDF to uploads/ folder and update the file name below.",
-      "file": "project-001.pdf",
-      "dateAdded": "2026-01-11T00:00:00Z",
-      "dateUpdated": "2026-01-11T00:00:00Z"
+      "title": "Junior to High School Haas Hall Works",
+      "description": "My early programming works from Haas Hall Academy",
+      "driveLink": "https://docs.google.com/document/d/1zbuGsuFQo1zffxMv7O5pepumhSKDck3-NV46c2lXU-s/edit?usp=sharing",
+      "dateAdded": "2024-01-01T00:00:00Z",
+      "dateUpdated": "2024-12-31T00:00:00Z"
     },
     {
       "id": 2,
-      "title": "Project 2 - Sample Title",
-      "description": "Replace this with your project description.",
-      "file": "project-002.pdf",
-      "dateAdded": "2026-01-10T00:00:00Z",
-      "dateUpdated": "2026-01-10T00:00:00Z"
+      "title": "University of Arkansas Works",
+      "description": "Projects and coursework from University of Arkansas",
+      "file": "Maximiliano Garcia - University of Arkansas Works.pdf",
+      "dateAdded": "2025-06-01T00:00:00Z",
+      "dateUpdated": "2025-12-31T00:00:00Z"
     },
     {
       "id": 3,
-      "title": "Project 3 - Sample Title",
-      "description": "Replace this with your project description.",
-      "file": "project-003.pdf",
-      "dateAdded": "2026-01-09T00:00:00Z",
-      "dateUpdated": "2026-01-09T00:00:00Z"
+      "title": "Northwest Technical Institute Works",
+      "description": "Technical projects from Northwest Technical Institute",
+      "driveLink": "https://docs.google.com/document/d/1Luc_6Gal6UjLG9u2QfWYtx3bkuf3EEEk46ZRQ-U6gT8/edit?usp=sharing",
+      "dateAdded": "2026-01-01T00:00:00Z",
+      "dateUpdated": "2026-01-15T00:00:00Z"
     }
-  ]
+  ],
+  "adminPassword": "$2a$10$sUp7KdIMxJWw8qIGjthJWuC6sDmHy9hrtv2NLs/VHGq22gM2SN56y"
 }

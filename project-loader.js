@@ -70,10 +70,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     projectTrack.innerHTML = '';
     
     limitedProjects.forEach((project, idx) => {
-      // Skip projects without valid files
-      if (!project.file || !project.title) return;
+      // Skip projects without valid files or drive links
+      if ((!project.file && !project.driveLink) || !project.title) return;
       
-      const fileUrl = `${BASE_URL}/uploads/${project.file}`;
+      // Prioritize driveLink over file if both exist
+      let fileUrl;
+      if (project.driveLink) {
+        // Convert Google Docs/Drive sharing links to embeddable preview format
+        // Handle both /edit and /view variants with or without query parameters
+        // If already in /preview format, leave it unchanged
+        fileUrl = project.driveLink;
+        if (!fileUrl.includes('/preview')) {
+          fileUrl = fileUrl
+            .replace(/\/edit(\?.*)?$/, '/preview')
+            .replace(/\/view(\?.*)?$/, '/preview');
+        }
+      } else if (project.file) {
+        fileUrl = `${BASE_URL}/uploads/${project.file}`;
+      }
+      
       const article = document.createElement('article');
       article.className = 'post-card';
       article.setAttribute('role', 'listitem');
