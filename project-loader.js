@@ -78,9 +78,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (project.driveLink) {
         // Convert Google Docs/Drive sharing links to embeddable preview format
         // Handle both /edit and /view variants with or without query parameters
-        fileUrl = project.driveLink
-          .replace(/\/edit(\?.*)?$/, '/preview')
-          .replace(/\/view(\?.*)?$/, '/preview');
+        // If already in /preview format, leave it unchanged
+        fileUrl = project.driveLink;
+        if (!fileUrl.includes('/preview')) {
+          fileUrl = fileUrl
+            .replace(/\/edit(\?.*)?$/, '/preview')
+            .replace(/\/view(\?.*)?$/, '/preview');
+        }
       } else if (project.file) {
         fileUrl = `${BASE_URL}/uploads/${project.file}`;
       }
