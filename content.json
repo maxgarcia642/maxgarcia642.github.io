@@ -5,25 +5,25 @@
   },
   "resumeFile": "Maximiliano Garcia - Resume.pdf",
   "sections": {
-    "programming": { 
-      "title": "Programming Works", 
-      "description": "Code examples from school and site sources" 
+    "programming": {
+      "title": "Programming Works",
+      "description": "Code examples from school and site sources"
     },
-    "posts": { 
-      "title": "Articles & Projects", 
-      "description": "Project reports and updates" 
+    "posts": {
+      "title": "Articles & Projects",
+      "description": "Project reports and updates"
     },
-    "utilities": { 
-      "title": "Investment Vehicle Valuations", 
-      "description": "Live market data & quick redirects" 
+    "utilities": {
+      "title": "Investment Vehicle Valuations",
+      "description": "Live market data & quick redirects"
     },
-    "game": { 
-      "title": "Pixel Art Studio Max", 
-      "description": "A fun 16×16 Pixel Art Studio" 
+    "game": {
+      "title": "Pixel Art Studio Max",
+      "description": "A fun 16×16 Pixel Art Studio"
     },
-    "connect": { 
-      "title": "Connect", 
-      "description": "Find my social links and projects" 
+    "connect": {
+      "title": "Connect",
+      "description": "Find my social links and projects"
     }
   },
   "projects": [
@@ -51,5 +51,6 @@
       "dateAdded": "2026-01-01T00:00:00Z",
       "dateUpdated": "2026-01-15T00:00:00Z"
     }
-  ]
+  ],
+  "adminPassword": "$2a$10$sUp7KdIMxJWw8qIGjthJWuC6sDmHy9hrtv2NLs/VHGq22gM2SN56y"
 }
