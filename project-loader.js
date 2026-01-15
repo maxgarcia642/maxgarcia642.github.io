@@ -77,23 +77,37 @@ document.addEventListener('DOMContentLoaded', async () => {
       let fileUrl;
       
       if (project.driveLink) {
-        // Convert Google Docs to PDF format for embedding
-        // Extract file ID from Google Docs/Drive URL
-        const docIdMatch = project.driveLink.match(/\/d\/([a-zA-Z0-9_-]+)/);
-        if (docIdMatch && docIdMatch[1]) {
-          const fileId = docIdMatch[1];
-          if (project.driveLink.includes('docs.google.com/document')) {
-            // Google Docs document - convert to PDF format
-            fileUrl = `https://docs.google.com/document/d/${fileId}/export?format=pdf`;
-          } else if (project.driveLink.includes('docs.google.com/spreadsheets')) {
-            // Google Sheets - convert to PDF
-            fileUrl = `https://docs.google.com/spreadsheets/d/${fileId}/export?format=pdf`;
-          } else if (project.driveLink.includes('docs.google.com/presentation')) {
-            // Google Slides - convert to PDF
-            fileUrl = `https://docs.google.com/presentation/d/${fileId}/export?format=pdf`;
-          } else if (project.driveLink.includes('drive.google.com')) {
-            // Generic Drive file - use preview
-            fileUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+        // Handle OneDrive links (1drv.ms format)
+        if (project.driveLink.includes('1drv.ms') || project.driveLink.includes('onedrive.live.com')) {
+          // Convert OneDrive sharing link to embeddable format
+          // Use Office Online viewer for OneDrive files
+          const encodedUrl = encodeURIComponent(project.driveLink);
+          fileUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodedUrl}`;
+        }
+        // Handle Google Drive/Google Docs links
+        else if (project.driveLink.includes('drive.google.com') || project.driveLink.includes('docs.google.com')) {
+          // Extract file ID from Google Drive/Google Docs URL
+          const docIdMatch = project.driveLink.match(/\/d\/([a-zA-Z0-9_-]+)/);
+          if (docIdMatch && docIdMatch[1]) {
+            const fileId = docIdMatch[1];
+            if (project.driveLink.includes('docs.google.com/document')) {
+              // Google Docs document - use preview for full viewer interface
+              fileUrl = `https://docs.google.com/document/d/${fileId}/preview`;
+            } else if (project.driveLink.includes('docs.google.com/spreadsheets')) {
+              // Google Sheets - use preview
+              fileUrl = `https://docs.google.com/spreadsheets/d/${fileId}/preview`;
+            } else if (project.driveLink.includes('docs.google.com/presentation')) {
+              // Google Slides - use preview
+              fileUrl = `https://docs.google.com/presentation/d/${fileId}/preview`;
+            } else if (project.driveLink.includes('drive.google.com')) {
+              // Google Drive file - use preview for full viewer with thumbnails, tabs, page selection
+              fileUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+            } else {
+              // Fallback: try to replace /edit or /view with /preview
+              fileUrl = project.driveLink
+                .replace(/\/edit(\?.*)?$/, '/preview')
+                .replace(/\/view(\?.*)?$/, '/preview');
+            }
           } else {
             // Fallback: try to replace /edit or /view with /preview
             fileUrl = project.driveLink
@@ -101,10 +115,8 @@ document.addEventListener('DOMContentLoaded', async () => {
               .replace(/\/view(\?.*)?$/, '/preview');
           }
         } else {
-          // Fallback: try to replace /edit or /view with /preview
-          fileUrl = project.driveLink
-            .replace(/\/edit(\?.*)?$/, '/preview')
-            .replace(/\/view(\?.*)?$/, '/preview');
+          // Unknown format - use as-is
+          fileUrl = project.driveLink;
         }
       } else if (project.file) {
         const filePath = `${BASE_URL}/uploads/${project.file}`;
