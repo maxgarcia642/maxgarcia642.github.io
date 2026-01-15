@@ -70,10 +70,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     projectTrack.innerHTML = '';
     
     limitedProjects.forEach((project, idx) => {
-      // Skip projects without valid files
-      if (!project.file || !project.title) return;
+      // Skip projects without valid files or drive links
+      if ((!project.file && !project.driveLink) || !project.title) return;
       
-      const fileUrl = `${BASE_URL}/uploads/${project.file}`;
+      // Prioritize driveLink over file if both exist
+      let fileUrl;
+      if (project.driveLink) {
+        // Convert Google Docs/Drive sharing links to embeddable preview format
+        fileUrl = project.driveLink
+          .replace('/edit?usp=sharing', '/preview')
+          .replace('/edit', '/preview')
+          .replace('/view?usp=sharing', '/preview')
+          .replace('/view', '/preview');
+      } else if (project.file) {
+        fileUrl = `${BASE_URL}/uploads/${project.file}`;
+      }
+      
       const article = document.createElement('article');
       article.className = 'post-card';
       article.setAttribute('role', 'listitem');
