@@ -10,7 +10,7 @@
       "description": "Code examples from school and site sources"
     },
     "posts": {
-      "title": "Articles & Projects",
+      "title": "📁 Articles & Projects",
       "description": "Project reports and updates"
     },
     "utilities": {
@@ -18,11 +18,11 @@
       "description": "Live market data & quick redirects"
     },
     "game": {
-      "title": "Pixel Art Studio Max",
+      "title": "🎨 Pixel Art Studio Max",
       "description": "A fun 16×16 Pixel Art Studio"
     },
     "connect": {
-      "title": "Connect",
+      "title": "🪴 Connect",
       "description": "Find my social links and projects"
     }
   },
