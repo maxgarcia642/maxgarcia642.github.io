@@ -80,9 +80,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Handle OneDrive links (1drv.ms format)
         if (project.driveLink.includes('1drv.ms') || project.driveLink.includes('onedrive.live.com')) {
           // Convert OneDrive sharing link to embeddable format
-          // Use Office Online viewer for OneDrive files
+          // Try multiple methods for best compatibility
           const encodedUrl = encodeURIComponent(project.driveLink);
-          fileUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodedUrl}`;
+          
+          // Method 1: Use Google Docs Viewer for OneDrive PDFs (better thumbnails/tabs support)
+          // This works well for PDFs and provides document navigation
+          fileUrl = `https://docs.google.com/viewer?url=${encodedUrl}&embedded=true`;
+          
+          // Alternative methods (commented out, can be used as fallback):
+          // Method 2: Office Online viewer (simpler but less features)
+          // fileUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodedUrl}`;
+          // Method 3: Direct OneDrive embed (requires file ID extraction)
+          // This would need the full OneDrive URL with file ID
         }
         // Handle Google Drive/Google Docs links
         else if (project.driveLink.includes('drive.google.com') || project.driveLink.includes('docs.google.com')) {
