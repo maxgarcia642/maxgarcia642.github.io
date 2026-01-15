@@ -148,6 +148,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       article.setAttribute('role', 'listitem');
       article.setAttribute('tabindex', '0');
       article.setAttribute('data-src', fileUrl);
+      article.setAttribute('data-original-link', project.driveLink || project.file || '');
+      article.setAttribute('data-fallback-links', project.fallbackLinks ? JSON.stringify(project.fallbackLinks) : '');
       article.setAttribute('data-id', project.id || idx + 1);
       
       // Format date for display

@@ -498,7 +498,16 @@ async function fetchAndHighlight(card) {
         </div>
       </div>
       <div class="viewer-body">
-        <iframe src="" title="Project preview" sandbox="allow-same-origin allow-scripts allow-popups allow-forms" allow="fullscreen"></iframe>
+        <div class="viewer-loading" style="display: none; padding: 40px; text-align: center;">
+          <p>Loading document...</p>
+          <p class="muted small">This may take up to a minute for OneDrive files</p>
+        </div>
+        <div class="viewer-error" style="display: none; padding: 40px; text-align: center;">
+          <p style="color: #d32f2f; font-weight: 600;">This item won't load right now</p>
+          <p class="muted">Please try one of these links:</p>
+          <div class="viewer-fallback-links" style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px; align-items: center;"></div>
+        </div>
+        <iframe src="" title="Project preview" sandbox="allow-same-origin allow-scripts allow-popups allow-forms" allow="fullscreen" style="display: block;"></iframe>
       </div>
     </div>
   `;
@@ -508,9 +517,19 @@ async function fetchAndHighlight(card) {
   const iframe = modal.querySelector('iframe');
   const closeBtn = modal.querySelector('.viewer-close');
   const titleEl = modal.querySelector('.viewer-title');
+  const loadingEl = panel.querySelector('.viewer-loading');
+  const errorEl = panel.querySelector('.viewer-error');
+  const fallbackLinksEl = panel.querySelector('.viewer-fallback-links');
+  const iframeContainer = iframe.parentElement;
 
-  function openViewer(src, title = 'Project Preview') {
-    iframe.src = src;
+  function openViewer(src, title = 'Project Preview', originalLink = '', fallbackLinks = []) {
+    // Reset UI state
+    iframe.style.display = 'none';
+    loadingEl.style.display = 'block';
+    errorEl.style.display = 'none';
+    fallbackLinksEl.innerHTML = '';
+    iframe.src = '';
+    
     titleEl.textContent = title;
     
     // Remove any existing "Open in Docs" button
@@ -522,6 +541,87 @@ async function fetchAndHighlight(card) {
     modal.classList.add('open');
     panel.focus();
     document.documentElement.style.overflow = 'hidden';
+    
+    // Set up error handling
+    let loadTimeout;
+    let hasLoaded = false;
+    
+    const handleLoad = () => {
+      hasLoaded = true;
+      clearTimeout(loadTimeout);
+      loadingEl.style.display = 'none';
+      iframe.style.display = 'block';
+      
+      // Check if iframe content indicates an error (OneDrive login page, etc.)
+      setTimeout(() => {
+        try {
+          // Try to detect if we're seeing an error page
+          const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+          if (iframeDoc && iframeDoc.body) {
+            const bodyText = iframeDoc.body.innerText || iframeDoc.body.textContent || '';
+            // Check for common error indicators
+            if (bodyText.includes('This item won\'t load') || 
+                bodyText.includes('Sign in') && bodyText.includes('OneDrive') ||
+                bodyText.includes('Microsoft OneDrive') && bodyText.length < 500) {
+              showError(originalLink, fallbackLinks);
+              return;
+            }
+          }
+        } catch (e) {
+          // Cross-origin, can't check - assume it loaded fine
+        }
+      }, 2000);
+    };
+    
+    const handleError = () => {
+      if (!hasLoaded) {
+        clearTimeout(loadTimeout);
+        showError(originalLink, fallbackLinks);
+      }
+    };
+    
+    const showError = (origLink, fallbacks) => {
+      iframe.style.display = 'none';
+      loadingEl.style.display = 'none';
+      errorEl.style.display = 'block';
+      
+      // Add fallback links
+      const linksToShow = fallbacks && fallbacks.length > 0 ? fallbacks : (origLink ? [origLink] : []);
+      linksToShow.forEach((link, idx) => {
+        const linkEl = document.createElement('a');
+        linkEl.href = link;
+        linkEl.target = '_blank';
+        linkEl.rel = 'noopener';
+        linkEl.className = 'btn primary';
+        linkEl.style.cssText = 'text-decoration: none; padding: 10px 20px; margin: 8px; display: inline-block;';
+        linkEl.textContent = `Open Link ${idx + 1}`;
+        fallbackLinksEl.appendChild(linkEl);
+      });
+    };
+    
+    // Set timeout for OneDrive (takes ~1 minute)
+    loadTimeout = setTimeout(() => {
+      if (!hasLoaded) {
+        // For OneDrive, give it more time
+        if (src.includes('onedrive') || src.includes('1drv.ms')) {
+          // Already waited, check if it loaded
+          setTimeout(() => {
+            if (!hasLoaded) {
+              showError(originalLink, fallbackLinks);
+            }
+          }, 30000); // Give it another 30 seconds
+        } else {
+          showError(originalLink, fallbackLinks);
+        }
+      }
+    }, 65000); // 65 seconds for OneDrive
+    
+    // Set up iframe load handlers
+    iframe.onload = handleLoad;
+    iframe.onerror = handleError;
+    
+    // Start loading
+    iframe.src = src;
   }
 
   function closeViewer() {
@@ -545,7 +645,7 @@ async function fetchAndHighlight(card) {
       if (exp.id === 'resumeExpand') {
         const src = document.getElementById('resumeFrame').src;
         if (src && src !== 'about:blank') {
-          openViewer(src, 'Resume Preview');
+          openViewer(src, 'Resume Preview', '', []);
           e.preventDefault();
           return;
         }
@@ -554,8 +654,16 @@ async function fetchAndHighlight(card) {
       const card = exp.closest('.post-card');
       if (!card) return;
       const src = card.dataset.src;
+      const originalLink = card.dataset.originalLink || '';
+      const fallbackLinksStr = card.dataset.fallbackLinks || '[]';
+      let fallbackLinks = [];
+      try {
+        fallbackLinks = JSON.parse(fallbackLinksStr);
+      } catch (e) {
+        fallbackLinks = [];
+      }
       const title = card.querySelector('h3')?.innerText || 'Project Preview';
-      if (src) openViewer(src, title);
+      if (src) openViewer(src, title, originalLink, fallbackLinks);
       e.preventDefault();
       return;
     }
@@ -563,8 +671,16 @@ async function fetchAndHighlight(card) {
     const post = e.target.closest('.post-card');
     if (post && !e.target.classList.contains('expand-btn') && !e.target.closest('.post-preview iframe')) {
       const src = post.dataset.src;
+      const originalLink = post.dataset.originalLink || '';
+      const fallbackLinksStr = post.dataset.fallbackLinks || '[]';
+      let fallbackLinks = [];
+      try {
+        fallbackLinks = JSON.parse(fallbackLinksStr);
+      } catch (e) {
+        fallbackLinks = [];
+      }
       const title = post.querySelector('h3')?.innerText || 'Project Preview';
-      if (src) openViewer(src, title);
+      if (src) openViewer(src, title, originalLink, fallbackLinks);
     }
   });
 
@@ -572,8 +688,16 @@ async function fetchAndHighlight(card) {
     if (e.key === 'Enter' && document.activeElement && document.activeElement.classList.contains('post-card')) {
       const card = document.activeElement;
       const src = card.dataset.src;
+      const originalLink = card.dataset.originalLink || '';
+      const fallbackLinksStr = card.dataset.fallbackLinks || '[]';
+      let fallbackLinks = [];
+      try {
+        fallbackLinks = JSON.parse(fallbackLinksStr);
+      } catch (e) {
+        fallbackLinks = [];
+      }
       const title = card.querySelector('h3')?.innerText || 'Project Preview';
-      if (src) openViewer(src, title);
+      if (src) openViewer(src, title, originalLink, fallbackLinks);
     }
   });
 })();
