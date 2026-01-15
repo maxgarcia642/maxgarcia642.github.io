@@ -653,6 +653,11 @@ async function fetchAndHighlight(card) {
       // Handle project card expand
       const card = exp.closest('.post-card');
       if (!card) return;
+      // Skip if file is too large to embed
+      if (card.dataset.tooLarge === 'true') {
+        e.preventDefault();
+        return;
+      }
       const src = card.dataset.src;
       const originalLink = card.dataset.originalLink || '';
       const fallbackLinksStr = card.dataset.fallbackLinks || '[]';
@@ -669,7 +674,11 @@ async function fetchAndHighlight(card) {
     }
     
     const post = e.target.closest('.post-card');
-    if (post && !e.target.classList.contains('expand-btn') && !e.target.closest('.post-preview iframe')) {
+    if (post && !e.target.classList.contains('expand-btn') && !e.target.closest('.post-preview iframe') && !e.target.closest('a')) {
+      // Skip if file is too large to embed
+      if (post.dataset.tooLarge === 'true') {
+        return;
+      }
       const src = post.dataset.src;
       const originalLink = post.dataset.originalLink || '';
       const fallbackLinksStr = post.dataset.fallbackLinks || '[]';
@@ -687,6 +696,10 @@ async function fetchAndHighlight(card) {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && document.activeElement && document.activeElement.classList.contains('post-card')) {
       const card = document.activeElement;
+      // Skip if file is too large to embed
+      if (card.dataset.tooLarge === 'true') {
+        return;
+      }
       const src = card.dataset.src;
       const originalLink = card.dataset.originalLink || '';
       const fallbackLinksStr = card.dataset.fallbackLinks || '[]';

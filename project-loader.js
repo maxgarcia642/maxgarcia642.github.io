@@ -160,15 +160,37 @@ document.addEventListener('DOMContentLoaded', async () => {
           day: 'numeric' 
         }) : '';
       
-      article.innerHTML = `
-        <div class="post-preview">
-          <iframe src="${fileUrl}" title="${project.title} preview" loading="lazy"></iframe>
-        </div>
-        <h3>${project.title}</h3>
-        <p class="muted">${project.description || ''}</p>
-        ${displayDate ? `<p class="muted small" style="font-size:0.75rem;opacity:0.7">Updated: ${displayDate}</p>` : ''}
-        <button class="btn ghost expand-btn" type="button" aria-label="Open ${project.title}">Expand</button>
-      `;
+      // Check if file is too large to embed (Northwest Technical Institute Works)
+      if (project.tooLargeToEmbed && project.shareLink && project.directLink) {
+        article.innerHTML = `
+          <div class="post-preview" style="display: flex; align-items: center; justify-content: center; min-height: 200px; background: linear-gradient(180deg, rgba(255,255,255,0.5), rgba(245,247,250,0.5)); border-radius: 12px; padding: 40px 20px;">
+            <div style="text-align: center;">
+              <p style="font-weight: 600; color: var(--text); margin-bottom: 12px;">The file size is too large to embed the preview on the website</p>
+              <p class="muted" style="margin-bottom: 20px;">Please choose one of the following redirect options below:</p>
+            </div>
+          </div>
+          <h3>${project.title}</h3>
+          <p class="muted">${project.description || ''}</p>
+          ${displayDate ? `<p class="muted small" style="font-size:0.75rem;opacity:0.7">Updated: ${displayDate}</p>` : ''}
+          <div style="display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap;">
+            <a href="${project.shareLink}" target="_blank" rel="noopener" class="btn primary" style="text-decoration: none; flex: 1; min-width: 120px; text-align: center;">Share Link</a>
+            <a href="${project.directLink}" target="_blank" rel="noopener" class="btn primary" style="text-decoration: none; flex: 1; min-width: 120px; text-align: center;">Direct Link</a>
+          </div>
+        `;
+        // Mark this card as not expandable
+        article.setAttribute('data-src', '');
+        article.setAttribute('data-too-large', 'true');
+      } else {
+        article.innerHTML = `
+          <div class="post-preview">
+            <iframe src="${fileUrl}" title="${project.title} preview" loading="lazy"></iframe>
+          </div>
+          <h3>${project.title}</h3>
+          <p class="muted">${project.description || ''}</p>
+          ${displayDate ? `<p class="muted small" style="font-size:0.75rem;opacity:0.7">Updated: ${displayDate}</p>` : ''}
+          <button class="btn ghost expand-btn" type="button" aria-label="Open ${project.title}">Expand</button>
+        `;
+      }
       projectTrack.appendChild(article);
     });
     
