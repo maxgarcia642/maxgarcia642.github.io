@@ -1,1 +1,59 @@
-{\n  "intro": {\n    "title": "Hello and Welcome to My Website!"\n  }\n}
+{
+  "intro": {
+    "title": "Hello and Welcome to My Website!",
+    "description": "This is my personal portfolio where I share programming projects, articles, useful finance tools, and a small pixel art studio. Scroll to explore my work — my resume is embedded below for quick viewing and is available to download."
+  },
+  "resumeFile": "Maximiliano Garcia - Resume.pdf",
+  "sections": {
+    "programming": {
+      "title": "Programming Works",
+      "description": "Code examples from school and site sources"
+    },
+    "posts": {
+      "title": "📁 Articles & Projects",
+      "description": "Project reports and updates"
+    },
+    "utilities": {
+      "title": "Investment Vehicle Valuations",
+      "description": "Live market data & quick redirects"
+    },
+    "game": {
+      "title": "🎨 Pixel Art Studio Max",
+      "description": "A fun 16×16 Pixel Art Studio"
+    },
+    "connect": {
+      "title": "🪴 Connect",
+      "description": "Find my social links and projects"
+    }
+  },
+  "projects": [
+    {
+      "id": 1,
+      "title": "Junior to High School Haas Hall Works",
+      "description": "My early programming works from Haas Hall Academy",
+      "driveLink": "https://drive.google.com/file/d/1zZ0xcjTGswtvlOMZWIznLjG8qm79IJv_/view?usp=sharing",
+      "dateAdded": "2024-01-01T00:00:00Z",
+      "dateUpdated": "2024-12-31T00:00:00Z"
+    },
+    {
+      "id": 2,
+      "title": "University of Arkansas Works",
+      "description": "Projects and coursework from University of Arkansas",
+      "driveLink": "https://drive.google.com/file/d/1PPF8XSw5FXe-Vcy3N3-HfkloCii9pO-H/view?usp=sharing",
+      "dateAdded": "2025-06-01T00:00:00Z",
+      "dateUpdated": "2025-12-31T00:00:00Z"
+    },
+    {
+      "id": 3,
+      "title": "Northwest Technical Institute Works",
+      "description": "Technical projects from Northwest Technical Institute",
+      "driveLink": "https://1drv.ms/b/c/e010e7aa97606cf2/IQDXBv4Vv--PTKrPNMHDxKbdAYsvUvDWMUZvFmFbBIFuciM?e=QRQh4H",
+      "shareLink": "https://1drv.ms/b/c/e010e7aa97606cf2/IQDXBv4Vv--PTKrPNMHDxKbdAYsvUvDWMUZvFmFbBIFuciM?e=QRQh4H",
+      "directLink": "https://onedrive.live.com/?redeem=aHR0cHM6Ly8xZHJ2Lm1zL2IvYy9lMDEwZTdhYTk3NjA2Y2YyL0lRRFhCdjRWdi0tUFRLclBOTUhEeEtiZEFZc3ZVdkRXTVVadkZtRmJCSUZ1Y2lNP2U9UVJRaDRI&cid=E010E7AA97606CF2&id=E010E7AA97606CF2%21s15fe06d7efbf4c8faacf34c1c3c4a6dd&parId=E010E7AA97606CF2%21sea8cc6beffdb43d7976fbc7da445c639&o=OneUp",
+      "tooLargeToEmbed": true,
+      "dateAdded": "2026-01-01T00:00:00Z",
+      "dateUpdated": "2026-01-15T00:00:00Z"
+    }
+  ],
+  "adminPassword": "$2a$10$sUp7KdIMxJWw8qIGjthJWuC6sDmHy9hrtv2NLs/VHGq22gM2SN56y"
+}
