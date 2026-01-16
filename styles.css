@@ -849,6 +849,9 @@ h3{ font-size: 1.1rem; }
   h2{font-size:1.3rem}
   .post-card{min-width:280px}
   .btn.large.full-width{font-size:1rem;padding:10px 14px}
+  .pdf-frame iframe{
+    height: 400px;
+  }
 }
 
 @media (max-width:480px){
@@ -861,19 +864,8 @@ h3{ font-size: 1.1rem; }
   .card{padding:14px;border-radius:12px}
   h1{font-size:1.4rem}
   h2{font-size:1.2rem}
-  /* Ensure resume iframe is tall enough on very small screens */
   .pdf-frame iframe{
-    height: 2000px;
-    min-height: 2000px;
-  }
-  .viewer-body{
-    height: calc(100vh - 62px);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .viewer-body iframe{
-    min-height: 2000px;
-    height: 2000px;
+    height: 350px;
   }
   .lead{font-size:0.88rem}
   .post-card{min-width:100%}
