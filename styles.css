@@ -372,7 +372,13 @@ h3{ font-size: 1.1rem; }
   box-shadow: 0 8px 20px rgba(16,24,32,0.05);
 }
 
-.pdf-frame iframe{ width: 100%; border: none; display: block; }
+.pdf-frame iframe{ 
+  width: 100%; 
+  border: none; 
+  display: block; 
+  height: 600px;
+  min-height: 600px;
+}
 
 /* ---------- Terminal cards with glossy top bar ---------- */
 .terminals-grid{
@@ -842,6 +848,11 @@ h3{ font-size: 1.1rem; }
   h2{font-size:1.3rem}
   .post-card{min-width:280px}
   .btn.large.full-width{font-size:1rem;padding:10px 14px}
+  /* Make resume iframe taller on mobile to show both pages */
+  .pdf-frame iframe{
+    height: 1000px;
+    min-height: 1000px;
+  }
 }
 
 @media (max-width:480px){
@@ -854,6 +865,11 @@ h3{ font-size: 1.1rem; }
   .card{padding:14px;border-radius:12px}
   h1{font-size:1.4rem}
   h2{font-size:1.2rem}
+  /* Ensure resume iframe is tall enough on very small screens */
+  .pdf-frame iframe{
+    height: 1000px;
+    min-height: 1000px;
+  }
   .lead{font-size:0.88rem}
   .post-card{min-width:100%}
   .pixel-grid{transform:scale(0.75);grid-template-columns:repeat(16,16px);grid-auto-rows:16px}
