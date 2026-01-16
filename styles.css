@@ -367,8 +367,7 @@ h3{ font-size: 1.1rem; }
   width: 95%;
   margin: 12px auto;
   border-radius: 10px;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
   border: 1px solid rgba(16,24,32,0.04);
   box-shadow: 0 8px 20px rgba(16,24,32,0.05);
 }
@@ -662,15 +661,11 @@ h3{ font-size: 1.1rem; }
   align-items:stretch;
   justify-content:center;
   background: #fff;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 }
 .viewer-body iframe {
   width:100%;
   height:100%;
-  min-height: 100%;
   border: none;
-  display: block;
 }
 
 @media (max-width:820px) {
@@ -854,20 +849,6 @@ h3{ font-size: 1.1rem; }
   h2{font-size:1.3rem}
   .post-card{min-width:280px}
   .btn.large.full-width{font-size:1rem;padding:10px 14px}
-  /* Make resume iframe taller on mobile to show both pages */
-  .pdf-frame iframe{
-    height: 2000px;
-    min-height: 2000px;
-  }
-  .viewer-body{
-    height: calc(100vh - 62px);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .viewer-body iframe{
-    min-height: 2000px;
-    height: 2000px;
-  }
 }
 
 @media (max-width:480px){

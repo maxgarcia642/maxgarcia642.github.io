@@ -44,15 +44,27 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (data.resumeFile) {
     const resumeFrame = document.getElementById('resumeFrame');
     const resumeDownload = document.getElementById('resumeDownload');
-    const resumePath = `${BASE_URL}/uploads/${data.resumeFile}`;
+    
+    // Detect mobile device
+    const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    let resumePath;
+    if (isMobile) {
+      // Use Google Drive link for mobile
+      const driveLink = 'https://drive.google.com/file/d/13T39kh7B_SuZvvi4M_EEi9oq67gmzAw1/view?usp=sharing';
+      // Convert to preview format for embedding (handle various URL formats)
+      resumePath = driveLink.replace(/\/view(\?.*)?$/, '/preview');
+    } else {
+      // Use local file for desktop
+      resumePath = `${BASE_URL}/uploads/${data.resumeFile}`;
+    }
     
     if (resumeFrame) {
       resumeFrame.src = resumePath;
-      resumeFrame.setAttribute('scrolling', 'yes');
-      resumeFrame.style.overflow = 'auto';
     }
     if (resumeDownload) {
-      resumeDownload.href = resumePath;
+      // Download link always uses local file
+      resumeDownload.href = `${BASE_URL}/uploads/${data.resumeFile}`;
     }
   }
   
