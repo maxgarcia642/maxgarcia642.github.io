@@ -48,6 +48,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     if (resumeFrame) {
       resumeFrame.src = resumePath;
+      resumeFrame.setAttribute('scrolling', 'yes');
+      resumeFrame.style.overflow = 'auto';
     }
     if (resumeDownload) {
       resumeDownload.href = resumePath;
