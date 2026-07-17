@@ -37,7 +37,8 @@ const ids = liveItems.map(i => i.coingeckoId).join(",");
 let prices;
 try {
   const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`, {
-    headers: { "Accept": "application/json" }
+    headers: { "Accept": "application/json" },
+    signal: AbortSignal.timeout(20000) // a stalled connection must not hang the workflow
   });
   if (!res.ok) throw new Error(`CoinGecko ${res.status}`);
   prices = await res.json();
@@ -50,9 +51,13 @@ let changed = false;
 for (const item of liveItems) {
   const usd = prices[item.coingeckoId]?.usd;
   if (typeof usd !== "number") { console.log(`No price for ${item.coingeckoId} — skipped.`); continue; }
+  /* Change detection uses the exact numeric price (persisted as `raw`), not
+     the rounded display string — a $63.4K→$63.6K move that rounds to the same
+     label still counts as movement and refreshes asOf honestly. */
   const next = fmtUsd(usd);
-  if (item.value !== next) {
-    console.log(`${item.label}: ${item.value} → ${next}`);
+  if (item.raw !== usd) {
+    console.log(`${item.label}: ${item.raw ?? "?"} → ${usd} (display ${item.value} → ${next})`);
+    item.raw = usd;
     item.value = next;
     changed = true;
   } else {

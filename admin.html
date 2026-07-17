@@ -164,36 +164,54 @@
     return new TextDecoder().decode(bytes);
   };
 
+  const apiPath = (path) => encodeURIComponent(path).replace(/%2F/g, "/");
+
   async function getFile(path) {
     const { branch } = cfg();
-    return gh(`/contents/${encodeURIComponent(path).replace(/%2F/g, "/")}?ref=${branch}`);
+    return gh(`/contents/${apiPath(path)}?ref=${branch}`);
   }
-  async function putFile(path, base64content, message, sha) {
+  /* Raw PUT — no queueing. Only call from inside an enqueued job. */
+  function putFileRaw(path, base64content, message, sha) {
     const { branch } = cfg();
-    return enqueue(() => gh(`/contents/${encodeURIComponent(path).replace(/%2F/g, "/")}`, {
+    return gh(`/contents/${apiPath(path)}`, {
       method: "PUT",
       body: JSON.stringify({ message, content: base64content, branch, ...(sha ? { sha } : {}) })
-    }));
+    });
+  }
+  async function putFile(path, base64content, message, sha) {
+    return enqueue(() => putFileRaw(path, base64content, message, sha));
   }
   async function deleteFile(path, message, sha) {
     const { branch } = cfg();
-    return enqueue(() => gh(`/contents/${encodeURIComponent(path).replace(/%2F/g, "/")}`, {
+    return enqueue(() => gh(`/contents/${apiPath(path)}`, {
       method: "DELETE",
       body: JSON.stringify({ message, sha, branch })
     }));
   }
 
-  /* -------- changelog: read-modify-write with the returned sha ---------- */
+  /* -------- changelog: the whole read-modify-write runs as ONE queued job,
+     so rapid actions can't read a stale SHA between each other's writes.
+     A 409 (SHA raced by an outside commit) gets one fresh-read retry. ------ */
   async function appendChangelog(entry) {
     const path = "superprompt-changelog.md";
     const stamp = new Date().toISOString();
-    let existing = "", sha = undefined;
-    try {
-      const f = await getFile(path);
-      existing = b64decodeText(f.content); sha = f.sha;
-    } catch (e) { existing = "# Superprompt Changelog\n\nRunning log of admin-panel changes — paste relevant entries into Cursor when formalizing.\n"; }
-    const updated = existing + `\n- **${stamp}** — ${entry}`;
-    await putFile(path, b64encodeText(updated), `chore(admin): log — ${entry.slice(0, 60)}`, sha);
+    const FALLBACK = "# Superprompt Changelog\n\nRunning log of admin-panel changes — paste relevant entries into Cursor when formalizing.\n";
+    const writeOnce = async () => {
+      let existing = FALLBACK, sha;
+      try {
+        const f = await getFile(path);
+        existing = b64decodeText(f.content); sha = f.sha;
+      } catch (e) { /* first ever entry — file doesn't exist yet */ }
+      const updated = existing + `\n- **${stamp}** — ${entry}`;
+      return putFileRaw(path, b64encodeText(updated), `chore(admin): log — ${entry.slice(0, 60)}`, sha);
+    };
+    await enqueue(async () => {
+      try { return await writeOnce(); }
+      catch (e) {
+        if (!/GitHub 409/.test(e.message)) throw e;
+        return writeOnce(); // one retry with a fresh SHA
+      }
+    });
     log(`📝 changelog: ${entry}`);
   }
 
@@ -210,13 +228,17 @@
   async function listFiles() {
     const path = $("#path").value.trim();
     const { branch } = cfg();
-    const items = await gh(`/contents/${path}?ref=${branch}`);
+    const items = await gh(`/contents/${path ? apiPath(path) : ""}?ref=${branch}`);
     const list = $("#fileList");
     list.innerHTML = "";
     (Array.isArray(items) ? items : [items]).forEach(item => {
       const row = document.createElement("div");
       row.className = "file-row";
-      row.innerHTML = `<span class="name">${item.type === "dir" ? "📁" : "📄"} ${item.path}</span>`;
+      const name = document.createElement("span");
+      name.className = "name";
+      /* textContent, not innerHTML — file names from the API are untrusted */
+      name.textContent = `${item.type === "dir" ? "📁" : "📄"} ${item.path}`;
+      row.appendChild(name);
       if (item.type === "dir") {
         const open = document.createElement("button");
         open.className = "btn ghost"; open.type = "button"; open.textContent = "Open";
@@ -283,6 +305,15 @@
 
   /* -------- text editor ------------------------------------------------- */
   let editSha = null;
+  let editShaPath = null; /* the path editSha belongs to */
+  $("#editPath").addEventListener("input", () => {
+    /* Path changed after a load → the held SHA no longer matches. Require a
+       fresh Load so a save can never target path B with path A's SHA. */
+    if (editShaPath && $("#editPath").value.trim() !== editShaPath) {
+      editSha = null; editShaPath = null;
+      $("#saveEditBtn").disabled = true;
+    }
+  });
   $("#loadEditBtn").addEventListener("click", async () => {
     const path = $("#editPath").value.trim();
     if (!path) return;
@@ -290,6 +321,7 @@
       const f = await getFile(path);
       $("#editor").value = b64decodeText(f.content);
       editSha = f.sha;
+      editShaPath = path;
       $("#saveEditBtn").disabled = false;
       log(`Loaded ${path} (sha ${f.sha.slice(0, 7)})`);
     } catch (e) { log(`✗ ${e.message}`); }
@@ -297,6 +329,7 @@
   $("#saveEditBtn").addEventListener("click", async () => {
     const path = $("#editPath").value.trim();
     const text = $("#editor").value;
+    if (path !== editShaPath) { log("✗ Path changed since load — hit Load first."); return; }
     if (path.endsWith(".json")) {
       try { JSON.parse(text); }
       catch (e) { log(`✗ Not committing — invalid JSON: ${e.message}`); return; }

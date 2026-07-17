@@ -5,9 +5,10 @@
 
 window.MG = { content: null, finance: null };
 
-const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({
-  "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-}[c]));
+const ESC_MAP = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, (c) => ESC_MAP[c]);
+}
 
 async function loadJSON(path) {
   const res = await fetch(path, { cache: "no-cache" });

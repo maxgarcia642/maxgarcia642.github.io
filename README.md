@@ -3,7 +3,7 @@
 Static portfolio for GitHub Pages. Ten full themes, one skeleton. Zero build
 step, zero backend, zero secrets in the repo.
 
-**Live:** https://maxgarcia642.github.io/
+**Live:** <https://maxgarcia642.github.io/>
 
 ## What's here
 

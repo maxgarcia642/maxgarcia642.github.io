@@ -10,11 +10,13 @@
     Meta CSP: reduces XSS surface on GitHub Pages. Honest limits (documented in
     SECURITY.md): frame-ancestors / report-uri / sandbox are IGNORED in meta form,
     so clickjacking protection needs real headers (Cloudflare Pages migration).
-    'unsafe-inline' is required only for the tiny FOUC guard below.
+    The sha256 hash authorizes EXACTLY the FOUC guard below and nothing else.
+    If you edit that script (even whitespace), recompute: hash the UTF-8 bytes
+    of the inline script's content (open tag to close tag, exclusive), LF endings.
   -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    script-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline';
+    script-src 'self' https://cdnjs.cloudflare.com 'sha256-rM9WDd90BP7S9knSyt6YY/ecKiUhAPBsC4dz8No8Yxo=';
     style-src 'self' https://fonts.googleapis.com 'unsafe-inline';
     font-src https://fonts.gstatic.com;
     img-src 'self' data: blob: https://api.microlink.io https://*.microlink.io;
@@ -250,7 +252,7 @@
           <a class="tree-link" href="https://maxfolio-website-git-main-maximiliano-projects.vercel.app?_vercel_share=GZEgLha73mO1Y7LlqCdbXvAnOyRrZy3t" target="_blank" rel="noopener">
             <span>🧩 Create Your Own Maxfolio <span class="sub">Preview link — the share token expires; production domain coming</span></span><span class="arrow">→</span>
           </a>
-          <a class="tree-link" href="https://maxgarcia642.github.io/" rel="noopener">
+          <a class="tree-link" href="https://github.com/maxgarcia642/maxgarcia642.github.io" target="_blank" rel="noopener">
             <span>🏠 This site's repo <span class="sub">github.com/maxgarcia642 — the code behind every theme</span></span><span class="arrow">→</span>
           </a>
         </div>
@@ -272,7 +274,7 @@
         <input id="searchInput" type="search" placeholder="Search works, projects, links… ( / )" autocomplete="off" spellcheck="false" aria-label="Search query">
         <button class="btn ghost modal-close" type="button" id="searchClose">✕</button>
       </div>
-      <div id="searchResults" class="search-results" role="listbox" aria-label="Search results"></div>
+      <div id="searchResults" class="search-results" role="region" aria-live="polite" aria-label="Search results"></div>
       <p class="muted small" id="searchEngineNote"></p>
     </div>
   </dialog>

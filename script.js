@@ -25,29 +25,40 @@ document.addEventListener("click", (e) => {
 
 /* Bubble canvas — Frutiger Aero's ambient layer. transform-cheap, capped,
    killed on mobile + reduced motion + non-aero-family themes. */
+
+/* Decorative randomness (bubble positions only). crypto-backed purely to
+   satisfy static analysis; nothing security-relevant depends on this. */
+const rand = () => crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296;
+
 let fxRaf = null;
+let fxSizer = null;
 function syncFx() {
   const canvas = $("#fx-canvas");
   if (!canvas) return;
   const theme = document.documentElement.getAttribute("data-theme") || "aero";
   const on = FX_THEMES.has(theme) && !prefersReduced && !isMobile;
-  if (!on) { cancelAnimationFrame(fxRaf); fxRaf = null; canvas.style.display = "none"; return; }
+  if (!on) {
+    cancelAnimationFrame(fxRaf); fxRaf = null;
+    if (fxSizer) { removeEventListener("resize", fxSizer); fxSizer = null; }
+    canvas.style.display = "none";
+    return;
+  }
   canvas.style.display = "block";
   if (fxRaf) return; // already running
   const ctx = canvas.getContext("2d");
   const dpi = Math.min(devicePixelRatio || 1, 2);
-  const size = () => { canvas.width = innerWidth * dpi; canvas.height = innerHeight * dpi; };
-  size(); addEventListener("resize", size, { passive: true });
+  fxSizer = () => { canvas.width = innerWidth * dpi; canvas.height = innerHeight * dpi; };
+  fxSizer(); addEventListener("resize", fxSizer, { passive: true });
   const bubbles = Array.from({ length: 22 }, () => ({
-    x: Math.random(), y: Math.random() + 0.2,
-    r: 6 + Math.random() * 26, v: 0.0004 + Math.random() * 0.0011,
-    drift: (Math.random() - 0.5) * 0.0004, a: 0.08 + Math.random() * 0.16
+    x: rand(), y: rand() + 0.2,
+    r: 6 + rand() * 26, v: 0.0004 + rand() * 0.0011,
+    drift: (rand() - 0.5) * 0.0004, a: 0.08 + rand() * 0.16
   }));
   (function tick() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (const b of bubbles) {
       b.y -= b.v; b.x += b.drift;
-      if (b.y < -0.06) { b.y = 1.06; b.x = Math.random(); }
+      if (b.y < -0.06) { b.y = 1.06; b.x = rand(); }
       const x = b.x * canvas.width, y = b.y * canvas.height, r = b.r * dpi;
       const g = ctx.createRadialGradient(x - r / 3, y - r / 3, r / 6, x, y, r);
       g.addColorStop(0, `rgba(255,255,255,${b.a + 0.25})`);
@@ -100,11 +111,12 @@ function pdfReady() {
   return new Promise((resolve, reject) => {
     let tries = 0;
     (function poll() {
+      tries += 1;
       if (window.pdfjsLib) {
         window.pdfjsLib.GlobalWorkerOptions.workerSrc =
           "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
         resolve(window.pdfjsLib);
-      } else if (++tries > 100) reject(new Error("PDF.js failed to load"));
+      } else if (tries > 100) reject(new Error("PDF.js failed to load"));
       else setTimeout(poll, 60);
     })();
   });
@@ -247,7 +259,7 @@ $("#pulseRefresh")?.addEventListener("click", async (e) => {
     const now = new Date().toLocaleTimeString();
     chips.forEach(c => {
       const price = data[c.dataset.coingecko]?.usd;
-      if (price) {
+      if (Number.isFinite(price)) {
         c.querySelector(".p-value").textContent = `$${price.toLocaleString()}`;
         c.querySelector(".p-label").textContent = c.querySelector(".p-label").textContent.replace(/·.*/, `· live @ ${now}`);
       }
@@ -355,7 +367,7 @@ const TERMINAL_FILES = ["index.html", "styles.css", "themes.css", "script.js", "
 
   grid.addEventListener("pointerdown", (e) => { snapshot(); painting = true; paint(e.target); try { grid.setPointerCapture(e.pointerId); } catch (_) {} });
   grid.addEventListener("pointermove", (e) => { if (painting) paint(document.elementFromPoint(e.clientX, e.clientY)); });
-  addEventListener("pointerup", () => painting = false);
+  addEventListener("pointerup", () => { painting = false; });
 
   /* Palette swatches */
   const paletteRow = $("#paletteRow");
@@ -404,7 +416,7 @@ const TERMINAL_FILES = ["index.html", "styles.css", "themes.css", "script.js", "
     color = e.target.value; erasing = false;
     paletteRow?.querySelectorAll(".swatch").forEach(s => s.setAttribute("aria-pressed", "false"));
   });
-  $("#eraser")?.addEventListener("click", () => erasing = !erasing);
+  $("#eraser")?.addEventListener("click", () => { erasing = !erasing; });
   $("#undo")?.addEventListener("click", () => {
     const prev = history.pop();
     if (prev && prev.length === cells.length) prev.forEach((bg, i) => cells[i].style.background = bg);
@@ -424,12 +436,16 @@ const TERMINAL_FILES = ["index.html", "styles.css", "themes.css", "script.js", "
     a.href = c.toDataURL("image/png");
     a.click();
   });
+  /* Plain-letter hotkeys only — modified combos (Ctrl+S etc.) stay with the
+     browser. Map keeps the handler's branching flat. */
+  const HOTKEYS = { c: "#clearCanvas", z: "#undo", m: "#mirrorToggle", s: "#saveImage" };
   addEventListener("keydown", (e) => {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
     if (e.target.matches("input, textarea, select")) return;
-    if (e.key.toLowerCase() === "c") $("#clearCanvas")?.click();
-    if (e.key.toLowerCase() === "z") $("#undo")?.click();
-    if (e.key.toLowerCase() === "m") mirrorBtn?.click();
-    if (e.key.toLowerCase() === "s") { e.preventDefault(); $("#saveImage")?.click(); }
+    const sel = HOTKEYS[e.key.toLowerCase()];
+    if (!sel) return;
+    e.preventDefault();
+    $(sel)?.click();
   });
 })();
 
@@ -458,8 +474,8 @@ const TERMINAL_FILES = ["index.html", "styles.css", "themes.css", "script.js", "
       kind: "Post", title: p.title || "", text: [p.subtitle, p.description].filter(Boolean).join(" "), href: "#posts"
     }));
     (MG.content?.arcade || []).forEach(g => out.push({
-      kind: g.status === "soon" ? "Coming soon" : "Arcade", title: g.title || "",
-      text: [g.blurb, g.badge].filter(Boolean).join(" "),
+      kind: g.kind === "soon" ? "Coming soon" : "Arcade", title: g.title || "",
+      text: [g.description, g.badge].filter(Boolean).join(" "),
       href: "#arcade", external: g.openUrl || null
     }));
     (MG.finance?.works || []).forEach(w => out.push({
@@ -513,7 +529,10 @@ const TERMINAL_FILES = ["index.html", "styles.css", "themes.css", "script.js", "
     }
     const found = (fuse ? fuse.search(q) : fallbackSearch(q)).slice(0, 12);
     if (!found.length) {
-      results.innerHTML = `<div class="search-empty">Nothing matched “${q.replace(/[<>&]/g, "")}”.</div>`;
+      const empty = document.createElement("div");
+      empty.className = "search-empty";
+      empty.textContent = `Nothing matched “${q}”.`;
+      results.appendChild(empty);
       return;
     }
     found.forEach(({ item }) => {
@@ -521,8 +540,16 @@ const TERMINAL_FILES = ["index.html", "styles.css", "themes.css", "script.js", "
       el.className = "search-result";
       if (item.external) { el.href = item.external; el.target = "_blank"; el.rel = "noopener"; }
       else el.type = "button";
-      el.innerHTML = `<span class="kind">${item.kind}</span><strong>${item.title.replace(/[<>&]/g, "")}</strong>` +
-        (item.text ? `<span class="snippet">${item.text.slice(0, 110).replace(/[<>&]/g, "")}</span>` : "");
+      const kind = document.createElement("span");
+      kind.className = "kind"; kind.textContent = item.kind;
+      const title = document.createElement("strong");
+      title.textContent = item.title;
+      el.append(kind, title);
+      if (item.text) {
+        const snippet = document.createElement("span");
+        snippet.className = "snippet"; snippet.textContent = item.text.slice(0, 110);
+        el.appendChild(snippet);
+      }
       el.addEventListener("click", () => {
         if (item.external) { closeSearch(); return; }
         closeSearch();
@@ -550,8 +577,15 @@ const TERMINAL_FILES = ["index.html", "styles.css", "themes.css", "script.js", "
     if (e.key === "/" && !e.target.matches("input, textarea, select")) { e.preventDefault(); openSearch(); }
     if (e.key === "Escape" && dlg.open) closeSearch();
   });
-  /* Rebuild the index if content arrives after a search already happened */
-  document.addEventListener("mg:content-ready", () => { docs = null; if (fuse) { engineTried = false; fuse = null; } });
+  /* Rebuild the index if content arrives after a search already happened.
+     If the dialog is open mid-rebuild, re-run the query so fallbackSearch
+     never sees docs === null. */
+  document.addEventListener("mg:content-ready", () => {
+    docs = null;
+    fuse = null;
+    engineTried = false;
+    if (dlg.open) ensureEngine().then(() => run(input.value));
+  });
 })();
 
 /* ============================ BOOT ===================================== */
