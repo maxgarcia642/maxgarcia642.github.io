@@ -1,17 +1,27 @@
-# Background music slot
+# Background music
 
-`script.js` looks for `assets/music/track1.mp3`. Nothing ships here on purpose:
+`script.js` plays `assets/music/track1.mp3` on a loop; the ♫ dock button
+mutes/unmutes and the 🎧 button lets a visitor play a local file of their own
+(object URL — it never leaves their browser).
 
-1. **Licensing is real.** Embedding a commercial track you don't have a sync
-   license for is infringement even on a personal site. Use royalty-free /
-   CC-licensed tracks (Pixabay Music, Free Music Archive, incompetech, etc.)
-   and honor attribution terms.
-2. **Format:** MP3 (universal). Keep loops short and compressed; seamless loop
-   points avoid clicks. Add an OGG `<source>` in index.html if you want a
-   smaller alternate.
-3. **Behavior already handled:** never autoplays (browser policy — Chrome,
-   Safari, and Firefox all block audible autoplay), unlocks on first click of
-   the ♪ button in the dock, preference remembered in localStorage, single
-   persistent element so theme switches don't restart the track.
+## What ships here now
 
-Drop your file in as `track1.mp3` and the ♪ button goes live. No code changes.
+`track1.mp3` = **AIR — "Ce matin-là" (Moon Safari, 1998)**, added 2026-07-16
+at Max's explicit direction.
+
+> ⚑ **Licensing honesty flag:** this is a commercial recording (Source/EMI).
+> Publicly serving it as site background music is *not* covered by any
+> royalty-free license and carries takedown/DMCA risk. The site owner accepted
+> that risk knowingly; this note exists so nobody mistakes it for a cleared
+> track. Swap in a royalty-free loop (Pixabay Music, Free Music Archive,
+> incompetech) to close the flag.
+
+## Behavior
+
+1. **Loop starts on the visitor's first interaction** (click/keypress) —
+   true autoplay is blocked by every modern browser. If the visitor muted it
+   on a past visit, it stays muted (localStorage `mg-music`).
+2. **Format:** MP3 (universal). Keep loops compressed; seamless loop points
+   avoid clicks.
+3. **Custom track:** the 🎧 button swaps the source for the current visit
+   only — nothing is uploaded or stored.

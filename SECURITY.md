@@ -64,11 +64,24 @@ This is a **public static site**. Everything below follows from that one fact.
   attribute; the CSP `script-src` origin pin (cdnjs only) is the control. To
   remove the CDN trust entirely, vendor `pdf.min.js` + `pdf.worker.min.js`
   into `/pdfjs/` and point `script.js` + `index.html` at the local copies.
-- **`'unsafe-inline'` in script-src** exists solely for the 3-line FOUC guard.
-  Moving to a host with real headers allows a nonce'd CSP instead.
+- **The FOUC guard is hash-pinned, not `'unsafe-inline'`.** Since the PR #31
+  review round, `script-src` authorizes the inline theme guard by its exact
+  sha256 hash — editing that script (even whitespace) requires recomputing
+  the hash in the CSP meta tag.
 - **GitHub Pages = public source.** Even a private repo would not hide the
   deployed HTML/CSS/JS (View Source sees all). Private-repo deploys need
   GitHub Pro or Cloudflare Pages; neither hides shipped client code.
+  **Live incident (2026-07-16):** flipping this repo private on a free plan
+  disabled Pages outright — the whole site 404'd until visibility was
+  restored. On the free tier the repo must stay public for the site to exist.
+- **The document reader is deterrence, not DRM.** Research papers and
+  workbooks open in a view-only reader (no download links, selection/copy/
+  context-menu blocked). But every file the reader opens is fetched from this
+  same public host — anyone who knows the URL can `curl` it, and no client
+  code can prevent screenshots or DevTools. A static site cannot make bytes
+  unreadable to the browser that renders them. If a work ever needs real
+  protection: don't publish it here, or publish a StatiCrypt-encrypted page
+  (recipe above) and share the passphrase privately.
 
 ## Token hygiene checklist
 

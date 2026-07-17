@@ -21,8 +21,8 @@
     font-src https://fonts.gstatic.com;
     img-src 'self' data: blob: https://api.microlink.io https://*.microlink.io;
     frame-src https://itch.io https://*.itch.io https://nwaero.netlify.app https://*.bolt.host https://*.vercel.app https://s.tradingview.com https://drive.google.com https://onedrive.live.com;
-    connect-src 'self' https://api.github.com https://api.coingecko.com https://raw.githubusercontent.com https://cdnjs.cloudflare.com;
-    media-src 'self';
+    connect-src 'self' https://api.github.com https://api.coingecko.com https://api.frankfurter.dev https://api.frankfurter.app https://cdnjs.cloudflare.com;
+    media-src 'self' blob:;
     object-src 'none';
     base-uri 'self';
   ">
@@ -87,7 +87,10 @@
     <!-- orbs injected by script.js from content.json -->
     <div class="dock-divider" role="presentation"></div>
     <button class="music-btn" id="musicBtn" type="button" aria-pressed="false"
-            aria-label="Toggle background music" title="Music (starts only after you click — never autoplays)">♪</button>
+            aria-label="Mute or unmute background music" title="Background music — click to mute/unmute">♫</button>
+    <button class="music-btn" id="musicUploadBtn" type="button"
+            aria-label="Play your own audio track instead" title="Play your own track (stays in your browser — never uploaded)">🎧</button>
+    <input type="file" id="musicFile" accept="audio/*" hidden>
   </nav>
   <audio id="bgm" loop preload="none">
     <source src="assets/music/track1.mp3" type="audio/mpeg">
@@ -158,11 +161,26 @@
 
         <div class="pulse-meta">
           <h3 style="margin:0">Market Pulse</h3>
-          <button class="btn ghost" type="button" id="pulseRefresh" title="Refreshes the crypto chips live from CoinGecko">↻ Refresh crypto</button>
+          <button class="btn ghost" type="button" id="pulseRefresh" title="Refreshes crypto (CoinGecko) and FX (Frankfurter/ECB) chips live">↻ Refresh live chips</button>
           <span class="muted small" id="pulseAsOf"></span>
         </div>
         <div class="pulse-strip" id="pulseStrip"><!-- injected --></div>
         <p class="muted small" id="pulseNote"></p>
+
+        <details class="research-desk pulse-calc-wrap">
+          <summary>🧮 Converter — currencies, crypto & commodities</summary>
+          <div class="pulse-calc" id="pulseCalc">
+            <div class="calc-row">
+              <input type="number" id="calcAmount" value="100" min="0" step="any" aria-label="Amount to convert">
+              <select id="calcFrom" aria-label="Convert from"></select>
+              <span class="calc-arrow" aria-hidden="true">→</span>
+              <select id="calcTo" aria-label="Convert to"></select>
+              <button class="btn" type="button" id="calcSwap" title="Swap units">⇄</button>
+            </div>
+            <p class="calc-result" id="calcResult" aria-live="polite">Pick units above — rates come from the pulse chips.</p>
+            <p class="muted small" id="calcNote">Uses the latest chip values (press “Refresh live chips” for current crypto/FX). Commodity legs use the dated snapshot settles above — context, not a quote feed.</p>
+          </div>
+        </details>
 
         <div class="finance-grid" id="financeGrid"><!-- injected --></div>
 
@@ -233,28 +251,45 @@
         <span class="eyebrow">Connect</span>
         <h2 id="connectTitle">🪴 Connect</h2>
         <p class="lead small" id="connectDesc">
-          Linktree blocks embedding on other sites, so instead of a tiny preview you get the whole
-          tree natively — bigger, faster, and it matches whatever theme you picked.
+          Everything meets at the Linktree — or take the direct branches below.
         </p>
+
+        <!-- The trunk: Linktree hero (Linktree refuses iframes, so this IS the preview) -->
+        <a class="linktree-hero" href="https://linktr.ee/maxgarcia642" target="_blank" rel="noopener">
+          <span class="lt-canopy" aria-hidden="true">🌳</span>
+          <span class="lt-text">
+            <strong>linktr.ee/maxgarcia642</strong>
+            <span class="sub">The one link that holds all the others — socials, projects, everything, always current.</span>
+          </span>
+          <span class="arrow" aria-hidden="true">→</span>
+        </a>
+
+        <!-- The branches -->
         <div class="tree-links">
-          <a class="tree-link" href="https://linktr.ee/maxgarcia642" target="_blank" rel="noopener">
-            <span>🌳 Linktree <span class="sub">Every link in one place, on Linktree itself</span></span><span class="arrow">→</span>
+          <a class="tree-link" href="https://www.linkedin.com/in/maximiliano-garcia642/" target="_blank" rel="noopener">
+            <span>💼 LinkedIn <span class="sub">Professional updates &amp; project blogs — maximiliano-garcia642</span></span><span class="arrow">→</span>
           </a>
-          <a class="tree-link" href="https://maxgarcia642.itch.io/shufflerush" target="_blank" rel="noopener">
-            <span>🎵 Shuffle Rush <span class="sub">Frutiger Metro rhythm action on itch.io</span></span><span class="arrow">→</span>
+          <a class="tree-link" href="https://github.com/maxgarcia642" target="_blank" rel="noopener">
+            <span>🐙 GitHub <span class="sub">The code — including this very site</span></span><span class="arrow">→</span>
           </a>
-          <a class="tree-link" href="https://nwaero.netlify.app/" target="_blank" rel="noopener">
-            <span>🌦️ NWAero Grid Dashboard <span class="sub">Regional weather + traffic, real-time APIs</span></span><span class="arrow">→</span>
+          <a class="tree-link" href="https://www.youtube.com/@maxgarcia642" target="_blank" rel="noopener">
+            <span>📺 YouTube <span class="sub">@maxgarcia642 — walkthroughs and build logs, content coming</span></span><span class="arrow">→</span>
           </a>
-          <a class="tree-link" href="https://garciacode-terminalcollective.bolt.host/" target="_blank" rel="noopener">
-            <span>⌨️ Coding Terminal Collective <span class="sub">DevOps tooling playground</span></span><span class="arrow">→</span>
+          <a class="tree-link" href="https://joinhandshake.com" target="_blank" rel="noopener">
+            <span>🤝 Handshake <span class="sub">Early-career profile — say hello</span></span><span class="arrow">→</span>
           </a>
-          <a class="tree-link" href="https://maxfolio-website-git-main-maximiliano-projects.vercel.app?_vercel_share=GZEgLha73mO1Y7LlqCdbXvAnOyRrZy3t" target="_blank" rel="noopener">
-            <span>🧩 Create Your Own Maxfolio <span class="sub">Preview link — the share token expires; production domain coming</span></span><span class="arrow">→</span>
+          <a class="tree-link" href="mailto:maxgarcia642@gmail.com">
+            <span>✉️ Contact <span class="sub">maxgarcia642@gmail.com · (479) 402-1707 — both on the resume above</span></span><span class="arrow">→</span>
           </a>
-          <a class="tree-link" href="https://github.com/maxgarcia642/maxgarcia642.github.io" target="_blank" rel="noopener">
-            <span>🏠 This site's repo <span class="sub">github.com/maxgarcia642 — the code behind every theme</span></span><span class="arrow">→</span>
-          </a>
+        </div>
+
+        <!-- Minimal highlights — a leaf-sized recap, not a repeat -->
+        <div class="leaf-row" aria-label="Highlights">
+          <span class="leaf-chip">🎨 25 themes</span>
+          <span class="leaf-chip">💸 Financial Liberty research</span>
+          <span class="leaf-chip">🕹️ Games &amp; projects</span>
+          <span class="leaf-chip">🦞 Clawmaxxing local-first AI</span>
+          <span class="leaf-chip">🎵 Shuffle Rush on itch.io</span>
         </div>
       </div>
     </section>
@@ -263,7 +298,7 @@
 
   <footer class="site-footer">
     <div class="footer-inner container">
-      <p>© 2025 – Present Maximiliano Garcia — GitHub Pages · 10 themes · zero secrets in this repo · Patience pays. 🦞</p>
+      <p>© 2025 – Present Maximiliano Garcia — GitHub Pages · 25 themes · zero secrets in this repo · Patience pays. 🦞</p>
     </div>
   </footer>
 

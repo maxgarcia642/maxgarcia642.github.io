@@ -17,6 +17,13 @@ async function loadJSON(path) {
 }
 
 /* ---------- Posts carousel ---------- */
+/* Doc buttons open the protected on-site reader (script.js) — no downloads. */
+function docButtons(docs, title) {
+  return (docs || []).map(d =>
+    `<button class="btn doc-view" type="button" data-doc="${esc(d.path)}" data-title="${esc(title)} — ${esc(d.label)}">📖 ${esc(d.label)}</button>`
+  ).join("");
+}
+
 function renderPosts(projects) {
   const track = document.getElementById("projectTrack");
   if (!track) return;
@@ -26,15 +33,12 @@ function renderPosts(projects) {
     el.className = "post-card";
     el.setAttribute("role", "listitem");
     const updated = p.dateUpdated ? new Date(p.dateUpdated).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }) : "";
-    let actions = "";
-    if (p.localPdf) {
-      actions += `<button class="btn view-pdf" type="button" data-pdf="${esc(p.localPdf)}" data-title="${esc(p.title)}">Read on-site</button>`;
-    }
+    let actions = docButtons(p.docs, p.title);
     if (p.driveLink) actions += `<button class="btn ghost view-frame" type="button" data-frame="${esc(p.driveLink.replace("/view?usp=sharing", "/preview"))}" data-title="${esc(p.title)}">Preview</button>`;
-    if (p.shareLink) actions += `<a class="link-btn" href="${esc(p.shareLink)}" target="_blank" rel="noopener">Share link</a>`;
-    if (p.directLink) actions += `<a class="link-btn" href="${esc(p.directLink)}" target="_blank" rel="noopener">Direct link</a>`;
+    if (p.link) actions += `<a class="link-btn" href="${esc(p.link.url)}" target="_blank" rel="noopener">${esc(p.link.label)}</a>`;
+    const badge = p.soon ? `<span class="badge soon">${esc(p.badge || "Coming soon")}</span>` : (p.badge ? `<span class="badge">${esc(p.badge)}</span>` : "");
     el.innerHTML = `
-      <h3>${esc(p.title)}</h3>
+      <h3>${esc(p.title)} ${badge}</h3>
       <div class="dates">Updated ${esc(updated)}</div>
       <p class="muted small">${esc(p.description)}</p>
       <div class="arcade-actions">${actions}</div>`;
@@ -60,6 +64,7 @@ function renderFinance(fin) {
       chip.className = "pulse-chip";
       chip.dataset.pulseId = item.id;
       if (item.coingeckoId) chip.dataset.coingecko = item.coingeckoId;
+      if (item.fxCode) chip.dataset.fx = item.fxCode;
       chip.innerHTML = `
         <div class="p-label">${esc(item.label)}${item.live ? " · live-capable" : ""}</div>
         <div class="p-value">${esc(item.value)}</div>
@@ -79,7 +84,7 @@ function renderFinance(fin) {
         ? `<span class="badge">Live · ${esc(w.updated)}</span>`
         : `<span class="badge soon">Coming soon</span>`;
       const files = w.files.map(f =>
-        `<a class="link-btn" href="${esc(f.path)}" download>${esc(f.label)}</a>`).join("");
+        `<button class="link-btn doc-view" type="button" data-doc="${esc(f.path)}" data-title="${esc(w.title)} — ${esc(f.label)}">📖 ${esc(f.label)}</button>`).join("");
       const flags = (w.flags || []).map(f =>
         `<div class="honesty-flag">${esc(f)}</div>`).join("");
       card.innerHTML = `
@@ -111,6 +116,7 @@ function renderArcade(items) {
   items.filter(i => i.kind !== "inline").forEach(item => {
     const card = document.createElement("article");
     card.className = "arcade-card";
+    const art = `<span class="facade-emoji" aria-hidden="true">${esc(item.emoji || "🕹️")}</span>`;
     if (item.kind === "facade") {
       const canEmbed = Boolean(item.embedUrl);
       card.innerHTML = `
@@ -118,26 +124,27 @@ function renderArcade(items) {
                 data-embed="${esc(item.embedUrl || "")}"
                 data-open="${esc(item.openUrl || "")}"
                 aria-label="${canEmbed ? "Load" : "Open"} ${esc(item.title)}">
-          <span class="play-ring" aria-hidden="true">${canEmbed ? "▶" : "↗"}</span>
+          ${art}
           <span class="facade-title">${esc(item.title)}</span>
         </button>
         <div class="arcade-body">
           <h3>${esc(item.title)} <span class="badge">${esc(item.badge)}</span></h3>
           <p>${esc(item.description)}</p>
           <div class="arcade-actions">
+            ${docButtons(item.docs, item.title)}
             ${item.openUrl ? `<a class="link-btn" href="${esc(item.openUrl)}" target="_blank" rel="noopener">Open in new tab</a>` : ""}
           </div>
-          ${!canEmbed && item.embedNote ? `<p class="embed-hint">ℹ️ ${esc(item.embedNote)}</p>` : ""}
         </div>`;
     } else { // coming soon
       card.innerHTML = `
-        <div class="facade" style="cursor:default" aria-hidden="true">
-          <span class="play-ring">⏳</span>
+        <div class="facade static" aria-hidden="true">
+          ${art}
           <span class="facade-title">${esc(item.title)}</span>
         </div>
         <div class="arcade-body">
           <h3>${esc(item.title)} <span class="badge soon">${esc(item.badge)}</span></h3>
           <p>${esc(item.description)}</p>
+          ${item.docs ? `<div class="arcade-actions">${docButtons(item.docs, item.title)}</div>` : ""}
         </div>`;
     }
     grid.appendChild(card);
