@@ -1,0 +1,137 @@
+================================================================================
+GROK SUPERPROMPT — Repo Scout for maxgarcia642.github.io v2 "Shapeshifter"
+Companion to Cursor_Superprompt_Handover.txt. Written 2026-07-16.
+Paste this whole block into Grok when hunting for repos/libraries to improve
+the site. Grok scouts → Max picks → Cursor PRs (per the Cursor superprompt's
+task protocol). Grok never writes code into this repo directly.
+================================================================================
+
+MISSION
+Find open-source repositories, libraries, and single-file tools that can
+measurably improve Maximiliano Garcia's portfolio site. Return a shortlist
+with evidence, not vibes. Every candidate must survive the constraints below
+or be rejected with the reason stated.
+
+THE SITE (what you're improving)
+A fully static GitHub Pages portfolio: index.html + styles.css + themes.css +
+script.js + content-loader.js + two JSON data files. Zero build step, zero
+backend, zero npm dependencies at runtime. Ten themes implemented as CSS
+custom-property token blocks switched via [data-theme]. Features: lazy PDF.js
+document viewer, click-to-activate iframe facades for game/app embeds, inline
+16×16 pixel art studio, CoinGecko live crypto refresh, GitHub Contents API
+admin panel with auto-changelog, gesture-gated background music.
+
+HARD CONSTRAINTS (reject anything that violates these)
+1. LICENSE: MIT, Apache-2.0, BSD, ISC, MPL-2.0, or Unlicense/public domain.
+   No GPL/AGPL (viral copyleft conflicts with the mixed-content repo). No
+   "free for personal use" pseudo-licenses. VERIFY the LICENSE file exists in
+   the repo — a license named only in the README doesn't count.
+2. STATIC-COMPATIBLE: Must run from a <script> tag or be vendorable as plain
+   JS/CSS files. No mandatory build step, no framework lock-in (no React/Vue/
+   Svelte components), no server component, no API keys in client code.
+3. WEIGHT: Prefer < 30 KB min+gzip per library; hard ceiling ~100 KB unless
+   the capability is exceptional (PDF.js is the standing exception).
+4. MAINTENANCE: Last meaningful commit within ~18 months, OR the tool is
+   genuinely "finished" (single-file, no deps, no security surface). Stars
+   are a tiebreaker, never proof of quality.
+5. ZERO SECRETS: Nothing that requires embedding tokens/keys client-side.
+6. DEPENDENCY DEPTH: Fewer transitive deps is better; zero-dep single files
+   are the house style (see Winnow). Flag anything pulling > 5 deps.
+
+SCOUTING TARGETS (in priority order)
+A. THEME/MOTION MICRO-LIBS — tasteful ambient effects that could become
+   per-theme layers: WebGL/canvas gradient meshes, particle fields, CRT
+   shaders, generative backgrounds. Must respect prefers-reduced-motion or be
+   trivially gateable. (Candidates to evaluate, not assume: three.js scenes
+   are likely too heavy; look at tsParticles' slim bundles, granim.js-class
+   gradient animators, OGL, or small standalone shaders.)
+B. PIXEL ART STUDIO UPGRADES — open-source pixel editors or canvas libs that
+   could grow the inline studio (layers, palettes, GIF export, larger grids)
+   without a framework. Single-file or vanilla-JS editors preferred.
+C. AUDIO — tiny loop/crossfade players or Web Audio helpers for gapless
+   background-music looping and a possible per-theme track switcher.
+D. PDF — anything that beats self-hosted PDF.js on weight for view-only
+   rendering, or thumbnailing tools for document preview cards.
+E. STATIC-SITE SEARCH — client-side search over the site's JSON/content
+   (Fuse.js-class fuzzy search, Pagefind, MiniSearch) for when the Financial
+   Liberty library grows.
+F. ENCRYPTION/PRIVACY — StatiCrypt alternatives or complements for genuinely
+   private pages on a static host (AES + PBKDF2/argon2 in-browser). No
+   security theater; anything claiming "login protection" via client-side JS
+   without real encryption gets rejected on principle.
+G. ADMIN/CMS — Contents-API-based CMS options lighter than Sveltia, or
+   single-file admin panels worth stealing ideas from (idea-mining is a valid
+   result category — mark it as such).
+H. EMBED/PREVIEW — screenshot/preview generators (Microlink-class, but
+   self-hostable or free-tier-honest) for arcade facade thumbnails, and
+   iframe-resilience patterns for itch.io/Cloudflare-blocked embeds.
+I. GITHUB PAGES MAXIMIZERS — Actions workflows and repo patterns that push
+   Pages further: scheduled data refreshes (e.g., a cron Action that commits
+   updated market-pulse JSON), image optimization pipelines, sitemap/OG-image
+   generation at deploy time. These run in CI, so the no-build-step rule does
+   NOT apply to them — the deployed site must merely stay static.
+
+EVALUATION RUBRIC (score every finalist)
+- License (verified file, exact SPDX id)
+- Size (min+gzip KB, measured or from bundlephobia-class source — state which)
+- Deps (count, depth)
+- Last commit date + open-issue hygiene
+- Integration cost (S/M/L: S = drop-in <script>, M = adapt code, L = rework)
+- Reduced-motion / mobile story
+- Specific improvement to THIS site (one sentence, concrete)
+- Risk (what breaks, what's unverified)
+
+OUTPUT FORMAT
+A ranked table per category: repo URL · SPDX license · size · last commit ·
+integration cost · the one-sentence improvement · risks. Below the table, a
+"REJECTED" list with one-line reasons (license, weight, dead, needs backend).
+Max 5 finalists per category. End with a "TOP 3 OVERALL" pick with a
+paragraph each on exactly how it slots into the token/facade/data-layer
+architecture.
+
+ALREADY VETTED — DO NOT RE-SCOUT (verified in the July 2026 research pass)
+- PDF.js 3.11.174 (Apache-2.0) — in use, SRI-pinned.
+- StatiCrypt (MIT) — designated path for private content.
+- Sveltia CMS (MIT) — designated fallback if the hand-rolled admin panel
+  becomes a burden.
+- Microlink — designated screenshot-fallback service (free tier limits noted).
+- tradingview embed — loaded on demand only.
+Find things BEYOND these, or find superior replacements with evidence.
+
+VERIFY-DON'T-VIBE RULES (non-negotiable)
+- Click into every repo. Confirm the LICENSE file, the actual bundle size,
+  and the last commit date. If a number can't be verified, write
+  "unverified" next to it — never guess.
+- No hallucinated repos. If unsure a project exists, search before citing.
+- Popularity ≠ fitness. A 200-star zero-dep single file that fits the
+  constraints beats a 40k-star framework that doesn't.
+- Flag contested claims (e.g., "works on iOS Safari") that you couldn't
+  confirm from docs or issues.
+
+HANDOFF
+Winners go to Max. Approved picks get implemented through Cursor using
+Cursor_Superprompt_Handover.txt (branch → PR into main → dated entry in
+superprompt-changelog.md). Grok's role ends at the ranked shortlist.
+
+Patience pays. 🦞
+================================================================================
+
+================================================================================
+ROUND 1 — COMPLETE (2026-07-16). DO NOT RE-SCOUT THESE.
+Audited from actual downloaded clones (18 repos via codebase2txt):
+ADOPTED: krisk/fuse 7.5.0 (vendored → site search).
+IDEA-MINED (no LICENSE file in repo — code untouchable): gyoomei/mimopixel
+  (→ native studio v2.1: palettes/grid sizes/mirror), HairyDuck/terminal.
+APPROVED-PENDING: staticrypt (needs private content), Gapless-5 + loopify +
+  fade-maker (need a licensed track first), SheetJS (future in-browser XLSX
+  calculators).
+REJECTED: akaiHuang/pixel-art-studio (no license), tingle + vanilla-js-modal
+  + a11y-dialog (native <dialog> already covers it), partikle + JParticles
+  (native FX already covers it), crt-fx (WebGL weight vs CSS CRT theme),
+  knxd/ESPEasy/firefly-iii/beancount (GPL/AGPL — constraint 1), agent + IoT
+  frameworks (other projects, not this site).
+ROUND 2 OPEN LANES: verified-license GIF encoder for the studio; MiniSearch
+  benchmark vs vendored Fuse if search perf matters; Actions-side image
+  optimization + OG-image generation; chart micro-lib (verified license,
+  <30 KB) for the future Financial Liberty calculators.
+================================================================================

@@ -1,0 +1,34 @@
+name: Market pulse refresh
+# Daily crypto-chip refresh for finance.json. Uses the workflow's own
+# GITHUB_TOKEN (contents: write) — no PAT, no secrets. Snapshot chips are
+# never touched (see scripts/update-pulse.mjs). The resulting push to main
+# triggers the normal Pages deploy, so the live site gets the fresh values.
+on:
+  schedule:
+    - cron: "17 13 * * *"   # 13:17 UTC daily (odd minute avoids top-of-hour congestion)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Update live chips
+        run: node scripts/update-pulse.mjs
+      - name: Commit if changed
+        run: |
+          if git diff --quiet finance.json; then
+            echo "No changes to commit."
+          else
+            git config user.name "pulse-bot"
+            git config user.email "actions@users.noreply.github.com"
+            git add finance.json
+            git commit -m "chore(pulse): market refresh $(date -u +%F) [auto]"
+            git push
+          fi

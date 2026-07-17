@@ -1,0 +1,148 @@
+================================================================================
+CURSOR SUPERPROMPT — maxgarcia642.github.io v2 "Shapeshifter"
+Handover from the Claude rebuild session, 2026-07-16.
+Paste this whole block as context at the start of any Cursor session on this repo.
+================================================================================
+
+ROLE
+You are working on Maximiliano Garcia's portfolio: a fully static GitHub Pages
+site with zero build step, zero backend, zero secrets. Direct, verifiable,
+no-vibes engineering. When a claim matters (an API limit, a header behavior,
+a price), verify it or flag it — never assert from memory.
+
+ARCHITECTURE CONTRACT (do not break these without an explicit decision)
+1. STATIC ONLY. No node server, no framework, no bundler. index.html +
+   styles.css + themes.css + script.js + content-loader.js is the whole app.
+2. TOKENS ARE THE THEME SYSTEM. themes.css defines 10 blocks keyed on
+   [data-theme="..."] (aero glass brutal crt pixel aurora clay neon swiss
+   luxe). styles.css contains STRUCTURE ONLY and consumes tokens
+   (--bg, --card-bg, --accent, --font-display, --radius-*, etc.).
+   A new theme = a new token block + a registry entry in content.json
+   ("themes" array) — never new structural CSS per theme.
+   FOUC guard: the inline <script> in <head> applies localStorage("mg-theme")
+   before first paint. Keep it inline and tiny.
+3. DATA LAYER. content.json = site text, projects, arcade entries, theme
+   registry. finance.json = Financial Liberty works, market pulse, research
+   desk. Renderers live in content-loader.js. To add a finance work or an
+   arcade card, edit JSON — not HTML.
+4. PERFORMANCE RULES. Animate transform/opacity only. Heavy things load on
+   demand: PDF pages render via IntersectionObserver, arcade iframes inject on
+   click (facade pattern), TradingView loads on button press, the bubble
+   canvas runs only on aero/glass/clay + desktop + no prefers-reduced-motion.
+   Respect prefers-reduced-motion everywhere.
+5. SECURITY INVARIANTS (SECURITY.md is the law):
+   - No secrets in the repo, ever. No tokens, no password hashes.
+   - No client-side "login" pretending to be security.
+   - Admin auth = fine-grained GitHub PAT, pasted per session, held in a JS
+     closure only. Never persist it.
+   - Keep SRI on CDN scripts (recompute the sha384 if bumping PDF.js) and keep
+     the meta-CSP origins list current when adding embeds/APIs.
+   - Admin writes stay throttled under 80 content-writes/minute (currently
+     ~1 per 1.2s). Rename = delete+create (no native endpoint).
+6. HONESTY FLAGS. Market figures in finance.json are dated (asOf field).
+   Contested claims carry a "flags" entry rendered as ⚑ callouts. Never strip
+   a flag to make copy prettier; update figures WITH their verification date.
+
+CURRENT STATE (2026-07-16)
+- 10 themes live; Frutiger Aero is default/flagship.
+- Financial Liberty Project: 6 live works with deliverables in files/
+  (sustainability blueprint, alt-investments workbook, numismatics x2,
+  casino x2, card collecting x6, NWA Belonging Guide), 4 coming-soon
+  (SaaS/Flock, insurance, Wyndham timeshare, Garcia Trust real estate).
+- Market pulse chips: dated Jul-16-2026 figures; BTC/ETH refresh live via
+  CoinGecko simple/price (free, CORS-open, rate-limited — degrade gracefully).
+- Arcade: Pixel Art Studio inline; facades for Shuffle Rush (embedUrl EMPTY —
+  Max must paste his itch embed URL), NWAero + Terminal Collective (live
+  iframe on click), Maxfolio (open-only; _vercel_share token expires).
+- Resume renders through lazy PDF.js (3.11.174 UMD from cdnjs, SRI-pinned).
+- NWTI PDF: viewer wired to files/NWTI_Works.pdf — FILE NOT YET UPLOADED
+  (Max compresses with Ghostscript /ebook and uploads via admin panel).
+  OneDrive links remain as fallback until then.
+- Music: player wired to assets/music/track1.mp3 — NO TRACK SHIPPED
+  (licensing; royalty-free only, see assets/music/README.md).
+- Retired from v1: server.js, replit.md, package*.json, project-loader.js
+  (merged into content-loader.js), SETUP.md, and the public adminPassword
+  bcrypt hash.
+- Site search: 🔎 nav button + "/" hotkey → #searchModal. Fuse.js 7.5.0
+  vendored at vendor/fuse/ (Apache-2.0, LICENSE + PROVENANCE.md alongside),
+  lazy dynamic import on first open, built-in substring fallback if absent.
+  Index built from window.MG (content.json + finance.json); finance results
+  deep-scroll via data-search-id on work cards.
+- Pixel studio v2.1: PALETTES (pico8/gameboy/mono), grid 16/24/32 via
+  --px-cols CSS var (resize confirms + clears), mirror-X mode (M key),
+  size-aware PNG export. Native code, zero deps.
+- Market pulse automation: .github/workflows/market-pulse.yml (daily 13:17
+  UTC + manual dispatch, GITHUB_TOKEN contents:write) runs
+  scripts/update-pulse.mjs — updates ONLY live:true+coingeckoId chips,
+  exits clean on fetch failure, bumps asOf only when a price moved. Pulse
+  commits are exempt from the manual-changelog rule (git history is their
+  record). Verified with a real run 2026-07-16 (BTC $63K→$64K).
+
+GROK ROUND 1 — SCOUT RESULTS LEDGER (2026-07-16)
+Max ran the Grok_Superprompt_RepoScout, downloaded 18 repos via codebase2txt,
+and the clones were audited file-by-file. Dispositions:
+ADOPTED (code):
+  - krisk/fuse 7.5.0 (Apache-2.0, LICENSE verified) → vendored, powers search.
+ADOPTED (ideas only — NO code, no LICENSE file in repo despite README claims):
+  - gyoomei/mimopixel (README badge links to a LICENSE that does not exist;
+    repo is index.html+README only, AI-generated provenance) → palette/grid/
+    mirror concepts reimplemented natively.
+  - HairyDuck/terminal ("MIT (Attribution Required)" in README text only) →
+    nothing needed; CRT theme already covers it in CSS.
+APPROVED, PENDING A PRECONDITION:
+  - robinmoisson/staticrypt (MIT verified, PBKDF2+WebCrypto confirmed) →
+    integrate only when genuinely private content exists. Recipe in
+    SECURITY.md.
+  - regosen/Gapless-5 + veltman/loopify + naomiaro/fade-maker (all MIT
+    verified) → revisit for gapless/crossfade AFTER a licensed track lands
+    at assets/music/track1.mp3. Do not ship audio code with no audio.
+  - gifenc-class GIF encoder → the studio's next export format; pick one
+    with a verified LICENSE when Max asks for GIF export.
+REJECTED, WITH REASONS:
+  - akaiHuang/pixel-art-studio — NO license anywhere (Grok listed it as
+    "MIT (assumed)", which violates the scout's own verify rule).
+  - robinparisi/tingle, idurar/vanilla-js-modal, a11y-dialog-component (all
+    MIT) — working native <dialog> already covers modals; replacing working
+    zero-dep code with a dep is churn.
+  - lukaszkups/partikle, Barrior/JParticles (MIT) — native bubble canvas
+    already implements ambient FX within reduced-motion/mobile rules; a lib
+    adds weight for parity.
+  - stefanlegg/crt-fx (MIT) — WebGL full-screen shader pass exceeds the
+    weight/risk budget vs the existing CSS scanline CRT theme.
+  - SheetJS (Apache-2.0) — strong candidate but for the FUTURE calculators
+    (reading the actual XLSX deliverables in-browser), not this site pass.
+  - Grok batch-3 leaks that violate the license constraint outright: knxd
+    (GPL-2.0), ESPEasy (GPL-3.0), firefly-iii (AGPL-3.0), beancount
+    (GPL-2.0) — flagged; Grok listed them without rejection.
+  - langgraph/autogen/crewAI, Home Assistant/ESPHome — Python/server-side or
+    IoT-stack; they belong to the OpenClaw and Self-Maintaining Property
+    projects, not this static site's codebase.
+UNRESOLVED: lucaong/minisearch was in Max's download list but absent from
+  the delivered batch; Fuse won by being the one actually in hand. MiniSearch
+  remains a valid lighter alternative if search perf ever matters.
+
+KNOWN UPGRADE PATHS (pre-researched, pick up when asked)
+- Real HTTP headers / clickjacking protection / private repo → migrate to
+  Cloudflare Pages (free tier: unlimited bandwidth, custom headers).
+- Remove CDN trust → vendor pdf.min.js + pdf.worker.min.js into /pdfjs/.
+- Genuinely private content → StatiCrypt (AES-256-CBC, PBKDF2 600k) page
+  encryption; do NOT hand-roll a login.
+- Sveltia CMS is the researched alternative if the hand-rolled admin panel
+  ever becomes a burden (supports fine-grained PAT login natively).
+- Live equity/metals quotes need a keyed API — keep keys OUT of this repo;
+  that feature requires a serverless proxy (Cloudflare Workers) first.
+
+TASK PROTOCOL
+1. Read superprompt-changelog.md first — the admin panel auto-appends every
+   content change there; treat it as the diff-of-record between sessions.
+2. Make the change on a branch, PR into main (Pages deploys from main).
+3. Append a dated entry to superprompt-changelog.md describing the change.
+4. If you touched figures/claims: include the verification date and source in
+   the commit message.
+5. If you removed or renamed anything a human might look for later: say so in
+   the changelog entry. Silent removal is a failure mode.
+
+STYLE
+Deliverables over chatter. State assumptions and proceed. Flag what you could
+not verify. Patience pays. 🦞
+================================================================================

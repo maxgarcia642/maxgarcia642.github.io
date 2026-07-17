@@ -1,28 +1,61 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="aero">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Maximiliano Garcia — Portfolio</title>
-  <meta name="description" content="Maximiliano Garcia — Frutiger Aero portfolio with programming samples, articles, utilities and pixel art game." />
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <meta name="description" content="Maximiliano Garcia — a shapeshifting portfolio: 10 full themes, verified financial research with honesty flags, playable projects, and a pixel art studio." />
+
+  <!--
+    Meta CSP: reduces XSS surface on GitHub Pages. Honest limits (documented in
+    SECURITY.md): frame-ancestors / report-uri / sandbox are IGNORED in meta form,
+    so clickjacking protection needs real headers (Cloudflare Pages migration).
+    'unsafe-inline' is required only for the tiny FOUC guard below.
+  -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline';
+    style-src 'self' https://fonts.googleapis.com 'unsafe-inline';
+    font-src https://fonts.gstatic.com;
+    img-src 'self' data: blob: https://api.microlink.io https://*.microlink.io;
+    frame-src https://itch.io https://*.itch.io https://nwaero.netlify.app https://*.bolt.host https://*.vercel.app https://s.tradingview.com https://drive.google.com https://onedrive.live.com;
+    connect-src 'self' https://api.github.com https://api.coingecko.com https://raw.githubusercontent.com https://cdnjs.cloudflare.com;
+    media-src 'self';
+    object-src 'none';
+    base-uri 'self';
+  ">
+
+  <!-- FOUC guard: apply saved theme + music preference before first paint -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('mg-theme');
+        if (t) document.documentElement.setAttribute('data-theme', t);
+      } catch (e) { /* storage blocked — default theme stands */ }
+    })();
+  </script>
+
+  <!-- Fonts for all 10 themes (swap keeps first paint fast) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Nunito:wght@400;800&family=Playfair+Display:wght@600&family=Press+Start+2P&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="themes.css">
 </head>
 <body>
+  <canvas id="fx-canvas" aria-hidden="true"></canvas>
+
   <header class="site-header">
     <div class="header-inner container">
       <a class="brand" href="#introduction" aria-label="Home">
-        <!-- colorful SVG icon -->
         <svg class="site-icon" width="44" height="44" viewBox="0 0 44 44" aria-hidden="true" focusable="false">
           <defs>
             <linearGradient id="lg1" x1="0" x2="1">
-              <stop offset="0" stop-color="#1098ba"/>
-              <stop offset="1" stop-color="#000bbe"/>
+              <stop offset="0" stop-color="#1098ba"/><stop offset="1" stop-color="#000bbe"/>
             </linearGradient>
             <linearGradient id="lg2" x1="0" x2="1">
-              <stop offset="0" stop-color="#308a11"/>
-              <stop offset="1" stop-color="#e9ebe3"/>
+              <stop offset="0" stop-color="#308a11"/><stop offset="1" stop-color="#e9ebe3"/>
             </linearGradient>
           </defs>
           <rect x="0" y="0" width="44" height="44" rx="10" fill="url(#lg1)"/>
@@ -31,214 +64,195 @@
         </svg>
         <div class="brand-text">
           <div class="title">Maximiliano Garcia</div>
-          <div class="subtitle">Portfolio</div>
+          <div class="subtitle">Portfolio · Patience pays 🦞</div>
         </div>
       </a>
       <nav class="main-nav" aria-label="Main navigation">
         <a class="nav-pill" href="#introduction">Introduction</a>
         <a class="nav-pill" href="#programming">Programming</a>
         <a class="nav-pill" href="#posts">Posts</a>
-        <a class="nav-pill" href="#utilities">Utilities</a>
-        <a class="nav-pill" href="#game">Game</a>
+        <a class="nav-pill" href="#finance">Financial Liberty</a>
+        <a class="nav-pill" href="#arcade">Arcade</a>
         <a class="nav-pill" href="#connect">Connect</a>
-        <a class="nav-pill" href="/admin.html" style="background: linear-gradient(90deg, #1098ba, #000bbe); color: white; padding: 8px 16px; border-radius: 20px;">⚙️ Admin</a>
+        <button class="nav-pill" id="searchBtn" type="button" aria-haspopup="dialog" title="Search the site ( / )">🔎 Search</button>
+        <a class="nav-pill admin" href="admin.html">⚙️ Admin</a>
       </nav>
     </div>
   </header>
 
+  <!-- Theme dock: the signature element. 10 orbs + music toggle. -->
+  <nav class="theme-dock" id="themeDock" aria-label="Theme and music controls">
+    <!-- orbs injected by script.js from content.json -->
+    <div class="dock-divider" role="presentation"></div>
+    <button class="music-btn" id="musicBtn" type="button" aria-pressed="false"
+            aria-label="Toggle background music" title="Music (starts only after you click — never autoplays)">♪</button>
+  </nav>
+  <audio id="bgm" loop preload="none">
+    <source src="assets/music/track1.mp3" type="audio/mpeg">
+  </audio>
+
   <main id="main" tabindex="-1">
-    <!-- INTRODUCTION -->
+
+    <!-- INTRODUCTION + RESUME -->
     <section id="introduction" class="section reveal" data-accent="sky">
       <div class="card card-intro">
+        <span class="eyebrow">Introduction</span>
         <h1 id="introTitle">👋 Hello and Welcome to My Website!</h1>
         <p class="lead" id="introDesc">
-          This is my personal portfolio where I share programming projects, articles, useful finance tools, and a small pixel art studio.
-          Scroll to explore my work — my resume is embedded below for quick viewing and is available to download.
+          This is my personal portfolio where I share programming projects, verified financial research,
+          playable projects, and a pixel art studio. Pick a theme from the dock — every one is a full
+          personality, not a palette swap.
         </p>
         <div class="resume-wrap">
           <h2>Resume</h2>
-          <!-- Note: This section displays my professional background and skills. -->
-          <p>If the inline viewer doesn't load, use the download link or expand button.</p>
-          <div class="pdf-frame">
-            <iframe id="resumeFrame" title="Resume PDF (Maximiliano Garcia)" loading="lazy"></iframe>
+          <p class="muted small">Rendered page-by-page with a self-hosted PDF.js viewer — pages draw only as you scroll to them, so big documents never choke the page.</p>
+          <div class="pdf-shell" id="resumeShell" data-pdf="files/Maximiliano_Garcia_Resume.pdf">
+            <p class="pdf-status">Resume viewer loads when this section scrolls into view…</p>
           </div>
           <div style="margin-top:12px">
-            <a class="btn link-btn" id="resumeDownload" download="resume.pdf">Download Resume (PDF)</a>
-            <button class="btn ghost expand-btn" type="button" id="resumeExpand" aria-label="Expand resume">Expand</button>
+            <a class="btn link-btn" id="resumeDownload" href="files/Maximiliano_Garcia_Resume.pdf" download="Maximiliano_Garcia_Resume.pdf">Download Resume (PDF)</a>
+            <button class="btn ghost" type="button" id="resumeExpand">Expand</button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- PROGRAMMING WORKS -->
+    <!-- PROGRAMMING — deliberately tiny now: the site itself is the exhibit -->
     <section id="programming" class="section reveal" data-accent="ocean">
       <div class="card card-programming">
+        <span class="eyebrow">Programming</span>
         <h2 id="progTitle">💻 Programming Works</h2>
-        <p class="lead small" id="progDesc">Code from this portfolio's repository — fetched live from GitHub.</p>
-        <!-- Note: These code windows dynamically fetch the latest files from my GitHub repository. -->
-        <div class="terminals-grid" id="github-terminals">
-          <!-- Dynamic terminals will be injected here -->
-        </div>
+        <p class="lead small" id="progDesc">
+          This whole site is the exhibit — themes, viewer, arcade, and admin are all in the open repo.
+          These mini-terminals pull the live source straight from GitHub; click one to read it full-size.
+        </p>
+        <div class="terminals-row" id="github-terminals"><!-- injected --></div>
       </div>
     </section>
 
-    <!-- ARTICLES & PROJECTS (15 items, expand-only modal viewer) -->
+    <!-- ARTICLES & PROJECTS -->
     <section id="posts" class="section reveal" data-accent="grass">
       <div class="card card-posts">
-        <h2 id="postsTitle">📁 Articles & Projects</h2>
-        <p class="lead small" id="postsDesc">This is where my most personally important project reports and updates will be posted and shared.</p>
-    
+        <span class="eyebrow">Reports</span>
+        <h2 id="postsTitle">📁 Articles &amp; Projects</h2>
+        <p class="lead small" id="postsDesc">
+          Project reports and updates. Large PDFs open in the on-site viewer — the old
+          “file too large to embed” redirect is retired.
+        </p>
         <div class="posts-carousel" aria-roledescription="carousel">
-          <button class="carousel-btn prev" aria-label="Previous project">Previous</button>
-    
-          <!-- TRACK -->
-          <div class="carousel-track" role="list" id="projectTrack">
-            <!-- Projects loaded dynamically from API -->
-          </div>
-    
-          <button class="carousel-btn next" aria-label="Next project">Next</button>
+          <button class="carousel-btn btn ghost prev" aria-label="Previous project">‹</button>
+          <div class="carousel-track" role="list" id="projectTrack"><!-- injected --></div>
+          <button class="carousel-btn btn ghost next" aria-label="Next project">›</button>
         </div>
       </div>
     </section>
 
-    <!-- UTILITIES: Investment Vehicle Valuations (unchanged) -->
-    <section id="utilities" class="section reveal" data-accent="sun">
-      <div class="card card-utilities">
-        <h2 id="utilTitle">📊 Investment Vehicle Valuations</h2>
-        <p class="lead small" id="utilDesc">Live market data & quick redirects for alternative investments.</p>
-        <div class="utilities-grid">
-          <!-- TradingView (kept as util-wide) -->
-          <div class="util-card util-wide">
-            <h3>TradingView Widget</h3>
-            <p class="muted">Live market data & analysis via TradingView (stocks, ETFs, crypto, commodities).</p>
-            <div class="embed-wrap" style="height:400px;">
-              <iframe src="https://s.tradingview.com/widgetembed/?symbol=NASDAQ%3AAAPL&interval=D&hidesidelegend=0&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=%5B%5D&theme=light&style=1&timezone=Etc%2FUTC&locale=en" title="TradingView Widget" loading="lazy" style="width:100%;height:100%;border:none;"></iframe>
-            </div>
-          </div>
+    <!-- THE FINANCIAL LIBERTY PROJECT -->
+    <section id="finance" class="section reveal" data-accent="sun">
+      <div class="card card-finance">
+        <span class="eyebrow">Research with receipts</span>
+        <h2 id="finTitle">💸 The Financial Liberty Project</h2>
+        <p class="lead small" id="finTagline"><!-- injected --></p>
 
-          <!-- Other utilities (unchanged) -->
-          <div class="util-card">
-            <h3>📈 Markets (Stocks / ETFs)</h3>
-            <p class="muted">Quick market dashboards.</p>
-            <div style="margin-top:8px;">
-              <a class="link-btn" href="https://finance.yahoo.com" target="_blank" rel="noopener">Yahoo Finance</a>
-              <a class="link-btn" href="https://www.marketwatch.com" target="_blank" rel="noopener">MarketWatch</a>
-              <a class="link-btn" href="https://www.etf.com" target="_blank" rel="noopener">ETF.com</a>
-            </div>
-          </div>
-
-          <div class="util-card">
-            <h3>🏦 Bonds</h3>
-            <p class="muted">Treasury yields & bond center tools.</p>
-            <div style="margin-top:8px;">
-              <a class="link-btn" href="https://treasurydirect.gov" target="_blank" rel="noopener">TreasuryDirect</a>
-              <a class="link-btn" href="https://finra-markets.morningstar.com/BondCenter" target="_blank" rel="noopener">FINRA / Bond Center</a>
-            </div>
-          </div>
-
-          <div class="util-card">
-            <h3>🏠 Real Estate</h3>
-            <p class="muted">Listings, REIT research & trends.</p>
-            <div style="margin-top:8px;">
-              <a class="link-btn" href="https://www.zillow.com" target="_blank" rel="noopener">Zillow</a>
-              <a class="link-btn" href="https://www.realtor.com" target="_blank" rel="noopener">Realtor</a>
-              <a class="link-btn" href="https://www.reit.com" target="_blank" rel="noopener">REIT.com</a>
-            </div>
-          </div>
-
-          <div class="util-card">
-            <h3>₿ Crypto</h3>
-            <p class="muted">Market overviews & coin data.</p>
-            <div style="margin-top:8px;">
-              <a class="link-btn" href="https://coinmarketcap.com" target="_blank" rel="noopener">CoinMarketCap</a>
-              <a class="link-btn" href="https://www.coingecko.com" target="_blank" rel="noopener">CoinGecko</a>
-            </div>
-          </div>
-
-          <div class="util-card">
-            <h3>🥇 Commodities & Metals</h3>
-            <p class="muted">Spot prices & charts.</p>
-            <div style="margin-top:8px;">
-              <a class="link-btn" href="https://www.kitco.com" target="_blank" rel="noopener">Kitco</a>
-              <a class="link-btn" href="https://tradingeconomics.com/commodities" target="_blank" rel="noopener">TradingEconomics</a>
-            </div>
-          </div>
-
-          <div class="util-card">
-            <h3>🖼️ Art & Collectibles</h3>
-            <p class="muted">Auction databases & price-search.</p>
-            <div style="margin-top:8px;">
-              <a class="link-btn" href="https://www.artnet.com/price-database" target="_blank" rel="noopener">Artnet</a>
-              <a class="link-btn" href="https://www.wine-searcher.com" target="_blank" rel="noopener">Wine-Searcher</a>
-              <a class="link-btn" href="https://www.chrono24.com" target="_blank" rel="noopener">Chrono24 (Watches)</a>
-            </div>
-          </div>
-
-          <div class="util-card">
-            <h3>🚀 Alternative Investments</h3>
-            <p class="muted">VC, PE, commingled real estate, hedge funds, and farmland resources.</p>
-            <div style="margin-top:8px;">
-              <a class="link-btn" href="https://www.crunchbase.com/discover" target="_blank" rel="noopener">Crunchbase (VC)</a>
-              <a class="link-btn" href="https://pitchbook.com/news" target="_blank" rel="noopener">PitchBook (PE)</a>
-              <a class="link-btn" href="https://www.ncreif.org" target="_blank" rel="noopener">NCREIF (Commingled)</a>
-              <a class="link-btn" href="https://acretrader.com/farms" target="_blank" rel="noopener">AcreTrader (Farmland)</a>
-              <a class="link-btn" href="https://hfr.com/industry-indices" target="_blank" rel="noopener">HFR (Hedge Funds)</a>
-            </div>
-          </div>
-
-          <div class="util-card">
-            <h3>🛡️ Retirement & Insurance</h3>
-            <p class="muted">Guides and official resources for retirement accounts, annuities, and SMAs.</p>
-            <div style="margin-top:8px;">
-              <a class="link-btn" href="https://www.irs.gov/retirement-plans" target="_blank" rel="noopener">IRS.gov (401k/IRA)</a>
-              <a class="link-btn" href="https://immediateannuities.com" target="_blank" rel="noopener">ImmediateAnnuities.com</a>
-              <a class="link-btn" href="https://www.investopedia.com/terms/s/sma.asp" target="_blank" rel="noopener">Investopedia (SMAs)</a>
-            </div>
-          </div>
-
+        <div class="pulse-meta">
+          <h3 style="margin:0">Market Pulse</h3>
+          <button class="btn ghost" type="button" id="pulseRefresh" title="Refreshes the crypto chips live from CoinGecko">↻ Refresh crypto</button>
+          <span class="muted small" id="pulseAsOf"></span>
         </div>
+        <div class="pulse-strip" id="pulseStrip"><!-- injected --></div>
+        <p class="muted small" id="pulseNote"></p>
+
+        <div class="finance-grid" id="financeGrid"><!-- injected --></div>
+
+        <details class="research-desk">
+          <summary>🗄️ Research Desk — the live-data redirects, kept and organized</summary>
+          <div class="desk-grid" id="deskGrid"><!-- injected --></div>
+          <div class="desk-group" style="margin-top:12px">
+            <h4>📊 TradingView</h4>
+            <button class="btn ghost" type="button" id="tvLoad">Load live TradingView chart</button>
+            <div id="tvSlot"></div>
+          </div>
+        </details>
       </div>
     </section>
 
-    <!-- GAME (Pixel Art) -->
-    <section id="game" class="section reveal" data-accent="mint">
-      <div class="card card-game">
-        <h2 id="gameTitle">🎨 Pixel Art Studio Max</h2>
-        <p class="lead small" id="gameDesc">A fun 16×16 Pixel Art Studio — pick a color, paint pixels, erase, undo, clear, and save your work as a PNG.</p>
-        <div class="game-controls">
-          <label for="colorPicker">Color</label>
-          <input id="colorPicker" type="color" value="#000000" title="Choose draw color">
-          <button id="eraser" class="btn">Eraser</button>
-          <button id="undo" class="btn">Undo</button>
-          <button id="clearCanvas" class="btn">Clear</button>
-          <button id="saveImage" class="btn primary">Save PNG</button>
+    <!-- GAMES & PROJECTS ARCADE -->
+    <section id="arcade" class="section reveal" data-accent="mint">
+      <div class="card card-arcade">
+        <span class="eyebrow">Playable</span>
+        <h2 id="arcadeTitle">🕹️ Games &amp; Projects Arcade</h2>
+        <p class="lead small" id="arcadeDesc">
+          Pixel Art Studio Max is live first — paint right here. Everything else loads on click
+          (never on page load), with an open-in-new-tab escape hatch always visible because some hosts
+          block framing without warning.
+        </p>
+        <div class="arcade-grid" id="arcadeGrid">
+          <!-- Featured inline studio -->
+          <div class="arcade-card featured" id="pixelStudioCard">
+            <div class="arcade-body">
+              <h3>🎨 Pixel Art Studio Max</h3>
+              <div class="game-controls">
+                <label for="colorPicker">Color</label>
+                <input id="colorPicker" type="color" value="#000000" title="Choose draw color">
+                <label for="paletteSelect" class="visually-hidden">Palette</label>
+                <select id="paletteSelect" title="Color palette">
+                  <option value="free" selected>Free color</option>
+                  <option value="pico8">PICO-8 (16)</option>
+                  <option value="gameboy">Game Boy (4)</option>
+                  <option value="mono">Mono (5)</option>
+                </select>
+                <label for="gridSizeSelect" class="visually-hidden">Grid size</label>
+                <select id="gridSizeSelect" title="Grid size (resizing clears the canvas)">
+                  <option value="16" selected>16×16</option>
+                  <option value="24">24×24</option>
+                  <option value="32">32×32</option>
+                </select>
+                <button id="mirrorToggle" class="btn ghost" type="button" aria-pressed="false" title="Mirror horizontally while drawing">Mirror: off</button>
+                <button id="eraser" class="btn ghost" type="button">Eraser</button>
+                <button id="undo" class="btn ghost" type="button">Undo</button>
+                <button id="clearCanvas" class="btn ghost" type="button">Clear</button>
+                <button id="saveImage" class="btn" type="button">Save PNG</button>
+              </div>
+              <div id="paletteRow" class="palette-row" aria-label="Palette swatches" hidden></div>
+              <div class="canvas-wrap">
+                <div id="pixelCanvas" class="pixel-grid" role="application" aria-label="Pixel art canvas: 16 by 16 grid. Click or drag to paint."></div>
+              </div>
+              <p class="muted small">Keyboard: C = clear · Z = undo · S = save · M = mirror</p>
+            </div>
+          </div>
+          <!-- Facade + coming-soon cards injected here -->
         </div>
-        <div class="canvas-wrap">
-          <div id="pixelCanvas" class="pixel-grid" role="application" aria-label="Pixel art canvas"></div>
-        </div>
-        <p class="muted small">Tip: use keyboard keys — C = clear, Z = undo, S = save</p>
       </div>
     </section>
 
     <!-- CONNECT -->
     <section id="connect" class="section reveal" data-accent="blue">
       <div class="card card-connect">
+        <span class="eyebrow">Connect</span>
         <h2 id="connectTitle">🪴 Connect</h2>
-        <p class="lead small" id="connectDesc">Find my social links and projects via Linktree.</p>
-        <div style="margin-top:12px">
-          <a class="btn primary large full-width" href="https://linktr.ee/maxgarcia642" target="_blank" rel="noopener" style="background: linear-gradient(90deg, #2CE69B, #00D68F); color: white;">Visit My Linktree to Connect</a>
-        </div>
-        <div style="margin-top:10px">
-          <a class="btn primary large full-width" href="https://maxfolio-website-git-main-maximiliano-projects.vercel.app?_vercel_share=GZEgLha73mO1Y7LlqCdbXvAnOyRrZy3t" target="_blank" rel="noopener" style="background: linear-gradient(90deg, #1098ba, #000bbe); color: white;">Create Your Own Maxfolio</a>
-        </div>
-        <div style="margin-top:10px">
-          <a class="btn primary large full-width" href="https://maxgarcia642.itch.io/shufflerush" target="_blank" rel="noopener" style="background: linear-gradient(90deg, #FF5252, #D32F2F); color: white;">Shuffle Rush Video Game!</a>
-        </div>
-        <div style="margin-top:10px">
-          <a class="btn primary large full-width" href="https://nwaero.netlify.app/" target="_blank" rel="noopener" style="background: linear-gradient(90deg, #9C27B0, #673AB7); color: white;">Collab NWAero Grid Dashboard</a>
-        </div>
-        <div style="margin-top:10px">
-          <a class="btn primary large full-width" href="https://garciacode-terminalcollective.bolt.host/" target="_blank" rel="noopener" style="background: linear-gradient(90deg, #FF9800, #F44336); color: white;">Coding Terminal Collective</a>
+        <p class="lead small" id="connectDesc">
+          Linktree blocks embedding on other sites, so instead of a tiny preview you get the whole
+          tree natively — bigger, faster, and it matches whatever theme you picked.
+        </p>
+        <div class="tree-links">
+          <a class="tree-link" href="https://linktr.ee/maxgarcia642" target="_blank" rel="noopener">
+            <span>🌳 Linktree <span class="sub">Every link in one place, on Linktree itself</span></span><span class="arrow">→</span>
+          </a>
+          <a class="tree-link" href="https://maxgarcia642.itch.io/shufflerush" target="_blank" rel="noopener">
+            <span>🎵 Shuffle Rush <span class="sub">Frutiger Metro rhythm action on itch.io</span></span><span class="arrow">→</span>
+          </a>
+          <a class="tree-link" href="https://nwaero.netlify.app/" target="_blank" rel="noopener">
+            <span>🌦️ NWAero Grid Dashboard <span class="sub">Regional weather + traffic, real-time APIs</span></span><span class="arrow">→</span>
+          </a>
+          <a class="tree-link" href="https://garciacode-terminalcollective.bolt.host/" target="_blank" rel="noopener">
+            <span>⌨️ Coding Terminal Collective <span class="sub">DevOps tooling playground</span></span><span class="arrow">→</span>
+          </a>
+          <a class="tree-link" href="https://maxfolio-website-git-main-maximiliano-projects.vercel.app?_vercel_share=GZEgLha73mO1Y7LlqCdbXvAnOyRrZy3t" target="_blank" rel="noopener">
+            <span>🧩 Create Your Own Maxfolio <span class="sub">Preview link — the share token expires; production domain coming</span></span><span class="arrow">→</span>
+          </a>
+          <a class="tree-link" href="https://maxgarcia642.github.io/" rel="noopener">
+            <span>🏠 This site's repo <span class="sub">github.com/maxgarcia642 — the code behind every theme</span></span><span class="arrow">→</span>
+          </a>
         </div>
       </div>
     </section>
@@ -247,12 +261,40 @@
 
   <footer class="site-footer">
     <div class="footer-inner container">
-      <p>© 2025 - Present Maximiliano Garcia — Hosted on GitHub Pages made with prior Comp Sci knowledge and a bit of help from AIs and Replit</p>
+      <p>© 2025 – Present Maximiliano Garcia — GitHub Pages · 10 themes · zero secrets in this repo · Patience pays. 🦞</p>
     </div>
   </footer>
 
+  <!-- Shared modal for PDF viewer + arcade expansion -->
+  <dialog class="modal search-modal" id="searchModal" aria-label="Site search">
+    <div class="modal-inner">
+      <div class="search-head">
+        <input id="searchInput" type="search" placeholder="Search works, projects, links… ( / )" autocomplete="off" spellcheck="false" aria-label="Search query">
+        <button class="btn ghost modal-close" type="button" id="searchClose">✕</button>
+      </div>
+      <div id="searchResults" class="search-results" role="listbox" aria-label="Search results"></div>
+      <p class="muted small" id="searchEngineNote"></p>
+    </div>
+  </dialog>
+
+  <dialog class="modal" id="modal">
+    <div class="modal-inner">
+      <button class="btn ghost modal-close" type="button" id="modalClose">✕ Close</button>
+      <div id="modalContent"></div>
+    </div>
+  </dialog>
+
+  <!--
+    PDF.js 3.11.174 (last UMD build — no module tooling needed on Pages).
+    SRI hashes computed from the actual cdnjs files on 2026-07-16.
+    Note: the worker script is set via workerSrc and CANNOT carry an integrity
+    attribute (Worker() has no SRI) — the CSP script-src origin pin is the
+    control there. Documented in SECURITY.md.
+  -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
+          integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e"
+          crossorigin="anonymous" defer></script>
   <script src="content-loader.js" defer></script>
-  <script src="project-loader.js" defer></script>
   <script src="script.js" defer></script>
 </body>
 </html>

@@ -1,716 +1,562 @@
-/* script.js - enhanced interactions for Frutiger Aero portfolio
-   - smooth scroll with refined easing
-   - enhanced reveal animations with stagger
-   - terminal snippet fetch + improved feedback
-   - posts carousel (smooth & responsive)
-   - pixel art 16x16 editor with animation feedback
-   - subtle background drift
-   - interactive hover states
-*/
+/* script.js — behaviors for the shapeshifting portfolio.
+   Vanilla JS, no build step. Everything heavy is lazy: PDF pages render on
+   scroll, iframes inject on click, effects load per-theme, music never
+   autoplays. Reduced motion and mobile are first-class citizens. */
 
-/* ---------- Utilities ---------- */
-const $ = (sel, ctx = document) => ctx.querySelector(sel);
-const $$ = (sel, ctx = document) => Array.from((ctx || document).querySelectorAll(sel));
+const $ = (s, c = document) => c.querySelector(s);
+const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
+const prefersReduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const isMobile = matchMedia("(max-width: 720px)").matches;
 
-/* ---------- Easing functions for smooth animations ---------- */
-const easing = {
-  easeInOutCubic: (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
-  easeOutQuad: (t) => 1 - (1 - t) * (1 - t),
-  easeOutCubic: (t) => 1 - Math.pow(1 - t, 3),
-};
+/* ============================== THEMES ================================= */
+const FX_THEMES = new Set(["aero", "glass", "clay"]); // canvas-bubble themes
 
-/* ---------- Smooth scroll with refined timing ---------- */
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', (e) => {
-    const href = a.getAttribute('href');
-    if (!href || href === '#') return;
-    const target = document.querySelector(href);
-    if (!target) return;
-    e.preventDefault();
-    
-    const start = window.scrollY;
-    const end = target.getBoundingClientRect().top + window.scrollY;
-    const distance = end - start;
-    const duration = 800;
-    let startTime = null;
-    
-    const scroll = (currentTime) => {
-      if (startTime === null) startTime = currentTime;
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const ease = easing.easeInOutCubic(progress);
-      window.scrollTo(0, start + distance * ease);
-      
-      if (progress < 1) {
-        requestAnimationFrame(scroll);
-      } else {
-        setTimeout(() => {
-          target.querySelector('h1,h2,h3,p')?.focus?.();
-        }, 100);
-      }
-    };
-    
-    requestAnimationFrame(scroll);
-  });
+function setTheme(id) {
+  document.documentElement.setAttribute("data-theme", id);
+  try { localStorage.setItem("mg-theme", id); } catch (e) { /* fine */ }
+  $$(".theme-orb").forEach(o => o.setAttribute("aria-pressed", String(o.dataset.theme === id)));
+  syncFx();
+}
+
+document.addEventListener("click", (e) => {
+  const orb = e.target.closest(".theme-orb");
+  if (orb) setTheme(orb.dataset.theme);
 });
 
-/* ---------- Enhanced reveal with stagger ---------- */
-const reveals = Array.from(document.querySelectorAll('.reveal'));
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('in-view');
-      // subtle stagger for child elements
-      const children = entry.target.querySelectorAll('.card > h1, .card > h2, .card > p:first-of-type');
-      children.forEach((child, i) => {
-        child.style.animation = `none`;
-        setTimeout(() => {
-          child.style.opacity = '0';
-          child.style.transform = 'translateY(8px)';
-          child.offsetHeight;
-          child.style.transition = `opacity 0.5s ease ${i * 0.08}s, transform 0.5s ease ${i * 0.08}s`;
-          child.style.opacity = '1';
-          child.style.transform = 'translateY(0)';
-        }, 0);
-      });
+/* Bubble canvas — Frutiger Aero's ambient layer. transform-cheap, capped,
+   killed on mobile + reduced motion + non-aero-family themes. */
+let fxRaf = null;
+function syncFx() {
+  const canvas = $("#fx-canvas");
+  if (!canvas) return;
+  const theme = document.documentElement.getAttribute("data-theme") || "aero";
+  const on = FX_THEMES.has(theme) && !prefersReduced && !isMobile;
+  if (!on) { cancelAnimationFrame(fxRaf); fxRaf = null; canvas.style.display = "none"; return; }
+  canvas.style.display = "block";
+  if (fxRaf) return; // already running
+  const ctx = canvas.getContext("2d");
+  const dpi = Math.min(devicePixelRatio || 1, 2);
+  const size = () => { canvas.width = innerWidth * dpi; canvas.height = innerHeight * dpi; };
+  size(); addEventListener("resize", size, { passive: true });
+  const bubbles = Array.from({ length: 22 }, () => ({
+    x: Math.random(), y: Math.random() + 0.2,
+    r: 6 + Math.random() * 26, v: 0.0004 + Math.random() * 0.0011,
+    drift: (Math.random() - 0.5) * 0.0004, a: 0.08 + Math.random() * 0.16
+  }));
+  (function tick() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const b of bubbles) {
+      b.y -= b.v; b.x += b.drift;
+      if (b.y < -0.06) { b.y = 1.06; b.x = Math.random(); }
+      const x = b.x * canvas.width, y = b.y * canvas.height, r = b.r * dpi;
+      const g = ctx.createRadialGradient(x - r / 3, y - r / 3, r / 6, x, y, r);
+      g.addColorStop(0, `rgba(255,255,255,${b.a + 0.25})`);
+      g.addColorStop(1, `rgba(255,255,255,${b.a * 0.25})`);
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
     }
-  });
-}, { threshold: 0.12 });
-
-reveals.forEach(r => revealObserver.observe(r));
-
-/* ---------- Terminals: enhanced fetch with visual feedback ---------- */
-const terminalCards = Array.from(document.querySelectorAll('.terminal-card'));
-const FALLBACK = {
-  python: `# Example Python (fallback)
-def hello_world():
-    print("Hello, World!")
-hello_world()`,
-  java: `// Example Java (fallback)
-public class HelloWorld {
-  public static void main(String[] args) {
-    System.out.println("Hello, World!");
-  }
-}`,
-  cpp: `// Example C++ (fallback)
-#include <iostream>
-int main(){
-  std::cout << "Hello, world!" << std::endl;
-  return 0;
-}`,
-  html: `<!-- Example HTML (fallback) -->
-<section><h1>Welcome</h1><p>Example snippet.</p></section>`,
-  js: `// Example JS (fallback)
-console.log('Hello, world!');`,
-  css: `/* Example CSS (fallback) */
-body { font-family: sans-serif; }`
-};
-
-async function fetchWithTimeout(url, ms = 4000) {
-  try {
-    const ctrl = new AbortController();
-    const id = setTimeout(() => ctrl.abort(), ms);
-    const res = await fetch(url, { signal: ctrl.signal });
-    clearTimeout(id);
-    if (!res.ok) return null;
-    const text = await res.text();
-    return text;
-  } catch (e) {
-    return null;
-  }
+    fxRaf = requestAnimationFrame(tick);
+  })();
 }
 
-function tinyHighlight(code, lang) {
-  if (!code) return '';
-  const esc = code.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
-  if (lang === 'python') return esc.replace(/\b(def|return|if|else|elif|for|while|import|from|class|print)\b/g, '<span class="kw">$1</span>');
-  if (lang === 'java') return esc.replace(/\b(public|static|void|class|new|return|if|else|for|while|System\.out\.println)\b/g, '<span class="kw">$1</span>');
-  if (lang === 'cpp') return esc.replace(/\b(int|return|#include|std::cout|using|namespace|class|for|while)\b/g, '<span class="kw">$1</span>');
-  if (lang === 'html') return esc.replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="comm">$1</span>').replace(/(&lt;\/?[a-zA-Z0-9-:]+)(\s|&gt;)/g, '<span class="tag">$1</span>$2');
-  if (lang === 'js') return esc.replace(/\b(function|return|var|let|const|if|else|for|while|console\.log)\b/g, '<span class="kw">$1</span>').replace(/(\/\/.+)/g, '<span class="comm">$1</span>');
-  if (lang === 'css') return esc.replace(/([.#]?[a-zA-Z0-9\-_]+)(\s*\{)/g, '<span class="tag">$1</span>$2').replace(/(\/\*.+?\*\/)/g, '<span class="comm">$1</span>');
-  if (lang === 'markdown') return esc.replace(/^(#+ .+)$/gm, '<span class="tag">$1</span>').replace(/(\*\*.+?\*\*)/g, '<span class="kw">$1</span>');
-  return esc;
-}
-
-terminalCards.forEach(async card => {
-  const codeEl = card.querySelector('code');
-  const lang = codeEl.getAttribute('data-lang') || 'text';
-  const raw = card.dataset.raw || '';
-  let content = null;
-  
-  // show loading state
-  codeEl.style.opacity = '0.6';
-  
-  if (raw) {
-    content = await fetchWithTimeout(raw, 3500);
-  }
-  
-  if (!content) {
-    content = FALLBACK[lang] || FALLBACK['html'];
-  }
-  
-  codeEl.innerHTML = tinyHighlight(content, lang);
-  
-  // fade in with smooth transition
-  codeEl.style.transition = 'opacity 0.4s ease';
-  codeEl.style.opacity = '1';
-  
-  // Add copy button if not present
-  let copyBtn = card.querySelector('.copy-btn');
-  if (!copyBtn) {
-    copyBtn = document.createElement('button');
-    copyBtn.className = 'copy-btn';
-    copyBtn.textContent = 'Copy';
-    card.querySelector('.term-header')?.appendChild(copyBtn);
-  }
-  
-  copyBtn.addEventListener('click', async () => {
-    try {
-      await navigator.clipboard.writeText(content);
-      const originalText = copyBtn.textContent;
-      copyBtn.textContent = '✓ Copied!';
-      copyBtn.style.background = 'rgba(44, 230, 155, 0.15)';
-      copyBtn.style.color = '#2CE69B';
-      
-      setTimeout(() => {
-        copyBtn.textContent = originalText;
-        copyBtn.style.background = '';
-        copyBtn.style.color = '';
-      }, 1600);
-    } catch (e) {
-      copyBtn.textContent = '✗ Failed';
-      setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1200);
-    }
-  });
-});
-
-/* ---------- Posts carousel (smooth & responsive) ---------- */
-function initCarousel() {
-  const prev = $('.carousel-btn.prev'),
-        next = $('.carousel-btn.next'),
-        track = $('.carousel-track');
-  if (!track || !prev || !next) return;
-
-  const items = Array.from(track.children);
-  if (items.length === 0) return;
-  
-  let idx = 0;
-
-  const getVisibleCount = () => {
-    const trackW = track.clientWidth;
-    const firstItem = items[0];
-    if (!firstItem) return 1;
-    const cardW = firstItem.getBoundingClientRect().width + 18;
-    return Math.max(1, Math.floor(trackW / cardW));
-  };
-
-  const scrollToIndex = () => {
-    if (items.length === 0) return;
-    const firstItem = items[0];
-    const cardW = firstItem.getBoundingClientRect().width + 18;
-    track.scrollTo({
-      left: idx * cardW,
-      behavior: 'smooth'
-    });
-  };
-
-  prev.addEventListener('click', () => {
-    idx = Math.max(0, idx - 1);
-    scrollToIndex();
-  });
-  
-  next.addEventListener('click', () => {
-    const maxIdx = Math.max(0, items.length - getVisibleCount());
-    idx = Math.min(maxIdx, idx + 1);
-    scrollToIndex();
-  });
-
-  const debounce = (fn, wait) => {
-    let t; return () => { clearTimeout(t); t = setTimeout(fn, wait); };
-  };
-  
-  window.addEventListener('resize', debounce(() => {
-    const ratio = track.scrollWidth > 0 ? track.scrollLeft / track.scrollWidth : 0;
-    scrollToIndex();
-    track.scrollLeft = ratio * track.scrollWidth;
-  }, 150));
-
-  scrollToIndex();
-}
-
-// Initialize carousel on load and when projects are updated
-initCarousel();
-
-/* ---------- Pixel Art 16x16 with enhanced animations ---------- */
-class PixelStudio {
-  constructor() {
-    this.GRID = 16;
-    this.gridEl = document.getElementById('pixelCanvas');
-    this.colorPicker = document.getElementById('colorPicker');
-    this.eraserBtn = document.getElementById('eraser');
-    this.clearBtn = document.getElementById('clearCanvas');
-    this.undoBtn = document.getElementById('undo');
-    this.saveBtn = document.getElementById('saveImage');
-    this.currentColor = this.colorPicker?.value || '#000000';
-    this.isEraser = false;
-    this.isDown = false;
-    this.history = [];
-    this._createGrid();
-    this._bind();
-  }
-  
-  _createGrid() {
-    this.gridEl.innerHTML = '';
-    for (let i = 0; i < this.GRID * this.GRID; i++) {
-      const cell = document.createElement('div');
-      cell.className = 'pixel';
-      cell.dataset.index = i;
-      cell.style.background = '#ffffff';
-      this.gridEl.appendChild(cell);
-    }
-  }
-  
-  _pushHistory() {
-    const snap = Array.from(this.gridEl.children).map(c => c.style.background || '#ffffff');
-    this.history.push(snap);
-    if (this.history.length > 60) this.history.shift();
-  }
-  
-  _undo() {
-    if (!this.history.length) return;
-    const arr = this.history.pop();
-    Array.from(this.gridEl.children).forEach((c, i) => {
-      c.style.transition = 'background 0.12s ease';
-      c.style.background = arr[i] || '#ffffff';
-    });
-  }
-  
-  _bind() {
-    const cells = this.gridEl;
-    
-    cells.addEventListener('pointerdown', (e) => {
-      const t = e.target;
-      if (!t.classList.contains('pixel')) return;
-      this._pushHistory();
-      this.isDown = true;
-      this._paint(t);
-    });
-    
-    window.addEventListener('pointerup', () => this.isDown = false);
-    
-    cells.addEventListener('pointermove', (e) => {
-      if (!this.isDown) return;
-      const el = document.elementFromPoint(e.clientX, e.clientY);
-      if (el && el.classList.contains('pixel')) this._paint(el);
-    });
-    
-    cells.addEventListener('click', (e) => {
-      const t = e.target;
-      if (!t.classList.contains('pixel')) return;
-      this._pushHistory();
-      this._paint(t);
-    });
-    
-    this.colorPicker?.addEventListener('input', (e) => {
-      this.currentColor = e.target.value;
-      this.isEraser = false;
-      this.eraserBtn.classList.remove('active');
-    });
-    
-    this.eraserBtn?.addEventListener('click', () => {
-      this.isEraser = !this.isEraser;
-      this.eraserBtn.classList.toggle('active', this.isEraser);
-    });
-    
-    this.clearBtn?.addEventListener('click', () => {
-      this._pushHistory();
-      Array.from(this.gridEl.children).forEach((c, i) => {
-        c.style.transition = `background 0.08s ease ${i * 0.004}s`;
-        c.style.background = '#ffffff';
-      });
-    });
-    
-    this.undoBtn?.addEventListener('click', () => this._undo());
-    this.saveBtn?.addEventListener('click', () => this._savePNG());
-    
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'c') {
-        this._pushHistory();
-        Array.from(this.gridEl.children).forEach((c, i) => {
-          c.style.transition = `background 0.08s ease ${i * 0.004}s`;
-          c.style.background = '#ffffff';
-        });
-      }
-      if (e.key === 'z') this._undo();
-      if (e.key === 's') this._savePNG();
-    });
-  }
-  
-  _paint(cell) {
-    cell.style.background = this.isEraser ? '#ffffff' : this.currentColor;
-  }
-  
-  _savePNG() {
-    const off = document.createElement('canvas');
-    off.width = this.GRID; off.height = this.GRID;
-    const ctx = off.getContext('2d');
-    const cells = Array.from(this.gridEl.children);
-    
-    cells.forEach((c, i) => {
-      const x = i % this.GRID;
-      const y = Math.floor(i / this.GRID);
-      ctx.fillStyle = window.getComputedStyle(c).backgroundColor || '#ffffff';
-      ctx.fillRect(x, y, 1, 1);
-    });
-    
-    const scale = 16;
-    const out = document.createElement('canvas');
-    out.width = this.GRID * scale; out.height = this.GRID * scale;
-    const octx = out.getContext('2d');
-    octx.imageSmoothingEnabled = false;
-    octx.drawImage(off, 0, 0, out.width, out.height);
-    
-    out.toBlob((blob) => {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'pixel-art.png';
-      document.body.appendChild(a); a.click(); a.remove();
-      URL.revokeObjectURL(url);
-      
-      // visual feedback
-      this.saveBtn.textContent = '✓ Saved!';
-      this.saveBtn.style.background = 'linear-gradient(90deg, #308a11, #2CE69B)';
-      this.saveBtn.style.color = 'white';
-      setTimeout(() => {
-        this.saveBtn.textContent = 'Save PNG';
-        this.saveBtn.style.background = '';
-        this.saveBtn.style.color = '';
-      }, 1400);
-    }, 'image/png');
-  }
-}
-
-/* ---------- Gentle scroll-based drift ---------- */
-function onScrollDrift() {
-  const docH = document.documentElement.scrollHeight - window.innerHeight;
-  const sc = docH > 0 ? window.scrollY / docH : 0;
-  const drift1 = 30 + sc * 6;
-  const drift2 = 70 - sc * 6;
-  const drift3 = 40 + sc * 4;
-  document.body.style.backgroundPosition = `${drift1}% ${15 + sc * 6}%, ${drift2}% ${80 - sc * 6}%, ${drift3}% ${65 - sc * 4}%`;
-}
-
-window.addEventListener('scroll', onScrollDrift, { passive: true });
-onScrollDrift();
-
-/* ---------- Init on DOMContentLoaded ---------- */
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.reveal').forEach(el => {
-    if (el.getBoundingClientRect().top < window.innerHeight * 0.86) {
-      el.classList.add('in-view');
-    }
-  });
-  
-  window.pixelStudio = new PixelStudio();
-  
-  // Dynamic GitHub Code Fetcher
-  initGitHubCode();
-});
-
-async function initGitHubCode() {
-  const repo = 'maxgarcia642/maxgarcia642.github.io';
-  const grid = document.getElementById('github-terminals');
-  if (!grid) return;
-
-  try {
-    const res = await fetch(`https://api.github.com/repos/${repo}/contents`);
-    if (!res.ok) throw new Error('Failed to fetch repo contents');
-    const files = await res.json();
-    
-    // Filter for code files and limit to prevent massive API usage if repo grows huge
-    const allowedExts = ['.html', '.css', '.js', '.json', '.py', '.java', '.cpp', '.md', '.replit', '.gitignore'];
-    const codeFiles = files.filter(f => f.type === 'file' && allowedExts.some(ext => f.name.endsWith(ext)));
-
-    grid.innerHTML = '';
-    
-    for (const file of codeFiles) {
-      const card = document.createElement('article');
-      card.className = 'terminal-card floating';
-      card.dataset.raw = file.download_url;
-      
-      const ext = file.name.split('.').pop();
-      const langMap = { 'js': 'js', 'html': 'html', 'css': 'css', 'py': 'python', 'java': 'java', 'cpp': 'cpp', 'json': 'js', 'md': 'markdown', 'replit': 'text', 'gitignore': 'text' };
-      const lang = langMap[ext] || 'text';
-
-      card.innerHTML = `
-        <header class="term-header">
-          <div class="traffic"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-          <div class="term-title">${file.name}</div>
-        </header>
-        <pre class="terminal"><code data-lang="${lang}">// Loading...</code></pre>
-        <a class="code-link" href="${file.html_url}" target="_blank" rel="noopener">Open on GitHub</a>
-      `;
-      
-      grid.appendChild(card);
-      fetchAndHighlight(card);
-    }
-  } catch (e) {
-    console.error('GitHub fetch error:', e);
-    grid.innerHTML = '<p class="muted">Failed to load live code from GitHub.</p>';
-  }
-}
-
-async function fetchAndHighlight(card) {
-  const codeEl = card.querySelector('code');
-  const lang = codeEl.getAttribute('data-lang') || 'text';
-  const raw = card.dataset.raw || '';
-  
-  const content = await fetchWithTimeout(raw, 5000);
-  if (content) {
-    codeEl.innerHTML = tinyHighlight(content, lang);
-    
-    const copyBtn = document.createElement('button');
-    copyBtn.className = 'copy-btn';
-    copyBtn.textContent = 'Copy';
-    card.querySelector('.term-header')?.appendChild(copyBtn);
-    
-    copyBtn.addEventListener('click', async () => {
-      await navigator.clipboard.writeText(content);
-      copyBtn.textContent = '✓ Copied!';
-      setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1600);
-    });
-  } else {
-    codeEl.textContent = '// Failed to load code.';
-  }
-}
-
-/* ---------- Project viewer modal ---------- */
-(function(){
-  const modal = document.createElement('div');
-  modal.className = 'viewer-modal';
-  modal.innerHTML = `
-    <div class="viewer-panel" role="dialog" aria-modal="true" tabindex="-1">
-      <div class="viewer-header">
-        <div class="viewer-title">Project Preview</div>
-        <div>
-          <button class="viewer-close" aria-label="Close preview">✕</button>
-        </div>
-      </div>
-      <div class="viewer-body">
-        <div class="viewer-loading" style="display: none; padding: 40px; text-align: center;">
-          <p>Loading document...</p>
-          <p class="muted small">This may take up to a minute for OneDrive files</p>
-        </div>
-        <div class="viewer-error" style="display: none; padding: 40px; text-align: center;">
-          <p style="color: #d32f2f; font-weight: 600;">This item won't load right now</p>
-          <p class="muted">Please try one of these links:</p>
-          <div class="viewer-fallback-links" style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px; align-items: center;"></div>
-        </div>
-        <iframe src="" title="Project preview" sandbox="allow-same-origin allow-scripts allow-popups allow-forms" allow="fullscreen" style="display: block;"></iframe>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(modal);
-
-  const panel = modal.querySelector('.viewer-panel');
-  const iframe = modal.querySelector('iframe');
-  const closeBtn = modal.querySelector('.viewer-close');
-  const titleEl = modal.querySelector('.viewer-title');
-  const loadingEl = panel.querySelector('.viewer-loading');
-  const errorEl = panel.querySelector('.viewer-error');
-  const fallbackLinksEl = panel.querySelector('.viewer-fallback-links');
-  const iframeContainer = iframe.parentElement;
-
-  function openViewer(src, title = 'Project Preview', originalLink = '', fallbackLinks = []) {
-    // Reset UI state
-    iframe.style.display = 'none';
-    loadingEl.style.display = 'block';
-    errorEl.style.display = 'none';
-    fallbackLinksEl.innerHTML = '';
-    iframe.src = '';
-    
-    titleEl.textContent = title;
-    
-    // Remove any existing "Open in Docs" button
-    const openBtn = panel.querySelector('.viewer-open-new');
-    if (openBtn) {
-      openBtn.remove();
-    }
-    
-    modal.classList.add('open');
-    panel.focus();
-    document.documentElement.style.overflow = 'hidden';
-    
-    // Set up error handling
-    let loadTimeout;
-    let hasLoaded = false;
-    
-    const handleLoad = () => {
-      hasLoaded = true;
-      clearTimeout(loadTimeout);
-      loadingEl.style.display = 'none';
-      iframe.style.display = 'block';
-      
-      // Check if iframe content indicates an error (OneDrive login page, etc.)
-      setTimeout(() => {
-        try {
-          // Try to detect if we're seeing an error page
-          const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-          if (iframeDoc && iframeDoc.body) {
-            const bodyText = iframeDoc.body.innerText || iframeDoc.body.textContent || '';
-            // Check for common error indicators
-            if (bodyText.includes('This item won\'t load') || 
-                bodyText.includes('Sign in') && bodyText.includes('OneDrive') ||
-                bodyText.includes('Microsoft OneDrive') && bodyText.length < 500) {
-              showError(originalLink, fallbackLinks);
-              return;
-            }
-          }
-        } catch (e) {
-          // Cross-origin, can't check - assume it loaded fine
-        }
-      }, 2000);
-    };
-    
-    const handleError = () => {
-      if (!hasLoaded) {
-        clearTimeout(loadTimeout);
-        showError(originalLink, fallbackLinks);
-      }
-    };
-    
-    const showError = (origLink, fallbacks) => {
-      iframe.style.display = 'none';
-      loadingEl.style.display = 'none';
-      errorEl.style.display = 'block';
-      
-      // Add fallback links
-      const linksToShow = fallbacks && fallbacks.length > 0 ? fallbacks : (origLink ? [origLink] : []);
-      linksToShow.forEach((link, idx) => {
-        const linkEl = document.createElement('a');
-        linkEl.href = link;
-        linkEl.target = '_blank';
-        linkEl.rel = 'noopener';
-        linkEl.className = 'btn primary';
-        linkEl.style.cssText = 'text-decoration: none; padding: 10px 20px; margin: 8px; display: inline-block;';
-        linkEl.textContent = `Open Link ${idx + 1}`;
-        fallbackLinksEl.appendChild(linkEl);
-      });
-    };
-    
-    // Set timeout for OneDrive (takes ~1 minute)
-    loadTimeout = setTimeout(() => {
-      if (!hasLoaded) {
-        // For OneDrive, give it more time
-        if (src.includes('onedrive') || src.includes('1drv.ms')) {
-          // Already waited, check if it loaded
-          setTimeout(() => {
-            if (!hasLoaded) {
-              showError(originalLink, fallbackLinks);
-            }
-          }, 30000); // Give it another 30 seconds
-        } else {
-          showError(originalLink, fallbackLinks);
-        }
-      }
-    }, 65000); // 65 seconds for OneDrive
-    
-    // Set up iframe load handlers
-    iframe.onload = handleLoad;
-    iframe.onerror = handleError;
-    
-    // Start loading
-    iframe.src = src;
-  }
-
-  function closeViewer() {
-    modal.classList.remove('open');
-    iframe.src = '';
-    document.documentElement.style.overflow = '';
-  }
-
-  closeBtn.addEventListener('click', closeViewer);
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeViewer();
-  });
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('open')) closeViewer();
-  });
-
-  document.addEventListener('click', (e) => {
-    const exp = e.target.closest('.expand-btn');
-    if (exp) {
-      // Handle resume expand
-      if (exp.id === 'resumeExpand') {
-        const src = document.getElementById('resumeFrame').src;
-        if (src && src !== 'about:blank') {
-          openViewer(src, 'Resume Preview', '', []);
-          e.preventDefault();
-          return;
-        }
-      }
-      // Handle project card expand
-      const card = exp.closest('.post-card');
-      if (!card) return;
-      // Skip if file is too large to embed
-      if (card.dataset.tooLarge === 'true') {
-        e.preventDefault();
-        return;
-      }
-      const src = card.dataset.src;
-      const originalLink = card.dataset.originalLink || '';
-      const fallbackLinksStr = card.dataset.fallbackLinks || '[]';
-      let fallbackLinks = [];
+/* ============================== MUSIC ================================== */
+/* Never autoplays. First click unlocks; preference remembered; one persistent
+   element so theme switches don't restart the track. Drop royalty-free MP3s
+   in assets/music/ (see assets/music/README.md for licensing rules). */
+(function musicInit() {
+  const btn = $("#musicBtn"), audio = $("#bgm");
+  if (!btn || !audio) return;
+  let wants = false;
+  try { wants = localStorage.getItem("mg-music") === "on"; } catch (e) {}
+  // Even if the user previously said "on", browsers require a fresh gesture:
+  if (wants) btn.title = "Music was on last visit — click to resume (browsers require a click)";
+  btn.addEventListener("click", async () => {
+    if (audio.paused) {
       try {
-        fallbackLinks = JSON.parse(fallbackLinksStr);
-      } catch (e) {
-        fallbackLinks = [];
+        await audio.play();
+        btn.setAttribute("aria-pressed", "true"); btn.textContent = "♫";
+        try { localStorage.setItem("mg-music", "on"); } catch (e) {}
+      } catch (err) {
+        btn.title = "No track found — add an MP3 at assets/music/track1.mp3 (royalty-free only; see assets/music/README.md)";
       }
-      const title = card.querySelector('h3')?.innerText || 'Project Preview';
-      if (src) openViewer(src, title, originalLink, fallbackLinks);
-      e.preventDefault();
-      return;
-    }
-    
-    const post = e.target.closest('.post-card');
-    if (post && !e.target.classList.contains('expand-btn') && !e.target.closest('.post-preview iframe') && !e.target.closest('a')) {
-      // Skip if file is too large to embed
-      if (post.dataset.tooLarge === 'true') {
-        return;
-      }
-      const src = post.dataset.src;
-      const originalLink = post.dataset.originalLink || '';
-      const fallbackLinksStr = post.dataset.fallbackLinks || '[]';
-      let fallbackLinks = [];
-      try {
-        fallbackLinks = JSON.parse(fallbackLinksStr);
-      } catch (e) {
-        fallbackLinks = [];
-      }
-      const title = post.querySelector('h3')?.innerText || 'Project Preview';
-      if (src) openViewer(src, title, originalLink, fallbackLinks);
-    }
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && document.activeElement && document.activeElement.classList.contains('post-card')) {
-      const card = document.activeElement;
-      // Skip if file is too large to embed
-      if (card.dataset.tooLarge === 'true') {
-        return;
-      }
-      const src = card.dataset.src;
-      const originalLink = card.dataset.originalLink || '';
-      const fallbackLinksStr = card.dataset.fallbackLinks || '[]';
-      let fallbackLinks = [];
-      try {
-        fallbackLinks = JSON.parse(fallbackLinksStr);
-      } catch (e) {
-        fallbackLinks = [];
-      }
-      const title = card.querySelector('h3')?.innerText || 'Project Preview';
-      if (src) openViewer(src, title, originalLink, fallbackLinks);
+    } else {
+      audio.pause();
+      btn.setAttribute("aria-pressed", "false"); btn.textContent = "♪";
+      try { localStorage.setItem("mg-music", "off"); } catch (e) {}
     }
   });
 })();
+
+/* ============================ REVEAL =================================== */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add("in-view"); revealObserver.unobserve(en.target); } });
+}, { threshold: 0.12 });
+$$(".reveal").forEach(r => revealObserver.observe(r));
+
+/* ========================= PDF.js LAZY VIEWER ========================== */
+/* The fix for "file too large to embed": pages render one-by-one only when
+   scrolled into view, inside .pdf-shell containers or the modal. */
+function pdfReady() {
+  return new Promise((resolve, reject) => {
+    let tries = 0;
+    (function poll() {
+      if (window.pdfjsLib) {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+        resolve(window.pdfjsLib);
+      } else if (++tries > 100) reject(new Error("PDF.js failed to load"));
+      else setTimeout(poll, 60);
+    })();
+  });
+}
+
+async function renderPdfInto(shell, url) {
+  shell.innerHTML = `<p class="pdf-status">Opening ${url.split("/").pop()}…</p>`;
+  let lib;
+  try { lib = await pdfReady(); }
+  catch { shell.innerHTML = `<p class="pdf-status">Viewer library blocked — use the download link instead.</p>`; return; }
+  let doc;
+  try { doc = await lib.getDocument(url).promise; }
+  catch (err) {
+    shell.innerHTML = `<p class="pdf-status">Couldn't open this PDF (${err.message}). The download link still works.</p>`;
+    return;
+  }
+  shell.innerHTML = "";
+  const status = document.createElement("p");
+  status.className = "pdf-status";
+  status.textContent = `${doc.numPages} pages — rendering as you scroll.`;
+  shell.appendChild(status);
+
+  const pageObserver = new IntersectionObserver(async (entries) => {
+    for (const en of entries) {
+      if (!en.isIntersecting) continue;
+      const holder = en.target;
+      pageObserver.unobserve(holder);
+      const pageNum = Number(holder.dataset.page);
+      try {
+        const page = await doc.getPage(pageNum);
+        const scale = Math.min(1.4, (shell.clientWidth - 24) / page.getViewport({ scale: 1 }).width);
+        const vp = page.getViewport({ scale: scale * Math.min(devicePixelRatio || 1, 2) });
+        const canvas = document.createElement("canvas");
+        canvas.width = vp.width; canvas.height = vp.height;
+        canvas.setAttribute("role", "img");
+        canvas.setAttribute("aria-label", `Page ${pageNum} of ${doc.numPages}`);
+        holder.replaceWith(canvas);
+        await page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise;
+      } catch (e) { holder.textContent = `Page ${pageNum} failed to render.`; }
+    }
+  }, { root: shell, rootMargin: "300px" });
+
+  for (let i = 1; i <= doc.numPages; i++) {
+    const holder = document.createElement("div");
+    holder.className = "pdf-status";
+    holder.dataset.page = i;
+    holder.textContent = `Page ${i}…`;
+    holder.style.minHeight = "120px";
+    shell.appendChild(holder);
+    pageObserver.observe(holder);
+  }
+}
+
+/* Resume: start only when the intro section is actually visible */
+(function lazyResume() {
+  const shell = $("#resumeShell");
+  if (!shell) return;
+  const io = new IntersectionObserver((entries) => {
+    if (entries.some(e => e.isIntersecting)) {
+      io.disconnect();
+      renderPdfInto(shell, shell.dataset.pdf);
+    }
+  }, { rootMargin: "200px" });
+  io.observe(shell);
+})();
+
+/* ============================== MODAL ================================== */
+const modal = $("#modal"), modalContent = $("#modalContent");
+function openModal(node) {
+  modalContent.innerHTML = "";
+  modalContent.appendChild(node);
+  if (typeof modal.showModal === "function") modal.showModal();
+  else modal.setAttribute("open", "");
+}
+$("#modalClose")?.addEventListener("click", () => { modal.close?.(); modal.removeAttribute("open"); modalContent.innerHTML = ""; });
+modal?.addEventListener("click", (e) => { if (e.target === modal) { modal.close?.(); modalContent.innerHTML = ""; } });
+
+$("#resumeExpand")?.addEventListener("click", () => {
+  const shell = document.createElement("div");
+  shell.className = "pdf-shell"; shell.style.maxHeight = "78vh";
+  openModal(shell);
+  renderPdfInto(shell, $("#resumeShell").dataset.pdf);
+});
+
+/* Posts: on-site viewer + drive preview */
+document.addEventListener("click", (e) => {
+  const pdfBtn = e.target.closest(".view-pdf");
+  if (pdfBtn) {
+    const shell = document.createElement("div");
+    shell.className = "pdf-shell"; shell.style.maxHeight = "78vh";
+    const h = document.createElement("h3"); h.textContent = pdfBtn.dataset.title;
+    const wrap = document.createElement("div"); wrap.append(h, shell);
+    openModal(wrap);
+    renderPdfInto(shell, pdfBtn.dataset.pdf);
+  }
+  const frameBtn = e.target.closest(".view-frame");
+  if (frameBtn) {
+    const wrap = document.createElement("div");
+    wrap.innerHTML = `<h3></h3><iframe class="embed-live" style="aspect-ratio:4/5" loading="lazy" allow="fullscreen"></iframe>
+      <p class="muted small">If this frame stays blank the host is refusing to be embedded — use the Share/Direct links on the card.</p>`;
+    wrap.querySelector("h3").textContent = frameBtn.dataset.title;
+    wrap.querySelector("iframe").src = frameBtn.dataset.frame;
+    openModal(wrap);
+  }
+});
+
+/* ====================== ARCADE FACADES ================================= */
+/* Click-to-activate everywhere (lite-youtube pattern): nothing heavy loads
+   until asked. Cross-origin frame-blocking can't be reliably detected from
+   JS, so the "Open in new tab" escape hatch stays visible permanently. */
+document.addEventListener("click", (e) => {
+  const f = e.target.closest(".facade[data-embed], .facade[data-open]");
+  if (!f) return;
+  const embed = f.dataset.embed;
+  if (embed) {
+    const frame = document.createElement("iframe");
+    frame.className = "embed-live";
+    frame.loading = "lazy";
+    frame.allow = "fullscreen; autoplay; gamepad";
+    frame.src = embed;
+    frame.title = f.getAttribute("aria-label") || "Embedded project";
+    f.replaceWith(frame);
+  } else if (f.dataset.open) {
+    window.open(f.dataset.open, "_blank", "noopener");
+  }
+});
+
+/* ================= MARKET PULSE — live crypto refresh ================== */
+/* Honest scope: only the chips marked live (BTC/ETH) refresh, via CoinGecko's
+   free CORS-open endpoint. Everything else stays dated snapshot data. */
+$("#pulseRefresh")?.addEventListener("click", async (e) => {
+  const btn = e.currentTarget;
+  btn.disabled = true; btn.textContent = "↻ Fetching…";
+  try {
+    const chips = $$("[data-coingecko]");
+    const ids = chips.map(c => c.dataset.coingecko).join(",");
+    const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const now = new Date().toLocaleTimeString();
+    chips.forEach(c => {
+      const price = data[c.dataset.coingecko]?.usd;
+      if (price) {
+        c.querySelector(".p-value").textContent = `$${price.toLocaleString()}`;
+        c.querySelector(".p-label").textContent = c.querySelector(".p-label").textContent.replace(/·.*/, `· live @ ${now}`);
+      }
+    });
+    btn.textContent = "↻ Refresh crypto";
+  } catch (err) {
+    btn.textContent = "↻ Refresh failed — rate limit? Try later";
+  } finally { btn.disabled = false; }
+});
+
+/* TradingView loads only on request (heavy third-party frame) */
+$("#tvLoad")?.addEventListener("click", (e) => {
+  const slot = $("#tvSlot");
+  slot.innerHTML = `<iframe class="embed-live" style="height:400px;aspect-ratio:auto" loading="lazy"
+    src="https://s.tradingview.com/widgetembed/?symbol=NASDAQ%3AAAPL&interval=D&hidesidelegend=0&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=%5B%5D&theme=light&style=1&timezone=Etc%2FUTC&locale=en"
+    title="TradingView Widget"></iframe>`;
+  e.currentTarget.remove();
+});
+
+/* ==================== MINI TERMINALS (tiny by design) ================== */
+const TERMINAL_FILES = ["index.html", "styles.css", "themes.css", "script.js", "content-loader.js", "admin.html"];
+(async function terminals() {
+  const row = $("#github-terminals");
+  if (!row) return;
+  const base = "https://raw.githubusercontent.com/maxgarcia642/maxgarcia642.github.io/main/";
+  for (const name of TERMINAL_FILES) {
+    const card = document.createElement("button");
+    card.className = "mini-terminal";
+    card.type = "button";
+    card.innerHTML = `<div class="t-name">${name}</div><pre>fetching…</pre>`;
+    card.addEventListener("click", () => {
+      const pre = document.createElement("pre");
+      pre.style.cssText = "white-space:pre-wrap;word-break:break-word;font-family:var(--font-mono);font-size:.78rem;max-height:70vh;overflow:auto";
+      pre.textContent = card.dataset.full || "Still fetching…";
+      const h = document.createElement("h3"); h.textContent = name;
+      const wrap = document.createElement("div"); wrap.append(h, pre);
+      openModal(wrap);
+    });
+    row.appendChild(card);
+    fetch(base + name).then(r => r.ok ? r.text() : Promise.reject(r.status))
+      .then(text => {
+        card.dataset.full = text;
+        card.querySelector("pre").textContent = text.slice(0, 400);
+      })
+      .catch(() => { card.querySelector("pre").textContent = "// live fetch unavailable (offline or repo path changed)"; });
+  }
+})();
+
+/* ======================= POSTS CAROUSEL BUTTONS ======================== */
+(function carousel() {
+  const track = $("#projectTrack");
+  if (!track) return;
+  const step = () => Math.min(340, track.clientWidth * 0.8);
+  $(".posts-carousel .prev")?.addEventListener("click", () => track.scrollBy({ left: -step(), behavior: prefersReduced ? "auto" : "smooth" }));
+  $(".posts-carousel .next")?.addEventListener("click", () => track.scrollBy({ left: step(), behavior: prefersReduced ? "auto" : "smooth" }));
+})();
+
+/* ========================= PIXEL ART STUDIO ============================
+   v2.1: palettes, resizable grid, mirror mode. Feature set inspired by the
+   mimopixel editor surfaced in the Grok round-1 scout; implemented natively
+   (zero deps) because that repo ships no LICENSE file — ideas only, no code. */
+(function pixelStudio() {
+  const grid = $("#pixelCanvas");
+  if (!grid) return;
+
+  /* Game Boy = canonical DMG greens; PICO-8 = Lexaloffle's published 16. */
+  const PALETTES = {
+    pico8: ["#000000", "#1D2B53", "#7E2553", "#008751", "#AB5236", "#5F574F", "#C2C3C7", "#FFF1E8", "#FF004D", "#FFA300", "#FFEC27", "#00E436", "#29ADFF", "#83769C", "#FF77A8", "#FFCCAA"],
+    gameboy: ["#0F380F", "#306230", "#8BAC0F", "#9BBC0F"],
+    mono: ["#000000", "#404040", "#808080", "#C0C0C0", "#FFFFFF"]
+  };
+
+  let SIZE = 16, cells = [], history = [];
+  let color = "#000000", erasing = false, painting = false, mirror = false;
+
+  function buildGrid(size) {
+    SIZE = size;
+    grid.style.setProperty("--px-cols", String(size));
+    grid.setAttribute("aria-label", `Pixel art canvas: ${size} by ${size} grid. Click or drag to paint.`);
+    grid.innerHTML = "";
+    cells = []; history = [];
+    for (let i = 0; i < size * size; i++) {
+      const px = document.createElement("div");
+      px.className = "px";
+      px.style.background = "#ffffff";
+      grid.appendChild(px);
+      cells.push(px);
+    }
+  }
+  buildGrid(SIZE);
+
+  const snapshot = () => { history.push(cells.map(c => c.style.background)); if (history.length > 60) history.shift(); };
+  const setCell = (i, bg) => { if (i >= 0 && i < cells.length) cells[i].style.background = bg; };
+  const paint = (px) => {
+    if (!px?.classList.contains("px")) return;
+    const i = cells.indexOf(px);
+    if (i < 0) return;
+    const bg = erasing ? "#ffffff" : color;
+    setCell(i, bg);
+    if (mirror) {
+      const row = Math.floor(i / SIZE), col = i % SIZE;
+      setCell(row * SIZE + (SIZE - 1 - col), bg);
+    }
+  };
+
+  grid.addEventListener("pointerdown", (e) => { snapshot(); painting = true; paint(e.target); try { grid.setPointerCapture(e.pointerId); } catch (_) {} });
+  grid.addEventListener("pointermove", (e) => { if (painting) paint(document.elementFromPoint(e.clientX, e.clientY)); });
+  addEventListener("pointerup", () => painting = false);
+
+  /* Palette swatches */
+  const paletteRow = $("#paletteRow");
+  function renderPalette(name) {
+    if (!paletteRow) return;
+    if (name === "free" || !PALETTES[name]) { paletteRow.hidden = true; paletteRow.innerHTML = ""; return; }
+    paletteRow.hidden = false;
+    paletteRow.innerHTML = "";
+    PALETTES[name].forEach((hex, idx) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "swatch";
+      b.style.background = hex;
+      b.title = hex;
+      b.setAttribute("aria-label", `Color ${hex}`);
+      b.setAttribute("aria-pressed", String(idx === 0));
+      b.addEventListener("click", () => {
+        color = hex; erasing = false;
+        const picker = $("#colorPicker"); if (picker) picker.value = hex;
+        paletteRow.querySelectorAll(".swatch").forEach(s => s.setAttribute("aria-pressed", String(s === b)));
+      });
+      paletteRow.appendChild(b);
+    });
+    color = PALETTES[name][0]; erasing = false;
+    const picker = $("#colorPicker"); if (picker) picker.value = PALETTES[name][0];
+  }
+  $("#paletteSelect")?.addEventListener("change", (e) => renderPalette(e.target.value));
+
+  $("#gridSizeSelect")?.addEventListener("change", (e) => {
+    const next = parseInt(e.target.value, 10);
+    const dirty = cells.some(c => c.style.background !== "#ffffff" && c.style.background !== "rgb(255, 255, 255)");
+    if (dirty && !confirm(`Switch to ${next}×${next}? The current canvas will be cleared.`)) {
+      e.target.value = String(SIZE);
+      return;
+    }
+    buildGrid(next);
+  });
+
+  const mirrorBtn = $("#mirrorToggle");
+  const setMirror = (on) => {
+    mirror = on;
+    if (mirrorBtn) { mirrorBtn.setAttribute("aria-pressed", String(on)); mirrorBtn.textContent = `Mirror: ${on ? "on" : "off"}`; }
+  };
+  mirrorBtn?.addEventListener("click", () => setMirror(!mirror));
+
+  $("#colorPicker")?.addEventListener("input", (e) => {
+    color = e.target.value; erasing = false;
+    paletteRow?.querySelectorAll(".swatch").forEach(s => s.setAttribute("aria-pressed", "false"));
+  });
+  $("#eraser")?.addEventListener("click", () => erasing = !erasing);
+  $("#undo")?.addEventListener("click", () => {
+    const prev = history.pop();
+    if (prev && prev.length === cells.length) prev.forEach((bg, i) => cells[i].style.background = bg);
+  });
+  $("#clearCanvas")?.addEventListener("click", () => { snapshot(); cells.forEach(c => c.style.background = "#ffffff"); });
+  $("#saveImage")?.addEventListener("click", () => {
+    const scale = Math.max(8, Math.round(320 / SIZE));
+    const c = document.createElement("canvas");
+    c.width = c.height = SIZE * scale;
+    const ctx = c.getContext("2d");
+    cells.forEach((cell, i) => {
+      ctx.fillStyle = cell.style.background || "#ffffff";
+      ctx.fillRect((i % SIZE) * scale, Math.floor(i / SIZE) * scale, scale, scale);
+    });
+    const a = document.createElement("a");
+    a.download = `pixel-art-studio-max-${SIZE}x${SIZE}.png`;
+    a.href = c.toDataURL("image/png");
+    a.click();
+  });
+  addEventListener("keydown", (e) => {
+    if (e.target.matches("input, textarea, select")) return;
+    if (e.key.toLowerCase() === "c") $("#clearCanvas")?.click();
+    if (e.key.toLowerCase() === "z") $("#undo")?.click();
+    if (e.key.toLowerCase() === "m") mirrorBtn?.click();
+    if (e.key.toLowerCase() === "s") { e.preventDefault(); $("#saveImage")?.click(); }
+  });
+})();
+
+/* ============================ SITE SEARCH ==============================
+   Fuse.js 7.5.0 (Apache-2.0, vendored at /vendor/fuse/) loads lazily on the
+   first open via dynamic import; if it can't load, a built-in substring
+   scorer keeps search working. Index is built once from window.MG data. */
+(function siteSearch() {
+  const dlg = $("#searchModal"), input = $("#searchInput"), results = $("#searchResults");
+  const openBtn = $("#searchBtn"), note = $("#searchEngineNote");
+  if (!dlg || !input || !results) return;
+
+  let docs = null, fuse = null, engineTried = false;
+
+  function buildDocs() {
+    const MG = window.MG || {};
+    const out = [
+      { kind: "Section", title: "Introduction & Resume", text: "resume pdf bio maximiliano garcia", href: "#introduction" },
+      { kind: "Section", title: "Programming Works", text: "source code mini terminals live repo", href: "#programming" },
+      { kind: "Section", title: "Posts", text: "haas hall university of arkansas nwti reports", href: "#posts" },
+      { kind: "Section", title: "The Financial Liberty Project", text: "alternative investments market pulse research", href: "#finance" },
+      { kind: "Section", title: "Games & Projects Arcade", text: "pixel art studio games apps", href: "#arcade" },
+      { kind: "Section", title: "Connect", text: "linktree links socials", href: "#connect" }
+    ];
+    (MG.content?.projects || []).forEach(p => out.push({
+      kind: "Post", title: p.title || "", text: [p.subtitle, p.description].filter(Boolean).join(" "), href: "#posts"
+    }));
+    (MG.content?.arcade || []).forEach(g => out.push({
+      kind: g.status === "soon" ? "Coming soon" : "Arcade", title: g.title || "",
+      text: [g.blurb, g.badge].filter(Boolean).join(" "),
+      href: "#arcade", external: g.openUrl || null
+    }));
+    (MG.finance?.works || []).forEach(w => out.push({
+      kind: w.status === "soon" ? "Coming soon" : "Financial Liberty", title: w.title || "",
+      text: [w.blurb, ...(w.flags || [])].join(" "), href: "#finance", searchId: w.id
+    }));
+    (MG.finance?.researchDesk || []).forEach(g => (g.links || []).forEach(l => out.push({
+      kind: "Research Desk", title: l.label || l.title || "", text: g.group || g.title || "", external: l.url || l.href
+    })));
+    document.querySelectorAll(".tree-link").forEach(a => out.push({
+      kind: "Connect", title: (a.textContent || "").trim().replace(/\s+/g, " "), text: "connect link", external: a.href
+    }));
+    return out;
+  }
+
+  async function ensureEngine() {
+    if (docs === null) docs = buildDocs();
+    if (engineTried) return;
+    engineTried = true;
+    try {
+      const mod = await import("./vendor/fuse/fuse.min.mjs");
+      const Fuse = mod.default || mod.Fuse;
+      fuse = new Fuse(docs, {
+        keys: [{ name: "title", weight: 0.7 }, { name: "text", weight: 0.3 }],
+        threshold: 0.38, ignoreLocation: true, minMatchCharLength: 2
+      });
+      if (note) note.textContent = "Fuzzy search · Fuse.js 7.5.0 (vendored, Apache-2.0)";
+    } catch (_) {
+      fuse = null;
+      if (note) note.textContent = "Basic search (Fuse.js unavailable — substring fallback)";
+    }
+  }
+
+  function fallbackSearch(q) {
+    const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
+    return docs
+      .map(d => {
+        const hay = `${d.title} ${d.text}`.toLowerCase();
+        const hits = terms.filter(t => hay.includes(t)).length;
+        return { item: d, score: terms.length ? 1 - hits / terms.length : 1, hits };
+      })
+      .filter(r => r.hits > 0)
+      .sort((a, b) => a.score - b.score || a.item.title.localeCompare(b.item.title));
+  }
+
+  function run(q) {
+    results.innerHTML = "";
+    if (!q || q.trim().length < 2) {
+      results.innerHTML = `<div class="search-empty">Type at least two characters — works, projects, links, sections.</div>`;
+      return;
+    }
+    const found = (fuse ? fuse.search(q) : fallbackSearch(q)).slice(0, 12);
+    if (!found.length) {
+      results.innerHTML = `<div class="search-empty">Nothing matched “${q.replace(/[<>&]/g, "")}”.</div>`;
+      return;
+    }
+    found.forEach(({ item }) => {
+      const el = document.createElement(item.external ? "a" : "button");
+      el.className = "search-result";
+      if (item.external) { el.href = item.external; el.target = "_blank"; el.rel = "noopener"; }
+      else el.type = "button";
+      el.innerHTML = `<span class="kind">${item.kind}</span><strong>${item.title.replace(/[<>&]/g, "")}</strong>` +
+        (item.text ? `<span class="snippet">${item.text.slice(0, 110).replace(/[<>&]/g, "")}</span>` : "");
+      el.addEventListener("click", () => {
+        if (item.external) { closeSearch(); return; }
+        closeSearch();
+        let target = null;
+        if (item.searchId) target = document.querySelector(`[data-search-id="${item.searchId}"]`);
+        (target || document.querySelector(item.href))?.scrollIntoView({ behavior: prefersReduced ? "auto" : "smooth", block: "start" });
+      });
+      results.appendChild(el);
+    });
+  }
+
+  function openSearch() {
+    if (typeof dlg.showModal === "function") { if (!dlg.open) dlg.showModal(); }
+    else dlg.setAttribute("open", "");
+    ensureEngine().then(() => run(input.value));
+    setTimeout(() => input.focus(), 30);
+  }
+  function closeSearch() { dlg.close?.(); dlg.removeAttribute("open"); }
+
+  openBtn?.addEventListener("click", openSearch);
+  $("#searchClose")?.addEventListener("click", closeSearch);
+  dlg.addEventListener("click", (e) => { if (e.target === dlg) closeSearch(); });
+  input.addEventListener("input", () => run(input.value));
+  addEventListener("keydown", (e) => {
+    if (e.key === "/" && !e.target.matches("input, textarea, select")) { e.preventDefault(); openSearch(); }
+    if (e.key === "Escape" && dlg.open) closeSearch();
+  });
+  /* Rebuild the index if content arrives after a search already happened */
+  document.addEventListener("mg:content-ready", () => { docs = null; if (fuse) { engineTried = false; fuse = null; } });
+})();
+
+/* ============================ BOOT ===================================== */
+document.addEventListener("mg:content-ready", () => {
+  const current = document.documentElement.getAttribute("data-theme") || "aero";
+  $$(".theme-orb").forEach(o => o.setAttribute("aria-pressed", String(o.dataset.theme === current)));
+});
+syncFx();

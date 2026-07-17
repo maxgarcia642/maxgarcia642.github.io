@@ -1,0 +1,360 @@
+{
+  "sectionTitle": "The Financial Liberty Project",
+  "sectionTagline": "Verified research, real deliverables, honest flags. Patience pays. 🦞",
+  "marketPulse": {
+    "asOf": "2026-07-17",
+    "note": "Point-in-time figures, verified mid-July 2026. Crypto chips refresh live from CoinGecko when you press Refresh; everything else is dated snapshot data — treat it as context, not a quote feed.",
+    "items": [
+      {
+        "id": "gold",
+        "label": "Gold spot",
+        "value": "~$4,010/oz",
+        "context": "Record ~$5,602 on Jan 28, 2026, then pulled back. Historically elevated and volatile.",
+        "live": false
+      },
+      {
+        "id": "silver",
+        "label": "Silver",
+        "value": "supply-squeeze era",
+        "context": "Nominal record $121.67/oz Jan 29, 2026; gold/silver ratio ~50 in early 2026.",
+        "live": false
+      },
+      {
+        "id": "spx",
+        "label": "S&P 500",
+        "value": "~7,564",
+        "context": "As of Jul 16, 2026 (Yahoo Finance).",
+        "live": false
+      },
+      {
+        "id": "btc",
+        "label": "Bitcoin",
+        "value": "~$64K",
+        "context": "Mid-July 2026; ATH $126,198 on Oct 6, 2025. 2026 has been a crypto-winter year with a June–July rebound.",
+        "live": true,
+        "coingeckoId": "bitcoin"
+      },
+      {
+        "id": "eth",
+        "label": "Ethereum",
+        "value": "~$1.9K",
+        "context": "Mid-July 2026; ATH $4,953 Aug 24, 2025. Leading the recovery narrative.",
+        "live": true,
+        "coingeckoId": "ethereum"
+      },
+      {
+        "id": "cards",
+        "label": "Cards/TCG",
+        "value": "26.8M graded 2025",
+        "context": "+32% YoY (GemRate). Pokémon led with 16.1M; sports grading fell 12%. Modern sealed softened.",
+        "live": false
+      }
+    ]
+  },
+  "works": [
+    {
+      "id": "sustainability",
+      "emoji": "🌱",
+      "title": "DIY Outdoor/Home Sustainability & Savings",
+      "status": "live",
+      "updated": "2026-07",
+      "blurb": "The Self-Maintaining Property: a Northwest Arkansas blueprint for eco-resilient home systems on a $2,000 phased budget. Zone 7a Ozark specifics, solar + DIY biogas + Stirling integration, chickens and permaculture, Arkansas Act 278 and the expired §25D credit, safety protocols, and local NWA resources.",
+      "files": [
+        {
+          "label": "Blueprint (DOCX)",
+          "path": "files/Self_Maintaining_Property_NWA_Blueprint.docx"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "id": "alt-investments",
+      "emoji": "🚀",
+      "title": "Overall Alternative Investments",
+      "status": "live",
+      "updated": "2026-07",
+      "blurb": "Two ranked lists of alternative-investment platforms — realized (not advertised) returns, fees, liquidity, solvency risk, and a local-NWA alternative for every platform, benchmarked against VOO / QQQ / SCHD.",
+      "files": [
+        {
+          "label": "Ranked Workbook (XLSX)",
+          "path": "files/Alt_Investments_Two_Lists_v4.xlsx"
+        }
+      ],
+      "flags": [
+        "Sector honesty flag: fractional platforms showed real 2025–26 stress — Fundrise gated Equity-REIT redemptions (Oct 1, 2025), Masterworks' administrator cash fell to $3.5M with a founder-trust loan, Rally's FY2025 filing carries a going-concern qualification, Yieldstreet suspended redemptions. Verify current status before allocating."
+      ]
+    },
+    {
+      "id": "coins",
+      "emoji": "🪙",
+      "title": "(AltInv) Valuable Coin Collection",
+      "status": "live",
+      "updated": "2026-06",
+      "blurb": "Numismatics as an alternative investment for Northwest Arkansas: the November 2025 penny discontinuation, honest ROI (Lombra ~11%/yr on MS65 vs PCGS3000 ~1.11%/yr since 2000), grading economics and the 3× rule, NWA dealer map, Arkansas's zero sales/cap-gains tax edge on bullion, and a four-tier acquisition plan — plus the working acquisition workbook.",
+      "files": [
+        {
+          "label": "Research Monograph (DOCX)",
+          "path": "files/Numismatics_Alt_Investment_NWA.docx"
+        },
+        {
+          "label": "Acquisition Workbook (XLSX)",
+          "path": "files/Numismatics_Acquisition_Workbook_NWA.xlsx"
+        }
+      ],
+      "flags": [
+        "Bifurcated market: the broad PCGS3000 index sits ~45% below its 1989 peak while true rarities set records (Heritage FUN Jan 2026 ≈ $63.4M total). Generic coins mostly track metal content; elevated gold/silver supports that floor."
+      ]
+    },
+    {
+      "id": "casino",
+      "emoji": "🎰",
+      "title": "Las Vegas — Casino & Gambling Strategy",
+      "status": "live",
+      "updated": "2026-06",
+      "blurb": "A two-volume set: a 43-page academic research paper (127 sources) on casino mathematics, game theory, and gambling psychology, and a felt-green-and-gold field guide — the beatable three, full basic-strategy charts, bankroll architecture with stop-loss discipline, comps, and how not to get backed off.",
+      "files": [
+        {
+          "label": "Research Paper (DOCX)",
+          "path": "files/Casino_Gambling_Research_Paper.docx"
+        },
+        {
+          "label": "Strategy Guide (DOCX)",
+          "path": "files/Casino_Gambling_Strategy_Guide.docx"
+        }
+      ],
+      "flags": [
+        "EV honesty: stopping rules can't change expected value — they reshape the outcome distribution and cut total action. Context: 2025 Vegas visitation fell ~7.5% while Strip gaming revenue held ~$8.8B; the house's economics stayed strong even as crowds thinned."
+      ]
+    },
+    {
+      "id": "cards",
+      "emoji": "🃏",
+      "title": "(AltInv) Card Collecting Guide",
+      "status": "live",
+      "updated": "2026-06",
+      "blurb": "The complete 2026 field guide plus a five-workbook toolkit: release calendar through 2029, ROI ranker, Japanese-parallel tracker, sealed-product coverage, and a trophy/vintage tier list.",
+      "files": [
+        {
+          "label": "Field Guide (DOCX)",
+          "path": "files/Card_Collecting_Field_Guide_2026.docx"
+        },
+        {
+          "label": "Release Calendar 2026–2029 (XLSX)",
+          "path": "files/Card_Release_Calendar_2026_2029.xlsx"
+        },
+        {
+          "label": "ROI Ranker (XLSX)",
+          "path": "files/Card_ROI_Ranker_2026.xlsx"
+        },
+        {
+          "label": "JP Parallels (XLSX)",
+          "path": "files/Card_JP_Parallels_2026.xlsx"
+        },
+        {
+          "label": "Sealed Coverage (XLSX)",
+          "path": "files/Card_Sealed_Coverage_2026.xlsx"
+        },
+        {
+          "label": "Trophy & Vintage Tiers (XLSX)",
+          "path": "files/Card_Trophy_Vintage_Tier_2026.xlsx"
+        }
+      ],
+      "flags": [
+        "2025 was a record grading year (26.8M cards, +32% YoY; PSA ~72% share) and Pokémon's 30th anniversary is driving 2026 demand — but 6M new PSA-10 Pokémon slabs in 2025 pressure modern scarcity. Japanese exclusives strongest; modern sealed/singles softened."
+      ]
+    },
+    {
+      "id": "community",
+      "emoji": "🏘️",
+      "title": "(AltInv) Local Community Market",
+      "status": "live",
+      "updated": "2026-06",
+      "blurb": "The Northwest Arkansas Belonging Guide: a field manual for living local in the Ozarks — where good people gather, where your dollars stay home, and how to become a regular (not a tourist) across Fayetteville, Springdale, Rogers, Bentonville, and the two-hour world around them.",
+      "files": [
+        {
+          "label": "Belonging Guide (DOCX)",
+          "path": "files/NWA_Belonging_Guide.docx"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "id": "saas",
+      "emoji": "📈",
+      "title": "SaaS Master Investment Portfolio",
+      "status": "soon",
+      "updated": "2026-07",
+      "blurb": "Master portfolio construction for SaaS-sector investing — being implemented inside Flock Finance, the blockchain-powered decentralized exchange concept for tokenized multi-investment vehicles.",
+      "files": [],
+      "flags": []
+    },
+    {
+      "id": "insurance",
+      "emoji": "🛡️",
+      "title": "Insurance, Credit & Loan Comparisons",
+      "status": "soon",
+      "updated": "2026-06",
+      "blurb": "Policy and benefits comparisons across insurance products, credit lines, and loan structures — publishing after verification passes.",
+      "files": [],
+      "flags": []
+    },
+    {
+      "id": "timeshare",
+      "emoji": "🏝️",
+      "title": "Wyndham Presidential Timeshare Negotiation",
+      "status": "soon",
+      "updated": "2026-06",
+      "blurb": "Negotiation playbook for Wyndham points and presidential-tier timeshares (plus the Wii Sports Resorts angle).",
+      "files": [],
+      "flags": [
+        "Resale reality check baked in: Wyndham points and timeshares routinely resell for ~$1 or free (TUG give-aways of 900K+ point packages); resale points lose VIP status. Wyndham's own 'Certified Exit' deed-back is the legitimate off-ramp — beware upfront-fee exit scams."
+      ]
+    },
+    {
+      "id": "realestate",
+      "emoji": "🏠",
+      "title": "Garcia Trust & Family LLC — Real Estate Holdings",
+      "status": "soon",
+      "updated": "2026-06",
+      "blurb": "Rental property management with DIY maintenance systems and tax strategies, built on 15+ years of hands-on family real-estate operations in a market where Benton County averages $471K (+8.8% YoY, Arvest Skyline H1 2025).",
+      "files": [],
+      "flags": [
+        "Methodology flag: the Skyline Report publishes county averages (not medians) twice a year; Redfin's NWA median ran ~$356K in early 2025. Different sources, different math — both are cited with dates when this publishes."
+      ]
+    }
+  ],
+  "researchDesk": [
+    {
+      "group": "📈 Markets",
+      "links": [
+        {
+          "label": "Yahoo Finance",
+          "url": "https://finance.yahoo.com"
+        },
+        {
+          "label": "MarketWatch",
+          "url": "https://www.marketwatch.com"
+        },
+        {
+          "label": "ETF.com",
+          "url": "https://www.etf.com"
+        }
+      ]
+    },
+    {
+      "group": "🏦 Bonds",
+      "links": [
+        {
+          "label": "TreasuryDirect",
+          "url": "https://treasurydirect.gov"
+        },
+        {
+          "label": "FINRA Bond Center",
+          "url": "https://finra-markets.morningstar.com/BondCenter"
+        }
+      ]
+    },
+    {
+      "group": "🏠 Real Estate",
+      "links": [
+        {
+          "label": "Zillow",
+          "url": "https://www.zillow.com"
+        },
+        {
+          "label": "Realtor",
+          "url": "https://www.realtor.com"
+        },
+        {
+          "label": "REIT.com",
+          "url": "https://www.reit.com"
+        }
+      ]
+    },
+    {
+      "group": "₿ Crypto",
+      "links": [
+        {
+          "label": "CoinMarketCap",
+          "url": "https://coinmarketcap.com"
+        },
+        {
+          "label": "CoinGecko",
+          "url": "https://www.coingecko.com"
+        }
+      ]
+    },
+    {
+      "group": "🥇 Metals",
+      "links": [
+        {
+          "label": "Kitco",
+          "url": "https://www.kitco.com"
+        },
+        {
+          "label": "TradingEconomics",
+          "url": "https://tradingeconomics.com/commodities"
+        }
+      ]
+    },
+    {
+      "group": "🖼️ Collectibles",
+      "links": [
+        {
+          "label": "Artnet",
+          "url": "https://www.artnet.com/price-database"
+        },
+        {
+          "label": "Wine-Searcher",
+          "url": "https://www.wine-searcher.com"
+        },
+        {
+          "label": "Chrono24",
+          "url": "https://www.chrono24.com"
+        }
+      ]
+    },
+    {
+      "group": "🚀 Alt / VC / PE",
+      "links": [
+        {
+          "label": "Crunchbase",
+          "url": "https://www.crunchbase.com/discover"
+        },
+        {
+          "label": "PitchBook",
+          "url": "https://pitchbook.com/news"
+        },
+        {
+          "label": "NCREIF",
+          "url": "https://www.ncreif.org"
+        },
+        {
+          "label": "AcreTrader",
+          "url": "https://acretrader.com/farms"
+        },
+        {
+          "label": "HFR",
+          "url": "https://hfr.com/industry-indices"
+        }
+      ]
+    },
+    {
+      "group": "🛡️ Retirement",
+      "links": [
+        {
+          "label": "IRS Retirement Plans",
+          "url": "https://www.irs.gov/retirement-plans"
+        },
+        {
+          "label": "ImmediateAnnuities",
+          "url": "https://immediateannuities.com"
+        },
+        {
+          "label": "Investopedia SMAs",
+          "url": "https://www.investopedia.com/terms/s/sma.asp"
+        }
+      ]
+    }
+  ]
+}
