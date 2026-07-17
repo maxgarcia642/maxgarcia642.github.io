@@ -352,6 +352,460 @@
   background: linear-gradient(90deg, #c9a24b, transparent);
 }
 
+/* ---------- 11. VAPORWAVE -------------------------------------------------- */
+[data-theme="vapor"] {
+  --bg: #2d1b4e;
+  --bg-image: linear-gradient(180deg, #1a0b33 0%, #2d1b4e 45%, #b34a8f 100%);
+  --text: #ffeaf8;
+  --muted: #c99ad1;
+  --card-bg: rgb(46 27 78 / 82%);
+  --card-border-color: rgb(255 113 206 / 45%); --card-border: 1px solid var(--card-border-color);
+  --card-shadow: 0 18px 50px rgb(255 113 206 / 20%);
+  --card-blur: 8px;
+  --radius-lg: 18px; --radius-md: 12px; --radius-sm: 8px;
+  --accent: #ff71ce; --accent-2: #01cdfe;
+  --btn-grad: linear-gradient(90deg, #ff71ce, #b967ff);
+  --btn-text: #ffffff;
+  --pill-bg: rgb(60 35 100 / 80%); --pill-text: #ffd6f6;
+  --pill-active: linear-gradient(90deg, #ff71ce, #01cdfe);
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --display-weight: 700; --display-case: uppercase; --display-spacing: 0.1em;
+  --border-w: 1px;
+  --header-bg: rgb(26 11 51 / 78%);
+  --terminal-bg: #170a2b; --terminal-text: #01cdfe;
+  --gloss: 0;
+  --focus-ring-color: #01cdfe; --focus-ring: 3px solid var(--focus-ring-color);
+  --chip-bg: rgb(60 35 100 / 70%);
+  --flag-bg: rgb(80 55 20 / 70%); --flag-border: #ffb96b; --flag-text: #ffdcae;
+}
+[data-theme="vapor"] h2 { text-shadow: 3px 3px 0 rgb(1 205 254 / 45%); }
+
+/* ---------- 12. SAKURA ------------------------------------------------------ */
+[data-theme="sakura"] {
+  --bg: #fdf0f4;
+  --bg-image: linear-gradient(180deg, #fff7fa 0%, #fde5ee 60%, #f9d3e3 100%);
+  --text: #5b2c3f;
+  --muted: #9c6b80;
+  --card-bg: rgb(255 252 253 / 92%);
+  --card-border-color: #f3bed3; --card-border: 1px solid var(--card-border-color);
+  --card-shadow: 0 14px 34px rgb(233 143 179 / 25%);
+  --card-blur: 4px;
+  --radius-lg: 24px; --radius-md: 16px; --radius-sm: 10px;
+  --accent: #e05c8f; --accent-2: #8fbf6f;
+  --btn-grad: linear-gradient(180deg, #f491b8, #e05c8f);
+  --btn-text: #ffffff;
+  --pill-bg: rgb(255 255 255 / 80%); --pill-text: #a04066;
+  --pill-active: linear-gradient(90deg, #e05c8f, #f4a9c8);
+  --font-display: "Nunito", "Inter", sans-serif;
+  --font-body: "Nunito", "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --display-weight: 800; --display-case: none; --display-spacing: 0;
+  --border-w: 1px;
+  --header-bg: rgb(255 247 250 / 82%);
+  --terminal-bg: #4a2334; --terminal-text: #ffd7e6;
+  --gloss: 0;
+  --focus-ring-color: #e05c8f; --focus-ring: 3px solid var(--focus-ring-color);
+  --chip-bg: rgb(255 255 255 / 85%);
+  --flag-bg: #fff3d6; --flag-border: #dcae4e; --flag-text: #7a5c14;
+}
+
+/* ---------- 13. MIDNIGHT OLED ----------------------------------------------- */
+[data-theme="midnight"] {
+  --bg: #000000;
+  --bg-image: none;
+  --text: #e8e8ea;
+  --muted: #8b8b93;
+  --card-bg: #0b0b0e;
+  --card-border-color: #1e1e26; --card-border: 1px solid var(--card-border-color);
+  --card-shadow: 0 0 0 1px rgb(255 255 255 / 3%);
+  --card-blur: 0px;
+  --radius-lg: 16px; --radius-md: 11px; --radius-sm: 7px;
+  --accent: #5e9eff; --accent-2: #9d7bff;
+  --btn-grad: #16161d;
+  --btn-text: #e8e8ea;
+  --pill-bg: #101016; --pill-text: #c9c9d1;
+  --pill-active: #5e9eff;
+  --font-display: "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --display-weight: 600; --display-case: none; --display-spacing: -0.02em;
+  --border-w: 1px;
+  --header-bg: rgb(0 0 0 / 85%);
+  --terminal-bg: #050507; --terminal-text: #8fd0ff;
+  --gloss: 0;
+  --focus-ring-color: #5e9eff; --focus-ring: 2px solid var(--focus-ring-color);
+  --chip-bg: #101016;
+  --flag-bg: #17130a; --flag-border: #b9963f; --flag-text: #e0c98a;
+}
+
+/* ---------- 14. COFFEE HOUSE ------------------------------------------------ */
+[data-theme="coffee"] {
+  --bg: #efe6da;
+  --bg-image: linear-gradient(180deg, #f5ede2, #e6d5c1);
+  --text: #3b2a1e;
+  --muted: #7d6350;
+  --card-bg: #faf4ec;
+  --card-border-color: #d8c3ab; --card-border: 1px solid var(--card-border-color);
+  --card-shadow: 0 12px 30px rgb(90 62 40 / 18%);
+  --card-blur: 0px;
+  --radius-lg: 18px; --radius-md: 12px; --radius-sm: 8px;
+  --accent: #8a5a33; --accent-2: #b98a5d;
+  --btn-grad: linear-gradient(180deg, #a97142, #8a5a33);
+  --btn-text: #fff6ea;
+  --pill-bg: rgb(255 250 243 / 85%); --pill-text: #6b4a2e;
+  --pill-active: #8a5a33;
+  --font-display: "Playfair Display", georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --display-weight: 600; --display-case: none; --display-spacing: 0;
+  --border-w: 1px;
+  --header-bg: rgb(245 237 226 / 88%);
+  --terminal-bg: #2c1f15; --terminal-text: #e8cfa8;
+  --gloss: 0;
+  --focus-ring-color: #8a5a33; --focus-ring: 3px solid var(--focus-ring-color);
+  --chip-bg: #fffaf3;
+  --flag-bg: #f6e8c8; --flag-border: #b98a3f; --flag-text: #6b5417;
+}
+
+/* ---------- 15. AMBER TERMINAL ---------------------------------------------- */
+[data-theme="amber"] {
+  --bg: #100a02;
+  --bg-image: radial-gradient(ellipse at 50% -10%, #2b1c06 0%, #100a02 60%);
+  --text: #ffb000;
+  --muted: #a5761c;
+  --card-bg: rgb(24 15 3 / 90%);
+  --card-border-color: #7a5410; --card-border: 1px solid var(--card-border-color);
+  --card-shadow: 0 0 24px rgb(255 176 0 / 10%), inset 0 0 22px rgb(120 80 10 / 15%);
+  --card-blur: 0px;
+  --radius-lg: 8px; --radius-md: 6px; --radius-sm: 4px;
+  --accent: #ffb000; --accent-2: #ff7b00;
+  --btn-grad: linear-gradient(180deg, #3d2a08, #2a1c05);
+  --btn-text: #ffb000;
+  --pill-bg: rgb(50 33 8 / 70%); --pill-text: #ffb000;
+  --pill-active: #7a5410;
+  --font-display: "JetBrains Mono", ui-monospace, monospace;
+  --font-body: "JetBrains Mono", ui-monospace, monospace;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --display-weight: 700; --display-case: uppercase; --display-spacing: 0.06em;
+  --border-w: 1px;
+  --header-bg: rgb(16 10 2 / 85%);
+  --terminal-bg: #0a0601; --terminal-text: #ffb000;
+  --gloss: 0;
+  --focus-ring-color: #ffb000; --focus-ring: 2px solid var(--focus-ring-color);
+  --chip-bg: rgb(50 33 8 / 70%);
+  --flag-bg: rgb(60 20 5 / 80%); --flag-border: #ff7b00; --flag-text: #ffb374;
+}
+[data-theme="amber"] body::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 9998;
+  background: repeating-linear-gradient(0deg, rgb(0 0 0 / 20%) 0 1px, transparent 1px 3px);
+  mix-blend-mode: multiply;
+}
+
+/* ---------- 16. PAPER SKETCH ------------------------------------------------ */
+[data-theme="paper"] {
+  --bg: #fbf8f1;
+  --bg-image: none;
+  --text: #2b2b2b;
+  --muted: #6e6a60;
+  --card-bg: #fffdf7;
+  --card-border-color: #2b2b2b; --card-border: 2px dashed var(--card-border-color);
+  --card-shadow: 3px 4px 0 rgb(43 43 43 / 12%);
+  --card-blur: 0px;
+  --radius-lg: 10px; --radius-md: 8px; --radius-sm: 5px;
+  --accent: #d95f2b; --accent-2: #3c6e71;
+  --btn-grad: #fffdf7;
+  --btn-text: #2b2b2b;
+  --pill-bg: #fffdf7; --pill-text: #2b2b2b;
+  --pill-active: #ffd8a8;
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Space Grotesk", "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --display-weight: 700; --display-case: none; --display-spacing: 0;
+  --border-w: 2px;
+  --header-bg: rgb(251 248 241 / 92%);
+  --terminal-bg: #2b2b2b; --terminal-text: #fbf8f1;
+  --gloss: 0;
+  --focus-ring-color: #d95f2b; --focus-ring: 3px solid var(--focus-ring-color);
+  --chip-bg: #fffdf7;
+  --flag-bg: #fff3cd; --flag-border: #2b2b2b; --flag-text: #5c4a12;
+}
+[data-theme="paper"] .btn, [data-theme="paper"] .link-btn { border: 2px solid #2b2b2b; box-shadow: 2px 3px 0 rgb(43 43 43 / 30%); }
+
+/* ---------- 17. SYNTHWAVE SUNSET -------------------------------------------- */
+[data-theme="synth"] {
+  --bg: #190b2f;
+  --bg-image: linear-gradient(180deg, #0f0723 0%, #331457 55%, #ff6a3d 130%);
+  --text: #ffe9f2;
+  --muted: #b78bc4;
+  --card-bg: rgb(30 14 56 / 85%);
+  --card-border-color: rgb(255 106 61 / 40%); --card-border: 1px solid var(--card-border-color);
+  --card-shadow: 0 20px 50px rgb(255 106 61 / 15%), 0 0 30px rgb(157 78 221 / 15%);
+  --card-blur: 8px;
+  --radius-lg: 16px; --radius-md: 11px; --radius-sm: 7px;
+  --accent: #ff6a3d; --accent-2: #9d4edd;
+  --btn-grad: linear-gradient(90deg, #ff6a3d, #d64f8e);
+  --btn-text: #ffffff;
+  --pill-bg: rgb(45 22 80 / 80%); --pill-text: #f3c9ff;
+  --pill-active: linear-gradient(90deg, #ff6a3d, #9d4edd);
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --display-weight: 700; --display-case: uppercase; --display-spacing: 0.05em;
+  --border-w: 1px;
+  --header-bg: rgb(15 7 35 / 80%);
+  --terminal-bg: #120827; --terminal-text: #ffb46b;
+  --gloss: 0;
+  --focus-ring-color: #ff6a3d; --focus-ring: 3px solid var(--focus-ring-color);
+  --chip-bg: rgb(45 22 80 / 75%);
+  --flag-bg: rgb(80 45 10 / 70%); --flag-border: #ffb46b; --flag-text: #ffd9ae;
+}
+[data-theme="synth"] body::before {
+  content: ""; position: fixed; left: 0; right: 0; bottom: 0; height: 34vh;
+  z-index: -1; pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgb(255 106 61 / 20%) 0 1px, transparent 1px 34px);
+  transform: perspective(420px) rotateX(55deg);
+  transform-origin: bottom;
+  mask-image: linear-gradient(transparent, #000 40%);
+}
+
+/* ---------- 18. DEEP OCEAN -------------------------------------------------- */
+[data-theme="ocean"] {
+  --bg: #04222f;
+  --bg-image: linear-gradient(180deg, #073042 0%, #04222f 55%, #021219 100%);
+  --text: #d8f3ff;
+  --muted: #7fb3c4;
+  --card-bg: rgb(8 46 62 / 85%);
+  --card-border-color: rgb(72 202 228 / 25%); --card-border: 1px solid var(--card-border-color);
+  --card-shadow: 0 22px 55px rgb(2 18 25 / 60%);
+  --card-blur: 8px;
+  --radius-lg: 22px; --radius-md: 14px; --radius-sm: 9px;
+  --accent: #48cae4; --accent-2: #90e0ef;
+  --btn-grad: linear-gradient(180deg, #48cae4, #0096c7);
+  --btn-text: #032430;
+  --pill-bg: rgb(10 60 80 / 75%); --pill-text: #ade8f4;
+  --pill-active: linear-gradient(90deg, #48cae4, #90e0ef);
+  --font-display: "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --display-weight: 800; --display-case: none; --display-spacing: -0.01em;
+  --border-w: 0px;
+  --header-bg: rgb(4 34 47 / 80%);
+  --terminal-bg: #021920; --terminal-text: #90e0ef;
+  --gloss: 0;
+  --focus-ring-color: #48cae4; --focus-ring: 3px solid var(--focus-ring-color);
+  --chip-bg: rgb(10 60 80 / 70%);
+  --flag-bg: rgb(70 55 15 / 65%); --flag-border: #d8b452; --flag-text: #f2dfa8;
+}
+
+/* ---------- 19. DESERT ADOBE ------------------------------------------------ */
+[data-theme="desert"] {
+  --bg: #f4e5d0;
+  --bg-image: linear-gradient(180deg, #f9efdd 0%, #eeD9bc 60%, #e4c49b 100%);
+  --text: #4a2e1d;
+  --muted: #8c6a4f;
+  --card-bg: #fdf6ea;
+  --card-border-color: #d9b990; --card-border: 1px solid var(--card-border-color);
+  --card-shadow: 0 14px 32px rgb(160 110 60 / 22%);
+  --card-blur: 0px;
+  --radius-lg: 20px; --radius-md: 13px; --radius-sm: 8px;
+  --accent: #c65d21; --accent-2: #4f7c60;
+  --btn-grad: linear-gradient(180deg, #d97b3f, #c65d21);
+  --btn-text: #fff4e6;
+  --pill-bg: rgb(255 249 240 / 85%); --pill-text: #7a4a26;
+  --pill-active: #c65d21;
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --display-weight: 700; --display-case: none; --display-spacing: 0;
+  --border-w: 1px;
+  --header-bg: rgb(249 239 221 / 88%);
+  --terminal-bg: #3a2413; --terminal-text: #f2cf9e;
+  --gloss: 0;
+  --focus-ring-color: #c65d21; --focus-ring: 3px solid var(--focus-ring-color);
+  --chip-bg: #fdf6ea;
+  --flag-bg: #f8e9c0; --flag-border: #b9860f; --flag-text: #6b5417;
+}
+
+/* ---------- 20. MATCHA GARDEN ----------------------------------------------- */
+[data-theme="matcha"] {
+  --bg: #eef3e4;
+  --bg-image: linear-gradient(180deg, #f4f8ec, #dfe9cd);
+  --text: #2f3d24;
+  --muted: #6a7a58;
+  --card-bg: #fafcf4;
+  --card-border-color: #c6d6a8; --card-border: 1px solid var(--card-border-color);
+  --card-shadow: 0 12px 30px rgb(90 120 60 / 16%);
+  --card-blur: 0px;
+  --radius-lg: 22px; --radius-md: 15px; --radius-sm: 9px;
+  --accent: #6a994e; --accent-2: #a7c957;
+  --btn-grad: linear-gradient(180deg, #7fb35e, #6a994e);
+  --btn-text: #f7fbef;
+  --pill-bg: rgb(255 255 255 / 80%); --pill-text: #4a5f38;
+  --pill-active: #6a994e;
+  --font-display: "Nunito", "Inter", sans-serif;
+  --font-body: "Nunito", "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --display-weight: 800; --display-case: none; --display-spacing: 0;
+  --border-w: 1px;
+  --header-bg: rgb(244 248 236 / 88%);
+  --terminal-bg: #26301c; --terminal-text: #cde3a8;
+  --gloss: 0;
+  --focus-ring-color: #6a994e; --focus-ring: 3px solid var(--focus-ring-color);
+  --chip-bg: #fafcf4;
+  --flag-bg: #f6efc8; --flag-border: #b99b3f; --flag-text: #6b5c14;
+}
+
+/* ---------- 21. BAUHAUS ----------------------------------------------------- */
+[data-theme="bauhaus"] {
+  --bg: #f2efe9;
+  --bg-image: none;
+  --text: #191919;
+  --muted: #4c4c4c;
+  --card-bg: #ffffff;
+  --card-border-color: #191919; --card-border: 2px solid var(--card-border-color);
+  --card-shadow: 6px 6px 0 #d6382b;
+  --card-blur: 0px;
+  --radius-lg: 0px; --radius-md: 0px; --radius-sm: 0px;
+  --accent: #d6382b; --accent-2: #1c5d99;
+  --btn-grad: #f2c11c;
+  --btn-text: #191919;
+  --pill-bg: #ffffff; --pill-text: #191919;
+  --pill-active: #1c5d99;
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --display-weight: 700; --display-case: uppercase; --display-spacing: 0.03em;
+  --border-w: 2px;
+  --header-bg: #f2efe9;
+  --terminal-bg: #191919; --terminal-text: #f2c11c;
+  --gloss: 0;
+  --focus-ring-color: #1c5d99; --focus-ring: 3px solid var(--focus-ring-color);
+  --chip-bg: #ffffff;
+  --flag-bg: #fff2c4; --flag-border: #191919; --flag-text: #191919;
+}
+[data-theme="bauhaus"] .card:hover { box-shadow: 8px 8px 0 #1c5d99; }
+
+/* ---------- 22. HOLOGRAPHIC ------------------------------------------------- */
+[data-theme="holo"] {
+  --bg: #eef0f6;
+  --bg-image: linear-gradient(130deg, #ffe5f5 0%, #e5f0ff 30%, #e5fff2 60%, #fff8e0 85%, #ffe5f5 100%);
+  --text: #2a2440;
+  --muted: #6e6690;
+  --card-bg: rgb(255 255 255 / 62%);
+  --card-border-color: rgb(255 255 255 / 90%); --card-border: 1px solid var(--card-border-color);
+  --card-shadow: 0 16px 44px rgb(160 130 220 / 25%);
+  --card-blur: 14px;
+  --radius-lg: 26px; --radius-md: 16px; --radius-sm: 10px;
+  --accent: #8b5fbf; --accent-2: #46b5a4;
+  --btn-grad: linear-gradient(110deg, #ff9ad5, #9ad5ff 50%, #9affd0);
+  --btn-text: #2a2440;
+  --pill-bg: rgb(255 255 255 / 55%); --pill-text: #4a3e6e;
+  --pill-active: linear-gradient(90deg, #ff9ad5, #9ad5ff);
+  --font-display: "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --display-weight: 800; --display-case: none; --display-spacing: -0.015em;
+  --border-w: 0px;
+  --header-bg: rgb(255 255 255 / 45%);
+  --terminal-bg: #241d3d; --terminal-text: #c9f2ff;
+  --gloss: 1;
+  --focus-ring-color: #8b5fbf; --focus-ring: 3px solid var(--focus-ring-color);
+  --chip-bg: rgb(255 255 255 / 60%);
+  --flag-bg: rgb(255 244 214 / 85%); --flag-border: #d0a63f; --flag-text: #6b5417;
+}
+
+/* ---------- 23. ROYAL VELVET ------------------------------------------------ */
+[data-theme="royal"] {
+  --bg: #1d1233;
+  --bg-image: radial-gradient(110% 90% at 50% 0%, #2c1c4d 0%, #1d1233 60%);
+  --text: #efe6ff;
+  --muted: #a793cc;
+  --card-bg: linear-gradient(180deg, #271a44, #1f1438);
+  --card-border-color: rgb(212 175 55 / 45%); --card-border: 1px solid var(--card-border-color);
+  --card-shadow: 0 22px 55px rgb(8 4 20 / 60%), inset 0 1px 0 rgb(212 175 55 / 25%);
+  --card-blur: 0px;
+  --radius-lg: 14px; --radius-md: 9px; --radius-sm: 6px;
+  --accent: #d4af37; --accent-2: #9b6fde;
+  --btn-grad: linear-gradient(180deg, #e0c258, #b8942a);
+  --btn-text: #241733;
+  --pill-bg: rgb(212 175 55 / 12%); --pill-text: #e3d2f7;
+  --pill-active: linear-gradient(180deg, #e0c258, #b8942a);
+  --font-display: "Playfair Display", georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --display-weight: 600; --display-case: none; --display-spacing: 0.01em;
+  --border-w: 1px;
+  --header-bg: rgb(29 18 51 / 82%);
+  --terminal-bg: #140c26; --terminal-text: #e0c258;
+  --gloss: 0;
+  --focus-ring-color: #d4af37; --focus-ring: 2px solid var(--focus-ring-color);
+  --chip-bg: rgb(212 175 55 / 8%);
+  --flag-bg: rgb(212 175 55 / 12%); --flag-border: #d4af37; --flag-text: #ecd9a0;
+}
+
+/* ---------- 24. ARCTIC FROST ------------------------------------------------ */
+[data-theme="frost"] {
+  --bg: #e9f2f9;
+  --bg-image: linear-gradient(180deg, #f4fafd 0%, #dcebf5 55%, #c4dcee 100%);
+  --text: #1d3a4f;
+  --muted: #5b7d94;
+  --card-bg: rgb(255 255 255 / 78%);
+  --card-border-color: rgb(255 255 255 / 95%); --card-border: 1px solid var(--card-border-color);
+  --card-shadow: 0 16px 40px rgb(120 160 195 / 28%);
+  --card-blur: 10px;
+  --radius-lg: 20px; --radius-md: 13px; --radius-sm: 8px;
+  --accent: #2779a7; --accent-2: #6fb7d9;
+  --btn-grad: linear-gradient(180deg, #5aa7cd, #2779a7);
+  --btn-text: #f2fafd;
+  --pill-bg: rgb(255 255 255 / 70%); --pill-text: #2a5875;
+  --pill-active: linear-gradient(90deg, #2779a7, #6fb7d9);
+  --font-display: "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --display-weight: 600; --display-case: none; --display-spacing: -0.01em;
+  --border-w: 0px;
+  --header-bg: rgb(244 250 253 / 78%);
+  --terminal-bg: #12293a; --terminal-text: #bfe6f7;
+  --gloss: 1;
+  --focus-ring-color: #2779a7; --focus-ring: 3px solid var(--focus-ring-color);
+  --chip-bg: rgb(255 255 255 / 75%);
+  --flag-bg: rgb(255 246 220 / 90%); --flag-border: #cda43f; --flag-text: #6b5417;
+}
+
+/* ---------- 25. BLUEPRINT --------------------------------------------------- */
+[data-theme="blueprint"] {
+  --bg: #10365c;
+  --bg-image:
+    linear-gradient(rgb(255 255 255 / 6%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 6%) 1px, transparent 1px);
+  --bg-size: 28px 28px;
+  --text: #eaf3ff;
+  --muted: #9dbbd9;
+  --card-bg: rgb(13 45 78 / 90%);
+  --card-border-color: rgb(234 243 255 / 55%); --card-border: 1px dashed var(--card-border-color);
+  --card-shadow: 0 14px 36px rgb(3 15 30 / 50%);
+  --card-blur: 0px;
+  --radius-lg: 6px; --radius-md: 4px; --radius-sm: 3px;
+  --accent: #ffd166; --accent-2: #7fd0ff;
+  --btn-grad: #ffd166;
+  --btn-text: #10365c;
+  --pill-bg: rgb(20 60 100 / 80%); --pill-text: #cfe4f7;
+  --pill-active: #ffd166;
+  --font-display: "JetBrains Mono", ui-monospace, monospace;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --display-weight: 700; --display-case: uppercase; --display-spacing: 0.05em;
+  --border-w: 1px;
+  --header-bg: rgb(16 54 92 / 88%);
+  --terminal-bg: #0a2440; --terminal-text: #7fd0ff;
+  --gloss: 0;
+  --focus-ring-color: #ffd166; --focus-ring: 2px solid var(--focus-ring-color);
+  --chip-bg: rgb(20 60 100 / 75%);
+  --flag-bg: rgb(80 60 15 / 70%); --flag-border: #ffd166; --flag-text: #ffe4a3;
+}
+
 /* ---------- Reduced motion stops all ANIMATED ambient layers ----------------
    Static overlays (CRT scanlines, neon floor grid) stay — they don't move. */
 @media (prefers-reduced-motion: reduce) {

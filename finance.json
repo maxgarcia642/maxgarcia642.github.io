@@ -2,22 +2,138 @@
   "sectionTitle": "The Financial Liberty Project",
   "sectionTagline": "Verified research, real deliverables, honest flags. Patience pays. 🦞",
   "marketPulse": {
-    "asOf": "2026-07-17",
-    "note": "Point-in-time figures, verified mid-July 2026. Crypto chips refresh live from CoinGecko when you press Refresh; everything else is dated snapshot data — treat it as context, not a quote feed.",
+    "asOf": "2026-07-16",
+    "note": "Point-in-time figures, verified Jul 16, 2026 (Barchart EOD settlements, ECB/Frankfurter FX, CoinGecko). Crypto and FX chips refresh live on demand; commodities and indexes are dated snapshots — treat everything as context, not a quote feed.",
     "items": [
       {
+        "id": "btc",
+        "label": "Bitcoin",
+        "value": "~$63.3K",
+        "context": "ATH $126,198 on Oct 6, 2025. 2026 has been a crypto-winter year with a June–July rebound.",
+        "live": true,
+        "coingeckoId": "bitcoin",
+        "raw": 63293,
+        "usdPerUnit": 63293
+      },
+      {
+        "id": "eth",
+        "label": "Ethereum",
+        "value": "~$1.8K",
+        "context": "ATH $4,953 Aug 24, 2025. Leading the recovery narrative.",
+        "live": true,
+        "coingeckoId": "ethereum",
+        "raw": 1843.89,
+        "usdPerUnit": 1843.89
+      },
+      {
+        "id": "sol",
+        "label": "Solana",
+        "value": "~$74.87",
+        "context": "Jul 16, 2026 (CoinGecko).",
+        "live": true,
+        "coingeckoId": "solana",
+        "raw": 74.87,
+        "usdPerUnit": 74.87
+      },
+      {
+        "id": "xrp",
+        "label": "XRP",
+        "value": "~$1.09",
+        "context": "Jul 16, 2026 (CoinGecko).",
+        "live": true,
+        "coingeckoId": "ripple",
+        "raw": 1.089,
+        "usdPerUnit": 1.089
+      },
+      {
+        "id": "doge",
+        "label": "Dogecoin",
+        "value": "~$0.072",
+        "context": "Jul 16, 2026 (CoinGecko).",
+        "live": true,
+        "coingeckoId": "dogecoin",
+        "raw": 0.072097,
+        "usdPerUnit": 0.072097
+      },
+      {
+        "id": "ltc",
+        "label": "Litecoin",
+        "value": "~$45.32",
+        "context": "Jul 16, 2026 (CoinGecko).",
+        "live": true,
+        "coingeckoId": "litecoin",
+        "raw": 45.32,
+        "usdPerUnit": 45.32
+      },
+      {
+        "id": "eur",
+        "label": "Euro",
+        "value": "€0.872 / $",
+        "context": "ECB reference via Frankfurter, Jul 16, 2026.",
+        "live": true,
+        "fxCode": "EUR",
+        "perUsd": 0.87207
+      },
+      {
+        "id": "gbp",
+        "label": "British Pound",
+        "value": "£0.740 / $",
+        "context": "ECB reference via Frankfurter, Jul 16, 2026.",
+        "live": true,
+        "fxCode": "GBP",
+        "perUsd": 0.74015
+      },
+      {
+        "id": "jpy",
+        "label": "Japanese Yen",
+        "value": "¥162.2 / $",
+        "context": "ECB reference via Frankfurter, Jul 16, 2026.",
+        "live": true,
+        "fxCode": "JPY",
+        "perUsd": 162.2
+      },
+      {
+        "id": "mxn",
+        "label": "Mexican Peso",
+        "value": "MX$17.43 / $",
+        "context": "ECB reference via Frankfurter, Jul 16, 2026.",
+        "live": true,
+        "fxCode": "MXN",
+        "perUsd": 17.4264
+      },
+      {
+        "id": "cad",
+        "label": "Canadian Dollar",
+        "value": "C$1.403 / $",
+        "context": "ECB reference via Frankfurter, Jul 16, 2026.",
+        "live": true,
+        "fxCode": "CAD",
+        "perUsd": 1.4025
+      },
+      {
+        "id": "cny",
+        "label": "Chinese Yuan",
+        "value": "¥6.767 / $",
+        "context": "ECB reference via Frankfurter, Jul 16, 2026.",
+        "live": true,
+        "fxCode": "CNY",
+        "perUsd": 6.7669
+      },
+      {
         "id": "gold",
-        "label": "Gold spot",
-        "value": "~$4,010/oz",
-        "context": "Record ~$5,602 on Jan 28, 2026, then pulled back. Historically elevated and volatile.",
-        "live": false
+        "label": "Gold",
+        "value": "~$3,992/oz",
+        "context": "Aug futures settle, Jul 16, 2026 (Barchart EOD). Record ~$5,602 on Jan 28, 2026, then pulled back — historically elevated and volatile.",
+        "live": false,
+        "usdPerUnit": 3992.1
       },
       {
         "id": "silver",
         "label": "Silver",
-        "value": "supply-squeeze era",
-        "context": "Nominal record $121.67/oz Jan 29, 2026; gold/silver ratio ~50 in early 2026.",
-        "live": false
+        "value": "~$56.19/oz",
+        "context": "Sep futures settle, Jul 16, 2026 (Barchart EOD). Nominal record $121.67/oz Jan 29, 2026 — the supply-squeeze era cooled hard.",
+        "live": false,
+        "usdPerUnit": 56.187
       },
       {
         "id": "spx",
@@ -27,20 +143,36 @@
         "live": false
       },
       {
-        "id": "btc",
-        "label": "Bitcoin",
-        "value": "~$64K",
-        "context": "Mid-July 2026; ATH $126,198 on Oct 6, 2025. 2026 has been a crypto-winter year with a June–July rebound.",
-        "live": true,
-        "coingeckoId": "bitcoin"
+        "id": "wti",
+        "label": "Crude Oil (WTI)",
+        "value": "~$78/bbl",
+        "context": "Sep settle $78.28, Jul 16, 2026 (Barchart EOD); intraday sources ranged $78–80 on geopolitical headlines.",
+        "live": false,
+        "usdPerUnit": 78.28
       },
       {
-        "id": "eth",
-        "label": "Ethereum",
-        "value": "~$1.9K",
-        "context": "Mid-July 2026; ATH $4,953 Aug 24, 2025. Leading the recovery narrative.",
-        "live": true,
-        "coingeckoId": "ethereum"
+        "id": "natgas",
+        "label": "Natural Gas",
+        "value": "$2.86/MMBtu",
+        "context": "Aug settle, Jul 16, 2026 (Barchart EOD), −2.3% on the day.",
+        "live": false,
+        "usdPerUnit": 2.858
+      },
+      {
+        "id": "copper",
+        "label": "Copper",
+        "value": "$6.36/lb",
+        "context": "Jul 16, 2026 (Finit commodities board), +1.0% on the day.",
+        "live": false,
+        "usdPerUnit": 6.357
+      },
+      {
+        "id": "wheat",
+        "label": "Wheat (SRW)",
+        "value": "~$6.75/bu",
+        "context": "Sep SRW 674'6 ¢/bu, Jul 16, 2026 (Barchart EOD); rallied hard mid-July on Black Sea tensions.",
+        "live": false,
+        "usdPerUnit": 6.7475
       },
       {
         "id": "cards",

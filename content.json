@@ -7,11 +7,11 @@
   "sections": {
     "programming": {
       "title": "💻 Programming Works",
-      "description": "This site is the exhibit — view its source live from GitHub."
+      "description": "This site is the exhibit — these mini-terminals read the deployed source of the very page you're on. Click one to read it full-size."
     },
     "posts": {
-      "title": "📁 Articles & Projects",
-      "description": "Project reports and updates, rendered in the on-site viewer — no more \"file too large to embed.\""
+      "title": "📁 Articles & Posts",
+      "description": "Research papers, project reports, and professional updates — papers open in the on-site reader."
     },
     "finance": {
       "title": "💸 The Financial Liberty Project",
@@ -23,34 +23,119 @@
     },
     "connect": {
       "title": "🪴 Connect",
-      "description": "All my links, natively — Linktree blocks embedding, so the tree grows here instead."
+      "description": "Everything meets at the Linktree — or take the direct branches below."
     }
   },
   "projects": [
     {
-      "id": 1,
+      "id": "haas-hall",
       "title": "Junior to High School Haas Hall Works",
       "description": "My early programming works from Haas Hall Academy",
       "driveLink": "https://drive.google.com/file/d/1zZ0xcjTGswtvlOMZWIznLjG8qm79IJv_/view?usp=sharing",
-      "dateAdded": "2024-01-01T00:00:00Z",
       "dateUpdated": "2024-12-31T00:00:00Z"
     },
     {
-      "id": 2,
+      "id": "uark",
       "title": "University of Arkansas Works",
       "description": "Projects and coursework from University of Arkansas",
       "driveLink": "https://drive.google.com/file/d/1PPF8XSw5FXe-Vcy3N3-HfkloCii9pO-H/view?usp=sharing",
-      "dateAdded": "2025-06-01T00:00:00Z",
       "dateUpdated": "2025-12-31T00:00:00Z"
     },
     {
-      "id": 3,
+      "id": "nwti",
       "title": "Northwest Technical Institute Works",
-      "description": "Technical projects from Northwest Technical Institute — served through the on-site PDF viewer once the compressed PDF lands in files/ (see README step). Until then the OneDrive links below keep working.",
-      "localPdf": "files/NWTI_Works.pdf",
-      "shareLink": "https://1drv.ms/b/c/e010e7aa97606cf2/IQDXBv4Vv--PTKrPNMHDxKbdAYsvUvDWMUZvFmFbBIFuciM?e=QRQh4H",
-      "directLink": "https://onedrive.live.com/?redeem=aHR0cHM6Ly8xZHJ2Lm1zL2IvYy9lMDEwZTdhYTk3NjA2Y2YyL0lRRFhCdjRWdi0tUFRLclBOTUhEeEtiZEFZc3ZVdkRXTVVadkZtRmJCSUZ1Y2lNP2U9UVJRaDRI&cid=E010E7AA97606CF2&id=E010E7AA97606CF2%21s15fe06d7efbf4c8faacf34c1c3c4a6dd&parId=E010E7AA97606CF2%21sea8cc6beffdb43d7976fbc7da445c639&o=OneUp",
-      "dateAdded": "2026-01-01T00:00:00Z",
+      "description": "Technical projects from Northwest Technical Institute.",
+      "link": { "label": "Open report ↗", "url": "https://1drv.ms/b/c/e010e7aa97606cf2/IQDXBv4Vv--PTKrPNMHDxKbdAYsvUvDWMUZvFmFbBIFuciM?e=QRQh4H" },
+      "dateUpdated": "2026-07-16T00:00:00Z"
+    },
+    {
+      "id": "meat-plant",
+      "title": "🥩 NWA Meat & Plant Sourcing",
+      "description": "Where Northwest Arkansas food actually comes from: a research paper plus a working field guide to local meat and plant sourcing — farms, processors, seasons, and the honest economics of eating close to home.",
+      "docs": [
+        { "label": "Research Paper", "path": "files/NWA_Meat_and_Plant_Research_Paper.docx" },
+        { "label": "Field Guide", "path": "files/NWA_Meat_and_Plant_Field_Guide.docx" }
+      ],
+      "dateUpdated": "2026-07-16T00:00:00Z"
+    },
+    {
+      "id": "youtube",
+      "title": "📺 Official YouTube Channel",
+      "description": "Project walk-throughs, build logs, and demos — the channel is live, content is coming.",
+      "link": { "label": "Visit @maxgarcia642 ↗", "url": "https://www.youtube.com/@maxgarcia642" },
+      "soon": true,
+      "badge": "Coming soon",
+      "dateUpdated": "2026-07-16T00:00:00Z"
+    },
+    {
+      "id": "band",
+      "title": "🎷 Jazz-Fusion / Progressive Rock Band",
+      "description": "Compositions and sessions in the works — recordings will land here and on the YouTube channel.",
+      "soon": true,
+      "badge": "Coming soon",
+      "dateUpdated": "2026-07-16T00:00:00Z"
+    },
+    {
+      "id": "linkedin-blog",
+      "title": "💼 Project Blogs & Professional Updates",
+      "description": "Long-form write-ups and career updates publish on LinkedIn first — follow along there.",
+      "link": { "label": "LinkedIn — maximiliano-garcia642 ↗", "url": "https://www.linkedin.com/in/maximiliano-garcia642/" },
+      "dateUpdated": "2026-07-16T00:00:00Z"
+    },
+    {
+      "id": "claw-hub",
+      "title": "🦞 The Clawmaxxing Project — Local-First AI Hub",
+      "description": "A multi-agent AI ecosystem that owns its intelligence instead of renting it: quantized open-weights LLMs on a dedicated Ubuntu mini-PC orchestrating specialist agents for content, security, dev, investing, and marketing — zero cloud dependency, everything under LUKS encryption on a Tailscale mesh. Full research paper (50+ pages, 100+ cited sources) in generation.",
+      "soon": true,
+      "badge": "Paper in progress",
+      "dateUpdated": "2026-07-16T00:00:00Z"
+    },
+    {
+      "id": "claw-dog",
+      "title": "🐕 Clawmaxxing — Robot Dog",
+      "description": "A SunFounder PiDog V2 quadruped wired into the local LLM hub for first-person vision, navigation, and natural-language control — physical presence for the agent ecosystem. Research paper in generation.",
+      "soon": true,
+      "badge": "Paper in progress",
+      "dateUpdated": "2026-07-16T00:00:00Z"
+    },
+    {
+      "id": "claw-security",
+      "title": "🛡️ CybersecurityClaw",
+      "description": "A Kali Linux security laptop federated into the agent mesh — Bash Bunny, Flipper Zero, high-gain Wi-Fi audits, YubiKey hardware MFA — for AI-assisted security work on hardware I own and control. Research paper in generation.",
+      "soon": true,
+      "badge": "Paper in progress",
+      "dateUpdated": "2026-07-16T00:00:00Z"
+    },
+    {
+      "id": "claw-glasses",
+      "title": "🕶️ Clawmaxxing — Smart Glasses",
+      "description": "Meta Ray-Ban smart glasses relaying a live first-person feed to local vision models — ambient AI presence without a cloud call. Research paper in generation.",
+      "soon": true,
+      "badge": "Paper in progress",
+      "dateUpdated": "2026-07-16T00:00:00Z"
+    },
+    {
+      "id": "claw-retro",
+      "title": "♻️ RetroClawing",
+      "description": "Reviving dead phones and forgotten laptops into working AI terminals — the most honest proof that local-first beats rent-from-the-cloud is when e-waste becomes useful again. Research paper in generation.",
+      "soon": true,
+      "badge": "Paper in progress",
+      "dateUpdated": "2026-07-16T00:00:00Z"
+    },
+    {
+      "id": "claw-hologram",
+      "title": "🔮 Clawmaxxing — Hologram",
+      "description": "A Looking Glass light-field display driving a lip-synced embodied avatar for the hub — studying how embodiment changes human-machine communication. Research paper in generation.",
+      "soon": true,
+      "badge": "Paper in progress",
+      "dateUpdated": "2026-07-16T00:00:00Z"
+    },
+    {
+      "id": "claw-drone",
+      "title": "🚁 Clawmaxxing — Drone",
+      "description": "A Holybro X650 build (Pixhawk 6X, Jetson Orin NX running a fully onboard quantized LLM, OAK-D depth camera) for autonomous flight with zero cloud dependency. Research paper in generation.",
+      "soon": true,
+      "badge": "Paper in progress",
       "dateUpdated": "2026-07-16T00:00:00Z"
     }
   ],
@@ -66,16 +151,17 @@
       "id": "shufflerush",
       "title": "Shuffle Rush",
       "kind": "facade",
+      "emoji": "🎵",
       "description": "Frutiger Metro rhythm action, live on itch.io. Built with Rosebud.ai + Phaser 3.",
       "openUrl": "https://maxgarcia642.itch.io/shufflerush",
       "embedUrl": "",
-      "embedNote": "Paste your itch.io embed iframe URL here (Distribute → Embed game). itch's Cloudflare layer intermittently blocks off-site frames, so the open-in-new-tab fallback always stays visible.",
       "badge": "Published"
     },
     {
       "id": "nwaero",
       "title": "NWAero Grid Dashboard",
       "kind": "facade",
+      "emoji": "🌦️",
       "description": "Regional weather + traffic dashboard with real-time API aggregation. Collab build.",
       "openUrl": "https://nwaero.netlify.app/",
       "embedUrl": "https://nwaero.netlify.app/",
@@ -85,6 +171,7 @@
       "id": "terminal-collective",
       "title": "Coding Terminal Collective",
       "kind": "facade",
+      "emoji": "⌨️",
       "description": "Terminal coding collective with DevOps tooling, refactored from the academic repo.",
       "openUrl": "https://garciacode-terminalcollective.bolt.host/",
       "embedUrl": "https://garciacode-terminalcollective.bolt.host/",
@@ -94,16 +181,65 @@
       "id": "maxfolio",
       "title": "Create Your Own Maxfolio",
       "kind": "facade",
+      "emoji": "🧩",
       "description": "Full-stack networking parody site (Next.js, Tailwind, Supabase, Vercel).",
       "openUrl": "https://maxfolio-website-git-main-maximiliano-projects.vercel.app?_vercel_share=GZEgLha73mO1Y7LlqCdbXvAnOyRrZy3t",
       "embedUrl": "",
-      "embedNote": "The _vercel_share token expires and Vercel preview deployments send X-Frame-Options: DENY. Swap in a production domain to enable live embedding.",
       "badge": "Preview link"
+    },
+    {
+      "id": "flock",
+      "title": "Flock Finance",
+      "kind": "soon",
+      "emoji": "🐦",
+      "description": "Blockchain-powered decentralized exchange concept for tokenized multi-investment vehicles — the home of the SaaS master portfolio. Feasibility research and project plan below.",
+      "docs": [
+        { "label": "Feasibility Research Paper", "path": "files/Flock_Feasibility_Research_Paper.docx" },
+        { "label": "Project Management Plan", "path": "files/Flock_Project_Management_Plan.docx" }
+      ],
+      "badge": "In design"
+    },
+    {
+      "id": "biotank",
+      "title": "Biotank",
+      "kind": "soon",
+      "emoji": "🧫",
+      "description": "Closed-loop bio-digester tank system — feasibility study and project management plan drafted, prototyping next.",
+      "docs": [
+        { "label": "Feasibility Study", "path": "files/Biotank_Feasibility_Study.docx" },
+        { "label": "Project Management Plan", "path": "files/Biotank_Project_Management_Plan.docx" }
+      ],
+      "badge": "In design"
+    },
+    {
+      "id": "diamonddrive",
+      "title": "DiamondDrive",
+      "kind": "soon",
+      "emoji": "💎",
+      "description": "Gamified habit-and-goal drive system — research paper and project plan complete, prototype in the shop.",
+      "docs": [
+        { "label": "Research Paper", "path": "files/DiamondDrive_Research_Paper.docx" },
+        { "label": "PM Plan", "path": "files/DiamondDrive_PM_Plan.docx" }
+      ],
+      "badge": "Prototyping"
+    },
+    {
+      "id": "winnow",
+      "title": "Winnow",
+      "kind": "soon",
+      "emoji": "🌿",
+      "description": "Client-side, zero-dependency web app for swipe-based social network triage and ranking. v1.0.0-rc.1 — 'The Overgrown Feed' essay and project plan below.",
+      "docs": [
+        { "label": "The Overgrown Feed", "path": "files/Winnow-The-Overgrown-Feed.docx" },
+        { "label": "Project Management Plan", "path": "files/Winnow-Project-Management-Plan.docx" }
+      ],
+      "badge": "RC shipped"
     },
     {
       "id": "skydisorder",
       "title": "SkyDisorder",
       "kind": "soon",
+      "emoji": "🏌️",
       "description": "Satirical single-file Canvas 2D arcade golf — 12K+ lines, census-verified, four phases complete.",
       "badge": "Coming soon"
     },
@@ -111,34 +247,44 @@
       "id": "getting-through",
       "title": "Getting Through",
       "kind": "soon",
+      "emoji": "🥊",
       "description": "3D parody fighter in pre-production — Unity / Godot 4 stack, targeting itch.io + Roblox.",
       "badge": "Pre-production"
-    },
-    {
-      "id": "winnow",
-      "title": "Winnow",
-      "kind": "soon",
-      "description": "Client-side, zero-dependency web app for swipe-based social network triage and ranking. v1.0.0-rc.1.",
-      "badge": "RC shipped"
     },
     {
       "id": "keystone",
       "title": "Keystone",
       "kind": "soon",
+      "emoji": "🗝️",
       "description": "130K-line local-first AI agent platform (Rust, Tauri, React) — agents on your hardware, under your keys.",
       "badge": "Flagship"
     }
   ],
   "themes": [
-    { "id": "aero",   "label": "Frutiger Aero", "swatch": "linear-gradient(135deg,#7ed6f2,#1098ba)" },
-    { "id": "glass",  "label": "Liquid Glass",  "swatch": "linear-gradient(135deg,#c7d6ee,#8fa8d8)" },
-    { "id": "brutal", "label": "Neobrutalism",  "swatch": "linear-gradient(135deg,#ffe14d,#ff5252)" },
-    { "id": "crt",    "label": "Terminal CRT",  "swatch": "linear-gradient(135deg,#032403,#1aff5c)" },
-    { "id": "pixel",  "label": "Pixel Arcade",  "swatch": "linear-gradient(135deg,#2b2d5e,#e94f8a)" },
-    { "id": "aurora", "label": "Aurora Mesh",   "swatch": "linear-gradient(135deg,#7b5cff,#2adfd0)" },
-    { "id": "clay",   "label": "Claymorphism",  "swatch": "linear-gradient(135deg,#ffd9c8,#b8a7f5)" },
-    { "id": "neon",   "label": "Cyberpunk Neon","swatch": "linear-gradient(135deg,#ff2fb9,#19e6ff)" },
-    { "id": "swiss",  "label": "Editorial Swiss","swatch": "linear-gradient(135deg,#f5f5f2,#d92b2b)" },
-    { "id": "luxe",   "label": "Dark Luxe",     "swatch": "linear-gradient(135deg,#0d0b08,#c9a24b)" }
+    { "id": "aero",      "label": "Frutiger Aero",   "swatch": "linear-gradient(135deg,#7ed6f2,#1098ba)" },
+    { "id": "glass",     "label": "Liquid Glass",    "swatch": "linear-gradient(135deg,#c7d6ee,#8fa8d8)" },
+    { "id": "brutal",    "label": "Neobrutalism",    "swatch": "linear-gradient(135deg,#ffe14d,#ff5252)" },
+    { "id": "crt",       "label": "Terminal CRT",    "swatch": "linear-gradient(135deg,#032403,#1aff5c)" },
+    { "id": "pixel",     "label": "Pixel Arcade",    "swatch": "linear-gradient(135deg,#2b2d5e,#e94f8a)" },
+    { "id": "aurora",    "label": "Aurora Mesh",     "swatch": "linear-gradient(135deg,#7b5cff,#2adfd0)" },
+    { "id": "clay",      "label": "Claymorphism",    "swatch": "linear-gradient(135deg,#ffd9c8,#b8a7f5)" },
+    { "id": "neon",      "label": "Cyberpunk Neon",  "swatch": "linear-gradient(135deg,#ff2fb9,#19e6ff)" },
+    { "id": "swiss",     "label": "Editorial Swiss", "swatch": "linear-gradient(135deg,#f5f5f2,#d92b2b)" },
+    { "id": "luxe",      "label": "Dark Luxe",       "swatch": "linear-gradient(135deg,#0d0b08,#c9a24b)" },
+    { "id": "vapor",     "label": "Vaporwave",       "swatch": "linear-gradient(135deg,#ff71ce,#01cdfe)" },
+    { "id": "sakura",    "label": "Sakura",          "swatch": "linear-gradient(135deg,#fde5ee,#e05c8f)" },
+    { "id": "midnight",  "label": "Midnight OLED",   "swatch": "linear-gradient(135deg,#000000,#5e9eff)" },
+    { "id": "coffee",    "label": "Coffee House",    "swatch": "linear-gradient(135deg,#e6d5c1,#8a5a33)" },
+    { "id": "amber",     "label": "Amber Terminal",  "swatch": "linear-gradient(135deg,#100a02,#ffb000)" },
+    { "id": "paper",     "label": "Paper Sketch",    "swatch": "linear-gradient(135deg,#fbf8f1,#d95f2b)" },
+    { "id": "synth",     "label": "Synthwave Sunset","swatch": "linear-gradient(135deg,#331457,#ff6a3d)" },
+    { "id": "ocean",     "label": "Deep Ocean",      "swatch": "linear-gradient(135deg,#073042,#48cae4)" },
+    { "id": "desert",    "label": "Desert Adobe",    "swatch": "linear-gradient(135deg,#f4e5d0,#c65d21)" },
+    { "id": "matcha",    "label": "Matcha Garden",   "swatch": "linear-gradient(135deg,#dfe9cd,#6a994e)" },
+    { "id": "bauhaus",   "label": "Bauhaus",         "swatch": "linear-gradient(135deg,#f2c11c,#d6382b)" },
+    { "id": "holo",      "label": "Holographic",     "swatch": "linear-gradient(135deg,#ff9ad5,#9affd0)" },
+    { "id": "royal",     "label": "Royal Velvet",    "swatch": "linear-gradient(135deg,#2c1c4d,#d4af37)" },
+    { "id": "frost",     "label": "Arctic Frost",    "swatch": "linear-gradient(135deg,#f4fafd,#2779a7)" },
+    { "id": "blueprint", "label": "Blueprint",       "swatch": "linear-gradient(135deg,#10365c,#ffd166)" }
   ]
 }

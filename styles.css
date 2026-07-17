@@ -336,3 +336,109 @@ details.research-desk[open] summary::before { content: "▾ "; }
   position: absolute; width: 1px; height: 1px; margin: -1px;
   clip-path: inset(50%); overflow: hidden; white-space: nowrap;
 }
+
+/* ---------- Universal hover / touch reaction --------------------------------
+   Every interactive block reacts with a lift + an accent-tinted shadow bloom.
+   color-mix keys the glow to each theme's --accent, so all 25 personalities
+   glow in their own color. :active covers touch (mobile has no hover). */
+.card, .post-card, .work-card, .arcade-card, .pulse-chip, .desk-group,
+.tree-link, .linktree-hero, .mini-terminal, .leaf-chip, .search-result {
+  transition: transform .18s ease, box-shadow .22s ease, border-color .18s ease;
+}
+.card:hover, .card:active {
+  transform: translateY(-3px);
+  box-shadow: var(--card-shadow), 0 14px 40px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+.post-card:hover, .work-card:hover, .arcade-card:hover, .desk-group:hover,
+.post-card:active, .work-card:active, .arcade-card:active, .desk-group:active {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 12px 32px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+.pulse-chip:hover, .pulse-chip:active, .leaf-chip:hover, .leaf-chip:active {
+  transform: translateY(-3px) scale(1.02);
+  border-color: var(--accent);
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--accent) 32%, transparent);
+}
+.mini-terminal:hover, .mini-terminal:active {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--accent-2) 30%, transparent);
+}
+.btn:hover, .link-btn:hover, .btn:active, .link-btn:active {
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+.card h2 { transition: text-shadow .25s ease; }
+.card:hover h2 { text-shadow: 0 4px 24px color-mix(in srgb, var(--accent) 35%, transparent); }
+@media (prefers-reduced-motion: reduce) {
+  .card, .post-card, .work-card, .arcade-card, .pulse-chip, .desk-group,
+  .tree-link, .linktree-hero, .mini-terminal, .leaf-chip, .search-result { transition: none; }
+  .card:hover, .post-card:hover, .work-card:hover, .arcade-card:hover,
+  .pulse-chip:hover, .desk-group:hover, .leaf-chip:hover, .mini-terminal:hover { transform: none; }
+}
+
+/* ---------- Connect: Linktree hero + leaves ---------- */
+.linktree-hero {
+  display: flex; align-items: center; gap: 18px;
+  margin: 14px 0 16px; padding: 22px 24px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(120deg,
+    color-mix(in srgb, var(--accent) 18%, var(--chip-bg)),
+    color-mix(in srgb, var(--accent-2) 14%, var(--chip-bg)));
+  border: 2px solid var(--accent);
+  color: var(--text); text-decoration: none;
+}
+.linktree-hero:hover, .linktree-hero:active {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 18px 48px color-mix(in srgb, var(--accent) 38%, transparent);
+}
+.linktree-hero .lt-canopy { font-size: 2.6rem; line-height: 1; }
+.linktree-hero .lt-text strong { display: block; font-family: var(--font-display); font-size: 1.15rem; }
+.linktree-hero .sub { display: block; font-weight: 400; font-size: .82rem; color: var(--muted); margin-top: 2px; }
+.linktree-hero .arrow { margin-left: auto; font-size: 1.4rem; color: var(--accent); }
+.leaf-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.leaf-chip {
+  font-size: .78rem; font-weight: 700; padding: 6px 12px; border-radius: 999px;
+  background: var(--chip-bg); border: 1px solid var(--muted); color: var(--muted);
+}
+
+/* ---------- Market pulse converter ---------- */
+.pulse-calc { display: grid; gap: 8px; padding: 10px 0 4px; }
+.calc-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.calc-row input[type="number"], .calc-row select {
+  font: inherit; padding: 9px 12px; border-radius: var(--radius-sm);
+  border: 1px solid var(--muted); background: var(--chip-bg); color: var(--text);
+}
+.calc-row input[type="number"] { width: 130px; }
+.calc-row select { min-width: 150px; flex: 1; max-width: 240px; }
+.calc-arrow { color: var(--accent); font-weight: 800; }
+.calc-row .btn { margin: 0; padding: 8px 12px; }
+.calc-result {
+  font-family: var(--font-display); font-weight: 800; font-size: 1.15rem;
+  margin: 2px 0 0; color: var(--text);
+}
+
+/* ---------- Protected document reader ----------
+   Deterrence layer: selection/copy/context-menu disabled in the reader.
+   (SECURITY.md documents the honest limits of client-side protection.) */
+.doc-reader {
+  user-select: none; -webkit-user-select: none;
+  max-height: 70vh; overflow: auto;
+  background: var(--chip-bg); border: 1px solid var(--muted);
+  border-radius: var(--radius-md); padding: 18px 22px;
+  line-height: 1.65; font-size: .95rem;
+}
+.doc-reader img { max-width: 100%; pointer-events: none; }
+.doc-reader table { border-collapse: collapse; width: 100%; font-size: .82rem; }
+.doc-reader th, .doc-reader td { border: 1px solid var(--muted); padding: 4px 8px; text-align: left; }
+.doc-reader th { background: var(--pill-bg); position: sticky; top: 0; }
+.doc-reader-note { font-size: .74rem; color: var(--muted); margin: 8px 0 0; }
+.doc-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+
+/* ---------- Facade emoji art ---------- */
+.facade .facade-emoji {
+  font-size: 3.4rem; line-height: 1;
+  filter: drop-shadow(0 6px 18px rgb(0 0 0 / 35%));
+  transition: transform .18s ease;
+}
+.facade:hover .facade-emoji { transform: scale(1.15) rotate(-4deg); }
+.arcade-card .facade.static { cursor: default; }

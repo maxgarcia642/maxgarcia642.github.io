@@ -71,30 +71,54 @@ function syncFx() {
 }
 
 /* ============================== MUSIC ================================== */
-/* Never autoplays. First click unlocks; preference remembered; one persistent
-   element so theme switches don't restart the track. Drop royalty-free MP3s
-   in assets/music/ (see assets/music/README.md for licensing rules). */
+/* Looping background track, ON by default. Browsers block true autoplay, so
+   the loop starts on the visitor's first interaction (any click/keypress)
+   unless they muted it on a previous visit. ♫ mutes/unmutes; 🎧 lets the
+   visitor play their own local file instead (object URL — never uploaded). */
 (function musicInit() {
   const btn = $("#musicBtn"), audio = $("#bgm");
+  const uploadBtn = $("#musicUploadBtn"), fileInput = $("#musicFile");
   if (!btn || !audio) return;
-  let wants = false;
-  try { wants = localStorage.getItem("mg-music") === "on"; } catch (e) {}
-  // Even if the user previously said "on", browsers require a fresh gesture:
-  if (wants) btn.title = "Music was on last visit — click to resume (browsers require a click)";
-  btn.addEventListener("click", async () => {
-    if (audio.paused) {
-      try {
-        await audio.play();
-        btn.setAttribute("aria-pressed", "true"); btn.textContent = "♫";
-        try { localStorage.setItem("mg-music", "on"); } catch (e) {}
-      } catch (err) {
-        btn.title = "No track found — add an MP3 at assets/music/track1.mp3 (royalty-free only; see assets/music/README.md)";
-      }
-    } else {
-      audio.pause();
-      btn.setAttribute("aria-pressed", "false"); btn.textContent = "♪";
-      try { localStorage.setItem("mg-music", "off"); } catch (e) {}
-    }
+  let muted = false;
+  try { muted = localStorage.getItem("mg-music") === "off"; } catch (e) { /* default: on */ }
+
+  const paint = () => {
+    btn.setAttribute("aria-pressed", String(!muted));
+    btn.textContent = muted ? "♪" : "♫";
+    btn.title = muted ? "Music muted — click to unmute" : "Background music — click to mute";
+  };
+  const tryPlay = async () => {
+    if (muted) return;
+    try { await audio.play(); } catch (e) { /* needs a user gesture — armed below */ }
+  };
+
+  paint();
+  tryPlay(); // some browsers allow it (revisits with engagement history)
+
+  /* First gesture anywhere starts the loop (once) */
+  const arm = () => { tryPlay(); removeEventListener("pointerdown", arm); removeEventListener("keydown", arm); };
+  addEventListener("pointerdown", arm, { once: true });
+  addEventListener("keydown", arm, { once: true });
+
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    muted = !muted;
+    try { localStorage.setItem("mg-music", muted ? "off" : "on"); } catch (err) {}
+    if (muted) audio.pause(); else tryPlay();
+    paint();
+  });
+
+  /* Custom track: swap the source for this visit only */
+  uploadBtn?.addEventListener("click", () => fileInput?.click());
+  fileInput?.addEventListener("change", () => {
+    const f = fileInput.files[0];
+    if (!f) return;
+    audio.src = URL.createObjectURL(f);
+    muted = false;
+    try { localStorage.setItem("mg-music", "on"); } catch (err) {}
+    paint();
+    tryPlay();
+    uploadBtn.title = `Playing your track: ${f.name} (stays in your browser)`;
   });
 })();
 
@@ -223,6 +247,85 @@ document.addEventListener("click", (e) => {
   }
 });
 
+/* ================== PROTECTED DOCUMENT READER ==========================
+   DOCX renders via vendored mammoth.js (BSD-2-Clause), XLSX via vendored
+   SheetJS CE (Apache-2.0) — both lazy-injected on first use, never on page
+   load. Reader is view-only: no download links, selection/copy/context-menu
+   disabled. Honest limit (SECURITY.md): this is deterrence — a static host
+   cannot make bytes unreadable to a determined client. */
+const vendorScripts = {};
+function loadVendor(src, globalName) {
+  if (window[globalName]) return Promise.resolve(window[globalName]);
+  if (!vendorScripts[src]) {
+    vendorScripts[src] = new Promise((resolve, reject) => {
+      const s = document.createElement("script");
+      s.src = src;
+      s.onload = () => resolve(window[globalName]);
+      s.onerror = () => { delete vendorScripts[src]; reject(new Error(`${src} failed to load`)); };
+      document.head.appendChild(s);
+    });
+  }
+  return vendorScripts[src];
+}
+
+function protectReader(node) {
+  ["copy", "cut", "contextmenu", "selectstart", "dragstart"].forEach(ev =>
+    node.addEventListener(ev, (e) => e.preventDefault()));
+}
+
+async function renderDocInto(reader, path) {
+  reader.textContent = "Opening document…";
+  const res = await fetch(path);
+  if (!res.ok) throw new Error(`HTTP ${res.status} for ${path}`);
+  const buf = await res.arrayBuffer();
+
+  if (/\.docx$/i.test(path)) {
+    const mammoth = await loadVendor("vendor/mammoth/mammoth.browser.min.js", "mammoth");
+    const out = await mammoth.convertToHtml({ arrayBuffer: buf });
+    reader.innerHTML = out.value; // mammoth output derives only from the docx we ship
+  } else if (/\.xlsx$/i.test(path)) {
+    const XLSX = await loadVendor("vendor/xlsx/xlsx.full.min.js", "XLSX");
+    const wb = XLSX.read(buf, { type: "array" });
+    reader.innerHTML = "";
+    const tabs = document.createElement("div");
+    tabs.className = "doc-tabs";
+    const sheetHost = document.createElement("div");
+    reader.append(tabs, sheetHost);
+    const showSheet = (name) => {
+      sheetHost.innerHTML = XLSX.utils.sheet_to_html(wb.Sheets[name], { header: "", footer: "" });
+      tabs.querySelectorAll("button").forEach(b => b.classList.toggle("ghost", b.textContent !== name));
+    };
+    wb.SheetNames.forEach((name, i) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "btn ghost"; b.textContent = name;
+      b.addEventListener("click", () => showSheet(name));
+      tabs.appendChild(b);
+      if (i === 0) showSheet(name);
+    });
+    if (wb.SheetNames.length < 2) tabs.remove();
+  } else {
+    throw new Error("Unsupported format");
+  }
+}
+
+document.addEventListener("click", async (e) => {
+  const viewBtn = e.target.closest(".doc-view");
+  if (!viewBtn) return;
+  const wrap = document.createElement("div");
+  const h = document.createElement("h3");
+  h.textContent = viewBtn.dataset.title;
+  const reader = document.createElement("div");
+  reader.className = "doc-reader";
+  const note = document.createElement("p");
+  note.className = "doc-reader-note";
+  note.textContent = "View-only reader — this work is shared to be read here, not redistributed.";
+  wrap.append(h, reader, note);
+  protectReader(reader);
+  openModal(wrap);
+  try { await renderDocInto(reader, viewBtn.dataset.doc); }
+  catch (err) { reader.textContent = `Couldn't open this document (${err.message}).`; }
+});
+
 /* ====================== ARCADE FACADES ================================= */
 /* Click-to-activate everywhere (lite-youtube pattern): nothing heavy loads
    until asked. Cross-origin frame-blocking can't be reliably detected from
@@ -244,31 +347,133 @@ document.addEventListener("click", (e) => {
   }
 });
 
-/* ================= MARKET PULSE — live crypto refresh ================== */
-/* Honest scope: only the chips marked live (BTC/ETH) refresh, via CoinGecko's
-   free CORS-open endpoint. Everything else stays dated snapshot data. */
+/* ============ MARKET PULSE — live crypto + FX refresh + converter ======= */
+/* Honest scope: chips marked live refresh from CoinGecko (crypto) and
+   Frankfurter/ECB (FX) — both free, CORS-open, no keys. Commodity and index
+   chips stay dated snapshot data. The converter reads whatever the chips
+   currently hold (snapshot or refreshed) via window.MG.rates. */
+window.MG = window.MG || {};
+MG.rates = { usdPerUnit: {}, perUsd: {} }; // unit → USD price; USD → currency
+
+function seedRates() {
+  const items = MG.finance?.marketPulse?.items || [];
+  for (const it of items) {
+    if (Number.isFinite(it.usdPerUnit)) MG.rates.usdPerUnit[it.id] = it.usdPerUnit;
+    if (Number.isFinite(it.perUsd)) MG.rates.perUsd[it.id] = it.perUsd;
+  }
+  MG.rates.perUsd.usd = 1;
+}
+document.addEventListener("mg:content-ready", seedRates);
+
 $("#pulseRefresh")?.addEventListener("click", async (e) => {
   const btn = e.currentTarget;
   btn.disabled = true; btn.textContent = "↻ Fetching…";
+  const now = new Date().toLocaleTimeString();
+  const markLive = (chip) => {
+    const label = chip.querySelector(".p-label");
+    label.textContent = label.textContent.replace(/ · live.*$/, "") + ` · live @ ${now}`;
+  };
+  let okAny = false;
+
+  /* Crypto via CoinGecko */
   try {
     const chips = $$("[data-coingecko]");
-    const ids = chips.map(c => c.dataset.coingecko).join(",");
-    const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    const now = new Date().toLocaleTimeString();
-    chips.forEach(c => {
-      const price = data[c.dataset.coingecko]?.usd;
-      if (Number.isFinite(price)) {
-        c.querySelector(".p-value").textContent = `$${price.toLocaleString()}`;
-        c.querySelector(".p-label").textContent = c.querySelector(".p-label").textContent.replace(/·.*/, `· live @ ${now}`);
-      }
-    });
-    btn.textContent = "↻ Refresh crypto";
-  } catch (err) {
-    btn.textContent = "↻ Refresh failed — rate limit? Try later";
-  } finally { btn.disabled = false; }
+    if (chips.length) {
+      const ids = chips.map(c => c.dataset.coingecko).join(",");
+      const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      chips.forEach(c => {
+        const price = data[c.dataset.coingecko]?.usd;
+        if (Number.isFinite(price)) {
+          c.querySelector(".p-value").textContent = `$${price.toLocaleString()}`;
+          MG.rates.usdPerUnit[c.dataset.pulseId] = price;
+          markLive(c);
+          okAny = true;
+        }
+      });
+    }
+  } catch (err) { /* soft-fail; FX may still land */ }
+
+  /* FX via Frankfurter (ECB reference rates) */
+  try {
+    const chips = $$("[data-fx]");
+    if (chips.length) {
+      const codes = chips.map(c => c.dataset.fx).join(",");
+      const res = await fetch(`https://api.frankfurter.dev/v1/latest?base=USD&symbols=${codes}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      chips.forEach(c => {
+        const rate = data.rates?.[c.dataset.fx];
+        if (Number.isFinite(rate)) {
+          c.querySelector(".p-value").textContent = `${rate.toLocaleString(undefined, { maximumFractionDigits: 4 })} / $`;
+          MG.rates.perUsd[c.dataset.pulseId] = rate;
+          markLive(c);
+          okAny = true;
+        }
+      });
+    }
+  } catch (err) { /* soft-fail */ }
+
+  btn.textContent = okAny ? "↻ Refresh live chips" : "↻ Refresh failed — rate limit? Try later";
+  btn.disabled = false;
 });
+
+/* Converter — units come from the pulse chips; math routes through USD. */
+(function converter() {
+  const amount = $("#calcAmount"), from = $("#calcFrom"), to = $("#calcTo");
+  const result = $("#calcResult"), swap = $("#calcSwap");
+  if (!amount || !from || !to) return;
+
+  /* unit id → { label, toUsd(x), fromUsd(x) } */
+  function units() {
+    const u = { usd: { label: "US Dollar (USD)", toUsd: x => x, fromUsd: x => x } };
+    const items = MG.finance?.marketPulse?.items || [];
+    for (const it of items) {
+      if (MG.rates.perUsd[it.id] !== undefined && it.id !== "usd") {
+        u[it.id] = {
+          label: `${it.label} (${it.fxCode})`,
+          toUsd: x => x / MG.rates.perUsd[it.id],
+          fromUsd: x => x * MG.rates.perUsd[it.id]
+        };
+      } else if (MG.rates.usdPerUnit[it.id] !== undefined) {
+        u[it.id] = {
+          label: it.coingeckoId ? `${it.label} (crypto)` : `${it.label} (snapshot)`,
+          toUsd: x => x * MG.rates.usdPerUnit[it.id],
+          fromUsd: x => x / MG.rates.usdPerUnit[it.id]
+        };
+      }
+    }
+    return u;
+  }
+
+  function fill() {
+    const u = units();
+    const opts = Object.entries(u).map(([id, def]) => `<option value="${id}">${def.label}</option>`).join("");
+    const f = from.value, t = to.value;
+    from.innerHTML = opts; to.innerHTML = opts;
+    from.value = u[f] ? f : "usd";
+    to.value = u[t] ? t : (u.btc ? "btc" : Object.keys(u)[1] || "usd");
+    compute();
+  }
+
+  function compute() {
+    const u = units();
+    const a = parseFloat(amount.value);
+    const f = u[from.value], t = u[to.value];
+    if (!f || !t || !Number.isFinite(a)) { result.textContent = "Enter an amount and pick units."; return; }
+    const out = t.fromUsd(f.toUsd(a));
+    const digits = out >= 100 ? 2 : out >= 1 ? 4 : 8;
+    result.textContent = `${a.toLocaleString()} × ${f.label.replace(/ \(.*/, "")} = ${out.toLocaleString(undefined, { maximumFractionDigits: digits })} ${t.label.replace(/ \(.*/, "")}`;
+  }
+
+  amount.addEventListener("input", compute);
+  from.addEventListener("change", compute);
+  to.addEventListener("change", compute);
+  swap?.addEventListener("click", () => { const f = from.value; from.value = to.value; to.value = f; compute(); });
+  $("#pulseRefresh")?.addEventListener("click", () => setTimeout(fill, 1500)); // refill after live refresh lands
+  document.addEventListener("mg:content-ready", () => { seedRates(); fill(); });
+})();
 
 /* TradingView loads only on request (heavy third-party frame) */
 $("#tvLoad")?.addEventListener("click", (e) => {
@@ -280,11 +485,14 @@ $("#tvLoad")?.addEventListener("click", (e) => {
 });
 
 /* ==================== MINI TERMINALS (tiny by design) ================== */
+/* Same-origin fetch: the deployed Pages site serves its own source, so this
+   works even with the repo private (raw.githubusercontent needs auth there).
+   admin.html ships no secrets — auth is a per-session PAT, never stored. */
 const TERMINAL_FILES = ["index.html", "styles.css", "themes.css", "script.js", "content-loader.js", "admin.html"];
 (async function terminals() {
   const row = $("#github-terminals");
   if (!row) return;
-  const base = "https://raw.githubusercontent.com/maxgarcia642/maxgarcia642.github.io/main/";
+  const base = "./";
   for (const name of TERMINAL_FILES) {
     const card = document.createElement("button");
     card.className = "mini-terminal";

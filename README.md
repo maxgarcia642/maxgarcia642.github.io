@@ -1,9 +1,14 @@
-# maximiliano-garcia-portfolio — v2 "Shapeshifter"
+# maximiliano-garcia-portfolio — v3 "Shapeshifter"
 
-Static portfolio for GitHub Pages. Ten full themes, one skeleton. Zero build
-step, zero backend, zero secrets in the repo.
+Static portfolio for GitHub Pages. **Twenty-five** full themes, one skeleton.
+Zero build step, zero backend, zero secrets in the repo.
 
 **Live:** <https://maxgarcia642.github.io/>
+
+> ⚠️ **Pages requires a public repo on the free plan.** Flipping this repo
+> private on 2026-07-16 disabled GitHub Pages and 404'd the entire site.
+> Keep it public (the deployed site exposes all client code anyway), upgrade
+> to GitHub Pro, or migrate to Cloudflare Pages for private-repo deploys.
 
 ## What's here
 
@@ -11,13 +16,15 @@ step, zero backend, zero secrets in the repo.
 | --- | --- |
 | `index.html` | Structure + inline FOUC guard + meta-CSP + SRI-pinned PDF.js |
 | `styles.css` | Layout skeleton — consumes theme tokens only |
-| `themes.css` | The 10 personalities: Frutiger Aero (default), Liquid Glass, Neobrutalism, Terminal CRT, Pixel Arcade, Aurora Mesh, Claymorphism, Cyberpunk Neon, Editorial Swiss, Dark Luxe |
-| `script.js` | Theme dock, gesture-gated music, lazy PDF.js rendering, arcade facades, pixel studio, CoinGecko refresh, aero bubbles |
+| `themes.css` | The 25 personalities: Frutiger Aero (default), Liquid Glass, Neobrutalism, Terminal CRT, Pixel Arcade, Aurora Mesh, Claymorphism, Cyberpunk Neon, Editorial Swiss, Dark Luxe, Vaporwave, Sakura, Midnight OLED, Coffee House, Amber Terminal, Paper Sketch, Synthwave Sunset, Deep Ocean, Desert Adobe, Matcha Garden, Bauhaus, Holographic, Royal Velvet, Arctic Frost, Blueprint |
+| `script.js` | Theme dock, looping music + custom-track upload, lazy PDF.js rendering, protected doc reader, arcade facades, pixel studio, CoinGecko + Frankfurter refresh, converter, aero bubbles |
 | `content-loader.js` | Fetches `content.json` + `finance.json`, renders posts / finance / arcade / dock |
 | `content.json` | Site text, projects, arcade entries, theme registry |
-| `finance.json` | The Financial Liberty Project: 10 works, market pulse (dated), honesty flags, research desk |
+| `finance.json` | The Financial Liberty Project: 10 works, 20-chip market pulse (dated + live), honesty flags, research desk |
 | `admin.html` | GitHub Contents API panel — direct commits, no PRs, auto-changelog |
 | `vendor/fuse/` | Vendored Fuse.js 7.5.0 (Apache-2.0) powering site search — LICENSE + PROVENANCE included |
+| `vendor/mammoth/` | Vendored mammoth.js 1.11.0 (BSD-2-Clause) — DOCX → HTML for the view-only reader |
+| `vendor/xlsx/` | Vendored SheetJS CE 0.20.3 (Apache-2.0) — XLSX → tables for the view-only reader |
 | `scripts/update-pulse.mjs` | Zero-dep refresher for the live crypto chips (run by CI or locally) |
 | `.github/workflows/market-pulse.yml` | Daily Action: refresh live chips → commit → Pages redeploys with fresh data |
 | `files/` | Downloadable deliverables (DOCX/XLSX) + compressed resume PDF |
@@ -57,36 +64,43 @@ code reuse, ideas only.
 
 ## The one manual step
 
-**NWTI Works PDF.** The old OneDrive redirect existed because the PDF was too
-large to embed. The viewer now handles big PDFs (pages render only when
-scrolled into view), so:
+**NWTI Works PDF.** The NWTI card currently links straight to OneDrive (the
+share-link buttons were removed by request — one clean redirect). To bring it
+on-site later:
 
 1. Download the PDF from your OneDrive.
 2. Compress it: `gs -sDEVICE=pdfwrite -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=NWTI_Works.pdf input.pdf`
    (the `/ebook` preset, 150 dpi, is the balanced choice; verify quality after).
-3. Drop it at `files/NWTI_Works.pdf` (the admin panel's upload does this in one
-   commit). The "Read on-site" button on the NWTI card starts working the
-   moment the file exists; the OneDrive links remain as fallback.
-
-Same recipe for any future large PDF: compress → `files/` → reference it via
-`localPdf` in `content.json`.
+3. Drop it at `files/NWTI_Works.pdf` and add `"localPdf": "files/NWTI_Works.pdf"`
+   back to the `nwti` entry in `content.json`.
 
 ## Music
 
-Drop a **royalty-free** MP3 at `assets/music/track1.mp3` — see
-`assets/music/README.md` for the licensing rules. The ♪ dock button handles
-the rest (no autoplay, ever — browsers block it and it's hostile anyway).
+`assets/music/track1.mp3` loops site-wide, starting on the visitor's first
+interaction (browsers block true autoplay). ♫ mutes/unmutes (remembered);
+🎧 lets a visitor play their own local file for the visit. See
+`assets/music/README.md` for what ships and its licensing flag.
 
-## Arcade embeds
+## Document reader (no downloads)
+
+Research papers (DOCX) and workbooks (XLSX) open in a view-only modal reader —
+mammoth.js and SheetJS render them client-side, download links are gone, and
+selection/copy/context-menu are blocked in the reader. **This is deterrence,
+not DRM** — see SECURITY.md for the honest limits.
+
+## Arcade embeds (maintainer notes — the public UI shows no flaw hints)
 
 - `nwaero.netlify.app` and the bolt.host app load in-place on click (Netlify
   and bolt don't force X-Frame-Options by default — verify after deploy).
-- **Shuffle Rush:** paste your itch.io embed URL (itch → Distribute → Embed
-  game) into the `embedUrl` field of the `shufflerush` entry in `content.json`.
-  itch's Cloudflare layer intermittently blocks off-site frames, which is why
-  the open-in-new-tab button never disappears.
+- **Shuffle Rush:** facade shows a 🎵 logo and opens itch.io in a new tab. To
+  embed in-place instead, paste your itch.io embed URL (itch → Distribute →
+  Embed game) into the `embedUrl` field of the `shufflerush` entry in
+  `content.json`. itch's Cloudflare layer intermittently blocks off-site
+  frames, which is why the open-in-new-tab button never disappears.
 - **Maxfolio:** the `_vercel_share` token in the current link expires. Swap in
   a production domain (and clear Vercel's X-Frame-Options) to enable embedding.
+- **Handshake (Connect):** the tree links to joinhandshake.com generically —
+  swap in the real profile URL in `index.html` when Max provides it.
 
 ## Retired from v1 (traceable, not silent)
 
