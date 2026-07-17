@@ -1,986 +1,350 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" data-theme="aero">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel - Aero Portfolio</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin — Maximiliano Garcia</title>
+  <meta name="robots" content="noindex">
+  <script>
+    (function(){try{var t=localStorage.getItem('mg-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="themes.css">
   <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: "Inter", system-ui, -apple-system, sans-serif;
-      background: linear-gradient(135deg, #1098ba 0%, #000bbe 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+    .admin-wrap { display: grid; gap: 18px; }
+    .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    input[type="text"], input[type="password"], textarea, select {
+      font: inherit; padding: 9px 12px; border-radius: var(--radius-sm);
+      border: 1px solid var(--muted); background: var(--chip-bg); color: var(--text);
+      flex: 1; min-width: 180px;
     }
-    .login-container {
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 40px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      width: 100%;
-      max-width: 400px;
-    }
-    .login-container h1 {
-      margin: 0 0 30px;
-      color: #0f1720;
-      text-align: center;
-    }
-    .form-group {
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      margin-bottom: 8px;
-      color: #0f1720;
-      font-weight: 600;
-    }
-    input[type="password"], input[type="text"], input[type="file"] {
-      width: 100%;
-      padding: 12px;
-      border: 2px solid #e0e0e0;
-      border-radius: 10px;
-      font-size: 1rem;
-      transition: border-color 0.3s;
-    }
-    input:focus {
-      outline: none;
-      border-color: #1098ba;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      background: linear-gradient(90deg, #1098ba, #000bbe);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: transform 0.2s;
-    }
-    button:hover {
-      transform: translateY(-2px);
-    }
-    .error {
-      color: #d32f2f;
-      padding: 12px;
-      background: #ffebee;
-      border-radius: 8px;
-      margin-bottom: 15px;
-    }
-    .admin-panel {
-      display: none;
-      max-width: 900px;
-      background: rgba(255,255,255,0.98);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 40px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-    .admin-panel h1 {
-      color: #1098ba;
-      margin-top: 0;
-    }
-    .edit-section {
-      background: #f5f7fa;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 15px;
-      border-left: 4px solid #1098ba;
-    }
-    .edit-section h2 {
-      margin-top: 0;
-      color: #1098ba;
-      font-size: 1.1rem;
-    }
-    textarea {
-      width: 100%;
-      min-height: 80px;
-      padding: 12px;
-      border: 2px solid #e0e0e0;
-      border-radius: 10px;
-      font-family: inherit;
-      font-size: 0.95rem;
-      resize: vertical;
-    }
-    textarea:focus {
-      outline: none;
-      border-color: #1098ba;
-    }
-    .btn-save {
-      flex: 1;
-      min-width: 150px;
-      padding: 10px;
-      background: #308a11;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-    .btn-save:hover {
-      background: #2a7810;
-    }
-    .btn-logout {
-      padding: 10px 20px;
-      background: #d32f2f;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      margin-bottom: 20px;
-    }
-    .btn-delete {
-      padding: 5px 10px;
-      font-size: 0.85rem;
-      width: auto;
-      background: #d32f2f;
-    }
-    .success {
-      color: #388e3c;
-      padding: 12px;
-      background: #e8f5e9;
-      border-radius: 8px;
-      margin-bottom: 15px;
-    }
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-    }
-    .project-list {
-      background: white;
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 10px;
-      max-height: 400px;
-      overflow-y: auto;
-    }
-    .project-item {
-      padding: 15px;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      margin-bottom: 12px;
-      background: #f9f9f9;
-    }
-    .project-item-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 10px;
-    }
-    .project-item-info strong {
-      display: block;
-      color: #0f1720;
-      margin-bottom: 5px;
-    }
-    .project-item-info small {
-      color: #666;
-      display: block;
-      margin-bottom: 5px;
-    }
-    .project-item-buttons {
-      display: flex;
-      gap: 5px;
-      flex-direction: column;
-    }
-    .project-item-buttons button {
-      padding: 5px 10px;
-      font-size: 0.85rem;
-      width: auto;
-    }
-    .header-buttons {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    input[type="file"] {
-      padding: 8px;
-    }
-    .resume-section {
-      background: white;
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 10px;
-    }
-    .resume-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px;
-      background: #f9f9f9;
-      border-radius: 8px;
-      border: 1px solid #e0e0e0;
-    }
-    .file-upload-group {
-      margin-top: 10px;
-      padding: 10px;
-      background: white;
-      border-radius: 8px;
-      border: 1px dashed #1098ba;
-    }
-    .modal-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    textarea { width: 100%; min-height: 260px; font-family: var(--font-mono); font-size: .82rem; }
+    .file-list { display: grid; gap: 6px; max-height: 340px; overflow: auto; }
+    .file-row { display: flex; gap: 8px; align-items: center; padding: 7px 10px;
+      background: var(--chip-bg); border: 1px solid var(--muted); border-radius: var(--radius-sm); }
+    .file-row .name { flex: 1; font-family: var(--font-mono); font-size: .82rem; word-break: break-all; }
+    .file-row .btn { padding: 4px 10px; font-size: .74rem; margin: 0; }
+    #log { font-family: var(--font-mono); font-size: .78rem; background: var(--terminal-bg);
+      color: var(--terminal-text); border-radius: var(--radius-sm); padding: 12px;
+      max-height: 220px; overflow: auto; white-space: pre-wrap; }
+    .security-note { font-size: .85rem; }
   </style>
 </head>
 <body>
-  <div class="login-container" id="loginForm">
-    <h1>Admin Login</h1>
-    <div id="error"></div>
-    <div class="form-group">
-      <label for="password">Password:</label>
-      <input type="password" id="password" placeholder="Enter admin password">
+  <header class="site-header">
+    <div class="header-inner container">
+      <a class="brand" href="index.html"><div class="brand-text"><div class="title">⚙️ Admin — Repo Control</div>
+      <div class="subtitle">GitHub Contents API · direct commits · no PRs</div></div></a>
+      <nav class="main-nav"><a class="nav-pill" href="index.html">← Back to site</a></nav>
     </div>
-    <a href="https://replit.com/@maxgarcia642/OLD-maxgarcia642githubio-replit" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
-      <button type="button">Login</button>
-    </a>
-  </div>
+  </header>
 
-  <div class="admin-panel" id="adminPanel">
-    <div class="header-buttons">
-      <button class="btn-logout" onclick="openPasswordChange()" style="background: #ff9800; flex: 1;">Change Password</button>
-      <button class="btn-logout" onclick="logout()">Logout</button>
-    </div>
-    <h1>Admin Panel</h1>
-    <div id="successMsg"></div>
+  <main class="section">
+    <div class="card admin-wrap">
+      <div class="honesty-flag security-note">
+        There is no password screen here, on purpose. A client-side login on a public static site is
+        theater — anyone can read this page's source. The <em>real</em> gate is the fine-grained GitHub
+        token below: without it, nothing on this page can write anything. The token lives only in this
+        tab's memory — never in the repo, never in localStorage — and every write is throttled under
+        GitHub's 80-content-writes/minute secondary limit. Full reasoning in SECURITY.md.
+      </div>
 
-    <!-- Resume Upload & Management -->
-    <div class="edit-section">
-      <h2>Resume</h2>
-      <p style="color: #666; margin: 0 0 10px;">Upload or replace your resume. It will be displayed on your portfolio.</p>
-      <input type="file" id="resumeFile" accept=".pdf" style="margin-bottom: 10px;">
-      <button class="btn-save" onclick="uploadResume()">Upload Resume</button>
-      
-      <div id="resumeStatus" style="margin-top: 15px;">
-        <!-- Resume status will be shown here -->
-      </div>
-    </div>
-
-    <!-- Quick Document Upload -->
-    <div class="edit-section">
-      <h2>Quick Document Upload</h2>
-      <p style="color: #666; margin: 0 0 15px;">Upload a document with all details in one step - no more prompts!</p>
-      
-      <div class="form-group">
-        <label for="quickTitle">Document Title:</label>
-        <input type="text" id="quickTitle" placeholder="Enter document title">
-      </div>
-      
-      <div class="form-group">
-        <label for="quickDescription">Description:</label>
-        <textarea id="quickDescription" placeholder="Enter description" style="min-height: 60px;"></textarea>
-      </div>
-      
-      <div class="form-group">
-        <label for="quickFile">PDF File:</label>
-        <input type="file" id="quickFile" accept=".pdf">
-      </div>
-      
-      <button class="btn-save" onclick="quickUploadDocument()">Upload Document</button>
-    </div>
-
-    <!-- Articles & Projects -->
-    <div class="edit-section">
-      <div class="section-header">
-        <h2>Articles & Projects</h2>
-        <button style="width: auto; padding: 8px 16px; font-size: 0.9rem;" onclick="addProject()">+ Add Project</button>
-      </div>
-      
-      <h3 style="margin-bottom: 10px;">Your Projects:</h3>
-      <div class="project-list" id="projectsList"></div>
-    </div>
-  </div>
-  </div>
-
-  <!-- Password Change Modal -->
-  <div id="passwordModal" class="modal-container" style="display: none;">
-    <div style="background: white; padding: 30px; border-radius: 15px; max-width: 400px; width: 90%;">
-      <h2 style="margin-top: 0; color: #1098ba;">Change Password</h2>
-      <div id="passError" style="display: none; color: #d32f2f; padding: 12px; background: #ffebee; border-radius: 8px; margin-bottom: 15px;"></div>
-      <div style="margin-bottom: 15px;">
-        <label style="display: block; margin-bottom: 8px; color: #0f1720; font-weight: 600;">Current Password:</label>
-        <input type="password" id="oldPass" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
-      </div>
-      <div style="margin-bottom: 15px;">
-        <label style="display: block; margin-bottom: 8px; color: #0f1720; font-weight: 600;">New Password:</label>
-        <input type="password" id="newPass" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
-      </div>
-      <div style="margin-bottom: 15px;">
-        <label style="display: block; margin-bottom: 8px; color: #0f1720; font-weight: 600;">Confirm New Password:</label>
-        <input type="password" id="confirmPass" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
-      </div>
-      <div style="display: flex; gap: 10px;">
-        <button onclick="changePassword()" style="flex: 1;">Change Password</button>
-        <button onclick="closePasswordChange()" style="flex: 1; background: #ccc;">Cancel</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- File Upload Modal for Projects -->
-  <div id="fileUploadModal" class="modal-container" style="display: none;">
-    <div style="background: white; padding: 30px; border-radius: 15px; max-width: 400px; width: 90%;">
-      <h2 style="margin-top: 0; color: #1098ba;">Upload Project PDF</h2>
-      <p id="uploadProjectName" style="color: #666; margin-bottom: 15px;"></p>
-      <input type="file" id="projectFile" accept=".pdf" style="margin-bottom: 15px; width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
-      <div style="display: flex; gap: 10px;">
-        <button onclick="confirmProjectUpload()" style="flex: 1;">Upload</button>
-        <button onclick="closeFileUpload()" style="flex: 1; background: #ccc;">Cancel</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Add Project Modal -->
-  <div id="addProjectModal" class="modal-container" style="display: none;">
-    <div style="background: white; padding: 30px; border-radius: 15px; max-width: 500px; width: 90%;">
-      <h2 style="margin-top: 0; color: #1098ba;">Add New Project</h2>
-      <div id="addProjectError" style="display: none; color: #d32f2f; padding: 12px; background: #ffebee; border-radius: 8px; margin-bottom: 15px;"></div>
-      <div style="margin-bottom: 15px;">
-        <label style="display: block; margin-bottom: 8px; color: #0f1720; font-weight: 600;">Project Title:</label>
-        <input type="text" id="newProjectTitle" placeholder="Enter project title" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
-      </div>
-      <div style="margin-bottom: 15px;">
-        <label style="display: block; margin-bottom: 8px; color: #0f1720; font-weight: 600;">Description:</label>
-        <textarea id="newProjectDescription" placeholder="Enter project description" style="width: 100%; min-height: 100px; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-family: inherit; resize: vertical;"></textarea>
-      </div>
-      <div style="margin-bottom: 15px;">
-        <label style="display: block; margin-bottom: 8px; color: #0f1720; font-weight: 600;">PDF File (Optional):</label>
-        <input type="file" id="newProjectFile" accept=".pdf" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
-        <small style="color: #666; display: block; margin-top: 5px;">You can add or update the PDF later if needed</small>
-      </div>
-      <div style="display: flex; gap: 10px;">
-        <button onclick="createProject()" style="flex: 1; background: #308a11;">Create</button>
-        <button onclick="closeAddProject()" style="flex: 1; background: #ccc;">Cancel</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Manual Help Modal -->
-  <div id="helpModal" class="modal-container" style="display: none;">
-    <div style="background: white; padding: 30px; border-radius: 15px; max-width: 500px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
-      <h2 style="margin-top: 0; color: #d32f2f;">Admin Access Instructions</h2>
-      <p><strong>Note:</strong> The CMS requires your Replit backend to be active. If you see "Invalid Password" or cannot login while on GitHub, follow these steps to manually update your content on GitHub Pages:</p>
-      
-      <div style="background: #f5f7fa; padding: 15px; border-radius: 10px; margin-bottom: 20px; font-size: 0.9rem;">
-        <ol style="padding-left: 20px; line-height: 1.6;">
-          <li>Go to your GitHub repository: <code>maxgarcia642.github.io</code></li>
-          <li><strong>For Resume:</strong> Upload your <code>resume.pdf</code> into a folder named <code>uploads/</code> in the root.</li>
-          <li><strong>For Projects:</strong> Add your PDF files into the <code>uploads/</code> folder.</li>
-          <li><strong>For Data:</strong> Edit <code>content.json</code> directly in GitHub to add project titles and descriptions.</li>
-        </ol>
-      </div>
-      
-      <p style="font-size: 0.85rem; color: #666;">This ensures your site remains functional even if the Replit backend is temporarily offline.</p>
-      <button onclick="document.getElementById('helpModal').style.display='none'" style="background: #1098ba;">Close</button>
-    </div>
-  </div>
-
-  <script>
-    // Automatically determine the API URL. 
-    // If hosted on GitHub Pages, it should point back to your Replit URL.
-    const REPLIT_URL = 'https://workspace.maxgarcia642.repl.co'; // Replace with your actual Replit public URL if different
-    const API_URL = window.location.hostname.includes('github.io') ? REPLIT_URL + '/api' : '/api';
-    
-    let token = localStorage.getItem('adminToken');
-    let currentData = null;
-    let fileUploadProjectId = null;
-
-    if (token) showAdminPanel();
-
-    async function login() {
-      const password = document.getElementById('password').value;
-      const errorDiv = document.getElementById('error');
-      errorDiv.textContent = '';
-
-      try {
-        const res = await fetch(`${API_URL}/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password })
-        });
-        const data = await res.json();
-        
-        if (!res.ok) throw new Error(data.error);
-        
-        token = data.token;
-        localStorage.setItem('adminToken', token);
-        showAdminPanel();
-      } catch (e) {
-        errorDiv.textContent = 'Invalid password';
-        document.getElementById('helpModal').style.display = 'flex';
-      }
-    }
-
-    async function showAdminPanel() {
-      document.getElementById('loginForm').style.display = 'none';
-      document.getElementById('adminPanel').style.display = 'block';
-      await loadContent();
-    }
-
-    async function loadContent() {
-      try {
-        const res = await fetch(`${API_URL}/content`);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        currentData = await res.json();
-        if (!currentData) {
-          console.error('Content is null');
-          showSuccess('Error: Unable to load content from server');
-          return;
-        }
-        renderResume();
-        renderProjects();
-      } catch (e) {
-        console.error('Failed to load content:', e);
-        showSuccess('Error loading content: ' + e.message);
-      }
-    }
-
-    function renderSections() {
-      const container = document.getElementById('sectionsContainer');
-      container.innerHTML = '';
-      
-      // Intro section
-      const introDiv = document.createElement('div');
-      introDiv.className = 'edit-section';
-      introDiv.style.background = 'white';
-      introDiv.style.border = '1px solid #eee';
-      introDiv.innerHTML = `
-        <h3>Introduction</h3>
-        <div class="form-group">
-          <label>Title:</label>
-          <input type="text" id="intro-title" value="${currentData.intro.title}">
+      <section>
+        <h2>1 · Connect</h2>
+        <p class="muted small">
+          Create a <strong>fine-grained PAT</strong> (GitHub → Settings → Developer settings → Fine-grained
+          tokens): scope it to <em>this one repo</em>, permission <em>Contents: Read and write</em>,
+          expiry ≤ 90 days. Paste it here each session.
+        </p>
+        <div class="row">
+          <input type="text" id="owner" value="maxgarcia642" aria-label="Repo owner">
+          <input type="text" id="repo" value="maxgarcia642.github.io" aria-label="Repo name">
+          <input type="text" id="branch" value="main" aria-label="Branch">
         </div>
-        <div class="form-group">
-          <label>Description:</label>
-          <textarea id="intro-desc">${currentData.intro.description}</textarea>
+        <div class="row">
+          <input type="password" id="token" placeholder="github_pat_… (held in memory only)" autocomplete="off">
+          <button class="btn" id="connectBtn" type="button">Connect &amp; list files</button>
         </div>
-        <button class="btn-save" onclick="saveSection('intro')">Save Introduction</button>
-      `;
-      container.appendChild(introDiv);
-      
-      // Other sections
-      const sections = [
-        { id: 'programming', label: 'Programming Works' },
-        { id: 'posts', label: 'Articles & Projects' },
-        { id: 'utilities', label: 'Investment Utilities' },
-        { id: 'game', label: 'Pixel Art Game' },
-        { id: 'connect', label: 'Connect' }
-      ];
-      
-      sections.forEach(s => {
-        const secData = currentData.sections[s.id] || { title: '', description: '' };
-        const div = document.createElement('div');
-        div.className = 'edit-section';
-        div.style.background = 'white';
-        div.style.border = '1px solid #eee';
-        div.innerHTML = `
-          <h3>${s.label}</h3>
-          <div class="form-group">
-            <label>Title:</label>
-            <input type="text" id="${s.id}-title" value="${secData.title}">
-          </div>
-          <div class="form-group">
-            <label>Description:</label>
-            <textarea id="${s.id}-desc">${secData.description}</textarea>
-          </div>
-          <button class="btn-save" onclick="saveSection('${s.id}')">Save ${s.label}</button>
-        `;
-        container.appendChild(div);
-      });
-    }
+      </section>
 
-    async function saveSection(sectionId) {
-      const title = document.getElementById(`${sectionId}-title`)?.value;
-      const desc = document.getElementById(`${sectionId}-desc`)?.value;
-      
-      try {
-        if (sectionId === 'intro') {
-          // Update title
-          await fetch(`${API_URL}/content`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-            body: JSON.stringify({ section: 'intro', field: 'title', value: title })
-          });
-          // Update desc
-          await fetch(`${API_URL}/content`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-            body: JSON.stringify({ section: 'intro', field: 'description', value: desc })
-          });
-        } else {
-          await fetch(`${API_URL}/content/section`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-            body: JSON.stringify({ section: sectionId, title: title, description: desc })
-          });
-        }
-        showSuccess('Section updated successfully!');
-        loadContent();
-      } catch (e) {
-        alert('Failed to save section: ' + e.message);
-      }
-    }
+      <section>
+        <h2>2 · Files</h2>
+        <div class="row">
+          <input type="text" id="path" placeholder="Path (blank = repo root, e.g. files/)">
+          <button class="btn ghost" id="refreshBtn" type="button">List</button>
+        </div>
+        <div class="file-list" id="fileList"><p class="muted small">Connect first.</p></div>
+        <div class="row" style="margin-top:8px">
+          <input type="file" id="uploadInput" aria-label="Choose file to upload">
+          <input type="text" id="uploadPath" placeholder="Target path e.g. files/New_Doc.docx">
+          <button class="btn" id="uploadBtn" type="button">Upload → commit</button>
+        </div>
+      </section>
 
-    function renderResume() {
-      const status = document.getElementById('resumeStatus');
-      if (currentData.resumeFile) {
-        status.innerHTML = `
-          <div class="resume-item">
-            <div>
-              <strong>Resume:</strong>
-              <small>📄 ${currentData.resumeFile}</small>
-              <small style="color: #1098ba;">Currently uploaded</small>
-            </div>
-            <button class="btn-delete" onclick="deleteResume()">Delete</button>
-          </div>
-        `;
-      } else {
-        status.innerHTML = '<small style="color: #999;">No resume uploaded yet</small>';
-      }
-    }
+      <section>
+        <h2>3 · Edit a text file</h2>
+        <div class="row">
+          <input type="text" id="editPath" placeholder="e.g. content.json or finance.json">
+          <button class="btn ghost" id="loadEditBtn" type="button">Load</button>
+          <button class="btn" id="saveEditBtn" type="button" disabled>Validate &amp; commit</button>
+        </div>
+        <textarea id="editor" spellcheck="false" placeholder="File contents appear here. JSON files are validated before commit."></textarea>
+      </section>
 
-    function renderProjects() {
-      const list = document.getElementById('projectsList');
-      list.innerHTML = '';
-      if (!currentData.projects) currentData.projects = [];
-      
-      if (currentData.projects.length === 0) {
-        list.innerHTML = '<small style="color: #999;">No projects added yet. Click "+ Add Project" to get started.</small>';
-        return;
-      }
-      
-      currentData.projects.forEach(p => {
-        const div = document.createElement('div');
-        div.className = 'project-item';
-        div.innerHTML = `
-          <div class="project-item-header">
-            <div class="project-item-info">
-              <strong>${p.title}</strong>
-              <small>${p.description}</small>
-              ${p.file ? `<small style="color: #1098ba;">📄 ${p.file}</small>` : '<small style="color: #999;">No PDF attached</small>'}
-            </div>
-            <div class="project-item-buttons">
-              <button class="btn-delete" style="background: #1098ba; width: 120px;" onclick="editProject(${p.id})">Edit Info</button>
-              <button class="btn-delete" style="background: #ff9800; width: 120px;" onclick="promptFileUpload(${p.id})">Upload PDF</button>
-              <button class="btn-delete" onclick="deleteProject(${p.id})">Delete</button>
-            </div>
-          </div>
-        `;
-        list.appendChild(div);
-      });
-    }
+      <section>
+        <h2>Activity → superprompt-changelog.md</h2>
+        <p class="muted small">Every action above auto-appends a timestamped entry to
+          <code>superprompt-changelog.md</code> and commits it — your running superprompt for Cursor.</p>
+        <div id="log">Idle.</div>
+      </section>
+    </div>
+  </main>
 
-    function addProject() {
-      // Open the add project modal instead of using prompts
-      document.getElementById('addProjectModal').style.display = 'flex';
-      document.getElementById('newProjectTitle').value = '';
-      document.getElementById('newProjectDescription').value = '';
-      document.getElementById('newProjectFile').value = '';
-      document.getElementById('addProjectError').style.display = 'none';
-    }
+<script>
+(function () {
+  "use strict";
+  const $ = (s) => document.querySelector(s);
+  const logBox = $("#log");
+  const log = (msg) => { logBox.textContent += `\n[${new Date().toLocaleTimeString()}] ${msg}`; logBox.scrollTop = logBox.scrollHeight; };
 
-    function closeAddProject() {
-      document.getElementById('addProjectModal').style.display = 'none';
-      document.getElementById('newProjectTitle').value = '';
-      document.getElementById('newProjectDescription').value = '';
-      document.getElementById('newProjectFile').value = '';
-      document.getElementById('addProjectError').style.display = 'none';
-    }
+  /* Token stays in this closure only. Closing the tab destroys it. */
+  let TOKEN = null;
+  const cfg = () => ({ owner: $("#owner").value.trim(), repo: $("#repo").value.trim(), branch: $("#branch").value.trim() || "main" });
 
-    async function createProject() {
-      const title = document.getElementById('newProjectTitle').value.trim();
-      const description = document.getElementById('newProjectDescription').value.trim();
-      const fileInput = document.getElementById('newProjectFile');
-      const file = fileInput.files[0];
-      const errorDiv = document.getElementById('addProjectError');
-      
-      errorDiv.style.display = 'none';
-      errorDiv.textContent = '';
-      
-      // Validate inputs
-      if (!title) {
-        errorDiv.textContent = 'Please enter a project title';
-        errorDiv.style.display = 'block';
-        return;
-      }
-      
-      if (!description) {
-        errorDiv.textContent = 'Please enter a project description';
-        errorDiv.style.display = 'block';
-        return;
-      }
-      
-      try {
-        // Step 1: Create the project
-        const res = await fetch(`${API_URL}/projects`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({ title, description })
-        });
-        
-        if (!res.ok) {
-          throw new Error('Failed to create project');
-        }
-        
-        const newProject = await res.json();
-        
-        // Step 2: If a file was selected, upload it
-        if (file) {
-          const reader = new FileReader();
-          reader.onerror = () => {
-            showSuccess('⚠️ Project created, but file upload failed: ' + reader.error);
-            closeAddProject();
-            loadContent();
-          };
-          reader.onload = async (e) => {
-            try {
-              const uploadRes = await fetch(`${API_URL}/upload/project/${newProject.id}`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ file: e.target.result })
-              });
-              
-              if (!uploadRes.ok) {
-                throw new Error('Failed to upload file');
-              }
-              
-              showSuccess('Project created with PDF successfully!');
-              closeAddProject();
-              loadContent();
-            } catch (e) {
-              console.error('Upload error:', e);
-              showSuccess('⚠️ Project created, but PDF upload failed: ' + e.message);
-              closeAddProject();
-              loadContent();
-            }
-          };
-          reader.readAsDataURL(file);
-        } else {
-          // No file to upload, just close and refresh
-          showSuccess('Project created successfully!');
-          closeAddProject();
-          loadContent();
-        }
-      } catch (e) {
-        console.error('Create project error:', e);
-        errorDiv.textContent = 'Failed to create project: ' + e.message;
-        errorDiv.style.display = 'block';
-      }
-    }
-
-    function editProject(id) {
-      const project = currentData.projects.find(p => p.id === id);
-      if (!project) return;
-      
-      const title = prompt('Project title:', project.title);
-      if (!title) return;
-      const desc = prompt('Project description:', project.description);
-      if (desc === null) return;
-      
-      fetch(`${API_URL}/projects/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ title, description: desc })
-      }).then(() => {
-        showSuccess('Project updated!');
-        loadContent();
-      });
-    }
-
-    function deleteProject(id) {
-      if (!confirm('Delete this project?')) return;
-      
-      fetch(`${API_URL}/projects/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      }).then(() => {
-        showSuccess('Project deleted!');
-        loadContent();
-      });
-    }
-
-    function promptFileUpload(projectId) {
-      const project = currentData.projects.find(p => p.id === projectId);
-      if (!project) return;
-      
-      fileUploadProjectId = projectId;
-      document.getElementById('uploadProjectName').textContent = `Upload PDF for: ${project.title}`;
-      document.getElementById('fileUploadModal').style.display = 'flex';
-      document.getElementById('projectFile').value = '';
-    }
-
-    function closeFileUpload() {
-      document.getElementById('fileUploadModal').style.display = 'none';
-      fileUploadProjectId = null;
-    }
-
-    function confirmProjectUpload() {
-      const file = document.getElementById('projectFile').files[0];
-      if (!file) {
-        showSuccess('Please select a PDF file');
-        return;
-      }
-      
-      if (!fileUploadProjectId) {
-        showSuccess('Error: No project selected');
-        return;
-      }
-      
-      const reader = new FileReader();
-      reader.onerror = () => {
-        showSuccess('Error reading file: ' + reader.error);
-      };
-      reader.onload = async (e) => {
-        try {
-          const res = await fetch(`${API_URL}/upload/project/${fileUploadProjectId}`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ file: e.target.result })
-          });
-          
-          const data = await res.json();
-          if (!res.ok) {
-            throw new Error(data.error || `HTTP ${res.status}`);
-          }
-          
-          showSuccess('PDF uploaded successfully!');
-          closeFileUpload();
-          loadContent();
-        } catch (e) {
-          console.error('Upload error:', e);
-          showSuccess('Upload failed: ' + e.message);
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-
-    async function quickUploadDocument() {
-      const title = document.getElementById('quickTitle').value.trim();
-      const description = document.getElementById('quickDescription').value.trim();
-      const file = document.getElementById('quickFile').files[0];
-      
-      if (!title) {
-        alert('Please enter a document title');
-        return;
-      }
-      
-      if (!description) {
-        alert('Please enter a description');
-        return;
-      }
-      
-      if (!file) {
-        alert('Please select a PDF file');
-        return;
-      }
-      
-      const reader = new FileReader();
-      reader.onerror = () => {
-        alert('Error reading file: ' + reader.error);
-      };
-      reader.onload = async (e) => {
-        try {
-          const res = await fetch(`${API_URL}/projects/quick-upload`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ 
-              title, 
-              description, 
-              file: e.target.result 
-            })
-          });
-          
-          const data = await res.json();
-          if (!res.ok) {
-            throw new Error(data.error || `HTTP ${res.status}`);
-          }
-          
-          showSuccess('Document uploaded successfully!');
-          // Clear form
-          document.getElementById('quickTitle').value = '';
-          document.getElementById('quickDescription').value = '';
-          document.getElementById('quickFile').value = '';
-          loadContent();
-        } catch (e) {
-          console.error('Quick upload error:', e);
-          alert('Upload failed: ' + e.message);
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-
-    async function uploadResume() {
-      const file = document.getElementById('resumeFile').files[0];
-      if (!file) {
-        showSuccess('Please select a PDF file');
-        return;
-      }
-      
-      const reader = new FileReader();
-      reader.onerror = () => {
-        showSuccess('Error reading file: ' + reader.error);
-      };
-      reader.onload = async (e) => {
-        try {
-          const res = await fetch(`${API_URL}/upload/resume`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ file: e.target.result, filename: file.name })
-          });
-          
-          const data = await res.json();
-          if (!res.ok) {
-            throw new Error(data.error || `HTTP ${res.status}`);
-          }
-          
-          showSuccess('Resume uploaded successfully!');
-          document.getElementById('resumeFile').value = '';
-          loadContent();
-        } catch (e) {
-          console.error('Upload error:', e);
-          showSuccess('Upload failed: ' + e.message);
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-
-    async function deleteResume() {
-      if (!confirm('Delete your resume? It will be removed from your portfolio.')) return;
-      
-      try {
-        const res = await fetch(`${API_URL}/delete-resume`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        if (res.ok) {
-          showSuccess('Resume deleted!');
-          loadContent();
-        } else {
-          alert('Failed to delete');
-        }
-      } catch (e) {
-        alert('Error: ' + e.message);
-      }
-    }
-
-    function openPasswordChange() {
-      document.getElementById('passwordModal').style.display = 'flex';
-    }
-
-    function closePasswordChange() {
-      document.getElementById('passwordModal').style.display = 'none';
-      document.getElementById('oldPass').value = '';
-      document.getElementById('newPass').value = '';
-      document.getElementById('confirmPass').value = '';
-      document.getElementById('passError').style.display = 'none';
-    }
-
-    async function changePassword() {
-      const oldPass = document.getElementById('oldPass').value;
-      const newPass = document.getElementById('newPass').value;
-      const confirmPass = document.getElementById('confirmPass').value;
-      const errorDiv = document.getElementById('passError');
-      
-      errorDiv.style.display = 'none';
-      errorDiv.textContent = '';
-      
-      if (!oldPass || !newPass || !confirmPass) {
-        errorDiv.textContent = 'Please fill in all fields';
-        errorDiv.style.display = 'block';
-        return;
-      }
-      
-      if (newPass !== confirmPass) {
-        errorDiv.textContent = 'New passwords do not match';
-        errorDiv.style.display = 'block';
-        return;
-      }
-      
-      if (newPass.length < 6) {
-        errorDiv.textContent = 'New password must be at least 6 characters';
-        errorDiv.style.display = 'block';
-        return;
-      }
-      
-      try {
-        const res = await fetch(`${API_URL}/change-password`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({ oldPassword: oldPass, newPassword: newPass })
-        });
-        
-        if (!res.ok) {
-          const data = await res.json();
-          errorDiv.textContent = data.error || 'Failed to change password';
-          errorDiv.style.display = 'block';
-          return;
-        }
-        
-        showSuccess('Password changed successfully!');
-        closePasswordChange();
-      } catch (e) {
-        errorDiv.textContent = 'Error changing password';
-        errorDiv.style.display = 'block';
-      }
-    }
-
-    function showSuccess(msg) {
-      const successDiv = document.getElementById('successMsg');
-      successDiv.textContent = msg;
-      successDiv.className = 'success';
-      setTimeout(() => successDiv.textContent = '', 3000);
-    }
-
-    function logout() {
-      localStorage.removeItem('adminToken');
-      location.reload();
-    }
-
-    document.getElementById('password')?.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') login();
+  /* -------- throttled write queue: 1 write / 1200ms ≈ 50/min (< 80 limit) */
+  const queue = [];
+  let draining = false;
+  function enqueue(fn) {
+    return new Promise((resolve, reject) => {
+      queue.push({ fn, resolve, reject });
+      drain();
     });
-  </script>
+  }
+  async function drain() {
+    if (draining) return;
+    draining = true;
+    while (queue.length) {
+      const job = queue.shift();
+      try { job.resolve(await job.fn()); }
+      catch (e) { job.reject(e); log(`✗ ${e.message}`); }
+      await new Promise(r => setTimeout(r, 1200));
+    }
+    draining = false;
+  }
+
+  async function gh(pathname, opts = {}) {
+    if (!TOKEN) throw new Error("Not connected — paste your token first.");
+    const { owner, repo } = cfg();
+    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}${pathname}`, {
+      ...opts,
+      headers: {
+        "Authorization": `Bearer ${TOKEN}`,
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+        ...(opts.headers || {})
+      }
+    });
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      throw new Error(`GitHub ${res.status}: ${body.slice(0, 160)}`);
+    }
+    return res.status === 204 ? null : res.json();
+  }
+
+  /* base64 helpers — unicode-safe for text, direct for binary uploads */
+  const b64encodeText = (str) => {
+    const bytes = new TextEncoder().encode(str);
+    let bin = ""; bytes.forEach(b => bin += String.fromCharCode(b));
+    return btoa(bin);
+  };
+  const b64decodeText = (b64) => {
+    const bin = atob(b64.replace(/\n/g, ""));
+    const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+  };
+
+  const apiPath = (path) => encodeURIComponent(path).replace(/%2F/g, "/");
+
+  async function getFile(path) {
+    const { branch } = cfg();
+    return gh(`/contents/${apiPath(path)}?ref=${branch}`);
+  }
+  /* Raw PUT — no queueing. Only call from inside an enqueued job. */
+  function putFileRaw(path, base64content, message, sha) {
+    const { branch } = cfg();
+    return gh(`/contents/${apiPath(path)}`, {
+      method: "PUT",
+      body: JSON.stringify({ message, content: base64content, branch, ...(sha ? { sha } : {}) })
+    });
+  }
+  async function putFile(path, base64content, message, sha) {
+    return enqueue(() => putFileRaw(path, base64content, message, sha));
+  }
+  async function deleteFile(path, message, sha) {
+    const { branch } = cfg();
+    return enqueue(() => gh(`/contents/${apiPath(path)}`, {
+      method: "DELETE",
+      body: JSON.stringify({ message, sha, branch })
+    }));
+  }
+
+  /* -------- changelog: the whole read-modify-write runs as ONE queued job,
+     so rapid actions can't read a stale SHA between each other's writes.
+     A 409 (SHA raced by an outside commit) gets one fresh-read retry. ------ */
+  async function appendChangelog(entry) {
+    const path = "superprompt-changelog.md";
+    const stamp = new Date().toISOString();
+    const FALLBACK = "# Superprompt Changelog\n\nRunning log of admin-panel changes — paste relevant entries into Cursor when formalizing.\n";
+    const writeOnce = async () => {
+      let existing = FALLBACK, sha;
+      try {
+        const f = await getFile(path);
+        existing = b64decodeText(f.content); sha = f.sha;
+      } catch (e) { /* first ever entry — file doesn't exist yet */ }
+      const updated = existing + `\n- **${stamp}** — ${entry}`;
+      return putFileRaw(path, b64encodeText(updated), `chore(admin): log — ${entry.slice(0, 60)}`, sha);
+    };
+    await enqueue(async () => {
+      try { return await writeOnce(); }
+      catch (e) {
+        if (!/GitHub 409/.test(e.message)) throw e;
+        return writeOnce(); // one retry with a fresh SHA
+      }
+    });
+    log(`📝 changelog: ${entry}`);
+  }
+
+  /* -------- connect + list -------------------------------------------- */
+  $("#connectBtn").addEventListener("click", async () => {
+    TOKEN = $("#token").value.trim() || null;
+    $("#token").value = ""; /* wipe the field; token now lives in memory only */
+    if (!TOKEN) { log("No token entered."); return; }
+    log("Connecting…");
+    try { await listFiles(); log("✓ Connected. Token held in memory for this tab only."); }
+    catch (e) { TOKEN = null; log(`✗ ${e.message}`); }
+  });
+
+  async function listFiles() {
+    const path = $("#path").value.trim();
+    const { branch } = cfg();
+    const items = await gh(`/contents/${path ? apiPath(path) : ""}?ref=${branch}`);
+    const list = $("#fileList");
+    list.innerHTML = "";
+    (Array.isArray(items) ? items : [items]).forEach(item => {
+      const row = document.createElement("div");
+      row.className = "file-row";
+      const name = document.createElement("span");
+      name.className = "name";
+      /* textContent, not innerHTML — file names from the API are untrusted */
+      name.textContent = `${item.type === "dir" ? "📁" : "📄"} ${item.path}`;
+      row.appendChild(name);
+      if (item.type === "dir") {
+        const open = document.createElement("button");
+        open.className = "btn ghost"; open.type = "button"; open.textContent = "Open";
+        open.onclick = () => { $("#path").value = item.path; listFiles(); };
+        row.appendChild(open);
+      } else {
+        const ren = document.createElement("button");
+        ren.className = "btn ghost"; ren.type = "button"; ren.textContent = "Rename/move";
+        ren.onclick = () => renameFlow(item.path);
+        const del = document.createElement("button");
+        del.className = "btn ghost"; del.type = "button"; del.textContent = "Delete";
+        del.onclick = () => deleteFlow(item.path);
+        row.append(ren, del);
+      }
+      list.appendChild(row);
+    });
+  }
+  $("#refreshBtn").addEventListener("click", () => listFiles().catch(e => log(`✗ ${e.message}`)));
+
+  /* -------- rename = delete + create (no native rename endpoint) ------- */
+  async function renameFlow(oldPath) {
+    const newPath = prompt(`Rename/move\n${oldPath}\n→ new path:`, oldPath);
+    if (!newPath || newPath === oldPath) return;
+    log(`Renaming ${oldPath} → ${newPath} (create then delete, serialized)…`);
+    try {
+      const f = await getFile(oldPath);
+      await putFile(newPath, f.content.replace(/\n/g, ""), `chore(admin): rename ${oldPath} → ${newPath} (create)`);
+      await deleteFile(oldPath, `chore(admin): rename ${oldPath} → ${newPath} (delete old)`, f.sha);
+      await appendChangelog(`Renamed \`${oldPath}\` → \`${newPath}\` (Contents API delete+create).`);
+      listFiles();
+    } catch (e) { log(`✗ Rename failed: ${e.message}`); }
+  }
+
+  async function deleteFlow(path) {
+    if (!confirm(`Delete ${path}? This commits immediately.`)) return;
+    try {
+      const f = await getFile(path);
+      await deleteFile(path, `chore(admin): delete ${path}`, f.sha);
+      await appendChangelog(`Deleted \`${path}\`.`);
+      log(`✓ Deleted ${path}`); listFiles();
+    } catch (e) { log(`✗ ${e.message}`); }
+  }
+
+  /* -------- upload ------------------------------------------------------ */
+  $("#uploadBtn").addEventListener("click", async () => {
+    const file = $("#uploadInput").files[0];
+    const target = $("#uploadPath").value.trim() || (file ? `files/${file.name.replace(/\s+/g, "_")}` : "");
+    if (!file) { log("Pick a file first."); return; }
+    log(`Uploading ${file.name} → ${target}…`);
+    try {
+      const b64 = await new Promise((res, rej) => {
+        const r = new FileReader();
+        r.onload = () => res(String(r.result).split(",")[1]);
+        r.onerror = () => rej(new Error("Read failed"));
+        r.readAsDataURL(file);
+      });
+      let sha;
+      try { sha = (await getFile(target)).sha; log("Target exists — updating in place."); } catch (e) {}
+      await putFile(target, b64, `content(admin): upload ${target}`, sha);
+      await appendChangelog(`Uploaded \`${target}\` (${(file.size / 1024).toFixed(1)} KB).`);
+      log(`✓ Uploaded ${target}`); listFiles();
+    } catch (e) { log(`✗ ${e.message}`); }
+  });
+
+  /* -------- text editor ------------------------------------------------- */
+  let editSha = null;
+  let editShaPath = null; /* the path editSha belongs to */
+  $("#editPath").addEventListener("input", () => {
+    /* Path changed after a load → the held SHA no longer matches. Require a
+       fresh Load so a save can never target path B with path A's SHA. */
+    if (editShaPath && $("#editPath").value.trim() !== editShaPath) {
+      editSha = null; editShaPath = null;
+      $("#saveEditBtn").disabled = true;
+    }
+  });
+  $("#loadEditBtn").addEventListener("click", async () => {
+    const path = $("#editPath").value.trim();
+    if (!path) return;
+    try {
+      const f = await getFile(path);
+      $("#editor").value = b64decodeText(f.content);
+      editSha = f.sha;
+      editShaPath = path;
+      $("#saveEditBtn").disabled = false;
+      log(`Loaded ${path} (sha ${f.sha.slice(0, 7)})`);
+    } catch (e) { log(`✗ ${e.message}`); }
+  });
+  $("#saveEditBtn").addEventListener("click", async () => {
+    const path = $("#editPath").value.trim();
+    const text = $("#editor").value;
+    if (path !== editShaPath) { log("✗ Path changed since load — hit Load first."); return; }
+    if (path.endsWith(".json")) {
+      try { JSON.parse(text); }
+      catch (e) { log(`✗ Not committing — invalid JSON: ${e.message}`); return; }
+    }
+    try {
+      const result = await putFile(path, b64encodeText(text), `content(admin): edit ${path}`, editSha);
+      editSha = result.content.sha;
+      await appendChangelog(`Edited \`${path}\`${path.endsWith(".json") ? " (JSON validated pre-commit)" : ""}.`);
+      log(`✓ Committed ${path}`);
+    } catch (e) { log(`✗ ${e.message}`); }
+  });
+
+  /* Wipe token if the tab hides for good measure on some mobile browsers */
+  addEventListener("pagehide", () => { TOKEN = null; });
+})();
+</script>
 </body>
 </html>

@@ -1,0 +1,7 @@
+---
+# Codacy analysis scope. Vendored third-party code and binary deliverables
+# are not ours to lint; provenance for vendor/ lives in vendor/*/PROVENANCE.md.
+exclude_paths:
+  - "vendor/**"
+  - "files/**"
+  - "assets/**"

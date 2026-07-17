@@ -1,29 +1,29 @@
 {
   "intro": {
     "title": "Hello and Welcome to My Website!",
-    "description": "This is my personal portfolio where I share programming projects, articles, useful finance tools, and a small pixel art studio. Scroll to explore my work — my resume is embedded below for quick viewing and is available to download."
+    "description": "This is my personal portfolio where I share programming projects, verified financial research, playable projects, and a pixel art studio. Scroll to explore — my resume is embedded below in a lazy-loading viewer and available to download. Pick a theme from the dock on the right; every one is a full personality, not a palette swap."
   },
-  "resumeFile": "Maximiliano Garcia - Resume.pdf",
+  "resumeFile": "files/Maximiliano_Garcia_Resume.pdf",
   "sections": {
     "programming": {
-      "title": "Programming Works",
-      "description": "Code examples from school and site sources"
+      "title": "💻 Programming Works",
+      "description": "This site is the exhibit — view its source live from GitHub."
     },
     "posts": {
       "title": "📁 Articles & Projects",
-      "description": "Project reports and updates"
+      "description": "Project reports and updates, rendered in the on-site viewer — no more \"file too large to embed.\""
     },
-    "utilities": {
-      "title": "Investment Vehicle Valuations",
-      "description": "Live market data & quick redirects"
+    "finance": {
+      "title": "💸 The Financial Liberty Project",
+      "description": "Research deliverables with receipts. Every number is dated; every contested claim carries an honesty flag."
     },
-    "game": {
-      "title": "🎨 Pixel Art Studio Max",
-      "description": "A fun 16×16 Pixel Art Studio"
+    "arcade": {
+      "title": "🕹️ Games & Projects Arcade",
+      "description": "Play the Pixel Art Studio right here, then preview everything else without leaving the page."
     },
     "connect": {
       "title": "🪴 Connect",
-      "description": "Find my social links and projects"
+      "description": "All my links, natively — Linktree blocks embedding, so the tree grows here instead."
     }
   },
   "projects": [
@@ -46,14 +46,99 @@
     {
       "id": 3,
       "title": "Northwest Technical Institute Works",
-      "description": "Technical projects from Northwest Technical Institute",
-      "driveLink": "https://1drv.ms/b/c/e010e7aa97606cf2/IQDXBv4Vv--PTKrPNMHDxKbdAYsvUvDWMUZvFmFbBIFuciM?e=QRQh4H",
+      "description": "Technical projects from Northwest Technical Institute — served through the on-site PDF viewer once the compressed PDF lands in files/ (see README step). Until then the OneDrive links below keep working.",
+      "localPdf": "files/NWTI_Works.pdf",
       "shareLink": "https://1drv.ms/b/c/e010e7aa97606cf2/IQDXBv4Vv--PTKrPNMHDxKbdAYsvUvDWMUZvFmFbBIFuciM?e=QRQh4H",
       "directLink": "https://onedrive.live.com/?redeem=aHR0cHM6Ly8xZHJ2Lm1zL2IvYy9lMDEwZTdhYTk3NjA2Y2YyL0lRRFhCdjRWdi0tUFRLclBOTUhEeEtiZEFZc3ZVdkRXTVVadkZtRmJCSUZ1Y2lNP2U9UVJRaDRI&cid=E010E7AA97606CF2&id=E010E7AA97606CF2%21s15fe06d7efbf4c8faacf34c1c3c4a6dd&parId=E010E7AA97606CF2%21sea8cc6beffdb43d7976fbc7da445c639&o=OneUp",
-      "tooLargeToEmbed": true,
       "dateAdded": "2026-01-01T00:00:00Z",
-      "dateUpdated": "2026-01-15T00:00:00Z"
+      "dateUpdated": "2026-07-16T00:00:00Z"
     }
   ],
-  "adminPassword": "$2a$10$sUp7KdIMxJWw8qIGjthJWuC6sDmHy9hrtv2NLs/VHGq22gM2SN56y"
+  "arcade": [
+    {
+      "id": "pixel-studio",
+      "title": "🎨 Pixel Art Studio Max",
+      "kind": "inline",
+      "description": "16×16 studio — pick a color, paint, undo, save as PNG. Playable right here, no loading.",
+      "badge": "Play now"
+    },
+    {
+      "id": "shufflerush",
+      "title": "Shuffle Rush",
+      "kind": "facade",
+      "description": "Frutiger Metro rhythm action, live on itch.io. Built with Rosebud.ai + Phaser 3.",
+      "openUrl": "https://maxgarcia642.itch.io/shufflerush",
+      "embedUrl": "",
+      "embedNote": "Paste your itch.io embed iframe URL here (Distribute → Embed game). itch's Cloudflare layer intermittently blocks off-site frames, so the open-in-new-tab fallback always stays visible.",
+      "badge": "Published"
+    },
+    {
+      "id": "nwaero",
+      "title": "NWAero Grid Dashboard",
+      "kind": "facade",
+      "description": "Regional weather + traffic dashboard with real-time API aggregation. Collab build.",
+      "openUrl": "https://nwaero.netlify.app/",
+      "embedUrl": "https://nwaero.netlify.app/",
+      "badge": "Live app"
+    },
+    {
+      "id": "terminal-collective",
+      "title": "Coding Terminal Collective",
+      "kind": "facade",
+      "description": "Terminal coding collective with DevOps tooling, refactored from the academic repo.",
+      "openUrl": "https://garciacode-terminalcollective.bolt.host/",
+      "embedUrl": "https://garciacode-terminalcollective.bolt.host/",
+      "badge": "Live app"
+    },
+    {
+      "id": "maxfolio",
+      "title": "Create Your Own Maxfolio",
+      "kind": "facade",
+      "description": "Full-stack networking parody site (Next.js, Tailwind, Supabase, Vercel).",
+      "openUrl": "https://maxfolio-website-git-main-maximiliano-projects.vercel.app?_vercel_share=GZEgLha73mO1Y7LlqCdbXvAnOyRrZy3t",
+      "embedUrl": "",
+      "embedNote": "The _vercel_share token expires and Vercel preview deployments send X-Frame-Options: DENY. Swap in a production domain to enable live embedding.",
+      "badge": "Preview link"
+    },
+    {
+      "id": "skydisorder",
+      "title": "SkyDisorder",
+      "kind": "soon",
+      "description": "Satirical single-file Canvas 2D arcade golf — 12K+ lines, census-verified, four phases complete.",
+      "badge": "Coming soon"
+    },
+    {
+      "id": "getting-through",
+      "title": "Getting Through",
+      "kind": "soon",
+      "description": "3D parody fighter in pre-production — Unity / Godot 4 stack, targeting itch.io + Roblox.",
+      "badge": "Pre-production"
+    },
+    {
+      "id": "winnow",
+      "title": "Winnow",
+      "kind": "soon",
+      "description": "Client-side, zero-dependency web app for swipe-based social network triage and ranking. v1.0.0-rc.1.",
+      "badge": "RC shipped"
+    },
+    {
+      "id": "keystone",
+      "title": "Keystone",
+      "kind": "soon",
+      "description": "130K-line local-first AI agent platform (Rust, Tauri, React) — agents on your hardware, under your keys.",
+      "badge": "Flagship"
+    }
+  ],
+  "themes": [
+    { "id": "aero",   "label": "Frutiger Aero", "swatch": "linear-gradient(135deg,#7ed6f2,#1098ba)" },
+    { "id": "glass",  "label": "Liquid Glass",  "swatch": "linear-gradient(135deg,#c7d6ee,#8fa8d8)" },
+    { "id": "brutal", "label": "Neobrutalism",  "swatch": "linear-gradient(135deg,#ffe14d,#ff5252)" },
+    { "id": "crt",    "label": "Terminal CRT",  "swatch": "linear-gradient(135deg,#032403,#1aff5c)" },
+    { "id": "pixel",  "label": "Pixel Arcade",  "swatch": "linear-gradient(135deg,#2b2d5e,#e94f8a)" },
+    { "id": "aurora", "label": "Aurora Mesh",   "swatch": "linear-gradient(135deg,#7b5cff,#2adfd0)" },
+    { "id": "clay",   "label": "Claymorphism",  "swatch": "linear-gradient(135deg,#ffd9c8,#b8a7f5)" },
+    { "id": "neon",   "label": "Cyberpunk Neon","swatch": "linear-gradient(135deg,#ff2fb9,#19e6ff)" },
+    { "id": "swiss",  "label": "Editorial Swiss","swatch": "linear-gradient(135deg,#f5f5f2,#d92b2b)" },
+    { "id": "luxe",   "label": "Dark Luxe",     "swatch": "linear-gradient(135deg,#0d0b08,#c9a24b)" }
+  ]
 }
