@@ -2,7 +2,7 @@
   "sectionTitle": "The Financial Liberty Project",
   "sectionTagline": "Verified research, real deliverables, honest flags. Patience pays. 🦞",
   "marketPulse": {
-    "asOf": "2026-07-18",
+    "asOf": "2026-07-19",
     "note": "Point-in-time figures, verified Jul 16, 2026 (Barchart EOD settlements, ECB/Frankfurter FX, CoinGecko). Crypto and FX chips refresh live on demand; commodities and indexes are dated snapshots — treat everything as context, not a quote feed.",
     "items": [
       {
@@ -12,27 +12,27 @@
         "context": "ATH $126,198 on Oct 6, 2025. 2026 has been a crypto-winter year with a June–July rebound.",
         "live": true,
         "coingeckoId": "bitcoin",
-        "raw": 64137,
+        "raw": 64458,
         "usdPerUnit": 63293
       },
       {
         "id": "eth",
         "label": "Ethereum",
-        "value": "~$1.8K",
+        "value": "~$1.9K",
         "context": "ATH $4,953 Aug 24, 2025. Leading the recovery narrative.",
         "live": true,
         "coingeckoId": "ethereum",
-        "raw": 1844.27,
+        "raw": 1873.31,
         "usdPerUnit": 1843.89
       },
       {
         "id": "sol",
         "label": "Solana",
-        "value": "~$75",
+        "value": "~$76",
         "context": "Jul 16, 2026 (CoinGecko).",
         "live": true,
         "coingeckoId": "solana",
-        "raw": 74.83,
+        "raw": 76.25,
         "usdPerUnit": 74.87
       },
       {
@@ -42,7 +42,7 @@
         "context": "Jul 16, 2026 (CoinGecko).",
         "live": true,
         "coingeckoId": "ripple",
-        "raw": 1.087,
+        "raw": 1.093,
         "usdPerUnit": 1.089
       },
       {
@@ -52,17 +52,17 @@
         "context": "Jul 16, 2026 (CoinGecko).",
         "live": true,
         "coingeckoId": "dogecoin",
-        "raw": 0.072247,
+        "raw": 0.072442,
         "usdPerUnit": 0.072097
       },
       {
         "id": "ltc",
         "label": "Litecoin",
-        "value": "~$46",
+        "value": "~$47",
         "context": "Jul 16, 2026 (CoinGecko).",
         "live": true,
         "coingeckoId": "litecoin",
-        "raw": 45.93,
+        "raw": 47.13,
         "usdPerUnit": 45.32
       },
       {
