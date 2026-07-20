@@ -340,6 +340,6 @@ ${cssFor(t, id)}
     else dlg.setAttribute("open", "");
   });
   $("#studioClose").addEventListener("click", () => { dlg.close?.(); dlg.removeAttribute("open"); });
-  dlg.addEventListener("click", (e) => { if (e.target === dlg) { dlg.close?.(); } });
+  dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close?.(); });
   dlg.addEventListener("close", () => { revertPreview(); });
 })();
