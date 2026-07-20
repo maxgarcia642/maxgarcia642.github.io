@@ -5,6 +5,7 @@
    CSP: this file is 'self'; injected <style> is allowed by style-src 'unsafe-inline'. */
 (function () {
   const $ = (s, c = document) => c.querySelector(s);
+  const byId = (id) => document.getElementById(id);
   const KEY = "mg-custom-themes";
   const dlg = $("#studioModal");
   if (!dlg) return;
@@ -49,15 +50,22 @@
     };
   }
 
+  /* Values computed from the form before the CSS block is assembled. */
+  function derived(t) {
+    return {
+      pair: FONT_PAIRS.find(f => f.id === t.font) || FONT_PAIRS[0],
+      dark: lum(t.bg2) < 0.45,
+      card: hexRgb(t.card),
+      fx: hexRgb(t.fxColor),
+      btnText: lum(t.accent) > 0.62 ? "#101018" : "#ffffff",
+      anim: t.anim === "hue" ? "mg-bg-hue 40s linear infinite"
+        : t.anim === "none" ? "none"
+        : "mg-bg-drift 26s ease-in-out infinite alternate"
+    };
+  }
+
   function cssFor(t, id) {
-    const pair = FONT_PAIRS.find(f => f.id === t.font) || FONT_PAIRS[0];
-    const dark = lum(t.bg2) < 0.45;
-    const [cr, cg, cb] = hexRgb(t.card);
-    const btnText = lum(t.accent) > 0.62 ? "#101018" : "#ffffff";
-    const anim = t.anim === "hue" ? "mg-bg-hue 40s linear infinite"
-      : t.anim === "none" ? "none"
-      : "mg-bg-drift 26s ease-in-out infinite alternate";
-    const [fr, fg, fb] = hexRgb(t.fxColor);
+    const { pair, dark, card: [cr, cg, cb], fx: [fr, fg, fb], btnText, anim } = derived(t);
     return `[data-theme="${id}"] {
   --bg: linear-gradient(160deg, ${t.bg1}, ${t.bg2});
   --bg-size: 180% 180%;
@@ -160,7 +168,7 @@
     const card = p.querySelector(".st-prev-card");
     card.style.background = t.card;
     card.style.color = t.text;
-    card.style.borderRadius = (t.radius * .4 + 2) + "px";
+    card.style.borderRadius = (t.radius * 0.4 + 2) + "px";
   }
   dlg.addEventListener("input", paintStrip);
   paintStrip();
@@ -279,15 +287,15 @@ ${cssFor(t, id)}
   };
   function aimAt(id) {
     aim = id;
-    const v = $("#" + id).value;
+    const v = byId(id).value;
     const [h, s, l] = hexToHsl(v);
     $("#stH").value = h; $("#stS").value = s; $("#stL").value = l; $("#stHex").value = v;
     $("#stTargetDot").style.background = v;
     $("#stTargetName").textContent = "Fine-tune: " + COLOR_TARGETS[id];
-    Object.keys(COLOR_TARGETS).forEach(i => $("#" + i)?.classList.toggle("st-aimed", i === id));
+    Object.keys(COLOR_TARGETS).forEach(i => byId(i)?.classList.toggle("st-aimed", i === id));
   }
   Object.keys(COLOR_TARGETS).forEach(id => {
-    const el = $("#" + id);
+    const el = byId(id);
     if (!el) return;
     el.addEventListener("click", () => aimAt(id));
     el.addEventListener("input", () => { if (aim === id) aimAt(id); });
@@ -296,16 +304,16 @@ ${cssFor(t, id)}
     const hex = hslToHex(+$("#stH").value, +$("#stS").value, +$("#stL").value);
     $("#stHex").value = hex;
     $("#stTargetDot").style.background = hex;
-    const el = $("#" + aim);
+    const el = byId(aim);
     el.value = hex;
     el.dispatchEvent(new Event("input", { bubbles: true }));
   }
-  ["stH", "stS", "stL"].forEach(id => $("#" + id).addEventListener("input", applyAim));
+  ["stH", "stS", "stL"].forEach(id => byId(id).addEventListener("input", applyAim));
   $("#stHex").addEventListener("change", () => {
     let v = $("#stHex").value.trim();
     if (!v.startsWith("#")) v = "#" + v;
     if (/^#[0-9a-f]{6}$/i.test(v)) {
-      const el = $("#" + aim);
+      const el = byId(aim);
       el.value = v.toLowerCase();
       el.dispatchEvent(new Event("input", { bubbles: true }));
       aimAt(aim);
@@ -317,7 +325,7 @@ ${cssFor(t, id)}
     ed.addEventListener("click", async () => {
       try {
         const r = await new EyeDropper().open();
-        const el = $("#" + aim);
+        const el = byId(aim);
         el.value = r.sRGBHex;
         el.dispatchEvent(new Event("input", { bubbles: true }));
         aimAt(aim);

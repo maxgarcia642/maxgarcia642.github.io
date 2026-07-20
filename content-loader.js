@@ -16,12 +16,65 @@ async function loadJSON(path) {
   return res.json();
 }
 
-/* ---------- Posts carousel ---------- */
+/* ---------- DOM element factories (no innerHTML on these paths) ---------- */
+function el(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined) node.textContent = text;
+  return node;
+}
+function badgeEl(text, soon) {
+  return el("span", soon ? "badge soon" : "badge", text);
+}
 /* Doc buttons open the protected on-site reader (script.js) — no downloads. */
-function docButtons(docs, title) {
-  return (docs || []).map(d =>
-    `<button class="btn doc-view" type="button" data-doc="${esc(d.path)}" data-title="${esc(title)} — ${esc(d.label)}">📖 ${esc(d.label)}</button>`
-  ).join("");
+function docButtonsInto(host, docs, title) {
+  (docs || []).forEach(d => {
+    const b = el("button", "btn doc-view", `📖 ${d.label}`);
+    b.type = "button";
+    b.dataset.doc = d.path;
+    b.dataset.title = `${title} — ${d.label}`;
+    host.appendChild(b);
+  });
+}
+
+/* ---------- Posts carousel ---------- */
+function postCard(p) {
+  const card = el("article", "post-card");
+  card.setAttribute("role", "listitem");
+  if (p.id) card.dataset.searchId = p.id;
+
+  const h = el("h3", null, `${p.title} `);
+  if (p.soon) h.appendChild(badgeEl(p.badge || "Coming soon", true));
+  else if (p.badge) h.appendChild(badgeEl(p.badge, false));
+  card.appendChild(h);
+
+  if (p.dateUpdated) {
+    const updated = new Date(p.dateUpdated).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+    card.appendChild(el("div", "dates", `Updated ${updated}`));
+  }
+  card.appendChild(el("p", "muted small", p.description || ""));
+
+  const actions = el("div", "arcade-actions");
+  docButtonsInto(actions, p.docs, p.title);
+  if (p.pdf) {
+    const b = el("button", "btn view-pdf", "📖 Read paper");
+    b.type = "button"; b.dataset.pdf = p.pdf; b.dataset.title = p.title;
+    actions.appendChild(b);
+  }
+  if (p.driveLink) {
+    const b = el("button", "btn ghost view-frame", "Preview");
+    b.type = "button";
+    b.dataset.frame = p.driveLink.replace("/view?usp=sharing", "/preview");
+    b.dataset.title = p.title;
+    actions.appendChild(b);
+  }
+  if (p.link) {
+    const a = el("a", "link-btn", p.link.label);
+    a.href = p.link.url; a.target = "_blank"; a.rel = "noopener";
+    actions.appendChild(a);
+  }
+  card.appendChild(actions);
+  return card;
 }
 
 function renderPosts(projects) {
@@ -33,23 +86,7 @@ function renderPosts(projects) {
     .filter(p => p.id !== "linkedin-blog") // lives in the section description now, not as a card
     .slice()
     .sort((a, b) => stripLead(a.title).localeCompare(stripLead(b.title), undefined, { sensitivity: "base" }))
-    .forEach(p => {
-    const el = document.createElement("article");
-    el.className = "post-card";
-    el.setAttribute("role", "listitem");
-    const updated = p.dateUpdated ? new Date(p.dateUpdated).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }) : "";
-    let actions = docButtons(p.docs, p.title);
-    if (p.pdf) actions += `<button class="btn view-pdf" type="button" data-pdf="${esc(p.pdf)}" data-title="${esc(p.title)}">📖 Read paper</button>`;
-    if (p.driveLink) actions += `<button class="btn ghost view-frame" type="button" data-frame="${esc(p.driveLink.replace("/view?usp=sharing", "/preview"))}" data-title="${esc(p.title)}">Preview</button>`;
-    if (p.link) actions += `<a class="link-btn" href="${esc(p.link.url)}" target="_blank" rel="noopener">${esc(p.link.label)}</a>`;
-    const badge = p.soon ? `<span class="badge soon">${esc(p.badge || "Coming soon")}</span>` : (p.badge ? `<span class="badge">${esc(p.badge)}</span>` : "");
-    el.innerHTML = `
-      <h3>${esc(p.title)} ${badge}</h3>
-      <div class="dates">Updated ${esc(updated)}</div>
-      <p class="muted small">${esc(p.description)}</p>
-      <div class="arcade-actions">${actions}</div>`;
-    track.appendChild(el);
-  });
+    .forEach(p => track.appendChild(postCard(p)));
 }
 
 /* ---------- Clawmaxxing research row (its own scroll, inside Articles) ---------- */
@@ -62,18 +99,7 @@ function renderClawmaxxing(claw) {
   if (title) title.textContent = claw.title || "🦞 The Clawmaxxing Project";
   if (desc) desc.textContent = claw.description || "";
   track.innerHTML = "";
-  claw.papers.forEach(p => {
-    const el = document.createElement("article");
-    el.className = "post-card";
-    el.setAttribute("role", "listitem");
-    el.dataset.searchId = p.id;
-    const badge = p.badge ? `<span class="badge">${esc(p.badge)}</span>` : "";
-    el.innerHTML = `
-      <h3>${esc(p.title)} ${badge}</h3>
-      <p class="muted small">${esc(p.description)}</p>
-      <div class="arcade-actions">${docButtons(p.docs, p.title)}</div>`;
-    track.appendChild(el);
-  });
+  claw.papers.forEach(p => track.appendChild(postCard(p)));
   wrap.hidden = false;
 }
 
@@ -83,19 +109,26 @@ function renderAssessments(list) {
   if (!grid) return;
   grid.innerHTML = "";
   (list || []).forEach(a => {
-    const card = document.createElement("article");
-    card.className = "assessment-card";
+    const card = el("article", "assessment-card");
     card.dataset.searchId = a.id;
-    card.innerHTML = `
-      <button class="assessment-open" type="button" data-assessment="${esc(a.html)}" data-title="${esc(a.title)}" aria-label="Open ${esc(a.title)}">
-        <span class="assessment-emoji" aria-hidden="true">${esc(a.emoji || "🧭")}</span>
-        <span class="assessment-open-label">Open report</span>
-      </button>
-      <div class="assessment-body">
-        <h3>${esc(a.title)} ${a.badge ? `<span class="badge">${esc(a.badge)}</span>` : ""}</h3>
-        ${a.subtitle ? `<p class="assessment-sub">${esc(a.subtitle)}</p>` : ""}
-        <p class="muted small">${esc(a.detail || "")}</p>
-      </div>`;
+
+    const open = el("button", "assessment-open");
+    open.type = "button";
+    open.dataset.assessment = a.html;
+    open.dataset.title = a.title;
+    open.setAttribute("aria-label", `Open ${a.title}`);
+    const emoji = el("span", "assessment-emoji", a.emoji || "🧭");
+    emoji.setAttribute("aria-hidden", "true");
+    open.append(emoji, el("span", "assessment-open-label", "Open report"));
+
+    const body = el("div", "assessment-body");
+    const h = el("h3", null, `${a.title} `);
+    if (a.badge) h.appendChild(badgeEl(a.badge, false));
+    body.appendChild(h);
+    if (a.subtitle) body.appendChild(el("p", "assessment-sub", a.subtitle));
+    body.appendChild(el("p", "muted small", a.detail || ""));
+
+    card.append(open, body);
     grid.appendChild(card);
   });
 }
@@ -186,39 +219,39 @@ function renderArcade(items) {
   const grid = document.getElementById("arcadeGrid");
   if (!grid) return;
   items.filter(i => i.kind !== "inline").forEach(item => {
-    const card = document.createElement("article");
-    card.className = "arcade-card";
-    const art = `<span class="facade-emoji" aria-hidden="true">${esc(item.emoji || "🕹️")}</span>`;
-    if (item.kind === "facade") {
-      const canEmbed = Boolean(item.embedUrl);
-      card.innerHTML = `
-        <button class="facade" type="button"
-                data-embed="${esc(item.embedUrl || "")}"
-                data-open="${esc(item.openUrl || "")}"
-                aria-label="${canEmbed ? "Load" : "Open"} ${esc(item.title)}">
-          ${art}
-          <span class="facade-title">${esc(item.title)}</span>
-        </button>
-        <div class="arcade-body">
-          <h3>${esc(item.title)} <span class="badge">${esc(item.badge)}</span></h3>
-          <p>${esc(item.description)}</p>
-          <div class="arcade-actions">
-            ${docButtons(item.docs, item.title)}
-            ${item.openUrl ? `<a class="link-btn" href="${esc(item.openUrl)}" target="_blank" rel="noopener">Open in new tab</a>` : ""}
-          </div>
-        </div>`;
-    } else { // coming soon
-      card.innerHTML = `
-        <div class="facade static" aria-hidden="true">
-          ${art}
-          <span class="facade-title">${esc(item.title)}</span>
-        </div>
-        <div class="arcade-body">
-          <h3>${esc(item.title)} <span class="badge soon">${esc(item.badge)}</span></h3>
-          <p>${esc(item.description)}</p>
-          ${item.docs ? `<div class="arcade-actions">${docButtons(item.docs, item.title)}</div>` : ""}
-        </div>`;
+    const card = el("article", "arcade-card");
+    const isFacade = item.kind === "facade";
+
+    /* the big emoji face */
+    const face = el(isFacade ? "button" : "div", isFacade ? "facade" : "facade static");
+    if (isFacade) {
+      face.type = "button";
+      face.dataset.embed = item.embedUrl || "";
+      face.dataset.open = item.openUrl || "";
+      face.setAttribute("aria-label", `${item.embedUrl ? "Load" : "Open"} ${item.title}`);
+    } else {
+      face.setAttribute("aria-hidden", "true");
     }
+    const emoji = el("span", "facade-emoji", item.emoji || "🕹️");
+    emoji.setAttribute("aria-hidden", "true");
+    face.append(emoji, el("span", "facade-title", item.title));
+
+    /* the text body */
+    const body = el("div", "arcade-body");
+    const h = el("h3", null, `${item.title} `);
+    h.appendChild(badgeEl(item.badge, !isFacade));
+    body.appendChild(h);
+    body.appendChild(el("p", null, item.description));
+    const actions = el("div", "arcade-actions");
+    docButtonsInto(actions, item.docs, item.title);
+    if (isFacade && item.openUrl) {
+      const a = el("a", "link-btn", "Open in new tab");
+      a.href = item.openUrl; a.target = "_blank"; a.rel = "noopener";
+      actions.appendChild(a);
+    }
+    if (actions.childElementCount) body.appendChild(actions);
+
+    card.append(face, body);
     grid.appendChild(card);
   });
 }

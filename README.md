@@ -32,7 +32,7 @@ Zero build step, zero backend, zero secrets in the repo.
 | `scripts/update-pulse.mjs` | Zero-dep daily refresher for all 50 pulse chips — CoinGecko + Frankfurter + Yahoo, host-allowlisted (run by CI or locally) |
 | `.github/workflows/market-pulse.yml` | Daily Action: refresh live chips → commit → Pages redeploys with fresh data |
 | `files/` | Downloadable deliverables (DOCX/XLSX) + compressed resume PDF |
-| `superprompt-changelog.md` | Auto-appended by admin actions; feed for Cursor |
+| `superprompt-changelog.md` | Running log of every change round; feed for Cursor sessions |
 | `SECURITY.md` | The honest security model |
 | `Cursor_Superprompt_Handover.txt` | Paste-ready handover for Cursor sessions |
 
@@ -51,10 +51,11 @@ mimopixel editor from the repo scout; implemented natively with zero deps
 because that repo ships no LICENSE file (see the changelog's audit notes).
 
 **Self-refreshing market pulse** — a daily GitHub Action runs
-`scripts/update-pulse.mjs`, which updates only the `live: true` crypto chips
-from CoinGecko and commits when prices move; the push redeploys Pages so the
-public site stays fresh with zero manual work. Snapshot chips (gold, S&P,
-cards) stay hand-verified and dated, never auto-edited.
+`scripts/update-pulse.mjs`, which refreshes **all 50 chips** server-side:
+crypto via CoinGecko, currencies via Frankfurter/ECB, and metals, energy,
+agriculture, and indices via Yahoo Finance (host-allowlisted, soft-fail per
+source). It commits only when values moved; the push redeploys Pages. Crypto
+and FX chips can also refresh live in the visitor's browser via the ↻ button.
 
 **Vendoring policy** — third-party runtime code lives in `vendor/<name>/`
 with the upstream LICENSE and a PROVENANCE.md recording exact version,
@@ -117,9 +118,16 @@ not DRM** — see SECURITY.md for the honest limits.
 
 ## Editing content
 
-Small edits: GitHub web editor or the admin panel (`/admin.html`).
-Structured edits: `content.json` (site text, projects, arcade, themes) and
-`finance.json` (Financial Liberty works + market pulse). Both are validated as
-JSON by the admin editor before commit.
+The credentialed admin panel is retired (v4) — `/admin.html` is now **Layout
+Settings**, a visitor-facing, localStorage-only customization page with no
+write access to the repo. Content changes go through the repo itself:
+
+- Small edits: the GitHub web editor (or Cursor), on a branch, PR into `main`.
+- Structured edits: `content.json` (site text, posts, Clawmaxxing papers,
+  arcade, assessments, themes, music) and `finance.json` (Financial Liberty
+  works + market pulse). Validate JSON before committing — nothing validates
+  it for you anymore.
+- New personality poster: drop the HTML in `assessments/`, add one object to
+  `content.json → assessments`.
 
 Patience pays. 🦞

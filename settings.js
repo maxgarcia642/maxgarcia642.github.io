@@ -4,6 +4,7 @@
    (superprompt-changelog.md has the entry). */
 (function () {
   const $ = (s, c = document) => c.querySelector(s);
+  const byId = (id) => document.getElementById(id);
   const SECTIONS = [
     ["programming", "💻 Website Programming Work"],
     ["posts", "📁 Articles & Posts"],
@@ -25,18 +26,25 @@
     clearTimeout(save._t); save._t = setTimeout(() => { n.textContent = ""; }, 1800);
   };
 
-  /* Mirror of script.js applyLayout(), scoped to this page's preview */
+  /* Mirror of script.js applyLayout(), scoped to this page's preview.
+     Same table shape: attribute → { layout key, allowed values }. */
+  const ATTR_RULES = {
+    "data-motion":   { key: "motion",    allowed: ["off"] },
+    "data-width":    { key: "width",     allowed: ["wide", "cozy"] },
+    "data-corners":  { key: "corners",   allowed: ["sharp"] },
+    "data-dock":     { key: "dock",      allowed: ["left", "hidden"] },
+    "data-fontmode": { key: "fontmode",  allowed: ["sans", "serif", "mono"] },
+    "data-contrast": { key: "contrast",  allowed: ["high"] },
+    "data-underline":{ key: "underline", allowed: ["on"] },
+    "data-density":  { key: "density",   allowed: ["compact"] }
+  };
   function applyHere() {
     const root = document.documentElement;
-    const set = (k, v) => v ? root.setAttribute(k, v) : root.removeAttribute(k);
-    set("data-motion", L.motion === "off" ? "off" : null);
-    set("data-width", ["wide", "cozy"].includes(L.width) ? L.width : null);
-    set("data-corners", L.corners === "sharp" ? "sharp" : null);
-    set("data-dock", ["left", "hidden"].includes(L.dock) ? L.dock : null);
-    set("data-fontmode", ["sans", "serif", "mono"].includes(L.fontmode) ? L.fontmode : null);
-    set("data-contrast", L.contrast === "high" ? "high" : null);
-    set("data-underline", L.underline === "on" ? "on" : null);
-    set("data-density", L.density === "compact" ? "compact" : null);
+    Object.entries(ATTR_RULES).forEach(([attr, rule]) => {
+      const v = L[rule.key];
+      if (rule.allowed.includes(v)) root.setAttribute(attr, v);
+      else root.removeAttribute(attr);
+    });
     root.style.setProperty("--user-font-scale", { s: ".92", m: "1", l: "1.12" }[L.font] || "1");
   }
   try {
@@ -52,7 +60,7 @@
      collected so a reset can refresh every group without re-binding. */
   const segPainters = [];
   const seg = (hostId, key, def) => {
-    const host = $(hostId);
+    const host = byId(hostId.replace("#", ""));
     const paint = () => host.querySelectorAll(".seg").forEach(b =>
       b.setAttribute("aria-pressed", String((L[key] || def) === b.dataset.v)));
     segPainters.push(paint);
@@ -79,17 +87,17 @@
 
   /* Copy or restore the whole setup (layout + theme) as one little code */
   const codeBox = $("#layoutCode");
-  $("#layoutExport")?.addEventListener("click", async () => {
+  async function exportSetup() {
     let theme = null;
-    try { theme = localStorage.getItem("mg-theme"); } catch (e) {}
+    try { theme = localStorage.getItem("mg-theme"); } catch (e) { /* private mode */ }
     const code = btoa(unescape(encodeURIComponent(JSON.stringify({ layout: L, theme }))));
     codeBox.value = code;
     const n = $("#saveNote");
     try { await navigator.clipboard.writeText(code); n.textContent = "Copied. Keep it anywhere and paste it back later."; }
     catch (e) { codeBox.focus(); codeBox.select(); n.textContent = "Select the code and copy it."; }
     clearTimeout(save._t); save._t = setTimeout(() => { n.textContent = ""; }, 2600);
-  });
-  $("#layoutImport")?.addEventListener("click", () => {
+  }
+  function importSetup() {
     const n = $("#saveNote");
     try {
       const data = JSON.parse(decodeURIComponent(escape(atob(codeBox.value.trim()))));
@@ -104,7 +112,9 @@
       n.textContent = "That code didn't read as a setup. Paste the whole thing and try again.";
       clearTimeout(save._t); save._t = setTimeout(() => { n.textContent = ""; }, 2600);
     }
-  });
+  }
+  $("#layoutExport")?.addEventListener("click", exportSetup);
+  $("#layoutImport")?.addEventListener("click", importSetup);
 
   $("#setMotion").value = L.motion === "off" ? "off" : "full";
   $("#setMotion").addEventListener("change", (e) => {

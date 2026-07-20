@@ -167,16 +167,20 @@ function syncFx() {
     ch: GLYPH_SET[Math.floor(rand() * GLYPH_SET.length)]
   }));
   const draw = FX_DRAW[preset.shape] || FX_DRAW.dot;
+  const step = (b, t0) => {
+    b.y -= b.vy;
+    b.x += b.vx + (preset.drift ? Math.sin(t0 / 1600 + b.ph) * 0.0004 * preset.drift : 0);
+    if (preset.spin) b.rot += b.vr;
+    if (b.y < -0.08) { b.y = 1.08; b.x = rand(); }
+    if (b.y > 1.08) { b.y = -0.08; b.x = rand(); }
+    if (b.x < -0.05) b.x = 1.05;
+    if (b.x > 1.05) b.x = -0.05;
+  };
   (function tick(ts) {
     const t0 = ts || 0;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (const b of parts) {
-      b.y -= b.vy; b.x += b.vx + (preset.drift ? Math.sin(t0 / 1600 + b.ph) * 0.0004 * preset.drift : 0);
-      if (preset.spin) b.rot += b.vr;
-      if (b.y < -0.08) { b.y = 1.08; b.x = rand(); }
-      if (b.y > 1.08) { b.y = -0.08; b.x = rand(); }
-      if (b.x < -0.05) b.x = 1.05;
-      if (b.x > 1.05) b.x = -0.05;
+      step(b, t0);
       const x = b.x * canvas.width, y = b.y * canvas.height, s = b.s * dpi;
       const alpha = preset.flicker ? b.a * (0.45 + 0.55 * Math.abs(Math.sin(t0 / 700 + b.ph))) : b.a;
       ctx.save();
@@ -190,31 +194,45 @@ function syncFx() {
 
 /* ═════════ LAYOUT SETTINGS — applied from localStorage("mg-layout") ═════ */
 MG.layout = {};
+
+/* html attribute → { layout key, allowed values }. Anything else clears it. */
+const LAYOUT_ATTRS = {
+  "data-motion":   { key: "motion",    allowed: ["off"] },
+  "data-width":    { key: "width",     allowed: ["wide", "cozy"] },
+  "data-corners":  { key: "corners",   allowed: ["sharp"] },
+  "data-dock":     { key: "dock",      allowed: ["left", "hidden"] },
+  "data-fontmode": { key: "fontmode",  allowed: ["sans", "serif", "mono"] },
+  "data-contrast": { key: "contrast",  allowed: ["high"] },
+  "data-underline":{ key: "underline", allowed: ["on"] },
+  "data-density":  { key: "density",   allowed: ["compact"] }
+};
+const LAYOUT_SECTIONS = ["programming", "posts", "finance", "arcade", "individualism", "connect"];
+
 function applyLayout() {
   let L = {};
   try { L = JSON.parse(localStorage.getItem("mg-layout") || "{}"); } catch (e) { /* defaults */ }
   MG.layout = L;
   const root = document.documentElement;
-  const set = (k, v) => v ? root.setAttribute(k, v) : root.removeAttribute(k);
-  set("data-motion", L.motion === "off" ? "off" : null);
-  set("data-width", ["wide", "cozy"].includes(L.width) ? L.width : null);
-  set("data-corners", L.corners === "sharp" ? "sharp" : null);
-  set("data-dock", ["left", "hidden"].includes(L.dock) ? L.dock : null);
-  set("data-fontmode", ["sans", "serif", "mono"].includes(L.fontmode) ? L.fontmode : null);
-  set("data-contrast", L.contrast === "high" ? "high" : null);
-  set("data-underline", L.underline === "on" ? "on" : null);
-  set("data-density", L.density === "compact" ? "compact" : null);
+  Object.entries(LAYOUT_ATTRS).forEach(([attr, rule]) => {
+    const v = L[rule.key];
+    if (rule.allowed.includes(v)) root.setAttribute(attr, v);
+    else root.removeAttribute(attr);
+  });
   root.style.setProperty("--user-font-scale", { s: ".92", m: "1", l: "1.12" }[L.font] || "1");
-  ["programming", "posts", "finance", "arcade", "individualism", "connect"].forEach(id => {
+  applySectionLayout(L);
+  syncFx();
+}
+function applySectionLayout(L) {
+  const ordered = Array.isArray(L.order);
+  LAYOUT_SECTIONS.forEach(id => {
     document.body.classList.toggle(`sec-hidden-${id}`, Boolean(L.hidden?.includes(id)));
     const sec = document.getElementById(id);
-    if (sec && Array.isArray(L.order)) {
+    if (sec && ordered) {
       const idx = L.order.indexOf(id);
       sec.style.order = idx >= 0 ? String(idx + 1) : "";
     }
   });
-  if (Array.isArray(L.order)) $("#main").style.display = "flex", $("#main").style.flexDirection = "column";
-  syncFx();
+  if (ordered) { $("#main").style.display = "flex"; $("#main").style.flexDirection = "column"; }
 }
 applyLayout();
 addEventListener("storage", (e) => { if (e.key === "mg-layout") applyLayout(); });

@@ -18,7 +18,7 @@ const items = fin.marketPulse.items;
 const UA = { "User-Agent": "maxgarcia642.github.io market-pulse (contact: repo issues)" };
 let changed = 0;
 
-const fmtUsd = (v) => `$${v.toLocaleString("en-US", { maximumFractionDigits: v >= 100 ? 0 : v >= 1 ? 2 : 4 })}`;
+const fmtUsd = (v) => "$" + v.toLocaleString("en-US", { maximumFractionDigits: v >= 100 ? 0 : v >= 1 ? 2 : 4 });
 
 /* SSRF-proof by construction: every fetch below starts with a literal
    https://host/ prefix — symbols from finance.json can only ever land in the
@@ -36,22 +36,36 @@ async function readJSON(resPromise, done) {
   } finally { done(); }
 }
 
+/* Plain string helpers — no regexes on the display strings. */
+const isDigit = (ch) => ch >= "0" && ch <= "9";
+function decimalsBefore(str, stop) {
+  const dot = str.indexOf(".");
+  if (dot < 0) return 0;
+  let n = 0;
+  for (let j = dot + 1; j < str.length && isDigit(str[j]); j++) n++;
+  if (stop !== undefined && str.indexOf(stop) >= 0 && str.indexOf(stop) < dot) return 0;
+  return n;
+}
+const num = (v, dp) => v.toLocaleString("en-US", { minimumFractionDigits: dp, maximumFractionDigits: dp });
+
 /* Re-render a chip's display string in the same style it already uses. */
 function reformat(item, v) {
   const old = item.value;
-  if (/^\$/.test(old)) {
-    const unit = (old.match(/\/[a-zA-Z]+$/) || [""])[0];
-    const dp = (old.match(/\.(\d+)/) || [, ""])[1].length;
-    return `$${v.toLocaleString("en-US", { minimumFractionDigits: dp, maximumFractionDigits: dp })}${unit}`;
+  if (old.startsWith("$")) {
+    const slash = old.lastIndexOf("/");
+    const unit = slash > 0 ? old.slice(slash) : "";
+    return "$" + num(v, decimalsBefore(old)) + unit;
   }
-  if (/¢\//.test(old)) {
-    const unit = old.slice(old.indexOf("¢"));
-    const dp = (old.match(/\.(\d+)¢/) || [, ""])[1].length;
-    return `${v.toLocaleString("en-US", { minimumFractionDigits: dp, maximumFractionDigits: dp })}${unit}`;
+  if (old.includes("¢/")) {
+    return num(v, decimalsBefore(old)) + old.slice(old.indexOf("¢"));
   }
-  if (/%$/.test(old)) return `${v.toFixed(2)}%`;
-  if (/\/\$$/.test(old)) return old; // fx handled separately
-  return v.toLocaleString("en-US", { maximumFractionDigits: /\./.test(old) ? 2 : 0 });
+  if (old.endsWith("%")) return v.toFixed(2) + "%";
+  if (old.endsWith("/$")) return old; // fx handled separately
+  return v.toLocaleString("en-US", { maximumFractionDigits: old.includes(".") ? 2 : 0 });
+}
+function applyBenchmark(item, v) {
+  if (!item.noCalc) item.usdPerUnit = item.group === "agri" && item.value.includes("¢") ? +(v / 100).toFixed(6) : v;
+  item.value = item.coingeckoId ? fmtUsd(v) : reformat(item, v);
 }
 function apply(item, v) {
   if (!Number.isFinite(v)) return;
@@ -59,10 +73,9 @@ function apply(item, v) {
   item.raw = v;
   if (item.perUsd !== undefined || item.fxCode) {
     item.perUsd = v;
-    item.value = `${v.toLocaleString("en-US", { maximumSignificantDigits: 4 })} ${item.fxCode}/$`;
+    item.value = v.toLocaleString("en-US", { maximumSignificantDigits: 4 }) + " " + item.fxCode + "/$";
   } else {
-    if (!item.noCalc) item.usdPerUnit = item.group === "agri" && /¢/.test(item.value) ? +(v / 100).toFixed(6) : v;
-    item.value = item.coingeckoId ? fmtUsd(v) : reformat(item, v);
+    applyBenchmark(item, v);
   }
   if (prevRaw !== v) changed++;
 }
@@ -75,7 +88,7 @@ try {
     const { opts, done } = withTimeout();
     const data = await readJSON(fetch(`https://api.coingecko.com/api/v3/simple/price?vs_currencies=usd&ids=${q}`, opts), done);
     for (const i of cs) apply(i, data[i.coingeckoId]?.usd);
-    console.log(`coingecko: ${cs.length} chips`);
+    console.log("coingecko: %d chips", cs.length);
   }
 } catch (e) { console.error("coingecko soft-fail:", e.message); }
 
@@ -87,7 +100,7 @@ try {
     const { opts, done } = withTimeout();
     const data = await readJSON(fetch(`https://api.frankfurter.dev/v1/latest?base=USD&symbols=${q}`, opts), done);
     for (const i of fs_) apply(i, data.rates?.[i.fxCode]);
-    console.log(`frankfurter: ${fs_.length} chips`);
+    console.log("frankfurter: %d chips", fs_.length);
   }
 } catch (e) { console.error("frankfurter soft-fail:", e.message); }
 
@@ -100,14 +113,14 @@ for (const i of ys) {
     const d = await readJSON(fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(i.yahoo)}?interval=1d&range=1d`, opts), done);
     apply(i, d?.chart?.result?.[0]?.meta?.regularMarketPrice);
     await new Promise(r => setTimeout(r, 400));
-  } catch (e) { console.error(`yahoo soft-fail ${i.id}:`, e.message); }
+  } catch (e) { console.error("yahoo soft-fail %s: %s", i.id, e.message); }
 }
-console.log(`yahoo: ${ys.length} chips attempted`);
+console.log("yahoo: %d chips attempted", ys.length);
 
 if (changed) {
   fin.marketPulse.asOf = new Date().toISOString().slice(0, 10);
   await writeFile(PATH, JSON.stringify(fin, null, 2) + "\n");
-  console.log(`updated ${changed} values → asOf ${fin.marketPulse.asOf}`);
+  console.log("updated %d values → asOf %s", changed, fin.marketPulse.asOf);
 } else {
   console.log("no changes — finance.json untouched");
 }
