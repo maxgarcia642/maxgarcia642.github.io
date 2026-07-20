@@ -1,68 +1,92 @@
 {
   "intro": {
     "title": "Hello and Welcome to My Website!",
-    "description": "This is my personal portfolio where I share programming projects, verified financial research, playable projects, and a pixel art studio. Scroll to explore — my resume is embedded below in a lazy-loading viewer and available to download. Pick a theme from the dock on the right; every one is a full personality, not a palette swap."
+    "description": "Hey, I'm Max. This site is where everything I make ends up. The code lives here along with the research papers, the games, the music, and that financial project I probably spend too much time on. My resume sits right below this. And the dock on the edge of the screen holds fifty themes. Each one changes the colors, fonts, shadows, and even the little weather moving in the background. Pick whatever feels right today."
   },
   "resumeFile": "files/Maximiliano_Garcia_Resume.pdf",
   "sections": {
     "programming": {
-      "title": "💻 Programming Works",
-      "description": "This site is the exhibit — these mini-terminals read the deployed source of the very page you're on. Click one to read it full-size."
+      "title": "💻 Website Programming Work",
+      "description": "Nothing here is a screenshot. The site you are standing in is the actual exhibit. Every terminal below reads the real files that run this page right now, including the themes, the viewers, the market pulse script, and the CI that keeps the numbers fresh. Click any terminal to read the full source.",
+      "credit": "All of it ships from a public repo. If a piece of this site ends up in yours, a small credit link back genuinely means a lot. Build on it, just don't lift it whole."
     },
     "posts": {
       "title": "📁 Articles & Posts",
-      "description": "Research papers, project reports, and professional updates — papers open in the on-site reader."
+      "description": "Papers, write-ups, and older school work, sorted A to Z. Everything opens right here on the page. Longer project updates and professional commentary usually land on LinkedIn first, so for the running version follow"
     },
     "finance": {
       "title": "💸 The Financial Liberty Project",
-      "description": "Research deliverables with receipts. Every number is dated; every contested claim carries an honesty flag."
+      "description": "Money research I actually stand behind. Every figure is dated, every shaky claim gets a flag, and nothing gets rounded into a prettier story."
     },
     "arcade": {
       "title": "🕹️ Games & Projects Arcade",
-      "description": "Play the Pixel Art Studio right here, then preview everything else without leaving the page."
+      "description": "This is the playable shelf. The pixel studio works instantly right here on the page. Everything else waits until you click the big emoji. It tries to show a preview first, and there is always an open in new tab option because some hosts refuse to play inside a frame."
+    },
+    "individualism": {
+      "title": "🧭 Individualism",
+      "description": "Personality assessments, taken seriously and shown in full. I sat the 300-item IPIP myself, and the plan is to run the same battery through several AI models and post each profile as its own poster. Tap any card to open the full report right here. Read it, scroll it, close it. No downloads from this window, though the source is in the public repo if you go looking."
     },
     "connect": {
-      "title": "🪴 Connect",
-      "description": "Everything meets at the Linktree — or take the direct branches below."
+      "title": "🌳 Connect",
+      "description": "The tree is real. Every glowing node links somewhere useful, including LinkedIn, GitHub, YouTube, and Handshake. The trunk goes to my Linktree, which always stays current. Email and phone sit just below if you would rather talk to a person."
     }
   },
   "projects": [
     {
       "id": "haas-hall",
-      "title": "Junior to High School Haas Hall Works",
-      "description": "My early programming works from Haas Hall Academy",
+      "title": "🏫 Junior to High School Haas Hall Works",
+      "description": "My early programming works from Haas Hall Academy.",
       "driveLink": "https://drive.google.com/file/d/1zZ0xcjTGswtvlOMZWIznLjG8qm79IJv_/view?usp=sharing",
       "dateUpdated": "2024-12-31T00:00:00Z"
     },
     {
       "id": "uark",
-      "title": "University of Arkansas Works",
-      "description": "Projects and coursework from University of Arkansas",
+      "title": "🎓 University of Arkansas Works",
+      "description": "Projects and coursework from the University of Arkansas.",
       "driveLink": "https://drive.google.com/file/d/1PPF8XSw5FXe-Vcy3N3-HfkloCii9pO-H/view?usp=sharing",
       "dateUpdated": "2025-12-31T00:00:00Z"
     },
     {
       "id": "nwti",
-      "title": "Northwest Technical Institute Works",
+      "title": "🔧 Northwest Technical Institute Works",
       "description": "Technical projects from Northwest Technical Institute.",
-      "link": { "label": "Open report ↗", "url": "https://1drv.ms/b/c/e010e7aa97606cf2/IQDXBv4Vv--PTKrPNMHDxKbdAYsvUvDWMUZvFmFbBIFuciM?e=QRQh4H" },
+      "link": {
+        "label": "Open report ↗",
+        "url": "https://1drv.ms/b/c/e010e7aa97606cf2/IQDXBv4Vv--PTKrPNMHDxKbdAYsvUvDWMUZvFmFbBIFuciM?e=QRQh4H"
+      },
       "dateUpdated": "2026-07-16T00:00:00Z"
+    },
+    {
+      "id": "hardware-income",
+      "title": "⚙️ The Paths to Hardware-Based Income",
+      "description": "A field survey of earning with machines you own: ASIC mining, DePIN networks, agentic trading rigs, and home-scale personal data centers. Where the money actually is in 2026, what the power and hardware really cost, and the honest risk on each path.",
+      "pdf": "files/Hardware_Based_Income_ASIC_DePIN_Agentic_Trading.pdf",
+      "dateUpdated": "2026-07-20T00:00:00Z"
     },
     {
       "id": "meat-plant",
       "title": "🥩 NWA Meat & Plant Sourcing",
-      "description": "Where Northwest Arkansas food actually comes from: a research paper plus a working field guide to local meat and plant sourcing — farms, processors, seasons, and the honest economics of eating close to home.",
+      "description": "Where Northwest Arkansas food actually comes from. A research paper plus a working field guide to local meat and plant sourcing, covering farms, processors, seasons, and the honest economics of eating close to home.",
       "docs": [
-        { "label": "Research Paper", "path": "files/NWA_Meat_and_Plant_Research_Paper.docx" },
-        { "label": "Field Guide", "path": "files/NWA_Meat_and_Plant_Field_Guide.docx" }
+        {
+          "label": "Research Paper",
+          "path": "files/NWA_Meat_and_Plant_Research_Paper.docx"
+        },
+        {
+          "label": "Field Guide",
+          "path": "files/NWA_Meat_and_Plant_Field_Guide.docx"
+        }
       ],
       "dateUpdated": "2026-07-16T00:00:00Z"
     },
     {
       "id": "youtube",
       "title": "📺 Official YouTube Channel",
-      "description": "Project walk-throughs, build logs, and demos — the channel is live, content is coming.",
-      "link": { "label": "Visit @maxgarcia642 ↗", "url": "https://www.youtube.com/@maxgarcia642" },
+      "description": "Project walk-throughs, build logs, and demos. The channel is live and content is coming.",
+      "link": {
+        "label": "Visit @maxgarcia642 ↗",
+        "url": "https://www.youtube.com/@maxgarcia642"
+      },
       "soon": true,
       "badge": "Coming soon",
       "dateUpdated": "2026-07-16T00:00:00Z"
@@ -70,7 +94,7 @@
     {
       "id": "band",
       "title": "🎷 Jazz-Fusion / Progressive Rock Band",
-      "description": "Compositions and sessions in the works — recordings will land here and on the YouTube channel.",
+      "description": "Compositions and sessions are in the works. Recordings will land here and on the YouTube channel.",
       "soon": true,
       "badge": "Coming soon",
       "dateUpdated": "2026-07-16T00:00:00Z"
@@ -78,65 +102,93 @@
     {
       "id": "linkedin-blog",
       "title": "💼 Project Blogs & Professional Updates",
-      "description": "Long-form write-ups and career updates publish on LinkedIn first — follow along there.",
-      "link": { "label": "LinkedIn — maximiliano-garcia642 ↗", "url": "https://www.linkedin.com/in/maximiliano-garcia642/" },
+      "description": "Long-form write-ups and career updates publish on LinkedIn first. Follow along there.",
+      "link": {
+        "label": "LinkedIn. Maximiliano-garcia642 ↗",
+        "url": "https://www.linkedin.com/in/maximiliano-garcia642/"
+      },
       "dateUpdated": "2026-07-16T00:00:00Z"
-    },
+    }
+  ],
+  "clawmaxxing": {
+    "title": "🦞 The Clawmaxxing Project",
+    "description": "Local-first, multi-agent AI that owns its intelligence instead of renting it: quantized open-weights models on hardware I control, wired into robots, glasses, drones, and holograms, all under encryption on a private mesh. Each node has its own research paper now, every one written to standard format with 100+ cited sources. They open in the reader here, no downloads.",
+    "papers": [
+      {
+        "id": "claw-hub",
+        "title": "🦞 Local-First AI Hub",
+        "description": "The brain of the whole system: quantized open-weights LLMs on a dedicated Ubuntu mini-PC orchestrating specialist agents for content, security, dev, investing, and marketing, with zero cloud dependency, LUKS encryption, and a Tailscale mesh. Two papers: the integrated architecture, and the design-science case study behind it.",
+        "docs": [
+          { "label": "Architecture (Research Paper)", "path": "files/ClawMaxxing_Research_Paper.docx" },
+          { "label": "The Council in the Basement (Case Study)", "path": "files/GARCIA_2026_Council_in_the_Basement.docx" }
+        ],
+        "badge": "Paper published"
+      },
+      {
+        "id": "claw-dog",
+        "title": "🐕 Robot Dog",
+        "description": "A SunFounder PiDog V2 quadruped running a 30-billion-parameter model on a single-board computer for first-person vision, navigation, and natural-language control, and the case for accessible, local-first embodiment over extractive companion AI.",
+        "docs": [
+          { "label": "Capstone Research Paper", "path": "files/DIY_Local_LLM_Robot_Project_Capstone_Paper.docx" }
+        ],
+        "badge": "Paper published"
+      },
+      {
+        "id": "claw-security",
+        "title": "🛡️ CybersecurityClaw",
+        "description": "A Kali Linux security laptop federated into the agent mesh (Bash Bunny, Flipper Zero, high-gain Wi-Fi audits, YubiKey MFA) for AI-assisted, human-gated red-team and defensive work on hardware I own and control.",
+        "docs": [
+          { "label": "The Blade (Research Paper)", "path": "files/The_Blade_Local_AI_Human_Gated_Security.docx" }
+        ],
+        "badge": "Paper published"
+      },
+      {
+        "id": "claw-glasses",
+        "title": "🕶️ Smart Glasses",
+        "description": "Meta Ray-Ban smart glasses relaying a live first-person feed to local vision models: ambient AI presence without a cloud call. A full history and technical analysis, from military head-mounted displays to locally-intelligent consumer eyewear.",
+        "docs": [
+          { "label": "Through the Looking Glass (2nd Ed.)", "path": "files/Through_the_Looking_Glass_Research_Paper_2nd_Edition.docx" }
+        ],
+        "badge": "Paper published"
+      },
+      {
+        "id": "claw-retro",
+        "title": "♻️ RetroClawing",
+        "description": "Reviving dead phones and forgotten laptops into working AI terminals: the most honest proof that local-first beats renting from the cloud is when e-waste becomes useful again. A review and position paper on device repurposing, e-waste, and digital equity.",
+        "docs": [
+          { "label": "It Still Works (Position Paper)", "path": "files/IT_STILL_WORKS_Ewaste_Repurposing_Garcia_2026.docx" }
+        ],
+        "badge": "Paper published"
+      },
+      {
+        "id": "claw-hologram",
+        "title": "🔮 Hologram",
+        "description": "A Looking Glass light-field display driving a lip-synced embodied avatar for the hub, and a research-through-design study of a fully local embodied conversational agent on consumer hardware.",
+        "docs": [
+          { "label": "Owning the Face (Research Paper)", "path": "files/CLAWMAXXING_PAPER_OWNING_THE_FACE.docx" }
+        ],
+        "badge": "Paper published"
+      },
+      {
+        "id": "claw-drone",
+        "title": "🚁 Drone",
+        "description": "A Holybro X650 build (Pixhawk 6X, Jetson Orin NX running a fully onboard quantized LLM, OAK-D depth camera) for autonomous flight with zero cloud dependency, and link independence as a design criterion for onboard LLM cognition on an uncrewed aircraft.",
+        "docs": [
+          { "label": "Link Independence (Verification Study)", "path": "files/Link_Independence_Local_First_Multi_Agent_AI.docx" }
+        ],
+        "badge": "Paper published"
+      }
+    ]
+  },
+  "assessments": [
     {
-      "id": "claw-hub",
-      "title": "🦞 The Clawmaxxing Project — Local-First AI Hub",
-      "description": "A multi-agent AI ecosystem that owns its intelligence instead of renting it: quantized open-weights LLMs on a dedicated Ubuntu mini-PC orchestrating specialist agents for content, security, dev, investing, and marketing — zero cloud dependency, everything under LUKS encryption on a Tailscale mesh. Full research paper (50+ pages, 100+ cited sources) in generation.",
-      "soon": true,
-      "badge": "Paper in progress",
-      "dateUpdated": "2026-07-16T00:00:00Z"
-    },
-    {
-      "id": "claw-dog",
-      "title": "🐕 Clawmaxxing — Robot Dog",
-      "description": "A SunFounder PiDog V2 quadruped wired into the local LLM hub for first-person vision, navigation, and natural-language control — physical presence for the agent ecosystem. Research paper in generation.",
-      "soon": true,
-      "badge": "Paper in progress",
-      "dateUpdated": "2026-07-16T00:00:00Z"
-    },
-    {
-      "id": "claw-security",
-      "title": "🛡️ CybersecurityClaw",
-      "description": "A Kali Linux security laptop federated into the agent mesh — Bash Bunny, Flipper Zero, high-gain Wi-Fi audits, YubiKey hardware MFA — for AI-assisted security work on hardware I own and control. Research paper in generation.",
-      "soon": true,
-      "badge": "Paper in progress",
-      "dateUpdated": "2026-07-16T00:00:00Z"
-    },
-    {
-      "id": "claw-glasses",
-      "title": "🕶️ Clawmaxxing — Smart Glasses",
-      "description": "Meta Ray-Ban smart glasses relaying a live first-person feed to local vision models — ambient AI presence without a cloud call. Research paper in generation.",
-      "soon": true,
-      "badge": "Paper in progress",
-      "dateUpdated": "2026-07-16T00:00:00Z"
-    },
-    {
-      "id": "claw-retro",
-      "title": "♻️ RetroClawing",
-      "description": "Reviving dead phones and forgotten laptops into working AI terminals — the most honest proof that local-first beats rent-from-the-cloud is when e-waste becomes useful again. Research paper in generation.",
-      "soon": true,
-      "badge": "Paper in progress",
-      "dateUpdated": "2026-07-16T00:00:00Z"
-    },
-    {
-      "id": "claw-hologram",
-      "title": "🔮 Clawmaxxing — Hologram",
-      "description": "A Looking Glass light-field display driving a lip-synced embodied avatar for the hub — studying how embodiment changes human-machine communication. Research paper in generation.",
-      "soon": true,
-      "badge": "Paper in progress",
-      "dateUpdated": "2026-07-16T00:00:00Z"
-    },
-    {
-      "id": "claw-drone",
-      "title": "🚁 Clawmaxxing — Drone",
-      "description": "A Holybro X650 build (Pixhawk 6X, Jetson Orin NX running a fully onboard quantized LLM, OAK-D depth camera) for autonomous flight with zero cloud dependency. Research paper in generation.",
-      "soon": true,
-      "badge": "Paper in progress",
-      "dateUpdated": "2026-07-16T00:00:00Z"
+      "id": "ipip300-max",
+      "emoji": "🧠",
+      "title": "IPIP-300 — Maximiliano Garcia",
+      "subtitle": "My own profile across the Big Five, item by item",
+      "detail": "The full 300-item IPIP-NEO, taken by me and rendered as a five-dimension poster: Extraversion, Agreeableness, Conscientiousness, Neuroticism, and Openness, each broken into its six facets. Open it to read the whole thing.",
+      "html": "assessments/ipip300_self.html",
+      "badge": "Self-assessed"
     }
   ],
   "arcade": [
@@ -144,7 +196,7 @@
       "id": "pixel-studio",
       "title": "🎨 Pixel Art Studio Max",
       "kind": "inline",
-      "description": "16×16 studio — pick a color, paint, undo, save as PNG. Playable right here, no loading.",
+      "description": "A pixel studio right in the page. Pick a color, paint, undo, and save your art as a PNG. No loading.",
       "badge": "Play now"
     },
     {
@@ -152,7 +204,7 @@
       "title": "Shuffle Rush",
       "kind": "facade",
       "emoji": "🎵",
-      "description": "Frutiger Metro rhythm action, live on itch.io. Built with Rosebud.ai + Phaser 3.",
+      "description": "Frutiger Metro rhythm action, live on itch.io. Built with Rosebud.ai and Phaser 3.",
       "openUrl": "https://maxgarcia642.itch.io/shufflerush",
       "embedUrl": "",
       "badge": "Published"
@@ -162,7 +214,7 @@
       "title": "NWAero Grid Dashboard",
       "kind": "facade",
       "emoji": "🌦️",
-      "description": "Regional weather + traffic dashboard with real-time API aggregation. Collab build.",
+      "description": "Regional weather and traffic dashboard with real-time API aggregation. A collab build.",
       "openUrl": "https://nwaero.netlify.app/",
       "embedUrl": "https://nwaero.netlify.app/",
       "badge": "Live app"
@@ -182,7 +234,7 @@
       "title": "Create Your Own Maxfolio",
       "kind": "facade",
       "emoji": "🧩",
-      "description": "Full-stack networking parody site (Next.js, Tailwind, Supabase, Vercel).",
+      "description": "Full-stack networking parody site built on Next.js, Tailwind, Supabase, and Vercel.",
       "openUrl": "https://maxfolio-website-git-main-maximiliano-projects.vercel.app?_vercel_share=GZEgLha73mO1Y7LlqCdbXvAnOyRrZy3t",
       "embedUrl": "",
       "badge": "Preview link"
@@ -192,10 +244,16 @@
       "title": "Flock Finance",
       "kind": "soon",
       "emoji": "🐦",
-      "description": "Blockchain-powered decentralized exchange concept for tokenized multi-investment vehicles — the home of the SaaS master portfolio. Feasibility research and project plan below.",
+      "description": "Blockchain-powered decentralized exchange concept for tokenized multi-investment vehicles, and the home of the SaaS master portfolio. The feasibility research and project plan are below.",
       "docs": [
-        { "label": "Feasibility Research Paper", "path": "files/Flock_Feasibility_Research_Paper.docx" },
-        { "label": "Project Management Plan", "path": "files/Flock_Project_Management_Plan.docx" }
+        {
+          "label": "Feasibility Research Paper",
+          "path": "files/Flock_Feasibility_Research_Paper.docx"
+        },
+        {
+          "label": "Project Management Plan",
+          "path": "files/Flock_Project_Management_Plan.docx"
+        }
       ],
       "badge": "In design"
     },
@@ -204,10 +262,16 @@
       "title": "Biotank",
       "kind": "soon",
       "emoji": "🧫",
-      "description": "Closed-loop bio-digester tank system — feasibility study and project management plan drafted, prototyping next.",
+      "description": "Closed-loop bio-digester tank system. The feasibility study and project management plan are drafted, and prototyping is next.",
       "docs": [
-        { "label": "Feasibility Study", "path": "files/Biotank_Feasibility_Study.docx" },
-        { "label": "Project Management Plan", "path": "files/Biotank_Project_Management_Plan.docx" }
+        {
+          "label": "Feasibility Study",
+          "path": "files/Biotank_Feasibility_Study.docx"
+        },
+        {
+          "label": "Project Management Plan",
+          "path": "files/Biotank_Project_Management_Plan.docx"
+        }
       ],
       "badge": "In design"
     },
@@ -216,10 +280,16 @@
       "title": "DiamondDrive",
       "kind": "soon",
       "emoji": "💎",
-      "description": "Gamified habit-and-goal drive system — research paper and project plan complete, prototype in the shop.",
+      "description": "Gamified habit-and-goal drive system. The research paper and project plan are complete, and the prototype is in the shop.",
       "docs": [
-        { "label": "Research Paper", "path": "files/DiamondDrive_Research_Paper.docx" },
-        { "label": "PM Plan", "path": "files/DiamondDrive_PM_Plan.docx" }
+        {
+          "label": "Research Paper",
+          "path": "files/DiamondDrive_Research_Paper.docx"
+        },
+        {
+          "label": "PM Plan",
+          "path": "files/DiamondDrive_PM_Plan.docx"
+        }
       ],
       "badge": "Prototyping"
     },
@@ -228,10 +298,16 @@
       "title": "Winnow",
       "kind": "soon",
       "emoji": "🌿",
-      "description": "Client-side, zero-dependency web app for swipe-based social network triage and ranking. v1.0.0-rc.1 — 'The Overgrown Feed' essay and project plan below.",
+      "description": "A client-side, zero-dependency web app for swipe-based social network triage and ranking. Version 1.0.0-rc.1. The Overgrown Feed essay and the project plan are below.",
       "docs": [
-        { "label": "The Overgrown Feed", "path": "files/Winnow-The-Overgrown-Feed.docx" },
-        { "label": "Project Management Plan", "path": "files/Winnow-Project-Management-Plan.docx" }
+        {
+          "label": "The Overgrown Feed",
+          "path": "files/Winnow-The-Overgrown-Feed.docx"
+        },
+        {
+          "label": "Project Management Plan",
+          "path": "files/Winnow-Project-Management-Plan.docx"
+        }
       ],
       "badge": "RC shipped"
     },
@@ -240,7 +316,7 @@
       "title": "SkyDisorder",
       "kind": "soon",
       "emoji": "🏌️",
-      "description": "Satirical single-file Canvas 2D arcade golf — 12K+ lines, census-verified, four phases complete.",
+      "description": "Satirical single-file Canvas 2D arcade golf. Over 12K lines, census-verified, with four phases complete.",
       "badge": "Coming soon"
     },
     {
@@ -248,7 +324,7 @@
       "title": "Getting Through",
       "kind": "soon",
       "emoji": "🥊",
-      "description": "3D parody fighter in pre-production — Unity / Godot 4 stack, targeting itch.io + Roblox.",
+      "description": "A 3D parody fighter in pre-production on a Unity and Godot 4 stack, targeting itch.io and Roblox.",
       "badge": "Pre-production"
     },
     {
@@ -256,35 +332,366 @@
       "title": "Keystone",
       "kind": "soon",
       "emoji": "🗝️",
-      "description": "130K-line local-first AI agent platform (Rust, Tauri, React) — agents on your hardware, under your keys.",
+      "description": "A 130K-line local-first AI agent platform in Rust, Tauri, and React. Agents on your hardware, under your keys.",
       "badge": "Flagship"
     }
   ],
   "themes": [
-    { "id": "aero",      "label": "Frutiger Aero",   "swatch": "linear-gradient(135deg,#7ed6f2,#1098ba)" },
-    { "id": "glass",     "label": "Liquid Glass",    "swatch": "linear-gradient(135deg,#c7d6ee,#8fa8d8)" },
-    { "id": "brutal",    "label": "Neobrutalism",    "swatch": "linear-gradient(135deg,#ffe14d,#ff5252)" },
-    { "id": "crt",       "label": "Terminal CRT",    "swatch": "linear-gradient(135deg,#032403,#1aff5c)" },
-    { "id": "pixel",     "label": "Pixel Arcade",    "swatch": "linear-gradient(135deg,#2b2d5e,#e94f8a)" },
-    { "id": "aurora",    "label": "Aurora Mesh",     "swatch": "linear-gradient(135deg,#7b5cff,#2adfd0)" },
-    { "id": "clay",      "label": "Claymorphism",    "swatch": "linear-gradient(135deg,#ffd9c8,#b8a7f5)" },
-    { "id": "neon",      "label": "Cyberpunk Neon",  "swatch": "linear-gradient(135deg,#ff2fb9,#19e6ff)" },
-    { "id": "swiss",     "label": "Editorial Swiss", "swatch": "linear-gradient(135deg,#f5f5f2,#d92b2b)" },
-    { "id": "luxe",      "label": "Dark Luxe",       "swatch": "linear-gradient(135deg,#0d0b08,#c9a24b)" },
-    { "id": "vapor",     "label": "Vaporwave",       "swatch": "linear-gradient(135deg,#ff71ce,#01cdfe)" },
-    { "id": "sakura",    "label": "Sakura",          "swatch": "linear-gradient(135deg,#fde5ee,#e05c8f)" },
-    { "id": "midnight",  "label": "Midnight OLED",   "swatch": "linear-gradient(135deg,#000000,#5e9eff)" },
-    { "id": "coffee",    "label": "Coffee House",    "swatch": "linear-gradient(135deg,#e6d5c1,#8a5a33)" },
-    { "id": "amber",     "label": "Amber Terminal",  "swatch": "linear-gradient(135deg,#100a02,#ffb000)" },
-    { "id": "paper",     "label": "Paper Sketch",    "swatch": "linear-gradient(135deg,#fbf8f1,#d95f2b)" },
-    { "id": "synth",     "label": "Synthwave Sunset","swatch": "linear-gradient(135deg,#331457,#ff6a3d)" },
-    { "id": "ocean",     "label": "Deep Ocean",      "swatch": "linear-gradient(135deg,#073042,#48cae4)" },
-    { "id": "desert",    "label": "Desert Adobe",    "swatch": "linear-gradient(135deg,#f4e5d0,#c65d21)" },
-    { "id": "matcha",    "label": "Matcha Garden",   "swatch": "linear-gradient(135deg,#dfe9cd,#6a994e)" },
-    { "id": "bauhaus",   "label": "Bauhaus",         "swatch": "linear-gradient(135deg,#f2c11c,#d6382b)" },
-    { "id": "holo",      "label": "Holographic",     "swatch": "linear-gradient(135deg,#ff9ad5,#9affd0)" },
-    { "id": "royal",     "label": "Royal Velvet",    "swatch": "linear-gradient(135deg,#2c1c4d,#d4af37)" },
-    { "id": "frost",     "label": "Arctic Frost",    "swatch": "linear-gradient(135deg,#f4fafd,#2779a7)" },
-    { "id": "blueprint", "label": "Blueprint",       "swatch": "linear-gradient(135deg,#10365c,#ffd166)" }
+    {
+      "id": "frost",
+      "label": "Arctic Frost",
+      "swatch": "linear-gradient(170deg,#f6fbfe,#dcefF8 50%,#bcd9ea)",
+      "vibe": "first-snow hush ♪ vibe: winter piano"
+    },
+    {
+      "id": "sterling",
+      "label": "Sterling",
+      "swatch": "linear-gradient(140deg, #f4f6f8 0%, #cfd6de 45%, #4f6d8f 120%)",
+      "vibe": "polished chrome quiet ♪ vibe: airport lounge"
+    },
+    {
+      "id": "glass",
+      "label": "Liquid Glass",
+      "swatch": "linear-gradient(150deg,#e8eef8,#c7d6ee 55%,#9fb4da)",
+      "vibe": "frosted panes, quiet depth ♪ vibe: ambient chillout"
+    },
+    {
+      "id": "aero",
+      "label": "Frutiger Aero",
+      "swatch": "linear-gradient(160deg,#aee9ff 0%,#7ed6f2 35%,#3fb7dd 70%,#1098ba 100%)",
+      "vibe": "glossy skies & bubble optimism ♪ vibe: AIR: Ce matin-là"
+    },
+    {
+      "id": "lagoon",
+      "label": "Blue Lagoon",
+      "swatch": "linear-gradient(140deg, #d8f9ff 0%, #8fdfea 45%, #00a8c6 120%)",
+      "vibe": "swim-up turquoise ♪ vibe: steel drum chill"
+    },
+    {
+      "id": "mint",
+      "label": "Mint Chip",
+      "swatch": "linear-gradient(155deg,#e9fbf6,#d2f4ea 55%,#a9e4d4)",
+      "vibe": "cool teal freshness ♪ vibe: chillhop"
+    },
+    {
+      "id": "cottoncandy",
+      "label": "Cotton Candy",
+      "swatch": "linear-gradient(140deg, #ffe4f3 0%, #dbeeff 45%, #ff6ec7 120%)",
+      "vibe": "spun sugar clouds ♪ vibe: hyperpop lullaby"
+    },
+    {
+      "id": "sakura",
+      "label": "Sakura",
+      "swatch": "linear-gradient(160deg,#fff3f7,#fde5ee 50%,#f8c9da)",
+      "vibe": "petals on warm wind ♪ vibe: city-pop spring"
+    },
+    {
+      "id": "lavender",
+      "label": "Lavender Haze",
+      "swatch": "linear-gradient(155deg,#f3efff,#e4dbfa 55%,#cdbcf2)",
+      "vibe": "spring dusk pastel ♪ vibe: dream-pop"
+    },
+    {
+      "id": "grape",
+      "label": "Grape Soda",
+      "swatch": "linear-gradient(140deg, #ede0ff 0%, #b788f0 45%, #7a2ff0 120%)",
+      "vibe": "purple fizz from a cold can ♪ vibe: bedroom pop"
+    },
+    {
+      "id": "matcha",
+      "label": "Matcha Garden",
+      "swatch": "linear-gradient(160deg,#eef3e2,#dfe9cd 55%,#c2d6a6)",
+      "vibe": "whisked green calm ♪ vibe: koto & birdsong"
+    },
+    {
+      "id": "forest",
+      "label": "Evergreen",
+      "swatch": "linear-gradient(140deg, #08130c 10%, #57cc7a 115%)",
+      "vibe": "fireflies under canopy ♪ vibe: forest ambience"
+    },
+    {
+      "id": "citrus",
+      "label": "Citrus Pop",
+      "swatch": "linear-gradient(150deg,#fdffe8,#f4fbc8 45%,#d7f2a0)",
+      "vibe": "zested lime & sunshine ♪ vibe: bubblegum funk"
+    },
+    {
+      "id": "honey",
+      "label": "Honeycomb",
+      "swatch": "linear-gradient(140deg, #fff8e1 0%, #ffdd7a 45%, #e6a817 120%)",
+      "vibe": "amber light on a slow drip ♪ vibe: soul on vinyl"
+    },
+    {
+      "id": "tangerine",
+      "label": "Tangerine",
+      "swatch": "linear-gradient(140deg, #fff4e6 0%, #ffc180 45%, #ff7a00 120%)",
+      "vibe": "peeled citrus sunshine ♪ vibe: motown morning"
+    },
+    {
+      "id": "coral",
+      "label": "Coral Reef",
+      "swatch": "linear-gradient(155deg,#fff1e9,#ffd9c8 55%,#f7b39a)",
+      "vibe": "sun-warmed clay & surf ♪ vibe: beach radio"
+    },
+    {
+      "id": "sunset",
+      "label": "Miami Sunset",
+      "swatch": "linear-gradient(140deg, #ffd194 0%, #b06ab3 45%, #ff5e62 120%)",
+      "vibe": "sherbet skies going violet ♪ vibe: yacht rock dusk"
+    },
+    {
+      "id": "flamingo",
+      "label": "Flamingo",
+      "swatch": "linear-gradient(140deg, #fff0fa 0%, #ffa8d8 45%, #ff3da6 120%)",
+      "vibe": "tropical pink at golden hour ♪ vibe: disco pool party"
+    },
+    {
+      "id": "cherry",
+      "label": "Cherry Pop",
+      "swatch": "linear-gradient(140deg, #fff1f2 0%, #ffb3c0 45%, #e8112d 120%)",
+      "vibe": "soda-fountain fizz ♪ vibe: jukebox rock and roll"
+    },
+    {
+      "id": "desert",
+      "label": "Desert Adobe",
+      "swatch": "linear-gradient(160deg,#faeed9,#f4e5d0 50%,#e5c9a5)",
+      "vibe": "canyon heat shimmer ♪ vibe: dusty western"
+    },
+    {
+      "id": "coffee",
+      "label": "Coffee House",
+      "swatch": "linear-gradient(160deg,#efe2d0,#e6d5c1 55%,#cbb096)",
+      "vibe": "espresso steam & vinyl ♪ vibe: café jazz"
+    },
+    {
+      "id": "rosegold",
+      "label": "Rose Gold",
+      "swatch": "linear-gradient(140deg, #fdf0ec 0%, #f2cfc2 45%, #c96f5e 120%)",
+      "vibe": "brushed metal blush ♪ vibe: penthouse rnb"
+    },
+    {
+      "id": "paper",
+      "label": "Paper Sketch",
+      "swatch": "linear-gradient(160deg,#fdfaf3,#fbf8f1 60%,#f0e9da)",
+      "vibe": "pencil margins & coffee rings ♪ vibe: acoustic demo"
+    },
+    {
+      "id": "ink",
+      "label": "Sumi Ink",
+      "swatch": "linear-gradient(140deg, #fbfaf7 0%, #efece4 45%, #b3261e 120%)",
+      "vibe": "one brushstroke and a red seal ♪ vibe: solo piano"
+    },
+    {
+      "id": "bauhaus",
+      "label": "Bauhaus",
+      "swatch": "linear-gradient(135deg,#f4f1ea,#d6382b)",
+      "vibe": "primary shapes, honest grid ♪ vibe: motorik beat"
+    },
+    {
+      "id": "brutal",
+      "label": "Neobrutalism",
+      "swatch": "linear-gradient(135deg,#ffe14d,#ff5252)",
+      "vibe": "loud borders, no apologies ♪ vibe: punk energy"
+    },
+    {
+      "id": "pixel",
+      "label": "Pixel Arcade",
+      "swatch": "linear-gradient(140deg, #191b3f 10%, #e94f8a 115%)",
+      "vibe": "insert coin, press start ♪ vibe: chiptune"
+    },
+    {
+      "id": "amber",
+      "label": "Amber Terminal",
+      "swatch": "linear-gradient(140deg, #0d0801 10%, #ffb000 115%)",
+      "vibe": "phosphor after midnight ♪ vibe: modem hum"
+    },
+    {
+      "id": "crt",
+      "label": "Terminal CRT",
+      "swatch": "linear-gradient(140deg, #010c04 10%, #1aff5c 115%)",
+      "vibe": "green phosphor cascade ♪ vibe: dial-up dreams"
+    },
+    {
+      "id": "voltage",
+      "label": "Electric Lime",
+      "swatch": "linear-gradient(140deg, #0c1400 0%, #243a00 45%, #aaff00 120%)",
+      "vibe": "high-voltage chartreuse ♪ vibe: drum and bass"
+    },
+    {
+      "id": "emerald",
+      "label": "Emerald City",
+      "swatch": "linear-gradient(140deg, #06231c 0%, #0d4a3a 45%, #10c98d 120%)",
+      "vibe": "deep gem green in velvet light ♪ vibe: art deco jazz"
+    },
+    {
+      "id": "peacock",
+      "label": "Peacock",
+      "swatch": "linear-gradient(140deg, #04262b 0%, #0a4b53 45%, #12c2b0 120%)",
+      "vibe": "iridescent plumes and gold ♪ vibe: cabaret strings"
+    },
+    {
+      "id": "cobalt",
+      "label": "Cobalt",
+      "swatch": "linear-gradient(140deg, #e8efff 0%, #9db9ff 45%, #2451ff 120%)",
+      "vibe": "international Klein blue ♪ vibe: french house"
+    },
+    {
+      "id": "blueprint",
+      "label": "Blueprint",
+      "swatch": "linear-gradient(140deg, #0d2c4d 10%, #ffd166 115%)",
+      "vibe": "drafting-table cyanotype ♪ vibe: pencil & ruler"
+    },
+    {
+      "id": "ocean",
+      "label": "Deep Ocean",
+      "swatch": "linear-gradient(140deg, #04141d 10%, #48cae4 115%)",
+      "vibe": "pressure, bioluminescence ♪ vibe: whale-song synth"
+    },
+    {
+      "id": "borealis",
+      "label": "Aurora Borealis",
+      "swatch": "linear-gradient(140deg, #020b1c 0%, #0a1f3d 45%, #37f0b4 120%)",
+      "vibe": "sky curtains over snowfields ♪ vibe: nordic ambient"
+    },
+    {
+      "id": "indigo",
+      "label": "Indigo Night",
+      "swatch": "linear-gradient(140deg, #0b0e2a 10%, #7b8cff 115%)",
+      "vibe": "astronomy-poster stillness ♪ vibe: deep-space drone"
+    },
+    {
+      "id": "storm",
+      "label": "Slate Storm",
+      "swatch": "linear-gradient(140deg, #151b26 10%, #6fa8ff 115%)",
+      "vibe": "rain on office glass ♪ vibe: lo-fi thunder"
+    },
+    {
+      "id": "neon",
+      "label": "Cyberpunk Neon",
+      "swatch": "linear-gradient(140deg, #05060f 15%, #19e6ff 80%, #19e6ff 115%)",
+      "vibe": "rain-slick chrome city ♪ vibe: darksynth"
+    },
+    {
+      "id": "synth",
+      "label": "Synthwave Sunset",
+      "swatch": "linear-gradient(180deg,#1b0b33 0%,#331457 45%,#7a1f63 75%,#ff6a3d 120%)",
+      "vibe": "chrome horizon, magenta sun ♪ vibe: outrun 84"
+    },
+    {
+      "id": "vapor",
+      "label": "Vaporwave",
+      "swatch": "linear-gradient(160deg,#ff9ad5 0%,#c8a8f0 45%,#7fd8f7 100%)",
+      "vibe": "mall fountains in 2099 ♪ vibe: ＭＡＣＲＯＳＳ 82-99"
+    },
+    {
+      "id": "holo",
+      "label": "Holographic",
+      "swatch": "linear-gradient(120deg,#ffd9ec,#d3e8ff 30%,#d9ffe9 55%,#fff3cf 80%,#ffd9ec)",
+      "vibe": "light split into a card foil ♪ vibe: hyperpop shimmer"
+    },
+    {
+      "id": "ultraviolet",
+      "label": "Ultraviolet",
+      "swatch": "linear-gradient(140deg, #12002b 0%, #26004d 45%, #b026ff 120%)",
+      "vibe": "blacklight bloom ♪ vibe: darkwave rave"
+    },
+    {
+      "id": "berry",
+      "label": "Wild Berry",
+      "swatch": "linear-gradient(140deg, #23041a 0%, #42082f 45%, #ff2e88 120%)",
+      "vibe": "blackberry dusk ♪ vibe: trip hop"
+    },
+    {
+      "id": "crimson",
+      "label": "Crimson Ember",
+      "swatch": "linear-gradient(140deg, #1c0709 10%, #ff5252 115%)",
+      "vibe": "forge-light and shadow ♪ vibe: doom-jazz"
+    },
+    {
+      "id": "canyon",
+      "label": "Canyon Dusk",
+      "swatch": "linear-gradient(140deg, #1d0d06 0%, #3d1a0c 45%, #ff7043 120%)",
+      "vibe": "red rock afterglow ♪ vibe: desert blues"
+    },
+    {
+      "id": "royal",
+      "label": "Royal Velvet",
+      "swatch": "linear-gradient(140deg, #190f33 10%, #d4af37 115%)",
+      "vibe": "candlelit violet & gold ♪ vibe: chamber strings"
+    },
+    {
+      "id": "luxe",
+      "label": "Dark Luxe",
+      "swatch": "linear-gradient(140deg, #0a0805 10%, #c9a24b 115%)",
+      "vibe": "onyx, brass, low light ♪ vibe: late-night lounge"
+    },
+    {
+      "id": "graphite",
+      "label": "Graphite",
+      "swatch": "linear-gradient(140deg, #17181c 0%, #232529 45%, #ff6b35 120%)",
+      "vibe": "pencil-dark studio ♪ vibe: minimal techno"
+    },
+    {
+      "id": "noir",
+      "label": "Midnight OLED",
+      "swatch": "linear-gradient(135deg,#000000,#5e9eff)",
+      "vibe": "true black, single star ♪ vibe: 3am synth"
+    }
+  ],
+  "music": {
+    "autoplay": true,
+    "note": "Playlist manifest. The player loops a single track, or advances through several with the ⏭ dock button. Visitors can add their own file via 🎧 in any audio format their browser decodes. It joins the rotation locally and is never uploaded.",
+    "tracks": [
+      {
+        "src": "assets/music/track1.mp3",
+        "title": "Ce matin-là",
+        "artist": "AIR",
+        "note": "Commercial recording. The licensing flag is recorded in assets/music/README.md; shipped at Max's explicit, documented call."
+      },
+      {
+        "src": "assets/music/track2.m4a",
+        "title": "Felicidad",
+        "artist": "Frank Gambale",
+        "note": "Commercial recording. Same licensing flag as track 1 (see assets/music/README.md)."
+      },
+      {
+        "src": "assets/music/track3.ogg",
+        "title": "New Look (Wii U Mii Maker Lofi Mix)",
+        "artist": "fan remix",
+        "note": "Fan-made lo-fi remix. Licensing flag applies (see assets/music/README.md)."
+      }
+    ]
+  },
+  "milestones": [
+    {
+      "icon": "🎨",
+      "label": "50 Living Themes",
+      "detail": "Every theme swaps fonts, shadows, gradients, background motion, and its own particle weather. Click me to borrow another theme's colors.",
+      "sub": "Fonts, shadows, gradients, and the weather in the air all swap with every switch."
+    },
+    {
+      "icon": "💸",
+      "label": "Financial Liberty Research",
+      "detail": "Ten research works with dated figures, honesty flags, and a Top 50 market pulse that refreshes itself.",
+      "sub": "Ten dated research works with honesty flags and a Top 50 market pulse."
+    },
+    {
+      "icon": "🕹️",
+      "label": "Games & Projects",
+      "detail": "A pixel studio you can paint in right now, shipped games, and an arcade of builds in flight.",
+      "sub": "A paintable pixel studio, shipped games, and an arcade of builds in flight."
+    },
+    {
+      "icon": "🦞",
+      "label": "Clawmaxxing Local-First AI",
+      "detail": "A multi-agent AI ecosystem that owns its intelligence instead of renting it. Papers in generation.",
+      "sub": "Agents that own their intelligence instead of renting it. Papers in generation."
+    },
+    {
+      "icon": "🚀",
+      "label": "Personal Ambitions & Ventures",
+      "detail": "Flock, Biotank, DiamondDrive, Winnow, the band, the channel. The pipeline behind the portfolio.",
+      "sub": "Flock, Biotank, DiamondDrive, Winnow, the band, and the channel."
+    }
   ]
 }

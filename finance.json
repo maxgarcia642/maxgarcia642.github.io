@@ -2,184 +2,585 @@
   "sectionTitle": "The Financial Liberty Project",
   "sectionTagline": "Verified research, real deliverables, honest flags. Patience pays. 🦞",
   "marketPulse": {
-    "asOf": "2026-07-20",
-    "note": "Point-in-time figures, verified Jul 16, 2026 (Barchart EOD settlements, ECB/Frankfurter FX, CoinGecko). Crypto and FX chips refresh live on demand; commodities and indexes are dated snapshots — treat everything as context, not a quote feed.",
+    "asOf": "2026-07-17",
+    "note": "Top 50 across five value groups. Crypto and currencies refresh live in your browser (CoinGecko + ECB/Frankfurter. Free, keyless). Metals, energy, agriculture, and indices are exchange benchmarks auto-refreshed once a day by this repo's own CI (Yahoo Finance). Dated context, not a quote feed. Trading-card grading stats moved to the Card Collecting work below, where they belong.",
+    "groups": [
+      {
+        "id": "crypto",
+        "label": "🪙 Crypto",
+        "sub": "live in-browser + daily CI"
+      },
+      {
+        "id": "currencies",
+        "label": "💱 Currencies",
+        "sub": "per US dollar · live in-browser + daily CI"
+      },
+      {
+        "id": "metals",
+        "label": "🥇 Metals & Energy",
+        "sub": "front-month futures · daily CI"
+      },
+      {
+        "id": "agri",
+        "label": "🌾 Agriculture & Softs",
+        "sub": "front-month futures · daily CI"
+      },
+      {
+        "id": "indices",
+        "label": "📈 Indices & Benchmarks",
+        "sub": "index levels · daily CI"
+      }
+    ],
     "items": [
       {
         "id": "btc",
+        "group": "crypto",
         "label": "Bitcoin",
-        "value": "~$65K",
-        "context": "ATH $126,198 on Oct 6, 2025. 2026 has been a crypto-winter year with a June–July rebound.",
+        "value": "$64,114",
+        "usdPerUnit": 64114,
         "live": true,
         "coingeckoId": "bitcoin",
-        "raw": 64891,
-        "usdPerUnit": 63293
+        "context": "ATH $126,198 Oct 6 2025; 2026 has been a crypto-winter year.",
+        "raw": 64114
       },
       {
         "id": "eth",
+        "group": "crypto",
         "label": "Ethereum",
-        "value": "~$1.9K",
-        "context": "ATH $4,953 Aug 24, 2025. Leading the recovery narrative.",
+        "value": "$1,844",
+        "usdPerUnit": 1843.98,
         "live": true,
         "coingeckoId": "ethereum",
-        "raw": 1881.5,
-        "usdPerUnit": 1843.89
+        "context": "ATH $4,953 Aug 24 2025. Leads the recovery narrative.",
+        "raw": 1843.98
       },
       {
         "id": "sol",
+        "group": "crypto",
         "label": "Solana",
-        "value": "~$77",
-        "context": "Jul 16, 2026 (CoinGecko).",
+        "value": "$75.1",
+        "usdPerUnit": 75.1,
         "live": true,
         "coingeckoId": "solana",
-        "raw": 76.93,
-        "usdPerUnit": 74.87
+        "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
+        "raw": 75.1
       },
       {
         "id": "xrp",
+        "group": "crypto",
         "label": "XRP",
-        "value": "~$1",
-        "context": "Jul 16, 2026 (CoinGecko).",
+        "value": "$1.09",
+        "usdPerUnit": 1.089,
         "live": true,
         "coingeckoId": "ripple",
-        "raw": 1.1,
-        "usdPerUnit": 1.089
+        "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
+        "raw": 1.089
       },
       {
         "id": "doge",
+        "group": "crypto",
         "label": "Dogecoin",
-        "value": "~$0",
-        "context": "Jul 16, 2026 (CoinGecko).",
+        "value": "$0.0728",
+        "usdPerUnit": 0.072775,
         "live": true,
         "coingeckoId": "dogecoin",
-        "raw": 0.07286,
-        "usdPerUnit": 0.072097
+        "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
+        "raw": 0.072775
       },
       {
         "id": "ltc",
+        "group": "crypto",
         "label": "Litecoin",
-        "value": "~$47",
-        "context": "Jul 16, 2026 (CoinGecko).",
+        "value": "$45.16",
+        "usdPerUnit": 45.16,
         "live": true,
         "coingeckoId": "litecoin",
-        "raw": 46.98,
-        "usdPerUnit": 45.32
+        "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
+        "raw": 45.16
+      },
+      {
+        "id": "bnb",
+        "group": "crypto",
+        "label": "BNB",
+        "value": "$568",
+        "usdPerUnit": 568.2,
+        "live": true,
+        "coingeckoId": "binancecoin",
+        "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
+        "raw": 568.2
+      },
+      {
+        "id": "ada",
+        "group": "crypto",
+        "label": "Cardano",
+        "value": "$0.1664",
+        "usdPerUnit": 0.166394,
+        "live": true,
+        "coingeckoId": "cardano",
+        "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
+        "raw": 0.166394
+      },
+      {
+        "id": "link",
+        "group": "crypto",
+        "label": "Chainlink",
+        "value": "$8.26",
+        "usdPerUnit": 8.26,
+        "live": true,
+        "coingeckoId": "chainlink",
+        "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
+        "raw": 8.26
+      },
+      {
+        "id": "xmr",
+        "group": "crypto",
+        "label": "Monero",
+        "value": "$330",
+        "usdPerUnit": 330.07,
+        "live": true,
+        "coingeckoId": "monero",
+        "context": "Privacy coin. Delisted from several majors; volatile liquidity.",
+        "raw": 330.07
       },
       {
         "id": "eur",
+        "group": "currencies",
         "label": "Euro",
-        "value": "€0.872 / $",
-        "context": "ECB reference via Frankfurter, Jul 16, 2026.",
+        "value": "0.8745 EUR/$",
+        "perUsd": 0.87451,
         "live": true,
         "fxCode": "EUR",
-        "perUsd": 0.87207
+        "context": "ECB reference via Frankfurter, Jul 17 2026. Refreshes live in-browser and daily via CI.",
+        "raw": 0.87451
       },
       {
         "id": "gbp",
+        "group": "currencies",
         "label": "British Pound",
-        "value": "£0.740 / $",
-        "context": "ECB reference via Frankfurter, Jul 16, 2026.",
+        "value": "0.7442 GBP/$",
+        "perUsd": 0.74419,
         "live": true,
         "fxCode": "GBP",
-        "perUsd": 0.74015
+        "context": "ECB reference via Frankfurter, Jul 17 2026. Refreshes live in-browser and daily via CI.",
+        "raw": 0.74419
       },
       {
         "id": "jpy",
+        "group": "currencies",
         "label": "Japanese Yen",
-        "value": "¥162.2 / $",
-        "context": "ECB reference via Frankfurter, Jul 16, 2026.",
+        "value": "162.4 JPY/$",
+        "perUsd": 162.35,
         "live": true,
         "fxCode": "JPY",
-        "perUsd": 162.2
+        "context": "ECB reference via Frankfurter, Jul 17 2026. Refreshes live in-browser and daily via CI.",
+        "raw": 162.35
       },
       {
-        "id": "mxn",
-        "label": "Mexican Peso",
-        "value": "MX$17.43 / $",
-        "context": "ECB reference via Frankfurter, Jul 16, 2026.",
+        "id": "chf",
+        "group": "currencies",
+        "label": "Swiss Franc",
+        "value": "0.807 CHF/$",
+        "perUsd": 0.807,
         "live": true,
-        "fxCode": "MXN",
-        "perUsd": 17.4264
+        "fxCode": "CHF",
+        "context": "ECB reference via Frankfurter, Jul 17 2026. Refreshes live in-browser and daily via CI.",
+        "raw": 0.807
       },
       {
         "id": "cad",
+        "group": "currencies",
         "label": "Canadian Dollar",
-        "value": "C$1.403 / $",
-        "context": "ECB reference via Frankfurter, Jul 16, 2026.",
+        "value": "1.402 CAD/$",
+        "perUsd": 1.4023,
         "live": true,
         "fxCode": "CAD",
-        "perUsd": 1.4025
+        "context": "ECB reference via Frankfurter, Jul 17 2026. Refreshes live in-browser and daily via CI.",
+        "raw": 1.4023
+      },
+      {
+        "id": "aud",
+        "group": "currencies",
+        "label": "Australian Dollar",
+        "value": "1.434 AUD/$",
+        "perUsd": 1.4337,
+        "live": true,
+        "fxCode": "AUD",
+        "context": "ECB reference via Frankfurter, Jul 17 2026. Refreshes live in-browser and daily via CI.",
+        "raw": 1.4337
       },
       {
         "id": "cny",
+        "group": "currencies",
         "label": "Chinese Yuan",
-        "value": "¥6.767 / $",
-        "context": "ECB reference via Frankfurter, Jul 16, 2026.",
+        "value": "6.778 CNY/$",
+        "perUsd": 6.7775,
         "live": true,
         "fxCode": "CNY",
-        "perUsd": 6.7669
+        "context": "ECB reference via Frankfurter, Jul 17 2026. Refreshes live in-browser and daily via CI.",
+        "raw": 6.7775
+      },
+      {
+        "id": "inr",
+        "group": "currencies",
+        "label": "Indian Rupee",
+        "value": "96.28 INR/$",
+        "perUsd": 96.28,
+        "live": true,
+        "fxCode": "INR",
+        "context": "ECB reference via Frankfurter, Jul 17 2026. Refreshes live in-browser and daily via CI.",
+        "raw": 96.28
+      },
+      {
+        "id": "mxn",
+        "group": "currencies",
+        "label": "Mexican Peso",
+        "value": "17.48 MXN/$",
+        "perUsd": 17.4837,
+        "live": true,
+        "fxCode": "MXN",
+        "context": "ECB reference via Frankfurter, Jul 17 2026. Refreshes live in-browser and daily via CI.",
+        "raw": 17.4837
+      },
+      {
+        "id": "brl",
+        "group": "currencies",
+        "label": "Brazilian Real",
+        "value": "5.116 BRL/$",
+        "perUsd": 5.1158,
+        "live": true,
+        "fxCode": "BRL",
+        "context": "ECB reference via Frankfurter, Jul 17 2026. Refreshes live in-browser and daily via CI.",
+        "raw": 5.1158
       },
       {
         "id": "gold",
+        "group": "metals",
         "label": "Gold",
-        "value": "~$3,992/oz",
-        "context": "Aug futures settle, Jul 16, 2026 (Barchart EOD). Record ~$5,602 on Jan 28, 2026, then pulled back — historically elevated and volatile.",
+        "value": "$4,023/oz",
+        "usdPerUnit": 4023,
         "live": false,
-        "usdPerUnit": 3992.1
+        "yahoo": "GC=F",
+        "context": "Front-month COMEX. Record ~$5,602 Jan 28 2026, then a hard pullback. Elevated and volatile.",
+        "raw": 4023
       },
       {
         "id": "silver",
+        "group": "metals",
         "label": "Silver",
-        "value": "~$56.19/oz",
-        "context": "Sep futures settle, Jul 16, 2026 (Barchart EOD). Nominal record $121.67/oz Jan 29, 2026 — the supply-squeeze era cooled hard.",
+        "value": "$56.22/oz",
+        "usdPerUnit": 56.22,
         "live": false,
-        "usdPerUnit": 56.187
+        "yahoo": "SI=F",
+        "context": "Nominal record $121.67/oz Jan 29 2026; supply-squeeze era continues.",
+        "raw": 56.22
       },
       {
-        "id": "spx",
-        "label": "S&P 500",
-        "value": "~7,564",
-        "context": "As of Jul 16, 2026 (Yahoo Finance).",
-        "live": false
+        "id": "platinum",
+        "group": "metals",
+        "label": "Platinum",
+        "value": "$1,604/oz",
+        "usdPerUnit": 1603.5,
+        "live": false,
+        "yahoo": "PL=F",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 1603.5
       },
       {
-        "id": "wti",
-        "label": "Crude Oil (WTI)",
-        "value": "~$78/bbl",
-        "context": "Sep settle $78.28, Jul 16, 2026 (Barchart EOD); intraday sources ranged $78–80 on geopolitical headlines.",
+        "id": "palladium",
+        "group": "metals",
+        "label": "Palladium",
+        "value": "$1,250/oz",
+        "usdPerUnit": 1250,
         "live": false,
-        "usdPerUnit": 78.28
-      },
-      {
-        "id": "natgas",
-        "label": "Natural Gas",
-        "value": "$2.86/MMBtu",
-        "context": "Aug settle, Jul 16, 2026 (Barchart EOD), −2.3% on the day.",
-        "live": false,
-        "usdPerUnit": 2.858
+        "yahoo": "PA=F",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 1250
       },
       {
         "id": "copper",
+        "group": "metals",
         "label": "Copper",
-        "value": "$6.36/lb",
-        "context": "Jul 16, 2026 (Finit commodities board), +1.0% on the day.",
+        "value": "$6.27/lb",
+        "usdPerUnit": 6.271,
         "live": false,
-        "usdPerUnit": 6.357
+        "yahoo": "HG=F",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 6.271
+      },
+      {
+        "id": "aluminum",
+        "group": "metals",
+        "label": "Aluminum",
+        "value": "$3,453/t",
+        "usdPerUnit": 3452.75,
+        "live": false,
+        "yahoo": "ALI=F",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 3452.75
+      },
+      {
+        "id": "wti",
+        "group": "metals",
+        "label": "Crude Oil (WTI)",
+        "value": "$81.77/bbl",
+        "usdPerUnit": 81.77,
+        "live": false,
+        "yahoo": "CL=F",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 81.77
+      },
+      {
+        "id": "brent",
+        "group": "metals",
+        "label": "Crude Oil (Brent)",
+        "value": "$88.09/bbl",
+        "usdPerUnit": 88.09,
+        "live": false,
+        "yahoo": "BZ=F",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 88.09
+      },
+      {
+        "id": "natgas",
+        "group": "metals",
+        "label": "Natural Gas",
+        "value": "$2.92/MMBtu",
+        "usdPerUnit": 2.916,
+        "live": false,
+        "yahoo": "NG=F",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 2.916
+      },
+      {
+        "id": "gasoline",
+        "group": "metals",
+        "label": "Gasoline (RBOB)",
+        "value": "$3.19/gal",
+        "usdPerUnit": 3.1892,
+        "live": false,
+        "yahoo": "RB=F",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 3.1892
       },
       {
         "id": "wheat",
+        "group": "agri",
         "label": "Wheat (SRW)",
-        "value": "~$6.75/bu",
-        "context": "Sep SRW 674'6 ¢/bu, Jul 16, 2026 (Barchart EOD); rallied hard mid-July on Black Sea tensions.",
+        "value": "685¢/bu",
+        "usdPerUnit": 6.8475,
         "live": false,
-        "usdPerUnit": 6.7475
+        "yahoo": "ZW=F",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 684.75
       },
       {
-        "id": "cards",
-        "label": "Cards/TCG",
-        "value": "26.8M graded 2025",
-        "context": "+32% YoY (GemRate). Pokémon led with 16.1M; sports grading fell 12%. Modern sealed softened.",
-        "live": false
+        "id": "corn",
+        "group": "agri",
+        "label": "Corn",
+        "value": "468¢/bu",
+        "usdPerUnit": 4.6825,
+        "live": false,
+        "yahoo": "ZC=F",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 468.25
+      },
+      {
+        "id": "soybeans",
+        "group": "agri",
+        "label": "Soybeans",
+        "value": "1,203¢/bu",
+        "usdPerUnit": 12.025,
+        "live": false,
+        "yahoo": "ZS=F",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 1202.5
+      },
+      {
+        "id": "coffee",
+        "group": "agri",
+        "label": "Coffee",
+        "value": "321.1¢/lb",
+        "usdPerUnit": 3.211,
+        "live": false,
+        "yahoo": "KC=F",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 321.1
+      },
+      {
+        "id": "sugar",
+        "group": "agri",
+        "label": "Sugar #11",
+        "value": "14.82¢/lb",
+        "usdPerUnit": 0.1482,
+        "live": false,
+        "yahoo": "SB=F",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 14.82
+      },
+      {
+        "id": "cocoa",
+        "group": "agri",
+        "label": "Cocoa",
+        "value": "$5,610/t",
+        "usdPerUnit": 5610,
+        "live": false,
+        "yahoo": "CC=F",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 5610
+      },
+      {
+        "id": "cotton",
+        "group": "agri",
+        "label": "Cotton",
+        "value": "78.93¢/lb",
+        "usdPerUnit": 0.7893,
+        "live": false,
+        "yahoo": "CT=F",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 78.93
+      },
+      {
+        "id": "rice",
+        "group": "agri",
+        "label": "Rough Rice",
+        "value": "$14.00/cwt",
+        "usdPerUnit": 14,
+        "live": false,
+        "yahoo": "ZR=F",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 14
+      },
+      {
+        "id": "oats",
+        "group": "agri",
+        "label": "Oats",
+        "value": "350¢/bu",
+        "usdPerUnit": 3.495,
+        "live": false,
+        "yahoo": "ZO=F",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 349.5
+      },
+      {
+        "id": "lumber",
+        "group": "agri",
+        "label": "Lumber",
+        "value": "$636/mbf",
+        "usdPerUnit": 635.5,
+        "live": false,
+        "yahoo": "LBR=F",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 635.5
+      },
+      {
+        "id": "spx",
+        "group": "indices",
+        "label": "S&P 500",
+        "value": "7,458",
+        "usdPerUnit": 7457.69,
+        "live": false,
+        "yahoo": "^GSPC",
+        "context": "Front index. Verified Jul 17 2026 (Yahoo Finance); auto-refreshed daily via CI.",
+        "raw": 7457.69
+      },
+      {
+        "id": "nasdaq",
+        "group": "indices",
+        "label": "Nasdaq Composite",
+        "value": "25,520",
+        "usdPerUnit": 25520.244,
+        "live": false,
+        "yahoo": "^IXIC",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 25520.244
+      },
+      {
+        "id": "dow",
+        "group": "indices",
+        "label": "Dow Jones",
+        "value": "52,146",
+        "usdPerUnit": 52146.42,
+        "live": false,
+        "yahoo": "^DJI",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 52146.42
+      },
+      {
+        "id": "russell",
+        "group": "indices",
+        "label": "Russell 2000",
+        "value": "2,962",
+        "usdPerUnit": 2962.217,
+        "live": false,
+        "yahoo": "^RUT",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 2962.217
+      },
+      {
+        "id": "ftse",
+        "group": "indices",
+        "label": "FTSE 100",
+        "value": "10,600",
+        "usdPerUnit": 10600.37,
+        "live": false,
+        "yahoo": "^FTSE",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 10600.37
+      },
+      {
+        "id": "dax",
+        "group": "indices",
+        "label": "DAX",
+        "value": "24,831",
+        "usdPerUnit": 24830.98,
+        "live": false,
+        "yahoo": "^GDAXI",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 24830.98
+      },
+      {
+        "id": "nikkei",
+        "group": "indices",
+        "label": "Nikkei 225",
+        "value": "64,141",
+        "usdPerUnit": 64141.12,
+        "live": false,
+        "yahoo": "^N225",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 64141.12
+      },
+      {
+        "id": "hangseng",
+        "group": "indices",
+        "label": "Hang Seng",
+        "value": "24,562",
+        "usdPerUnit": 24562.24,
+        "live": false,
+        "yahoo": "^HSI",
+        "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
+        "raw": 24562.24
+      },
+      {
+        "id": "vix",
+        "group": "indices",
+        "label": "VIX (fear index)",
+        "value": "18.77",
+        "live": false,
+        "yahoo": "^VIX",
+        "context": "Volatility gauge, not a tradable amount. Excluded from the converter.",
+        "noCalc": true,
+        "raw": 18.77
+      },
+      {
+        "id": "us10y",
+        "group": "indices",
+        "label": "US 10-Yr Yield",
+        "value": "4.54%",
+        "live": false,
+        "yahoo": "^TNX",
+        "context": "CBOE ^TNX ÷10 convention = yield %. Excluded from the converter.",
+        "noCalc": true,
+        "raw": 4.541
       }
     ]
   },
@@ -205,7 +606,7 @@
       "title": "Overall Alternative Investments",
       "status": "live",
       "updated": "2026-07",
-      "blurb": "Two ranked lists of alternative-investment platforms — realized (not advertised) returns, fees, liquidity, solvency risk, and a local-NWA alternative for every platform, benchmarked against VOO / QQQ / SCHD.",
+      "blurb": "Two ranked lists of alternative-investment platforms. Realized (not advertised) returns, fees, liquidity, solvency risk, and a local-NWA alternative for every platform, benchmarked against VOO / QQQ / SCHD.",
       "files": [
         {
           "label": "Ranked Workbook (XLSX)",
@@ -213,7 +614,7 @@
         }
       ],
       "flags": [
-        "Sector honesty flag: fractional platforms showed real 2025–26 stress — Fundrise gated Equity-REIT redemptions (Oct 1, 2025), Masterworks' administrator cash fell to $3.5M with a founder-trust loan, Rally's FY2025 filing carries a going-concern qualification, Yieldstreet suspended redemptions. Verify current status before allocating."
+        "Sector honesty flag: fractional platforms showed real 2025–26 stress. Fundrise gated Equity-REIT redemptions (Oct 1, 2025), Masterworks' administrator cash fell to $3.5M with a founder-trust loan, Rally's FY2025 filing carries a going-concern qualification, Yieldstreet suspended redemptions. Verify current status before allocating."
       ]
     },
     {
@@ -222,7 +623,7 @@
       "title": "(AltInv) Valuable Coin Collection",
       "status": "live",
       "updated": "2026-06",
-      "blurb": "Numismatics as an alternative investment for Northwest Arkansas: the November 2025 penny discontinuation, honest ROI (Lombra ~11%/yr on MS65 vs PCGS3000 ~1.11%/yr since 2000), grading economics and the 3× rule, NWA dealer map, Arkansas's zero sales/cap-gains tax edge on bullion, and a four-tier acquisition plan — plus the working acquisition workbook.",
+      "blurb": "Numismatics as an alternative investment for Northwest Arkansas: the November 2025 penny discontinuation, honest ROI (Lombra ~11%/yr on MS65 vs PCGS3000 ~1.11%/yr since 2000), grading economics and the 3× rule, NWA dealer map, Arkansas's zero sales/cap-gains tax edge on bullion, and a four-tier acquisition plan. Plus the working acquisition workbook.",
       "files": [
         {
           "label": "Research Monograph (DOCX)",
@@ -240,10 +641,10 @@
     {
       "id": "casino",
       "emoji": "🎰",
-      "title": "Las Vegas — Casino & Gambling Strategy",
+      "title": "Las Vegas. Casino & Gambling Strategy",
       "status": "live",
       "updated": "2026-06",
-      "blurb": "A two-volume set: a 43-page academic research paper (127 sources) on casino mathematics, game theory, and gambling psychology, and a felt-green-and-gold field guide — the beatable three, full basic-strategy charts, bankroll architecture with stop-loss discipline, comps, and how not to get backed off.",
+      "blurb": "A two-volume set: a 43-page academic research paper (127 sources) on casino mathematics, game theory, and gambling psychology, and a felt-green-and-gold field guide. The beatable three, full basic-strategy charts, bankroll architecture with stop-loss discipline, comps, and how not to get backed off.",
       "files": [
         {
           "label": "Research Paper (DOCX)",
@@ -255,7 +656,7 @@
         }
       ],
       "flags": [
-        "EV honesty: stopping rules can't change expected value — they reshape the outcome distribution and cut total action. Context: 2025 Vegas visitation fell ~7.5% while Strip gaming revenue held ~$8.8B; the house's economics stayed strong even as crowds thinned."
+        "EV honesty: stopping rules can't change expected value. They reshape the outcome distribution and cut total action. Context: 2025 Vegas visitation fell ~7.5% while Strip gaming revenue held ~$8.8B; the house's economics stayed strong even as crowds thinned."
       ]
     },
     {
@@ -264,7 +665,7 @@
       "title": "(AltInv) Card Collecting Guide",
       "status": "live",
       "updated": "2026-06",
-      "blurb": "The complete 2026 field guide plus a five-workbook toolkit: release calendar through 2029, ROI ranker, Japanese-parallel tracker, sealed-product coverage, and a trophy/vintage tier list.",
+      "blurb": "The complete 2026 field guide plus a five-workbook toolkit: release calendar through 2029, ROI ranker, Japanese-parallel tracker, sealed-product coverage, and a trophy/vintage tier list. Market scale: 26.8M cards graded in 2025, +32% YoY (GemRate). Pokémon led with 16.1M.",
       "files": [
         {
           "label": "Field Guide (DOCX)",
@@ -292,7 +693,7 @@
         }
       ],
       "flags": [
-        "2025 was a record grading year (26.8M cards, +32% YoY; PSA ~72% share) and Pokémon's 30th anniversary is driving 2026 demand — but 6M new PSA-10 Pokémon slabs in 2025 pressure modern scarcity. Japanese exclusives strongest; modern sealed/singles softened."
+        "2025 was a record grading year (26.8M cards, +32% YoY; PSA ~72% share) and Pokémon's 30th anniversary is driving 2026 demand. But 6M new PSA-10 Pokémon slabs in 2025 pressure modern scarcity. Japanese exclusives strongest; modern sealed/singles softened."
       ]
     },
     {
@@ -301,7 +702,7 @@
       "title": "(AltInv) Local Community Market",
       "status": "live",
       "updated": "2026-06",
-      "blurb": "The Northwest Arkansas Belonging Guide: a field manual for living local in the Ozarks — where good people gather, where your dollars stay home, and how to become a regular (not a tourist) across Fayetteville, Springdale, Rogers, Bentonville, and the two-hour world around them.",
+      "blurb": "The Northwest Arkansas Belonging Guide: a field manual for living local in the Ozarks. Where good people gather, where your dollars stay home, and how to become a regular (not a tourist) across Fayetteville, Springdale, Rogers, Bentonville, and the two-hour world around them.",
       "files": [
         {
           "label": "Belonging Guide (DOCX)",
@@ -316,7 +717,7 @@
       "title": "SaaS Master Investment Portfolio",
       "status": "soon",
       "updated": "2026-07",
-      "blurb": "Master portfolio construction for SaaS-sector investing — being implemented inside Flock Finance, the blockchain-powered decentralized exchange concept for tokenized multi-investment vehicles.",
+      "blurb": "Master portfolio construction for SaaS-sector investing. Being implemented inside Flock Finance, the blockchain-powered decentralized exchange concept for tokenized multi-investment vehicles.",
       "files": [],
       "flags": []
     },
@@ -324,34 +725,46 @@
       "id": "insurance",
       "emoji": "🛡️",
       "title": "Insurance, Credit & Loan Comparisons",
-      "status": "soon",
-      "updated": "2026-06",
-      "blurb": "Policy and benefits comparisons across insurance products, credit lines, and loan structures — publishing after verification passes.",
-      "files": [],
+      "status": "live",
+      "updated": "2026-07",
+      "blurb": "Insuring the household for emerging adults: risk, under-protection, and the architecture of financial security across insurance products, credit lines, and loan structures. A research paper, a financial-stacks analysis, and a working data workbook.",
+      "files": [
+        { "label": "Insuring the Household (Research Paper)", "path": "files/Insuring_the_Household_Research_Paper.docx" },
+        { "label": "Financial Stacks Analysis (DOCX)", "path": "files/Insurance_Financial_Stacks_Analysis.docx" },
+        { "label": "Data Workbook (XLSX)", "path": "files/Insurance_Credit_Loans_Data_Workbook.xlsx" }
+      ],
       "flags": []
     },
     {
       "id": "timeshare",
       "emoji": "🏝️",
-      "title": "Wyndham Presidential Timeshare Negotiation",
-      "status": "soon",
-      "updated": "2026-06",
-      "blurb": "Negotiation playbook for Wyndham points and presidential-tier timeshares (plus the Wii Sports Resorts angle).",
-      "files": [],
+      "title": "Presidential Vacation & Timeshare Compendium",
+      "status": "live",
+      "updated": "2026-07",
+      "blurb": "The Architecture of the Vacation: ownership, obligation, and status across the timeshare and premium-tier hospitality industry, including the Wyndham points and presidential-tier negotiation angle. A full research monograph.",
+      "files": [
+        { "label": "Presidential Vacation Compendium (Monograph)", "path": "files/Presidential_Vacation_Compendium.docx" }
+      ],
       "flags": [
-        "Resale reality check baked in: Wyndham points and timeshares routinely resell for ~$1 or free (TUG give-aways of 900K+ point packages); resale points lose VIP status. Wyndham's own 'Certified Exit' deed-back is the legitimate off-ramp — beware upfront-fee exit scams."
+        "Resale reality check baked in: Wyndham points and timeshares routinely resell for ~$1 or free (TUG give-aways of 900K+ point packages); resale points lose VIP status. Wyndham's own 'Certified Exit' deed-back is the legitimate off-ramp. Beware upfront-fee exit scams."
       ]
     },
     {
       "id": "realestate",
       "emoji": "🏠",
-      "title": "Garcia Trust & Family LLC — Real Estate Holdings",
-      "status": "soon",
-      "updated": "2026-06",
-      "blurb": "Rental property management with DIY maintenance systems and tax strategies, built on 15+ years of hands-on family real-estate operations in a market where Benton County averages $471K (+8.8% YoY, Arvest Skyline H1 2025).",
-      "files": [],
+      "title": "Public Wealth Structuring & Real Estate",
+      "status": "live",
+      "updated": "2026-07",
+      "blurb": "The architecture of private wealth: real estate, entities, trusts, funds, banking, and taxation in U.S. wealth structuring, current through the One Big Beautiful Bill Act of 2025, with a Northwest Arkansas landlord operating manual, an Arkansas-to-South-Dakota trust architecture study, and a tax-minimization companion.",
+      "files": [
+        { "label": "The Architecture of Private Wealth (Paper)", "path": "files/The_Architecture_of_Private_Wealth.docx" },
+        { "label": "AR → SD Trust Architecture (DOCX)", "path": "files/From_Arkansas_to_South_Dakota_Trust_Architecture.docx" },
+        { "label": "NWA Landlord Operating Manual (DOCX)", "path": "files/Northwest_Arkansas_Landlord_Operating_Manual.docx" },
+        { "label": "Tax Minimization Companion (DOCX)", "path": "files/Tax_Minimization_Strategy_Companion.docx" }
+      ],
       "flags": [
-        "Methodology flag: the Skyline Report publishes county averages (not medians) twice a year; Redfin's NWA median ran ~$356K in early 2025. Different sources, different math — both are cited with dates when this publishes."
+        "Methodology flag: the Skyline Report publishes county averages (not medians) twice a year; Redfin's NWA median ran ~$356K in early 2025. Different sources, different math. Both are cited with dates when this publishes.",
+        "Not legal or tax advice: trust and entity structures (including the Arkansas-to-South-Dakota angle) are general education. Verify with a licensed attorney and CPA before acting."
       ]
     }
   ],

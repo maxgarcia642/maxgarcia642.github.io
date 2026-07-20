@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IPIP-300 — A Profile in Five Dimensions</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+  :root{
+    --ink:#1a1a1c; --paper:#f6f4ef; --paper2:#ece9e1; --line:#d6d1c6;
+    --ext:#5a9e2f; --ext-d:#3f7a1c; --agr:#a8341e; --con:#1e5fd8; --con-d:#1648a8;
+    --neu:#7b2c8f; --opn:#e8941a; --opn-d:#c2740a; --mut:#76716a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;scroll-padding-bottom:62px;}
+  body{background:var(--ink);font-family:'Inter',sans-serif;color:var(--ink);}
+
+  #deck{position:relative;}
+  .page{
+    position:relative;min-height:100vh;background:var(--paper);
+    display:flex;flex-direction:column;overflow:hidden;scroll-margin-top:0;
+    opacity:0;transform:translateY(20px);
+    transition:opacity .6s ease, transform .6s ease;
+  }
+  .page.in{opacity:1;transform:none;}
+
+  /* soft directional shading on every page for depth (sits below grid + dots) */
+  .page::before{
+    content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(120% 80% at 15% 0%, rgba(255,255,255,.55), transparent 55%),
+      radial-gradient(130% 90% at 100% 100%, rgba(0,0,0,.05), transparent 60%);
+  }
+
+  /* persistent animated background: drifting grid + floating colored dots */
+  .page::after{
+    content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(0,0,0,.038) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,.038) 1px, transparent 1px);
+    background-size:38px 38px;
+    animation:gridDrift 26s linear infinite;
+  }
+  .page{background-image:none;} /* base grid now lives in ::after so it can animate */
+  @keyframes gridDrift{
+    0%{background-position:0 0,0 0;}
+    100%{background-position:38px 38px,38px 38px;}
+  }
+  .bg-dots{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
+  .bg-dots i{
+    position:absolute;border-radius:50%;opacity:.6;
+    filter:blur(.4px);
+    will-change:transform;
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+    transition:background-color 2.2s ease;
+  }
+  @keyframes floatA{0%{transform:translate(0,0);}50%{transform:translate(34px,-26px);}100%{transform:translate(0,0);}}
+  @keyframes floatB{0%{transform:translate(0,0);}50%{transform:translate(-28px,30px);}100%{transform:translate(0,0);}}
+  @keyframes floatC{0%{transform:translate(0,0);}50%{transform:translate(22px,28px);}100%{transform:translate(0,0);}}
+  @keyframes floatD{0%{transform:translate(0,0);}50%{transform:translate(-32px,-20px);}100%{transform:translate(0,0);}}
+
+  .wrap{width:100%;max-width:880px;margin:0 auto;padding:78px 48px 92px;flex:1;display:flex;flex-direction:column;position:relative;z-index:1;}
+
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--mut);margin-bottom:20px;display:flex;gap:12px;align-items:center;}
+  .eyebrow .tick{height:1px;width:40px;background:var(--line);}
+  h1.title{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(38px,6vw,68px);line-height:.98;letter-spacing:-.02em;margin-bottom:24px;}
+  h2.dim{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(34px,5.5vw,60px);line-height:1;letter-spacing:-.02em;}
+  .lede{font-size:clamp(16px,2vw,19px);line-height:1.62;color:#34322f;max-width:60ch;margin-bottom:8px;}
+  .lede strong{font-weight:700;}
+  .lede a{color:var(--con);text-decoration:none;border-bottom:1.5px solid rgba(30,95,216,.35);transition:border-color .2s,color .2s,background .2s;padding:0 1px;border-radius:3px 3px 0 0;}
+  .lede a:hover{color:var(--con-d);border-bottom-color:var(--con);background:rgba(30,95,216,.08);}
+  p.body{font-size:15.5px;line-height:1.66;color:#3c3a36;max-width:62ch;margin-top:14px;}
+
+  .epigraph{margin-top:auto;padding-top:32px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:7px;max-width:60ch;}
+  .epigraph .q{font-family:'Fraunces',serif;font-style:italic;font-weight:600;font-size:clamp(17px,2.4vw,22px);line-height:1.4;color:#2a2825;letter-spacing:-.01em;}
+  .epigraph .a{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);}
+  .epigraph .ctx{font-family:'Inter',sans-serif;font-size:12px;line-height:1.5;color:#8a857d;font-style:italic;letter-spacing:0;text-transform:none;margin-top:2px;}
+
+  .bar{margin:0 0 4px;}
+  .bar .meta{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px;gap:14px;}
+  .bar .name{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13.5px;letter-spacing:.02em;color:var(--ink);}
+  .bar .pct{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13.5px;color:var(--mut);white-space:nowrap;}
+  .bar .track{position:relative;height:13px;border-radius:7px;background:var(--paper2);box-shadow:inset 0 1px 2px rgba(0,0,0,.06);overflow:hidden;}
+  .bar .fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:7px;transition:width 1.05s cubic-bezier(.22,.61,.36,1);}
+  .bar .track::before,.bar .track::after{content:"";position:absolute;top:2px;bottom:2px;width:1px;background:rgba(0,0,0,.10);z-index:2;}
+  .bar .track::before{left:50%;}
+  .bar .track::after{left:75%;}
+  .bar .desc{font-size:13.5px;line-height:1.55;color:#56534e;margin-top:9px;max-width:60ch;}
+  .fill.ext{background:linear-gradient(90deg,var(--ext-d),var(--ext));}
+  .fill.agr{background:linear-gradient(90deg,#7a2414,var(--agr));}
+  .fill.con{background:linear-gradient(90deg,var(--con-d),var(--con));}
+  .fill.neu{background:linear-gradient(90deg,#5a1f6a,var(--neu));}
+  .fill.opn{background:linear-gradient(90deg,var(--opn-d),var(--opn));}
+  .fill.teal{background:linear-gradient(90deg,#0d7d8a,#16b0bd);}
+
+  /* facet rows become hover-interactive */
+  .facets{margin-top:30px;display:flex;flex-direction:column;gap:14px;}
+  .facet{padding:10px 14px;margin:0 -14px;border-radius:12px;transition:background .25s, transform .25s;cursor:default;}
+  .facet:hover{background:rgba(255,255,255,.7);transform:translateX(4px);}
+  .facet:hover .fill{filter:saturate(1.25) brightness(1.06);}
+  .facet:hover .desc{color:#34322f;}
+
+  .band{display:flex;align-items:flex-end;gap:18px;margin-bottom:8px;padding-bottom:22px;border-bottom:1.5px solid var(--line);flex-wrap:wrap;}
+  .band .score{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;padding:7px 13px;border-radius:20px;color:#fff;white-space:nowrap;}
+  .score.ext{background:var(--ext-d);} .score.agr{background:var(--agr);} .score.con{background:var(--con-d);} .score.neu{background:var(--neu);} .score.opn{background:var(--opn-d);}
+
+  .ov-bars{margin-top:36px;display:flex;flex-direction:column;gap:18px;max-width:760px;}
+  .ov-row{padding:10px 16px;margin:0 -16px;border-radius:12px;transition:background .25s, transform .25s;}
+  .ov-row:hover{background:rgba(255,255,255,.7);transform:translateX(4px);}
+  .ov-row:hover .fill{filter:saturate(1.25) brightness(1.06);}
+  .ov-bar .meta .name{font-size:16px;}
+  .ov-bar .track{height:20px;border-radius:10px;}
+  .ov-bar .fill{border-radius:10px;}
+  .ov-bar .pct{font-size:14px;}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:30px;}
+  .card{background:rgba(255,255,255,.42);backdrop-filter:blur(2px);border:1px solid var(--line);border-radius:14px;padding:22px 24px;transition:transform .25s, box-shadow .25s, border-color .25s, background .25s;}
+  .card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.09);border-color:#c4bdae;background:rgba(255,255,255,.62);}
+  .card h3{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-bottom:12px;display:flex;align-items:center;gap:9px;}
+  .card h3 .dot{width:9px;height:9px;border-radius:50%;}
+  .card p{font-size:14.5px;line-height:1.6;color:#3c3a36;}
+  .card.span{grid-column:1/-1;}
+
+  .pull{font-family:'Fraunces',serif;font-weight:600;font-style:italic;font-size:clamp(22px,3.2vw,30px);line-height:1.32;letter-spacing:-.01em;color:var(--ink);margin:34px 0 8px;max-width:24ch;}
+  .pull .hl{background:linear-gradient(transparent 62%, rgba(232,148,26,.4) 62%);}
+  .splitnote{margin-top:26px;padding:18px 22px;border-left:3px solid var(--opn);background:rgba(232,148,26,.07);border-radius:0 10px 10px 0;font-size:14.5px;line-height:1.6;color:#43403b;max-width:62ch;}
+  .splitnote b{font-weight:700;}
+
+  .cover .wrap{justify-content:center;}
+  /* last page: extra bottom room so the signature clears the fixed nav bar */
+  .page[data-page="9"] .wrap{padding-bottom:150px;}
+  .cover-spectrum{display:flex;height:8px;border-radius:5px;overflow:hidden;margin:30px 0 0;max-width:520px;}
+  .cover-spectrum span{flex:1;transition:flex .4s;}
+  .cover-spectrum:hover span{flex:.6;}
+  .cover-spectrum:hover span:hover{flex:2.4;}
+  .cover-meta{display:flex;gap:34px;margin-top:40px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--mut);}
+  .cover-meta b{display:block;color:var(--ink);font-size:20px;font-weight:700;margin-top:4px;letter-spacing:-.01em;}
+  .lobster{font-size:15px;color:var(--mut);font-family:'JetBrains Mono',monospace;margin-top:18px;}
+
+  /* nav bar */
+  #nav{position:fixed;bottom:0;left:0;right:0;height:62px;z-index:50;background:rgba(20,20,22,.9);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-top:1px solid rgba(255,255,255,.08);}
+  #nav button{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;background:none;border:1px solid rgba(255,255,255,.2);color:#f0eee9;padding:9px 16px;border-radius:8px;cursor:pointer;text-transform:uppercase;transition:background .2s,border-color .2s,opacity .2s;}
+  #nav button:hover:not(:disabled){background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.4);}
+  #nav button:disabled{opacity:.3;cursor:default;}
+  #dots{display:flex;gap:9px;align-items:center;}
+  #dots .d{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.22);cursor:pointer;transition:transform .2s,background .2s;border:none;padding:0;}
+  #dots .d:hover{transform:scale(1.3);background:rgba(255,255,255,.5);}
+  #dots .d.on{transform:scale(1.5);}
+  .progresslabel{font-family:'JetBrains Mono',monospace;font-size:11px;color:#aaa49a;letter-spacing:.1em;margin-right:4px;min-width:54px;}
+
+  /* scroll affordance: per-page fade + "more below" cue */
+  .scrollcue{
+    position:fixed;left:50%;transform:translateX(-50%);
+    bottom:74px;z-index:48;pointer-events:none;
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--mut);
+    opacity:0;transition:opacity .4s ease;
+  }
+  .scrollcue.show{opacity:.85;}
+  .scrollcue .arrow{font-size:15px;line-height:1;animation:cueBob 1.6s ease-in-out infinite;}
+  @keyframes cueBob{0%,100%{transform:translateY(0);}50%{transform:translateY(4px);}}
+  .scrollfade{
+    position:fixed;left:0;right:0;bottom:62px;height:60px;z-index:47;pointer-events:none;
+    background:linear-gradient(to top, var(--paper), transparent);
+    opacity:0;transition:opacity .4s ease;
+  }
+  .scrollfade.show{opacity:1;}
+
+  @media(max-width:640px){
+    .wrap{padding:54px 24px 48px;}
+    .page[data-page="9"] .wrap{padding-bottom:120px;}
+    .grid2{grid-template-columns:1fr;}
+    .cover-meta{gap:22px;}
+    #dots{display:none;}
+  }
+  @media(prefers-reduced-motion:reduce){.page,.bar .fill{transition:none;} .page::after{animation:none;} .bg-dots i{animation:none !important;} .tap-pulse{animation:none !important;}}
+
+  /* tap/click feedback on any text block — color cycles per tap via --pulse */
+  .tappable{cursor:pointer;transition:transform .18s ease, background .3s ease, box-shadow .3s ease;border-radius:10px;--pulse:232,148,26;}
+  .tappable:active{transform:scale(.992);}
+  @media(hover:hover){
+    .tappable:hover{background:rgba(var(--pulse),.07);box-shadow:0 0 0 1px rgba(var(--pulse),.16) inset;transform:translateY(-1px);}
+  }
+  @keyframes tapPulse{
+    0%{box-shadow:0 0 0 0 rgba(var(--pulse),.5);}
+    100%{box-shadow:0 0 0 18px rgba(var(--pulse),0);}
+  }
+  .tap-pulse{animation:tapPulse .6s ease-out;}
+  .tap-lit{background:rgba(var(--pulse),.12);}
+</style>
+</head>
+<body>
+<div id="deck">
+
+  <!-- PAGE 1 — COVER -->
+  <section class="page cover" data-page="0">
+    <div class="wrap">
+      <div class="eyebrow"><span class="tick"></span>IPIP-300 · 300 items · facet-level readout</div>
+      <h1 class="title">A Profile in<br>Five Dimensions</h1>
+      <p class="lede">Most free tests hand back a four-letter type from a model researchers have largely abandoned — <a href="https://www.16personalities.com/" target="_blank" rel="noopener">16Personalities</a> and other <a href="https://www.myersbriggs.org/" target="_blank" rel="noopener">Myers-Briggs</a>–style quizzes sort you into rigid boxes that shift on retest, while <a href="https://www.truity.com/test/enneagram-personality-test" target="_blank" rel="noopener">Enneagram</a> and <a href="https://www.crystalknows.com/disc-personality-test" target="_blank" rel="noopener">DISC</a> lean on intuitive types with thin predictive backing. The <a href="https://www.personalityassessor.com/ipip300/" target="_blank" rel="noopener">IPIP-NEO</a> — modeled on psychology's gold-standard NEO-PI-R — uses 300 items to resolve five validated traits into thirty facets, where shorter tests blur them into averages. The result isn't a label but a coordinate: a precise, shareable map of how one person thinks, decides, works, and holds up under pressure.</p>
+      <div class="cover-spectrum">
+        <span style="background:var(--ext)"></span><span style="background:var(--agr)"></span><span style="background:var(--con)"></span><span style="background:var(--neu)"></span><span style="background:var(--opn)"></span>
+      </div>
+      <div class="cover-meta">
+        <div>Subject<b>Maximiliano Garcia</b></div>
+        <div>Instrument<b>IPIP-NEO-300</b></div>
+        <div>Signature<b>Patience pays. 🦞</b></div>
+      </div>
+      <div class="epigraph">
+        <span class="q">"You mustn't allow yourself to be chained to fate… to be ruled by your genes. Humans can choose the type of life they want to live."</span>
+        <span class="a">— Naomi Hunter to Solid Snake · Metal Gear Solid (1998)</span>
+        <span class="ctx">Spoken in the game’s ending, Shadow Moses Island — on refusing genetic destiny and choosing one’s own life.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 2 — OVERVIEW -->
+  <section class="page" data-page="1">
+    <div class="wrap">
+      <div class="eyebrow"><span class="tick"></span>The five dimensions · at a glance</div>
+      <h1 class="title">The Shape<br>of the Whole</h1>
+      <p class="lede">Two traits near the ceiling, one near the floor, two in the middle. The interesting part of any profile isn't a single high score — it's the <strong>combination</strong>, and this one is genuinely uncommon.</p>
+      <div class="ov-bars">
+        <div class="ov-row"><div class="bar ov-bar"><div class="meta"><span class="name">Extraversion</span><span class="pct">90th · very high</span></div><div class="track"><div class="fill ext" data-w="90"></div></div></div></div>
+        <div class="ov-row"><div class="bar ov-bar"><div class="meta"><span class="name">Agreeableness</span><span class="pct">4th · extremely low</span></div><div class="track"><div class="fill agr" data-w="4"></div></div></div></div>
+        <div class="ov-row"><div class="bar ov-bar"><div class="meta"><span class="name">Conscientiousness</span><span class="pct">62nd · high</span></div><div class="track"><div class="fill con" data-w="62"></div></div></div></div>
+        <div class="ov-row"><div class="bar ov-bar"><div class="meta"><span class="name">Neuroticism</span><span class="pct">39th · low</span></div><div class="track"><div class="fill neu" data-w="39"></div></div></div></div>
+        <div class="ov-row"><div class="bar ov-bar"><div class="meta"><span class="name">Openness</span><span class="pct">90th · very high</span></div><div class="track"><div class="fill opn" data-w="90"></div></div></div></div>
+      </div>
+      <div class="epigraph">
+        <span class="q">"The privilege of a lifetime is to become who you truly are."</span>
+        <span class="a">— Widely attributed to Carl Jung · founder of analytical psychology</span>
+        <span class="ctx">Popularly attributed; not found verbatim in Jung’s published writings — original occasion undocumented.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 3 — EXTRAVERSION -->
+  <section class="page" data-page="2">
+    <div class="wrap">
+      <div class="eyebrow"><span class="tick"></span>Dimension 01 · sociability &amp; drive</div>
+      <div class="band"><h2 class="dim" style="color:var(--ext-d)">Extraversion</h2><span class="score ext">90th · very high</span></div>
+      <p class="lede">Energized by people, motion, and stimulation. The standout facet is <strong>Assertiveness at the 91st</strong> — the comfort with taking charge that shows up every time the work needs someone to lead the pitch, run the room, or perform.</p>
+      <div class="facets">
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Assertiveness</span><span class="pct">91st · extremely high</span></div><div class="track"><div class="fill ext" data-w="91"></div></div><div class="desc">Extremely high odds you'll take charge and lead others.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Activity</span><span class="pct">85th · very high</span></div><div class="track"><div class="fill ext" data-w="85"></div></div><div class="desc">A strong preference for being on the go and staying busy.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Cheerfulness</span><span class="pct">83rd · very high</span></div><div class="track"><div class="fill ext" data-w="83"></div></div><div class="desc">Very high levels of happiness, joy, and positive emotion.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Gregariousness</span><span class="pct">83rd · very high</span></div><div class="track"><div class="fill ext" data-w="83"></div></div><div class="desc">Drawn toward other people; talkative and sociable around them.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Friendliness</span><span class="pct">81st · very high</span></div><div class="track"><div class="fill ext" data-w="81"></div></div><div class="desc">A genuine desire to be around others and take interest in their lives.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Excitement Seeking</span><span class="pct">76th · very high</span></div><div class="track"><div class="fill ext" data-w="76"></div></div><div class="desc">Seeks high levels of thrill and stimulation.</div></div></div>
+      </div>
+      <div class="splitnote">Every facet sits very high — there's no soft spot here. This is the engine behind networking rooms, live demos, performance, and building in public. Paired later with extremely low Agreeableness, it reads as <b>confident without being deferential</b>: leads, advocates, doesn't wait to be invited.</div>
+      <div class="epigraph">
+        <span class="q">"Whatever you do in life, surround yourself with smart people who'll argue with you."</span>
+        <span class="a">— John Wooden · Hall of Fame basketball coach</span>
+        <span class="ctx">A widely circulated “Woodenism” on welcoming dissent — original date and venue undocumented.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 4 — AGREEABLENESS -->
+  <section class="page" data-page="3">
+    <div class="wrap">
+      <div class="eyebrow"><span class="tick"></span>Dimension 02 · the most distinctive page</div>
+      <div class="band"><h2 class="dim" style="color:var(--agr)">Agreeableness</h2><span class="score agr">4th · extremely low</span></div>
+      <p class="lede">The sharpest signal in the profile — and the one most worth reading carefully. Five facets sit low, but one breaks the pattern: <strong>Altruism at the 61st</strong>. That single exception changes the whole interpretation.</p>
+      <div class="facets">
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Altruism</span><span class="pct">61st · high</span></div><div class="track"><div class="fill opn" data-w="61"></div></div><div class="desc">High in genuinely wanting to be good to people and help when needed.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Sympathy</span><span class="pct">37th · low</span></div><div class="track"><div class="fill agr" data-w="37"></div></div><div class="desc">Lower in soft sympathy — caring framed as outcomes, not sentiment.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Trust</span><span class="pct">14th · very low</span></div><div class="track"><div class="fill agr" data-w="14"></div></div><div class="desc">Low in assuming others are benign by default.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Cooperation</span><span class="pct">3rd · extremely low</span></div><div class="track"><div class="fill agr" data-w="3"></div></div><div class="desc">Very low willingness to go along to get along.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Morality</span><span class="pct">2nd · extremely low</span></div><div class="track"><div class="fill agr" data-w="2"></div></div><div class="desc">Measures conformity to convention — not ethics. Low here means norms-for-their-own-sake hold little value.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Modesty</span><span class="pct">1st · extremely low</span></div><div class="track"><div class="fill agr" data-w="1"></div></div><div class="desc">Won't downplay ability or perform false humility.</div></div></div>
+      </div>
+      <div class="splitnote"><b>Read the facets, not the headline.</b> The instrument's "Morality" facet measures rule-conformity, and half its Agreeableness items really measure <i>willingness to perform agreeableness</i>. High Altruism beside low Cooperation, Modesty, and Trust doesn't describe someone who doesn't care — it describes a <b>blunt helper</b>: genuinely wants people better off, refuses to fake niceness, defer to convention, or trust on default. The directness <i>is</i> the respect.</div>
+      <div class="epigraph">
+        <span class="q">"Your time is limited, so don't waste it living someone else's life. Don't let the noise of others' opinions drown out your own inner voice."</span>
+        <span class="a">— Steve Jobs · Stanford Commencement, 2005</span>
+        <span class="ctx">Stanford University, June 12, 2005 — on mortality and living by your own judgment.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 5 — CONSCIENTIOUSNESS -->
+  <section class="page" data-page="4">
+    <div class="wrap">
+      <div class="eyebrow"><span class="tick"></span>Dimension 03 · the split engine</div>
+      <div class="band"><h2 class="dim" style="color:var(--con-d)">Conscientiousness</h2><span class="score con">62nd · high</span></div>
+      <p class="lede">A 62nd-percentile headline hides the most precise finding in the whole report: this trait is <strong>split down the middle</strong>. The execution facets are near the ceiling; the obligation-and-order facets are near the floor.</p>
+      <div class="facets">
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Self-Efficacy</span><span class="pct">91st · extremely high</span></div><div class="track"><div class="fill teal" data-w="91"></div></div><div class="desc">Believes — strongly — in the ability to get things done and done well.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Achievement Striving</span><span class="pct">87th · very high</span></div><div class="track"><div class="fill con" data-w="87"></div></div><div class="desc">Very high drive to work hard and get ahead.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Self-Discipline</span><span class="pct">76th · very high</span></div><div class="track"><div class="fill con" data-w="76"></div></div><div class="desc">Gets to work quickly, stays focused, resists procrastination.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Cautiousness</span><span class="pct">39th · low</span></div><div class="track"><div class="fill con" data-w="39"></div></div><div class="desc">Tends to jump in; spends little time pre-planning.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Orderliness</span><span class="pct">23rd · very low</span></div><div class="track"><div class="fill neu" data-w="23"></div></div><div class="desc">Prefers low levels of cleanliness and order in the environment.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Dutifulness</span><span class="pct">19th · very low</span></div><div class="track"><div class="fill con" data-w="19"></div></div><div class="desc">Low in obligation-for-its-own-sake — keeps commitments that earn it, not that merely exist.</div></div></div>
+      </div>
+      <div class="splitnote"><b>Disciplined about what matters, indifferent to obligation as ritual.</b> High Self-Discipline beside low Orderliness is the classic builder's signature — intense focus on the craft, mess everywhere else. It's why <b>self-built systems</b> beat imposed structure here, and why "you committed to this" never moves the needle but "ship the version that beats the last one" always does.</div>
+      <div class="epigraph">
+        <span class="q">"Discipline is choosing between what you want now and what you want most."</span>
+        <span class="a">— Abraham Lincoln · 16th U.S. President</span>
+        <span class="ctx">Popularly attributed to Lincoln; absent from his documented speeches and letters — occasion undocumented.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 6 — NEUROTICISM -->
+  <section class="page" data-page="5">
+    <div class="wrap">
+      <div class="eyebrow"><span class="tick"></span>Dimension 04 · the pressure response</div>
+      <div class="band"><h2 class="dim" style="color:var(--neu)">Neuroticism</h2><span class="score neu">39th · low</span></div>
+      <p class="lede">Emotionally stable overall, with one facet that stands out as a near-superpower: <strong>Vulnerability at the 10th percentile</strong>. The odds of being overwhelmed by hard circumstances are extremely low — and that one isn't just temperament. It was forged.</p>
+      <div class="facets">
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Vulnerability</span><span class="pct">10th · extremely low</span></div><div class="track"><div class="fill neu" data-w="10"></div></div><div class="desc">Extremely low propensity to feel overwhelmed by difficult situations.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Anxiety</span><span class="pct">36th · low</span></div><div class="track"><div class="fill neu" data-w="36"></div></div><div class="desc">Lower stress, fewer fears and worries about the future.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Self-Consciousness</span><span class="pct">42nd · about average</span></div><div class="track"><div class="fill neu" data-w="42"></div></div><div class="desc">Average unease in social situations, including with strangers.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Depression</span><span class="pct">52nd · about average</span></div><div class="track"><div class="fill neu" data-w="52"></div></div><div class="desc">Average levels of sadness — explicitly not clinical depression.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Anger</span><span class="pct">53rd · about average</span></div><div class="track"><div class="fill neu" data-w="53"></div></div><div class="desc">Average levels of anger and irritability.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Immoderation</span><span class="pct">65th · high</span></div><div class="track"><div class="fill neu" data-w="65"></div></div><div class="desc">Lower self-control around temptation — the "all-in" facet that pairs with high discipline as intense focus then recovery.</div></div></div>
+      </div>
+      <div class="splitnote"><b>The bend-don't-break facet.</b> Extremely low Vulnerability is the trait that carried a person through a hard stretch and out the other side intact. The one watch-item is Immoderation at the 65th: strong impulses, "all-in" tendencies — managed, in practice, by the high Self-Discipline sitting one dimension over.</div>
+      <div class="epigraph">
+        <span class="q">"The world breaks everyone, and afterward many are strong at the broken places."</span>
+        <span class="a">— Ernest Hemingway · A Farewell to Arms (1929)</span>
+        <span class="ctx">From the 1929 novel — the narrator’s reflection on loss and resilience.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 7 — OPENNESS -->
+  <section class="page" data-page="6">
+    <div class="wrap">
+      <div class="eyebrow"><span class="tick"></span>Dimension 05 · the idea engine</div>
+      <div class="band"><h2 class="dim" style="color:var(--opn-d)">Openness</h2><span class="score opn">90th · very high</span></div>
+      <p class="lede">The other ceiling score, and the one that explains the project sprawl. Four facets in the high 80s and 90s — <strong>ideas, imagination, aesthetics, novelty</strong> all firing at once. The only average facet is the one most people assume Openness measures: politics.</p>
+      <div class="facets">
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Artistic Interests</span><span class="pct">90th · very high</span></div><div class="track"><div class="fill opn" data-w="90"></div></div><div class="desc">Very high love of art, music, and culture.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Imagination</span><span class="pct">89th · very high</span></div><div class="track"><div class="fill opn" data-w="89"></div></div><div class="desc">Very high openness to the experiences of the imagination.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Intellect</span><span class="pct">89th · very high</span></div><div class="track"><div class="fill opn" data-w="89"></div></div><div class="desc">Strong desire to play with ideas, reflect on concepts, have deep discussions.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Adventurousness</span><span class="pct">85th · very high</span></div><div class="track"><div class="fill opn" data-w="85"></div></div><div class="desc">Prefers high variety and new experiences.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Emotionality</span><span class="pct">70th · high</span></div><div class="track"><div class="fill opn" data-w="70"></div></div><div class="desc">High attunement to one's own and others' emotions.</div></div></div>
+        <div class="facet"><div class="bar"><div class="meta"><span class="name">Liberalism</span><span class="pct">41st · about average</span></div><div class="track"><div class="fill opn" data-w="41"></div></div><div class="desc">Average on the progressive-vs-traditional political axis.</div></div></div>
+      </div>
+      <div class="splitnote"><b>Curiosity as a structural trait.</b> Artistic Interests, Imagination, and Intellect clustered this high is the signature of someone pulled toward jazz-fusion guitar, multi-agent systems, and hardware tinkering at the same time. Average Liberalism is the tell of an <b>independent thinker</b> — open to ideas without being locked to a tribe.</div>
+      <div class="epigraph">
+        <span class="q">"Without deviation from the norm, progress is not possible."</span>
+        <span class="a">— Frank Zappa · composer and guitarist</span>
+        <span class="ctx">VPRO-TV interview, Netherlands, 1971; later quoted in New York magazine, 1994 — on nonconformity as the engine of progress.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 8 — COMBINATION -->
+  <section class="page" data-page="7">
+    <div class="wrap">
+      <div class="eyebrow"><span class="tick"></span>Synthesis 01 · what the combination means</div>
+      <h1 class="title">The Rare<br>Combination</h1>
+      <p class="lede">Individually, none of these scores is exotic. Stacked together, they describe a specific operating system — one that thrives in some environments and grinds against others. Here's the honest read of both.</p>
+      <div class="grid2">
+        <div class="card"><h3><span class="dot" style="background:var(--ext)"></span>Where it wins</h3><p>High Assertiveness + Self-Efficacy + Achievement Striving + very high Openness + low Agreeableness is a founder/operator signature. Pushes ambitious ideas, operates independently, negotiates without flinching, moves before consensus forms.</p></div>
+        <div class="card"><h3><span class="dot" style="background:var(--agr)"></span>Where it grinds</h3><p>Low Dutifulness and Orderliness chafe against bureaucratic, rule-heavy, open-ended structures. The friction is never the technical work — it's deference, waiting, and doing things purely because you were told to.</p></div>
+        <div class="card"><h3><span class="dot" style="background:var(--con)"></span>How it executes</h3><p>Builds its own systems rather than inheriting them. Disciplined on the craft that matters, loose everywhere else. Best pointed at problems where ownership and standards are self-set, not handed down.</p></div>
+        <div class="card"><h3><span class="dot" style="background:var(--opn)"></span>How it thinks</h3><p>Idea-driven and aesthetically wired, resilient under uncertainty, independent in belief. Comfortable with abstraction, novelty, and cutting-edge work most people find disorienting.</p></div>
+      </div>
+      <div class="splitnote">When two different instruments triangulate the same finding, believe it: the very low Cautiousness + high Immoderation + 90th-percentile Openness all point at one thing — <b>the breadth is the superpower and the risk, and follow-through is the frontier.</b></div>
+      <div class="epigraph">
+        <span class="q">"The first principle is that you must not fool yourself — and you are the easiest person to fool."</span>
+        <span class="a">— Richard Feynman · Caltech address, 1974</span>
+        <span class="ctx">From “Cargo Cult Science,” Caltech commencement, 1974 — on scientific integrity and self-honesty.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 9 — AGAINST THE RECORD -->
+  <section class="page" data-page="8">
+    <div class="wrap">
+      <div class="eyebrow"><span class="tick"></span>Synthesis 02 · the profile against a life</div>
+      <h1 class="title">Read Against<br>the Record</h1>
+      <p class="lede">A personality profile is just potential until it meets a life. This one meets an unusually full one — IT and security work, a local-first AI ecosystem, progressive-rock guitar, a path toward the National Guard. The traits don't just describe the person; they <strong>predicted the path</strong>.</p>
+      <p class="pull">Genes are the start, not the verdict. <span class="hl">The story is one of wills.</span></p>
+      <div class="grid2">
+        <div class="card span"><h3><span class="dot" style="background:var(--neu)"></span>The forged facet</h3><p>Extremely low Vulnerability isn't only temperament — it's the trait a hard stretch built and proved. The descent and the years climbing back out are exactly the kind of experience that pushes a facet to the 10th percentile and keeps it there. The test measured the thing the experience forged.</p></div>
+        <div class="card"><h3><span class="dot" style="background:var(--con)"></span>The discipline split, in the wild</h3><p>388 tests and verbatim-exact identifiers on the craft; a string of institutional roles each lasting a few months. High Self-Discipline, low Dutifulness — the test and the résumé agree with each other.</p></div>
+        <div class="card"><h3><span class="dot" style="background:var(--opn)"></span>The breadth, in the wild</h3><p>Instruments (guitar, synths, drums, and starting a band), multi-agent AI software and workflows, robotics and drones, financial investment vehicles, networking hardware. 90th-percentile Openness isn't a hobby list — it's a structural trait expressed as a life.</p></div>
+      </div>
+      <div class="splitnote"><b>On the path ahead:</b> the most structured, highest-Dutifulness environment that exists meets a bottom-decile Dutifulness-and-Order profile. Not a reason to avoid it — a finite, structured tour can supply exactly what isn't generated internally. But go in clear-eyed: the friction won't be the technical work, which gets eaten alive. It'll be the deference and the waiting. <b>Choose it with that loaded into the decision, not discovered six weeks in.</b></div>
+      <div class="epigraph">
+        <span class="q">"We are what we repeatedly do. Excellence, then, is not an act, but a habit."</span>
+        <span class="a">— Will Durant, summarizing Aristotle · The Story of Philosophy</span>
+        <span class="ctx">Durant’s 1926 paraphrase summarizing Aristotle’s Nicomachean Ethics — on excellence as habit.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 10 — CLOSE -->
+  <section class="page" data-page="9">
+    <div class="wrap">
+      <div class="eyebrow"><span class="tick"></span>Closing · how to hold this</div>
+      <h1 class="title">A Coordinate,<br>Not a Cage</h1>
+      <p class="lede">Thirty facets make every detailed profile rare — rarity is a property of resolution, not of specialness, and it carries no verdict. What this readout offers isn't a destiny. It's a <strong>map of the terrain you're working with</strong>: where the wind is at your back, and where you'll have to row.</p>
+      <div class="grid2">
+        <div class="card"><h3><span class="dot" style="background:var(--ext)"></span>Lead with</h3><p>The drive, the resilience, the idea-generation, the willingness to build and to lead. These are at the ceiling for a reason — point them at things worth building.</p></div>
+        <div class="card"><h3><span class="dot" style="background:var(--agr)"></span>Build around</h3><p>The two facets with the best evidence of rising through the twenties — Trust and Dutifulness — both run through everything you say you want: founding, family stewardship, community. The motivation's already installed via high Altruism. Only the habit is missing.</p></div>
+        <div class="card span"><h3><span class="dot" style="background:var(--opn)"></span>The one practical move the data hands you</h3><p>This isn't only a self-portrait — it's a requirements document for the agents and collaborators you build. Most people configure tools in their own image and amplify their own blind spots. Spec at least one of yours as your inverse: high Cautiousness, high Orderliness, high Dutifulness — a finisher whose whole job is asking "did we plan this, is it organized, did we keep the promise" before anything ships. The 300 questions you answered just told you exactly which facets to install in your complements.</p></div>
+      </div>
+      <p class="pull" style="margin-top:34px;">Find something to believe in, and find it for yourself. When you do, <span class="hl">pass it on to the future.</span></p>
+      <div class="epigraph">
+        <span class="q">"Building the future and keeping the past alive are one and the same thing."</span>
+        <span class="a">— Solid Snake to Raiden · Metal Gear Solid 2: Sons of Liberty (2001)</span>
+        <span class="ctx">Spoken near the game’s ending, Federal Hall, New York — on legacy and what we choose to pass on.</span>
+      </div>
+      <p class="lobster">Patience pays. 🦞</p>
+    </div>
+  </section>
+
+</div>
+
+<nav id="nav">
+  <button id="prev">← Prev</button>
+  <div id="dots"></div>
+  <div style="display:flex;align-items:center;gap:14px;">
+    <span class="progresslabel" id="plabel">01 / 10</span>
+    <button id="next">Next →</button>
+  </div>
+</nav>
+
+<div class="scrollfade" id="scrollfade"></div>
+<div class="scrollcue" id="scrollcue"><span>scroll for more</span><span class="arrow">↓</span></div>
+
+<script>
+  const pages=[...document.querySelectorAll('.page')];
+  const dotsWrap=document.getElementById('dots');
+  const prevBtn=document.getElementById('prev');
+  const nextBtn=document.getElementById('next');
+  const plabel=document.getElementById('plabel');
+  let cur=0;
+
+  pages.forEach((_,i)=>{
+    const d=document.createElement('button');
+    d.className='d'+(i===0?' on':'');
+    d.setAttribute('aria-label','Go to page '+(i+1));
+    d.style.background = i===0 ? '#f0eee9' : 'rgba(255,255,255,.22)';
+    d.addEventListener('click',()=>go(i));
+    dotsWrap.appendChild(d);
+  });
+  const dots=[...dotsWrap.children];
+
+  function fillBars(page){
+    page.querySelectorAll('.fill').forEach(f=>{
+      const w=f.getAttribute('data-w');
+      f.style.width='0%';
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{ f.style.width=w+'%'; }));
+    });
+  }
+  function resetBars(page){ page.querySelectorAll('.fill').forEach(f=>f.style.width='0%'); }
+
+  // jump to a page by scrolling the document to it (smooth, native)
+  function go(n){
+    if(n<0||n>=pages.length) return;
+    pages[n].scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  prevBtn.addEventListener('click',()=>go(cur-1));
+  nextBtn.addEventListener('click',()=>go(cur+1));
+  document.addEventListener('keydown',e=>{
+    const tag=(e.target.tagName||'').toLowerCase();
+    if(tag==='input'||tag==='textarea') return;
+    if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){ e.preventDefault(); go(cur+1); }
+    if(e.key==='ArrowLeft'||e.key==='ArrowUp'){ e.preventDefault(); go(cur-1); }
+  });
+
+  // reveal each page and (re)animate its bars as it enters the viewport
+  const revealIO=new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{
+      const pg=en.target;
+      if(en.isIntersecting){
+        pg.classList.add('in');
+        fillBars(pg);
+      } else {
+        resetBars(pg);
+      }
+    });
+  },{threshold:0.06});
+  pages.forEach(p=>revealIO.observe(p));
+
+  // keep nav (counter, dots, prev/next, scroll cue) synced to scroll position
+  const scrollcue=document.getElementById('scrollcue');
+  const scrollfade=document.getElementById('scrollfade');
+  function syncNav(){
+    const mid=window.scrollY+window.innerHeight*0.5;
+    let idx=0;
+    pages.forEach((p,i)=>{ if(p.offsetTop<=mid) idx=i; });
+    cur=idx;
+    dots.forEach((d,i)=>{
+      d.classList.toggle('on',i===cur);
+      d.style.background = i===cur ? '#f0eee9' : 'rgba(255,255,255,.22)';
+    });
+    plabel.textContent=String(cur+1).padStart(2,'0')+' / '+String(pages.length).padStart(2,'0');
+    prevBtn.disabled=cur===0;
+    nextBtn.disabled=cur===pages.length-1;
+    const atBottom=window.innerHeight+window.scrollY>=document.body.scrollHeight-4;
+    const more=cur<pages.length-1 && !atBottom;
+    scrollcue.classList.toggle('show',more);
+    scrollfade.classList.toggle('show',more);
+  }
+  let ticking=false;
+  window.addEventListener('scroll',()=>{
+    if(!ticking){ requestAnimationFrame(()=>{ syncNav(); ticking=false; }); ticking=true; }
+  },{passive:true});
+
+  // ---- inject persistent floating colored dots, tinted per page ----
+  const pageTints=[
+    ['#5a9e2f','#a8341e','#1e5fd8','#7b2c8f','#e8941a'], // cover: full spectrum
+    ['#5a9e2f','#a8341e','#1e5fd8','#7b2c8f','#e8941a'], // overview: full spectrum
+    ['#5a9e2f','#3f7a1c','#7bbf4a'],                     // extraversion greens
+    ['#a8341e','#7a2414','#c75a42'],                     // agreeableness reds
+    ['#1e5fd8','#1648a8','#16b0bd'],                     // conscientiousness blues/teal
+    ['#7b2c8f','#5a1f6a','#9a52ab'],                     // neuroticism purples
+    ['#e8941a','#c2740a','#f0b04e'],                     // openness ambers
+    ['#5a9e2f','#1e5fd8','#e8941a'],                     // synth 1
+    ['#7b2c8f','#e8941a','#1e5fd8'],                     // synth 2
+    ['#5a9e2f','#a8341e','#1e5fd8','#7b2c8f','#e8941a']  // close: full spectrum
+  ];
+  const floatNames=['floatA','floatB','floatC','floatD'];
+  const spectrum=['#5a9e2f','#a8341e','#1e5fd8','#7b2c8f','#e8941a','#16b0bd'];
+  const dotLayers=[];
+  pages.forEach((page,pi)=>{
+    const layer=document.createElement('div');
+    layer.className='bg-dots';
+    const tints=pageTints[pi]||pageTints[0];
+    const count=20;
+    for(let k=0;k<count;k++){
+      const dot=document.createElement('i');
+      const size=6+Math.random()*22;
+      dot.style.width=size+'px';
+      dot.style.height=size+'px';
+      dot.style.left=(Math.random()*100)+'%';
+      dot.style.top=(Math.random()*100)+'%';
+      dot.style.background=tints[k%tints.length];
+      dot.style.opacity=(0.18+Math.random()*0.4).toFixed(2);
+      const dur=(11+Math.random()*16).toFixed(1);
+      const delay=(-Math.random()*20).toFixed(1);
+      dot.style.animation=`${floatNames[k%floatNames.length]} ${dur}s ease-in-out ${delay}s infinite`;
+      layer.appendChild(dot);
+    }
+    page.insertBefore(layer,page.firstChild);
+    dotLayers.push(layer);
+  });
+
+  // recolor every floater every 10s — each dot shifts to a new spectrum hue, transitioning smoothly
+  if(!window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+    setInterval(()=>{
+      dotLayers.forEach(layer=>{
+        layer.querySelectorAll('i').forEach(dot=>{
+          dot.style.background=spectrum[Math.floor(Math.random()*spectrum.length)];
+        });
+      });
+    },10000);
+  }
+
+  // ---- tap/click feedback on text blocks: every text element, color cycles each tap ----
+  const tapSelectors='h1.title, h2.dim, .eyebrow, .lede, p.body, .splitnote, .card, .card h3, .pull, .epigraph, .facet, .ov-row, .cover-meta div, .lobster, .band .score';
+  const pulseColors=['90,158,47','168,52,30','30,95,216','123,44,143','232,148,26']; // ext, agr, con, neu, opn (RGB)
+  let pulseIdx=0;
+  document.querySelectorAll(tapSelectors).forEach(el=>{
+    el.classList.add('tappable');
+    el.addEventListener('click',(e)=>{
+      e.stopPropagation();
+      const color=pulseColors[pulseIdx % pulseColors.length];
+      pulseIdx++;
+      el.style.setProperty('--pulse',color);
+      el.classList.remove('tap-pulse');
+      void el.offsetWidth;
+      el.classList.add('tap-pulse');
+      el.classList.toggle('tap-lit');
+      el.querySelectorAll('.fill').forEach(f=>{
+        const w=f.getAttribute('data-w');
+        f.style.width='0%';
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{ f.style.width=w+'%'; }));
+      });
+    });
+  });
+
+  window.addEventListener('resize',syncNav,{passive:true});
+
+  // ensure the cover is visible and animated on first paint, then sync nav
+  pages[0].classList.add('in');
+  setTimeout(()=>fillBars(pages[0]),400);
+  syncNav();
+  setTimeout(syncNav,200);
+</script>
+</body>
+</html>

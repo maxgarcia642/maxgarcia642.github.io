@@ -28,12 +28,18 @@ function renderPosts(projects) {
   const track = document.getElementById("projectTrack");
   if (!track) return;
   track.innerHTML = "";
-  projects.forEach(p => {
+  const stripLead = (s) => String(s || "").replace(/^[^\p{L}\p{N}]+/u, "");
+  projects
+    .filter(p => p.id !== "linkedin-blog") // lives in the section description now, not as a card
+    .slice()
+    .sort((a, b) => stripLead(a.title).localeCompare(stripLead(b.title), undefined, { sensitivity: "base" }))
+    .forEach(p => {
     const el = document.createElement("article");
     el.className = "post-card";
     el.setAttribute("role", "listitem");
     const updated = p.dateUpdated ? new Date(p.dateUpdated).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }) : "";
     let actions = docButtons(p.docs, p.title);
+    if (p.pdf) actions += `<button class="btn view-pdf" type="button" data-pdf="${esc(p.pdf)}" data-title="${esc(p.title)}">📖 Read paper</button>`;
     if (p.driveLink) actions += `<button class="btn ghost view-frame" type="button" data-frame="${esc(p.driveLink.replace("/view?usp=sharing", "/preview"))}" data-title="${esc(p.title)}">Preview</button>`;
     if (p.link) actions += `<a class="link-btn" href="${esc(p.link.url)}" target="_blank" rel="noopener">${esc(p.link.label)}</a>`;
     const badge = p.soon ? `<span class="badge soon">${esc(p.badge || "Coming soon")}</span>` : (p.badge ? `<span class="badge">${esc(p.badge)}</span>` : "");
@@ -43,6 +49,54 @@ function renderPosts(projects) {
       <p class="muted small">${esc(p.description)}</p>
       <div class="arcade-actions">${actions}</div>`;
     track.appendChild(el);
+  });
+}
+
+/* ---------- Clawmaxxing research row (its own scroll, inside Articles) ---------- */
+function renderClawmaxxing(claw) {
+  const wrap = document.getElementById("clawRow");
+  const track = document.getElementById("clawTrack");
+  if (!wrap || !track || !claw || !Array.isArray(claw.papers) || !claw.papers.length) return;
+  const title = document.getElementById("clawTitle");
+  const desc = document.getElementById("clawDesc");
+  if (title) title.textContent = claw.title || "🦞 The Clawmaxxing Project";
+  if (desc) desc.textContent = claw.description || "";
+  track.innerHTML = "";
+  claw.papers.forEach(p => {
+    const el = document.createElement("article");
+    el.className = "post-card";
+    el.setAttribute("role", "listitem");
+    el.dataset.searchId = p.id;
+    const badge = p.badge ? `<span class="badge">${esc(p.badge)}</span>` : "";
+    el.innerHTML = `
+      <h3>${esc(p.title)} ${badge}</h3>
+      <p class="muted small">${esc(p.description)}</p>
+      <div class="arcade-actions">${docButtons(p.docs, p.title)}</div>`;
+    track.appendChild(el);
+  });
+  wrap.hidden = false;
+}
+
+/* ---------- Individualism: personality-assessment posters ---------- */
+function renderAssessments(list) {
+  const grid = document.getElementById("assessmentGrid");
+  if (!grid) return;
+  grid.innerHTML = "";
+  (list || []).forEach(a => {
+    const card = document.createElement("article");
+    card.className = "assessment-card";
+    card.dataset.searchId = a.id;
+    card.innerHTML = `
+      <button class="assessment-open" type="button" data-assessment="${esc(a.html)}" data-title="${esc(a.title)}" aria-label="Open ${esc(a.title)}">
+        <span class="assessment-emoji" aria-hidden="true">${esc(a.emoji || "🧭")}</span>
+        <span class="assessment-open-label">Open report</span>
+      </button>
+      <div class="assessment-body">
+        <h3>${esc(a.title)} ${a.badge ? `<span class="badge">${esc(a.badge)}</span>` : ""}</h3>
+        ${a.subtitle ? `<p class="assessment-sub">${esc(a.subtitle)}</p>` : ""}
+        <p class="muted small">${esc(a.detail || "")}</p>
+      </div>`;
+    grid.appendChild(card);
   });
 }
 
@@ -56,20 +110,34 @@ function renderFinance(fin) {
   const note = document.getElementById("pulseNote");
   if (note) note.textContent = fin.marketPulse.note;
 
-  const strip = document.getElementById("pulseStrip");
-  if (strip) {
-    strip.innerHTML = "";
-    fin.marketPulse.items.forEach(item => {
-      const chip = document.createElement("div");
-      chip.className = "pulse-chip";
-      chip.dataset.pulseId = item.id;
-      if (item.coingeckoId) chip.dataset.coingecko = item.coingeckoId;
-      if (item.fxCode) chip.dataset.fx = item.fxCode;
-      chip.innerHTML = `
-        <div class="p-label">${esc(item.label)}${item.live ? " · live-capable" : ""}</div>
-        <div class="p-value">${esc(item.value)}</div>
-        <div class="p-context">${esc(item.context)}</div>`;
-      strip.appendChild(chip);
+  const groupsHost = document.getElementById("pulseGroups");
+  if (groupsHost) {
+    groupsHost.innerHTML = "";
+    const groups = fin.marketPulse.groups || [{ id: null, label: "", sub: "" }];
+    groups.forEach(g => {
+      const wrap = document.createElement("div");
+      wrap.className = "pulse-group";
+      const h = document.createElement("h4");
+      h.innerHTML = `${esc(g.label)} <span class="sub">${esc(g.sub || "")}</span>`;
+      const strip = document.createElement("div");
+      strip.className = "pulse-strip";
+      fin.marketPulse.items
+        .filter(item => !g.id || item.group === g.id)
+        .forEach(item => {
+          const chip = document.createElement("div");
+          chip.className = "pulse-chip";
+          chip.dataset.pulseId = item.id;
+          if (item.coingeckoId) chip.dataset.coingecko = item.coingeckoId;
+          if (item.fxCode) chip.dataset.fx = item.fxCode;
+          if (item.yahoo) chip.dataset.yahoo = item.yahoo;
+          chip.innerHTML = `
+            <div class="p-label">${esc(item.label)}${item.live ? " · live-capable" : ""}</div>
+            <div class="p-value">${esc(item.value)}</div>
+            <div class="p-context">${esc(item.context)}</div>`;
+          strip.appendChild(chip);
+        });
+      wrap.append(h, strip);
+      groupsHost.appendChild(wrap);
     });
   }
 
@@ -155,6 +223,7 @@ function renderArcade(items) {
 function renderDock(themes) {
   const dock = document.getElementById("themeDock");
   if (!dock) return;
+  const host = document.getElementById("dockOrbs");
   const divider = dock.querySelector(".dock-divider");
   const current = document.documentElement.getAttribute("data-theme") || "aero";
   themes.forEach(t => {
@@ -163,10 +232,11 @@ function renderDock(themes) {
     orb.type = "button";
     orb.style.background = t.swatch;
     orb.dataset.theme = t.id;
-    orb.title = t.label;
+    orb.dataset.label = t.label;
+    if (t.vibe) orb.dataset.vibe = t.vibe;
     orb.setAttribute("aria-label", `Switch theme to ${t.label}`);
     orb.setAttribute("aria-pressed", String(t.id === current));
-    dock.insertBefore(orb, divider);
+    if (host) host.appendChild(orb); else dock.insertBefore(orb, divider);
   });
 }
 
@@ -178,10 +248,11 @@ function applySectionText(c) {
     progTitle: c.sections?.programming?.title,
     progDesc: c.sections?.programming?.description,
     postsTitle: c.sections?.posts?.title,
-    postsDesc: c.sections?.posts?.description,
     finTitle: c.sections?.finance?.title,
     arcadeTitle: c.sections?.arcade?.title,
     arcadeDesc: c.sections?.arcade?.description,
+    individualismTitle: c.sections?.individualism?.title,
+    individualismDesc: c.sections?.individualism?.description,
     connectTitle: c.sections?.connect?.title,
     connectDesc: c.sections?.connect?.description
   };
@@ -189,6 +260,17 @@ function applySectionText(c) {
     if (!text) continue;
     const el = document.getElementById(id);
     if (el) el.textContent = text;
+  }
+  const credit = document.getElementById("progCredit");
+  if (credit && c.sections?.programming?.credit) credit.textContent = c.sections.programming.credit;
+  const pd = document.getElementById("postsDesc");
+  if (pd && c.sections?.posts?.description) {
+    pd.textContent = c.sections.posts.description + " ";
+    const a = document.createElement("a");
+    a.href = "https://www.linkedin.com/in/maximiliano-garcia642/";
+    a.target = "_blank"; a.rel = "noopener";
+    a.textContent = "LinkedIn: maximiliano-garcia642 ↗";
+    pd.appendChild(a);
   }
   const dl = document.getElementById("resumeDownload");
   const shell = document.getElementById("resumeShell");
@@ -206,6 +288,8 @@ function applySectionText(c) {
     window.MG.finance = finance;
     applySectionText(content);
     renderPosts(content.projects || []);
+    renderClawmaxxing(content.clawmaxxing);
+    renderAssessments(content.assessments || []);
     renderFinance(finance);
     renderArcade(content.arcade || []);
     renderDock(content.themes || []);
@@ -213,6 +297,6 @@ function applySectionText(c) {
   } catch (err) {
     console.error("Content load failed:", err);
     const track = document.getElementById("projectTrack");
-    if (track) track.innerHTML = `<p class="muted">Couldn't load content.json / finance.json — check the console and that both files exist at the site root.</p>`;
+    if (track) track.innerHTML = `<p class="muted">Couldn't load content.json or finance.json. Check the console and that both files exist at the site root.</p>`;
   }
 })();

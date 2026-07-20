@@ -1,0 +1,239 @@
+================================================================================
+SUPERPROMPT v4 — "WEBSITE CHANGE IDEAS," EXPANDED INTO A FULL SPEC
+maxgarcia642.github.io · written 2026-07-17 · companion to the v4 code drop
+Paste alongside Cursor_Superprompt_Handover.txt when working this repo.
+================================================================================
+
+WHAT THIS DOCUMENT IS
+Max's Website_Change_Ideas.md (~22 items) expanded into a precise, decided,
+implementation-grade spec. Every item below states: the ask, the decision, the
+implementation, and any honesty flags. The v4 code drop implements ALL of it;
+this doc is the durable record so future sessions (Claude, Cursor, Grok) don't
+re-litigate settled calls.
+
+THE THREE EMPTY PLACEHOLDERS (⚑ read first)
+Website_Change_Ideas.md contains three "here they are: ----" placeholders where
+no content followed. Verified against Cursor_Chat.txt: the missing-posts batch
+described there (NWA Meat & Plant, YouTube, band, Clawmaxxing ×7) ALREADY
+shipped in v3 — so the placeholders point at future content, not lost content.
+v4 therefore ships STRUCTURE, not invented content:
+  1. Additional posts        → drop objects into content.json → projects.
+     They auto-alphabetize; docs auto-open in the reader. Nothing else to wire.
+  2. New Financial Liberty programs → in finance.json → works, flip a
+     coming-soon's status to "live", add updated + files[] (paths in files/).
+  3. Additional music tracks → drop the file in assets/music/, add one entry to
+     content.json → music.tracks (see assets/music/README.md). Skip button
+     appears automatically at 2+ tracks.
+NOTHING was fabricated to fill these. When Max supplies the real content, each
+is a two-minute JSON edit.
+
+================================================================================
+ITEM-BY-ITEM SPEC (ask → decision → implementation)
+================================================================================
+
+1. NAV RENAMES
+   Arcade → "Projects" (same #arcade anchor). Posts → "Articles".
+   ⚙️ "Admin" → "⚙️ Layout Settings". Section heading "💻 Programming Works"
+   → "💻 Website Programming Work". Connect emoji: 🪴 → 🌳 (matches the tree).
+
+2. DOCK ICONS WERE OVALS → CIRCLES, PERMANENTLY
+   Root cause found, not guessed: 25+ orbs overflowing the 86vh scrolling dock
+   let default flex-shrink compress their heights. Fix: `flex: 0 0 auto` +
+   min-width/min-height on .theme-orb and .music-btn. They cannot squash again
+   at any theme count.
+
+3. THEMES REWORKED ENTIRELY — 30, FULL COLOR-THEORY WHEEL, ALL ANIMATED
+   themes.css is now GENERATED (single config table = source of truth; the
+   generator pattern is documented in the file header — edit configs, not CSS).
+   Coverage walks the hue wheel with light/dark pairings plus neutrals and
+   specials: aero · glass · frost · storm · ocean · indigo · lavender · royal ·
+   sakura · synth · crimson · coral · amber · desert · coffee · luxe · citrus ·
+   matcha · forest · mint · neon · crt · pixel · brutal · vapor · holo · paper ·
+   noir · bauhaus · blueprint.
+   LEGACY IDs MIGRATE (saved localStorage keeps working): aurora→indigo,
+   clay→coral, swiss→bauhaus, midnight→noir — mapped in the FOUC guard AND
+   setTheme(). ⚠ The FOUC guard changed → CSP sha256 recomputed
+   ('sha256-akJOeUYgicp+AUQ4Nap0oxlZS6dt7c3t1+Pji9ugtFI='). Edit that inline
+   script even by a space and you must recompute.
+   EVERY theme now declares ~40 tokens including fonts (11-family Google pool),
+   shadows, gradients, radii, border weights, gloss, --bg-anim (drifting
+   gradient / hue sweep / scanline flicker / scrolling grids / synthwave
+   horizon), and --fx + --fx-color for the particle engine. Ambient layers:
+   CRT+Amber scanlines, Neon animated grid, Blueprint static grid, Synthwave
+   perspective floor, Brutal/Bauhaus hard offset shadows, Pixel
+   image-rendering (PDF canvases exempted), Holo iridescent borders.
+
+4. THEME AFFECTS FONTS / SHADOWS / GRADIENTS / PARTICLES → YES, ALL FOUR
+   Fonts: per-theme display+body pairs (Playfair for velvet/luxe, Press Start
+   for pixel, Caveat for paper, Orbitron for synth/vapor, Lora for coffee…).
+   Particles: native FX ENGINE in script.js — 16 presets (bubbles, orbs, snow,
+   rain, embers, fireflies, stars, petals, leaves, motes, glyph-rain, confetti,
+   shapes, prisms, steam, dust) as CONFIG, not code paths. Reads --fx/--fx-color
+   from the active theme. Respects prefers-reduced-motion, the Layout Settings
+   motion kill-switch, density setting, and runs at reduced density on mobile
+   (backgrounds now live on phones too, at ~55% particle count, DPR-capped).
+   Round-2 scout repos (partikle, JParticles, ab-particles, marcbruederlin —
+   all MIT-verified) were idea-mined for preset feel; ZERO code copied — house
+   rule stays zero-dependency.
+
+5. MUSIC: AUTOPLAY ON ENTRY + RED CROSS MUTE + PLAYLIST + SKIP + UPLOADS
+   Honesty first: Chrome/Safari/Firefox BLOCK audible autoplay pre-interaction.
+   "Autoplay on entry" is implemented as the closest honest thing: play() is
+   attempted immediately on load, and if the browser refuses, the first
+   click/keypress anywhere starts it (unless muted last visit). Documented in
+   assets/music/README.md and surfaced in Layout Settings copy — no pretending.
+   Mute: ♫ button gains a diagonal red cross overlay (CSS ::after) when muted.
+   Playlist: content.json → music.tracks manifest; 1 track loops, 2+ advance on
+   'ended'; ⏭ dock button appears automatically at 2+. Upload (🎧) accepts any
+   browser-decodable audio format, joins the rotation as a local object URL
+   (never uploaded), and starts playing. AIR licensing flag: retained verbatim,
+   Max's documented accepted risk — not re-litigated, not silently kept either.
+
+6. "CONFIRM PREVIEWS WORK" — VERIFIED PATHS
+   PDF (resume/papers): PDF.js lazy per-page render — unchanged, worked in v3
+   testing (the "expand fails" report was the Pages outage, root-caused then).
+   DOCX/XLSX: vendored mammoth + SheetJS readers — unchanged code paths.
+   Drive previews: /preview iframe transform — unchanged. jsdom smoke test in
+   this session confirmed renderers produce the expected DOM; anything that
+   fetches (PDF bytes, live iframes) needs the deployed origin, so the FINAL
+   in-browser click-through remains on Max post-deploy (listed at the end).
+
+7. ADMIN → LAYOUT SETTINGS (PAT PANEL RETIRED)
+   admin.html is now a credential-free customization page + settings.js:
+   motion on/off · particle density (off/low/normal/high) · text size ·
+   corners (theme default/sharp) · page width (default/wide/cozy) · section
+   show/hide AND reorder (↑/↓; Introduction always stays) · music-on-arrival.
+   All state in localStorage("mg-layout"); main page applies it pre-paint via
+   the FOUC guard + live via a storage listener. The GitHub Contents-API admin
+   is RETIRED — logged in superprompt-changelog.md per the no-silent-removal
+   rule; repo edits go through GitHub/Cursor per the handover doc. Zero tokens
+   anywhere, forever.
+
+8. MOBILE/TOUCH PARITY
+   All hover FX carry :active twins (v3) + the new word-life and dock-pop
+   effects do too; dock tooltip shows on touch via pointerover and docks above
+   the bottom bar on small screens; FX engine runs on mobile at reduced
+   density. Real-device pass stays on Max's post-deploy checklist.
+
+9. HUMANIZED SECTION DESCRIPTIONS
+   Every section blurb in content.json rewritten in first person, concrete and
+   unpuffed (intro, programming+credit, posts+LinkedIn line, finance, arcade,
+   connect). The LinkedIn "post" card is GONE from the carousel — folded into
+   the Articles & Posts description as a real link, exactly as asked.
+
+10. WORDS WITH LIFE
+    Site-wide micro-interactions: h1–h3 lift with an accent-tinted text glow,
+    .lead warms to the accent, eyebrows letter-space open, buttons/links/pills
+    lift and spring back on press — all transform/opacity-cheap, all disabled
+    under reduced-motion and the Layout Settings motion switch.
+
+11. WEBSITE PROGRAMMING WORK: SCROLL BUTTONS + THE WHOLE REPO + CREDIT
+    Terminals row is now a carousel with ‹ › buttons. TERMINAL_FILES expanded
+    from 6 to 23 — every text file that ships: both JSON data layers, both
+    workflows, the pulse script, all four docs, all three vendor PROVENANCEs,
+    music README, dotfiles. (Binary deliverables in files/ can't be terminals.)
+    Credit line renders under the row from content.json: use aspects with a
+    credit link back. Milestone buttons live here now too (item 14).
+
+12. ALPHABETIZED POSTS
+    renderPosts sorts by title, locale-aware, leading emoji stripped so
+    "🥩 NWA…" files under N, not under emoji codepoints.
+
+13. MARKET PULSE → TOP 50, FIVE VALUE GROUPS, CALCULATOR INCLUDED
+    Five groups × ten: 🪙 Crypto (BTC ETH SOL XRP DOGE LTC BNB ADA LINK XMR —
+    live in-browser via CoinGecko) · 💱 Currencies (EUR GBP JPY CHF CAD AUD CNY
+    INR MXN BRL — live in-browser via Frankfurter/ECB) · 🥇 Metals & Energy
+    (gold silver platinum palladium copper aluminum WTI Brent natgas RBOB) ·
+    🌾 Agriculture & Softs (wheat corn soybeans coffee sugar cocoa cotton rice
+    oats lumber) · 📈 Indices & Benchmarks (S&P Nasdaq Dow Russell FTSE DAX
+    Nikkei HangSeng VIX US10Y). Crypto stays ≤10 as specified.
+    EVERY value was live-fetched and verified 2026-07-17 during this build.
+    Groups 3–5 use Yahoo Finance — no browser CORS, so they refresh DAILY via
+    the repo's own CI: scripts/update-pulse.mjs v2 hits all three sources
+    server-side (tested live this session: 50/50 chips updated). Honesty note
+    on the strip says exactly which chips refresh where.
+    CONVERTER: all 50 units route through USD. Index legs labeled "index level
+    — notional" (you can't buy one S&P); VIX and the 10-yr yield are noCalc —
+    converting dollars into a fear gauge is nonsense and the UI says so.
+    The old Cards/TCG chip wasn't a tradable — its stat (26.8M graded 2025,
+    +32% YoY, GemRate) MOVED into the Card Collecting work blurb. Logged.
+
+14. STAT CHIPS → MILESTONE BUTTONS, RELOCATED
+    The Connect leaf-chips are now BUTTONS in Website Programming Work, below
+    the terminals: 🎨 30 Living Themes · 💸 Financial Liberty Research ·
+    🕹️ Games & Projects · 🦞 Clawmaxxing Local-First AI · 🚀 Personal
+    Ambitions & Ventures (replacing the Shuffle Rush chip, capitalization
+    fixed). Each click cycles ANOTHER theme's swatch onto just that button
+    (site theme untouched), tooltip deepens into the milestone detail and
+    names which theme it's wearing. Data-driven from content.json→milestones.
+
+15. ARCADE: PREVIEW-FIRST CLICK, HONEST FALLBACK, ESCAPE HATCH
+    Facade click injects the iframe preview in place. If nothing paints within
+    9 seconds, the frame is replaced by: "Cannot show the preview at this time
+    — please try again later, or use 'Open in new tab'." (Cross-origin
+    frame-blocking is not reliably detectable from JS — the timeout is the
+    honest heuristic, and the Open link never leaves the card.) Facades with
+    no embedUrl (Shuffle Rush, Maxfolio) open directly — itch strips and
+    share-token URLs refuse framing; embed URLs can be added in content.json
+    the moment good ones exist.
+
+16. CONNECT: THE TECHNO GREEN TREE + RICHER CONTACT
+    The four branch cards are REPLACED by one large clickable SVG tree —
+    trunk gradient, breathing glow halo, pulse rings, five glowing nodes
+    carrying 💼🐙📺🤝🌳 — the whole thing links to linktr.ee/maxgarcia642
+    (Linktree still refuses iframes; the tree IS the preview, and it's alive:
+    hover scales the nodes, rings pulse, halo breathes; all animation respects
+    reduced-motion). Below it, "✉️ Reach me": email, phone (tel: link),
+    LinkedIn, GitHub, YouTube, Handshake — every reach-out channel the resume
+    and site reference, in one card.
+
+17. FOOTER
+    "© 2025–2026 Maximiliano Garcia. All rights reserved. Built by hand in
+    Northwest Arkansas and served from a public repo — take ideas with credit,
+    not copies. Patience pays. 🦞" — real copyright shape, no theme-count
+    boast, keeps the signature.
+
+================================================================================
+ROUND-2 REPO LEDGER (all 40 scouted repos audited at file level)
+================================================================================
+ADOPTED AS CODE: none — every need was met natively (house rule: zero deps).
+IDEA-MINED (MIT/Apache verified, concepts only, credited here + changelog):
+  partikle · JParticles · ab-particles · marcbruederlin/particles.js ·
+  Andysun06/WebParticleEffect (particle feels) · QuantumDaveLdn/Music-Player ·
+  Katia-Toboleva/vanilla-js-audioplayer · tpreisig/music-player (playlist UX) ·
+  collidingScopes/scanlines (CRT layers) · alexandersandberg + hungrybluedev +
+  ramasundaram-s + saadeghi + seanbarlow + animify + McCambley (theme-switch
+  patterns) · sv-hover-intent-js (tooltip timing) · TinyAnimate/JSTweener ·
+  material-motion (Apache) · asciichart/micro-charts/gif.js/GifEncoder/gifenc ·
+  interact.js · betterthandesmos · webmplayer.
+REJECTED — NO LICENSE FILE (ideas fine, code untouchable): Hydrovolter/Music,
+  Beatify, daniel-ginting/ThemeSwitcher, fireship-io/226-css-theme-toggler,
+  hazadus/js-particles, jbratcher/canvas-particles-js, karthiknvd/
+  insane-particles, nschairer/SimpleCharts, pixel-jey/vanilla-svg-chart,
+  silvvrodriguez/micro-interactions-library, znrm/dots, itshover.
+REJECTED — LICENSE: xsukax-Local-MP3-Player (GPL-3.0 — incompatible with this
+  repo's MIT posture).
+STILL-OPEN LANE: gifenc (MIT, tiny) remains the clean pick if Pixel Studio
+  ever wants animated-GIF export. Not wired — not asked this round.
+
+================================================================================
+DATA & INFRA DECISIONS
+================================================================================
+· Yahoo Finance chosen for benchmark refresh AFTER testing: Stooq's CSV
+  endpoint refused this environment; Yahoo v8 chart answered keyless for all
+  30 symbols. Browser CORS is irrelevant because refresh is CI-side.
+· All 50 baked values are actual fetches from 2026-07-17, not memory.
+· finance.json works[] and researchDesk untouched except the cards-stat move.
+· settings.js added (admin.html's logic — CSP forbids inline scripts there).
+· This drop is an OVERLAY: files/ deliverables, assets/music/track1.mp3,
+  vendor/fuse/fuse.min.mjs + LICENSE were not in the source dump and are NOT
+  in this zip — apply over the existing repo; do not delete-sync.
+
+MAX'S POST-DEPLOY CHECKLIST (the only things code can't do)
+  1. Click-through: previews (resume expand, a DOCX, an XLSX), music autoplay-
+     after-first-click, skip once track2 exists, arcade preview fallback, tree.
+  2. Real phone pass: dock tooltip, touch hovers, particle density feel.
+  3. Supply when ready: new posts / new FL program files / track2+ (wiring
+     instructions at the top of this doc).
+  4. The repo must stay PUBLIC on the free plan or Pages dies again.
+================================================================================

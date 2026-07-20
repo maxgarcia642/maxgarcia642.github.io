@@ -1,350 +1,184 @@
 <!doctype html>
 <html lang="en" data-theme="aero">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Admin — Maximiliano Garcia</title>
-  <meta name="robots" content="noindex">
-  <script>
-    (function(){try{var t=localStorage.getItem('mg-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Layout Settings · Maximiliano Garcia</title>
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self';
+    style-src 'self' https://fonts.googleapis.com 'unsafe-inline';
+    font-src https://fonts.gstatic.com;
+    img-src 'self' data:;
+    object-src 'none';
+    base-uri 'self';
+  ">
+  <!--
+    v4: the GitHub Contents-API admin panel is RETIRED (logged in
+    superprompt-changelog.md — no silent removals). No tokens, no credentials,
+    nothing to phish: this page only writes localStorage("mg-layout") in YOUR
+    browser. Repo edits now go through GitHub/Cursor per the handover doc.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Nunito:wght@400;800&family=Playfair+Display:wght@600&family=Press+Start+2P&family=Sora:wght@400;700&family=Lora:wght@400;600&family=Quicksand:wght@500;700&family=Orbitron:wght@500;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="themes.css">
   <style>
-    .admin-wrap { display: grid; gap: 18px; }
-    .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-    input[type="text"], input[type="password"], textarea, select {
-      font: inherit; padding: 9px 12px; border-radius: var(--radius-sm);
-      border: 1px solid var(--muted); background: var(--chip-bg); color: var(--text);
-      flex: 1; min-width: 180px;
-    }
-    textarea { width: 100%; min-height: 260px; font-family: var(--font-mono); font-size: .82rem; }
-    .file-list { display: grid; gap: 6px; max-height: 340px; overflow: auto; }
-    .file-row { display: flex; gap: 8px; align-items: center; padding: 7px 10px;
-      background: var(--chip-bg); border: 1px solid var(--muted); border-radius: var(--radius-sm); }
-    .file-row .name { flex: 1; font-family: var(--font-mono); font-size: .82rem; word-break: break-all; }
-    .file-row .btn { padding: 4px 10px; font-size: .74rem; margin: 0; }
-    #log { font-family: var(--font-mono); font-size: .78rem; background: var(--terminal-bg);
-      color: var(--terminal-text); border-radius: var(--radius-sm); padding: 12px;
-      max-height: 220px; overflow: auto; white-space: pre-wrap; }
-    .security-note { font-size: .85rem; }
+    .settings-wrap { max-width: 760px; margin: 40px auto; padding: 0 16px; }
+    .setting { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center;
+               padding: 12px 0; border-bottom: 1px dashed var(--card-border-color); }
+    .setting label { font-weight: 600; }
+    .setting .hint { display: block; font-weight: 400; font-size: .8rem; color: var(--muted); }
+    .setting select, .seg { font: inherit; padding: 8px 10px; border-radius: var(--radius-md);
+               border: 1px solid var(--card-border-color); background: var(--chip-bg); color: var(--text); }
+    .seg-row { display: flex; gap: 6px; flex-wrap: wrap; }
+    .seg[aria-pressed="true"] { background: var(--accent); color: var(--btn-text); border-color: var(--accent); }
+    .sec-list { display: grid; gap: 6px; }
+    .sec-item { display: flex; align-items: center; gap: 8px; padding: 8px 10px;
+                border: 1px solid var(--card-border-color); border-radius: var(--radius-md); background: var(--chip-bg); }
+    .sec-item .grow { flex: 1; }
+    .save-note { color: var(--accent); font-size: .85rem; min-height: 1.2em; }
   </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-inner container">
-      <a class="brand" href="index.html"><div class="brand-text"><div class="title">⚙️ Admin — Repo Control</div>
-      <div class="subtitle">GitHub Contents API · direct commits · no PRs</div></div></a>
-      <nav class="main-nav"><a class="nav-pill" href="index.html">← Back to site</a></nav>
-    </div>
-  </header>
+  <main class="settings-wrap">
+    <div class="card">
+      <span class="eyebrow">This site, your way</span>
+      <h1>⚙️ Layout Settings</h1>
+      <p class="lead small">
+        Everything here lives only in your browser. Nothing is sent anywhere, there is no login, and changes apply to the main page instantly. Come back on the same device and it will still be set up your way. Themes live on the dock; this page shapes everything around them.
+      </p>
 
-  <main class="section">
-    <div class="card admin-wrap">
-      <div class="honesty-flag security-note">
-        There is no password screen here, on purpose. A client-side login on a public static site is
-        theater — anyone can read this page's source. The <em>real</em> gate is the fine-grained GitHub
-        token below: without it, nothing on this page can write anything. The token lives only in this
-        tab's memory — never in the repo, never in localStorage — and every write is throttled under
-        GitHub's 80-content-writes/minute secondary limit. Full reasoning in SECURITY.md.
+      <div class="setting">
+        <label for="setMotion">Motion &amp; animation<span class="hint">Background drift, particle weather, and hover lift. Or a perfectly still page.</span></label>
+        <select id="setMotion"><option value="full">Full motion</option><option value="off">Everything still</option></select>
       </div>
 
-      <section>
-        <h2>1 · Connect</h2>
-        <p class="muted small">
-          Create a <strong>fine-grained PAT</strong> (GitHub → Settings → Developer settings → Fine-grained
-          tokens): scope it to <em>this one repo</em>, permission <em>Contents: Read and write</em>,
-          expiry ≤ 90 days. Paste it here each session.
-        </p>
-        <div class="row">
-          <input type="text" id="owner" value="maxgarcia642" aria-label="Repo owner">
-          <input type="text" id="repo" value="maxgarcia642.github.io" aria-label="Repo name">
-          <input type="text" id="branch" value="main" aria-label="Branch">
+      <div class="setting">
+        <label>Particle weather density<span class="hint">The bubbles, snow, embers, and glyphs each theme carries.</span></label>
+        <div class="seg-row" id="setParticles">
+          <button class="seg" type="button" data-v="off">Off</button>
+          <button class="seg" type="button" data-v="low">Low</button>
+          <button class="seg" type="button" data-v="normal">Normal</button>
+          <button class="seg" type="button" data-v="high">High</button>
         </div>
-        <div class="row">
-          <input type="password" id="token" placeholder="github_pat_… (held in memory only)" autocomplete="off">
-          <button class="btn" id="connectBtn" type="button">Connect &amp; list files</button>
-        </div>
-      </section>
+      </div>
 
-      <section>
-        <h2>2 · Files</h2>
-        <div class="row">
-          <input type="text" id="path" placeholder="Path (blank = repo root, e.g. files/)">
-          <button class="btn ghost" id="refreshBtn" type="button">List</button>
+      <div class="setting">
+        <label>Text size<span class="hint">Scales the whole site's type.</span></label>
+        <div class="seg-row" id="setFont">
+          <button class="seg" type="button" data-v="s">Smaller</button>
+          <button class="seg" type="button" data-v="m">Default</button>
+          <button class="seg" type="button" data-v="l">Larger</button>
         </div>
-        <div class="file-list" id="fileList"><p class="muted small">Connect first.</p></div>
-        <div class="row" style="margin-top:8px">
-          <input type="file" id="uploadInput" aria-label="Choose file to upload">
-          <input type="text" id="uploadPath" placeholder="Target path e.g. files/New_Doc.docx">
-          <button class="btn" id="uploadBtn" type="button">Upload → commit</button>
-        </div>
-      </section>
+      </div>
 
-      <section>
-        <h2>3 · Edit a text file</h2>
-        <div class="row">
-          <input type="text" id="editPath" placeholder="e.g. content.json or finance.json">
-          <button class="btn ghost" id="loadEditBtn" type="button">Load</button>
-          <button class="btn" id="saveEditBtn" type="button" disabled>Validate &amp; commit</button>
+      <div class="setting">
+        <label>Corners<span class="hint">Keep each theme's rounding, or square everything off.</span></label>
+        <div class="seg-row" id="setCorners">
+          <button class="seg" type="button" data-v="rounded">Theme default</button>
+          <button class="seg" type="button" data-v="sharp">Sharp</button>
         </div>
-        <textarea id="editor" spellcheck="false" placeholder="File contents appear here. JSON files are validated before commit."></textarea>
-      </section>
+      </div>
 
-      <section>
-        <h2>Activity → superprompt-changelog.md</h2>
-        <p class="muted small">Every action above auto-appends a timestamped entry to
-          <code>superprompt-changelog.md</code> and commits it — your running superprompt for Cursor.</p>
-        <div id="log">Idle.</div>
-      </section>
+      <div class="setting">
+        <label>Page width<span class="hint">How wide the content column runs on desktop.</span></label>
+        <div class="seg-row" id="setWidth">
+          <button class="seg" type="button" data-v="default">Default</button>
+          <button class="seg" type="button" data-v="wide">Wide</button>
+          <button class="seg" type="button" data-v="cozy">Cozy</button>
+        </div>
+      </div>
+
+      <div class="setting">
+        <label>Theme dock<span class="hint">Where the fifty theme circles live, or tuck them away entirely.</span></label>
+        <div class="seg-row" id="setDock">
+          <button class="seg" type="button" data-v="right">Right edge</button>
+          <button class="seg" type="button" data-v="left">Left edge</button>
+          <button class="seg" type="button" data-v="hidden">Hidden</button>
+        </div>
+      </div>
+
+      <div class="setting">
+        <label>Type style<span class="hint">Let each theme pick its fonts, or force one voice everywhere.</span></label>
+        <div class="seg-row" id="setFontmode">
+          <button class="seg" type="button" data-v="theme">Theme fonts</button>
+          <button class="seg" type="button" data-v="sans">Clean sans</button>
+          <button class="seg" type="button" data-v="serif">Serif</button>
+          <button class="seg" type="button" data-v="mono">Mono</button>
+        </div>
+      </div>
+
+      <div class="setting">
+        <label>Density<span class="hint">Default breathing room, or a tighter page that fits more on screen.</span></label>
+        <div class="seg-row" id="setDensity">
+          <button class="seg" type="button" data-v="default">Default</button>
+          <button class="seg" type="button" data-v="compact">Compact</button>
+        </div>
+      </div>
+
+      <div class="setting">
+        <label>Contrast<span class="hint">Boosts secondary text and card edges. Helpful in sunlight or on dim screens.</span></label>
+        <div class="seg-row" id="setContrast">
+          <button class="seg" type="button" data-v="default">Theme default</button>
+          <button class="seg" type="button" data-v="high">High</button>
+        </div>
+      </div>
+
+      <div class="setting">
+        <label>Link underlines<span class="hint">Underline every in-text link. Clearer for skimming and screen glare.</span></label>
+        <div class="seg-row" id="setUnderline">
+          <button class="seg" type="button" data-v="off">Off</button>
+          <button class="seg" type="button" data-v="on">On</button>
+        </div>
+      </div>
+
+      <div class="setting">
+        <label>Surprise theme<span class="hint">Each visit opens in a randomly chosen theme, so the site never looks the same twice.</span></label>
+        <div class="seg-row" id="setShuffle">
+          <button class="seg" type="button" data-v="off">Keep my pick</button>
+          <button class="seg" type="button" data-v="on">Surprise me</button>
+        </div>
+      </div>
+
+      <div class="setting">
+        <label>Arcade previews<span class="hint">First click on a project card can try an inline preview, or just open the real thing in a new tab.</span></label>
+        <div class="seg-row" id="setArcade">
+          <button class="seg" type="button" data-v="preview">Try preview first</button>
+          <button class="seg" type="button" data-v="newtab">Always new tab</button>
+        </div>
+      </div>
+
+      <div class="setting" style="grid-template-columns:1fr">
+        <label>Sections: show, hide &amp; reorder<span class="hint">The Introduction always stays. Everything else is yours to arrange.</span></label>
+        <div class="sec-list" id="secList"></div>
+      </div>
+
+      <div class="setting">
+        <label for="setAutoplay">Music on arrival<span class="hint">Tries to start immediately. Browsers may hold it until your first click, and that is a browser rule, not ours.</span></label>
+        <select id="setAutoplay"><option value="on">On (default)</option><option value="off">Muted until I unmute</option></select>
+      </div>
+
+      <div class="setting" style="grid-template-columns:1fr">
+        <label for="layoutCode">Copy or restore your setup<span class="hint">Turn every choice on this page plus your theme into a little code. Copy it, keep it, or paste one here to bring a setup back.</span></label>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <input id="layoutCode" class="seg" style="flex:1;min-width:180px" type="text" spellcheck="false" autocomplete="off" placeholder="Your setup code appears here">
+          <button class="seg" type="button" id="layoutExport">Copy my setup</button>
+          <button class="seg" type="button" id="layoutImport">Apply pasted code</button>
+        </div>
+      </div>
+
+      <p class="save-note" id="saveNote" aria-live="polite"></p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+        <a class="btn link-btn" href="index.html">← Back to the site</a>
+        <button class="btn ghost" type="button" id="resetBtn">Reset layout settings</button>
+      </div>
+      <p class="muted small" style="margin-top:14px">
+        Wondering where the old admin panel went? It is retired on purpose. That panel put content changes behind credentials, and this site is meant to be open. So the power got split the right way: this page hands the layout to you, the visitor, right in your own browser, while the site itself changes out in the open through its public GitHub Pages repo, where I can improve it from anywhere and anyone can read every line.
+      </p>
     </div>
   </main>
-
-<script>
-(function () {
-  "use strict";
-  const $ = (s) => document.querySelector(s);
-  const logBox = $("#log");
-  const log = (msg) => { logBox.textContent += `\n[${new Date().toLocaleTimeString()}] ${msg}`; logBox.scrollTop = logBox.scrollHeight; };
-
-  /* Token stays in this closure only. Closing the tab destroys it. */
-  let TOKEN = null;
-  const cfg = () => ({ owner: $("#owner").value.trim(), repo: $("#repo").value.trim(), branch: $("#branch").value.trim() || "main" });
-
-  /* -------- throttled write queue: 1 write / 1200ms ≈ 50/min (< 80 limit) */
-  const queue = [];
-  let draining = false;
-  function enqueue(fn) {
-    return new Promise((resolve, reject) => {
-      queue.push({ fn, resolve, reject });
-      drain();
-    });
-  }
-  async function drain() {
-    if (draining) return;
-    draining = true;
-    while (queue.length) {
-      const job = queue.shift();
-      try { job.resolve(await job.fn()); }
-      catch (e) { job.reject(e); log(`✗ ${e.message}`); }
-      await new Promise(r => setTimeout(r, 1200));
-    }
-    draining = false;
-  }
-
-  async function gh(pathname, opts = {}) {
-    if (!TOKEN) throw new Error("Not connected — paste your token first.");
-    const { owner, repo } = cfg();
-    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}${pathname}`, {
-      ...opts,
-      headers: {
-        "Authorization": `Bearer ${TOKEN}`,
-        "Accept": "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28",
-        ...(opts.headers || {})
-      }
-    });
-    if (!res.ok) {
-      const body = await res.text().catch(() => "");
-      throw new Error(`GitHub ${res.status}: ${body.slice(0, 160)}`);
-    }
-    return res.status === 204 ? null : res.json();
-  }
-
-  /* base64 helpers — unicode-safe for text, direct for binary uploads */
-  const b64encodeText = (str) => {
-    const bytes = new TextEncoder().encode(str);
-    let bin = ""; bytes.forEach(b => bin += String.fromCharCode(b));
-    return btoa(bin);
-  };
-  const b64decodeText = (b64) => {
-    const bin = atob(b64.replace(/\n/g, ""));
-    const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
-    return new TextDecoder().decode(bytes);
-  };
-
-  const apiPath = (path) => encodeURIComponent(path).replace(/%2F/g, "/");
-
-  async function getFile(path) {
-    const { branch } = cfg();
-    return gh(`/contents/${apiPath(path)}?ref=${branch}`);
-  }
-  /* Raw PUT — no queueing. Only call from inside an enqueued job. */
-  function putFileRaw(path, base64content, message, sha) {
-    const { branch } = cfg();
-    return gh(`/contents/${apiPath(path)}`, {
-      method: "PUT",
-      body: JSON.stringify({ message, content: base64content, branch, ...(sha ? { sha } : {}) })
-    });
-  }
-  async function putFile(path, base64content, message, sha) {
-    return enqueue(() => putFileRaw(path, base64content, message, sha));
-  }
-  async function deleteFile(path, message, sha) {
-    const { branch } = cfg();
-    return enqueue(() => gh(`/contents/${apiPath(path)}`, {
-      method: "DELETE",
-      body: JSON.stringify({ message, sha, branch })
-    }));
-  }
-
-  /* -------- changelog: the whole read-modify-write runs as ONE queued job,
-     so rapid actions can't read a stale SHA between each other's writes.
-     A 409 (SHA raced by an outside commit) gets one fresh-read retry. ------ */
-  async function appendChangelog(entry) {
-    const path = "superprompt-changelog.md";
-    const stamp = new Date().toISOString();
-    const FALLBACK = "# Superprompt Changelog\n\nRunning log of admin-panel changes — paste relevant entries into Cursor when formalizing.\n";
-    const writeOnce = async () => {
-      let existing = FALLBACK, sha;
-      try {
-        const f = await getFile(path);
-        existing = b64decodeText(f.content); sha = f.sha;
-      } catch (e) { /* first ever entry — file doesn't exist yet */ }
-      const updated = existing + `\n- **${stamp}** — ${entry}`;
-      return putFileRaw(path, b64encodeText(updated), `chore(admin): log — ${entry.slice(0, 60)}`, sha);
-    };
-    await enqueue(async () => {
-      try { return await writeOnce(); }
-      catch (e) {
-        if (!/GitHub 409/.test(e.message)) throw e;
-        return writeOnce(); // one retry with a fresh SHA
-      }
-    });
-    log(`📝 changelog: ${entry}`);
-  }
-
-  /* -------- connect + list -------------------------------------------- */
-  $("#connectBtn").addEventListener("click", async () => {
-    TOKEN = $("#token").value.trim() || null;
-    $("#token").value = ""; /* wipe the field; token now lives in memory only */
-    if (!TOKEN) { log("No token entered."); return; }
-    log("Connecting…");
-    try { await listFiles(); log("✓ Connected. Token held in memory for this tab only."); }
-    catch (e) { TOKEN = null; log(`✗ ${e.message}`); }
-  });
-
-  async function listFiles() {
-    const path = $("#path").value.trim();
-    const { branch } = cfg();
-    const items = await gh(`/contents/${path ? apiPath(path) : ""}?ref=${branch}`);
-    const list = $("#fileList");
-    list.innerHTML = "";
-    (Array.isArray(items) ? items : [items]).forEach(item => {
-      const row = document.createElement("div");
-      row.className = "file-row";
-      const name = document.createElement("span");
-      name.className = "name";
-      /* textContent, not innerHTML — file names from the API are untrusted */
-      name.textContent = `${item.type === "dir" ? "📁" : "📄"} ${item.path}`;
-      row.appendChild(name);
-      if (item.type === "dir") {
-        const open = document.createElement("button");
-        open.className = "btn ghost"; open.type = "button"; open.textContent = "Open";
-        open.onclick = () => { $("#path").value = item.path; listFiles(); };
-        row.appendChild(open);
-      } else {
-        const ren = document.createElement("button");
-        ren.className = "btn ghost"; ren.type = "button"; ren.textContent = "Rename/move";
-        ren.onclick = () => renameFlow(item.path);
-        const del = document.createElement("button");
-        del.className = "btn ghost"; del.type = "button"; del.textContent = "Delete";
-        del.onclick = () => deleteFlow(item.path);
-        row.append(ren, del);
-      }
-      list.appendChild(row);
-    });
-  }
-  $("#refreshBtn").addEventListener("click", () => listFiles().catch(e => log(`✗ ${e.message}`)));
-
-  /* -------- rename = delete + create (no native rename endpoint) ------- */
-  async function renameFlow(oldPath) {
-    const newPath = prompt(`Rename/move\n${oldPath}\n→ new path:`, oldPath);
-    if (!newPath || newPath === oldPath) return;
-    log(`Renaming ${oldPath} → ${newPath} (create then delete, serialized)…`);
-    try {
-      const f = await getFile(oldPath);
-      await putFile(newPath, f.content.replace(/\n/g, ""), `chore(admin): rename ${oldPath} → ${newPath} (create)`);
-      await deleteFile(oldPath, `chore(admin): rename ${oldPath} → ${newPath} (delete old)`, f.sha);
-      await appendChangelog(`Renamed \`${oldPath}\` → \`${newPath}\` (Contents API delete+create).`);
-      listFiles();
-    } catch (e) { log(`✗ Rename failed: ${e.message}`); }
-  }
-
-  async function deleteFlow(path) {
-    if (!confirm(`Delete ${path}? This commits immediately.`)) return;
-    try {
-      const f = await getFile(path);
-      await deleteFile(path, `chore(admin): delete ${path}`, f.sha);
-      await appendChangelog(`Deleted \`${path}\`.`);
-      log(`✓ Deleted ${path}`); listFiles();
-    } catch (e) { log(`✗ ${e.message}`); }
-  }
-
-  /* -------- upload ------------------------------------------------------ */
-  $("#uploadBtn").addEventListener("click", async () => {
-    const file = $("#uploadInput").files[0];
-    const target = $("#uploadPath").value.trim() || (file ? `files/${file.name.replace(/\s+/g, "_")}` : "");
-    if (!file) { log("Pick a file first."); return; }
-    log(`Uploading ${file.name} → ${target}…`);
-    try {
-      const b64 = await new Promise((res, rej) => {
-        const r = new FileReader();
-        r.onload = () => res(String(r.result).split(",")[1]);
-        r.onerror = () => rej(new Error("Read failed"));
-        r.readAsDataURL(file);
-      });
-      let sha;
-      try { sha = (await getFile(target)).sha; log("Target exists — updating in place."); } catch (e) {}
-      await putFile(target, b64, `content(admin): upload ${target}`, sha);
-      await appendChangelog(`Uploaded \`${target}\` (${(file.size / 1024).toFixed(1)} KB).`);
-      log(`✓ Uploaded ${target}`); listFiles();
-    } catch (e) { log(`✗ ${e.message}`); }
-  });
-
-  /* -------- text editor ------------------------------------------------- */
-  let editSha = null;
-  let editShaPath = null; /* the path editSha belongs to */
-  $("#editPath").addEventListener("input", () => {
-    /* Path changed after a load → the held SHA no longer matches. Require a
-       fresh Load so a save can never target path B with path A's SHA. */
-    if (editShaPath && $("#editPath").value.trim() !== editShaPath) {
-      editSha = null; editShaPath = null;
-      $("#saveEditBtn").disabled = true;
-    }
-  });
-  $("#loadEditBtn").addEventListener("click", async () => {
-    const path = $("#editPath").value.trim();
-    if (!path) return;
-    try {
-      const f = await getFile(path);
-      $("#editor").value = b64decodeText(f.content);
-      editSha = f.sha;
-      editShaPath = path;
-      $("#saveEditBtn").disabled = false;
-      log(`Loaded ${path} (sha ${f.sha.slice(0, 7)})`);
-    } catch (e) { log(`✗ ${e.message}`); }
-  });
-  $("#saveEditBtn").addEventListener("click", async () => {
-    const path = $("#editPath").value.trim();
-    const text = $("#editor").value;
-    if (path !== editShaPath) { log("✗ Path changed since load — hit Load first."); return; }
-    if (path.endsWith(".json")) {
-      try { JSON.parse(text); }
-      catch (e) { log(`✗ Not committing — invalid JSON: ${e.message}`); return; }
-    }
-    try {
-      const result = await putFile(path, b64encodeText(text), `content(admin): edit ${path}`, editSha);
-      editSha = result.content.sha;
-      await appendChangelog(`Edited \`${path}\`${path.endsWith(".json") ? " (JSON validated pre-commit)" : ""}.`);
-      log(`✓ Committed ${path}`);
-    } catch (e) { log(`✗ ${e.message}`); }
-  });
-
-  /* Wipe token if the tab hides for good measure on some mobile browsers */
-  addEventListener("pagehide", () => { TOKEN = null; });
-})();
-</script>
+  <script src="settings.js"></script>
 </body>
 </html>

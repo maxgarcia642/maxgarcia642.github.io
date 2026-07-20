@@ -10,6 +10,8 @@ Zero build step, zero backend, zero secrets in the repo.
 > Keep it public (the deployed site exposes all client code anyway), upgrade
 > to GitHub Pro, or migrate to Cloudflare Pages for private-repo deploys.
 
+> **v4 (2026-07-17):** 30 animated themes with per-theme particle weather · Top-50 Market Pulse in five groups (all 50 auto-refresh daily via CI; crypto+FX also live in-browser) · playlist music with skip + any-format visitor uploads · the admin token panel is retired in favor of a credential-free **Layout Settings** page · full spec in `Superprompt_v4_Website_Change_Spec.txt`.
+
 ## What's here
 
 | File | Role |
