@@ -11,6 +11,8 @@
 @keyframes mg-grid-scroll { from { background-position: 0 0; } to { background-position: 0 44px; } }
 @keyframes mg-bg-pan  { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
 @keyframes mg-bg-sway { from { background-position: 50% 0%; } to { background-position: 50% 100%; } }
+@keyframes mg-bg-diag { from { background-position: 0% 100%; } to { background-position: 100% 0%; } }
+@keyframes mg-bg-orbit { 0% { background-position: 0% 0%; } 25% { background-position: 100% 0%; } 50% { background-position: 100% 100%; } 75% { background-position: 0% 100%; } 100% { background-position: 0% 0%; } }
 
 body {
   background: var(--bg);
@@ -23,7 +25,7 @@ body {
 [data-theme="aero"] {
   --bg: linear-gradient(160deg,#aee9ff 0%,#7ed6f2 35%,#3fb7dd 70%,#1098ba 100%);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 22s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 18s ease-in-out infinite alternate;
   --text: #07303c;
   --muted: #3c6b78;
   --card-bg: rgb(255 255 255 / 62%);
@@ -35,7 +37,7 @@ body {
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #0b87ad;
   --accent-2: #0fd28a;
-  --btn-grad: linear-gradient(135deg,#0b87ad,#0fd28a);
+  --btn-grad: linear-gradient(95deg,#0b87ad,#0fd28a);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #07303c;
@@ -50,6 +52,7 @@ body {
   --radius-md: calc(18px * .72 + 2px);
   --radius-sm: calc(18px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 105deg;
   --gloss: 1;
   --focus-ring-color: #0fd28a;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #0fd28a 55%, transparent);
@@ -65,24 +68,24 @@ body {
 [data-theme="glass"] {
   --bg: linear-gradient(150deg,#e8eef8,#c7d6ee 55%,#9fb4da);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-pan 32s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-pan 25s ease-in-out infinite alternate;
   --text: #1d2740;
   --muted: #5a6a8c;
   --card-bg: rgb(255 255 255 / 46%);
   --card-border-color: rgb(255 255 255 / 72%);
   --card-border: 1px solid rgb(255 255 255 / 72%);
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 16%);
+  --card-shadow: 0 10px 32px color-mix(in srgb, #4d6fd0 35%, rgb(0 0 0 / 12%));
   --card-blur: 14px;
   --header-bg: rgb(255 255 255 / 55%);
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #4d6fd0;
   --accent-2: #7fa2ff;
-  --btn-grad: linear-gradient(135deg,#4d6fd0,#7fa2ff);
+  --btn-grad: linear-gradient(118deg,#4d6fd0,#7fa2ff);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #1d2740;
   --pill-active: #4d6fd0;
-  --font-display: 'Inter', system-ui, sans-serif;
+  --font-display: 'Outfit', 'Inter', sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --display-weight: 700;
@@ -92,6 +95,7 @@ body {
   --radius-md: calc(20px * .72 + 2px);
   --radius-sm: calc(20px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 134deg;
   --gloss: 1;
   --focus-ring-color: #7fa2ff;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #7fa2ff 55%, transparent);
@@ -107,19 +111,19 @@ body {
 [data-theme="frost"] {
   --bg: linear-gradient(170deg,#f6fbfe,#dcefF8 50%,#bcd9ea);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-sway 27s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-sway 32s ease-in-out infinite alternate;
   --text: #12384c;
   --muted: #4d7890;
   --card-bg: rgb(255 255 255 / 74%);
   --card-border-color: rgb(179 214 233 / 90%);
   --card-border: 1px solid rgb(179 214 233 / 90%);
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 16%);
+  --card-shadow: 0 2px 6px rgb(0 0 0 / 10%), 0 20px 46px rgb(0 0 0 / 15%);
   --card-blur: 14px;
   --header-bg: rgb(255 255 255 / 55%);
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #2779a7;
   --accent-2: #7fc4e8;
-  --btn-grad: linear-gradient(135deg,#2779a7,#7fc4e8);
+  --btn-grad: linear-gradient(141deg,#2779a7,#7fc4e8);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #12384c;
@@ -134,6 +138,7 @@ body {
   --radius-md: calc(14px * .72 + 2px);
   --radius-sm: calc(14px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 163deg;
   --gloss: 0;
   --focus-ring-color: #7fc4e8;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #7fc4e8 55%, transparent);
@@ -149,19 +154,19 @@ body {
 [data-theme="storm"] {
   --bg: linear-gradient(165deg,#151b26,#1e2836 55%,#27354a);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 34s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-diag 39s ease-in-out infinite alternate;
   --text: #dbe4f0;
   --muted: #8fa0b8;
   --card-bg: rgb(35 46 64 / 82%);
   --card-border-color: rgb(90 110 140 / 45%);
   --card-border: 1px solid rgb(90 110 140 / 45%);
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 42%);
+  --card-shadow: 0 4px 10px color-mix(in srgb, #6fa8ff 24%, transparent), 0 16px 40px rgb(0 0 0 / 34%);
   --card-blur: 10px;
   --header-bg: rgb(10 14 22 / 55%);
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #6fa8ff;
   --accent-2: #9fd0ff;
-  --btn-grad: linear-gradient(135deg,#6fa8ff,#9fd0ff);
+  --btn-grad: linear-gradient(164deg,#6fa8ff,#9fd0ff);
   --btn-text: #0c1420;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #dbe4f0;
@@ -176,6 +181,7 @@ body {
   --radius-md: calc(12px * .72 + 2px);
   --radius-sm: calc(12px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 192deg;
   --gloss: 0;
   --focus-ring-color: #9fd0ff;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #9fd0ff 55%, transparent);
@@ -191,7 +197,7 @@ body {
 [data-theme="ocean"] {
   --bg: linear-gradient(180deg,#04141d,#073042 55%,#0a4257);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 22s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-orbit 21s linear infinite;
   --text: #d7f2fb;
   --muted: #7fb2c4;
   --card-bg: rgb(9 52 70 / 80%);
@@ -203,12 +209,12 @@ body {
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #48cae4;
   --accent-2: #90e0ef;
-  --btn-grad: linear-gradient(135deg,#48cae4,#90e0ef);
+  --btn-grad: linear-gradient(187deg,#48cae4,#90e0ef);
   --btn-text: #032230;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #d7f2fb;
   --pill-active: #48cae4;
-  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-display: 'Josefin Sans', 'Inter', sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --display-weight: 700;
@@ -218,6 +224,7 @@ body {
   --radius-md: calc(16px * .72 + 2px);
   --radius-sm: calc(16px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 221deg;
   --gloss: 0;
   --focus-ring-color: #90e0ef;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #90e0ef 55%, transparent);
@@ -226,31 +233,31 @@ body {
   --flag-bg: rgb(255 200 90 / 12%);
   --flag-border: 1px dashed #48cae4;
   --flag-text: #ffd489;
-  --fx: bubbles;
+  --fx: plankton;
   --fx-color: 144,224,239;
 }
 
 [data-theme="indigo"] {
   --bg: linear-gradient(180deg,#0b0e2a,#141a45 60%,#1c2460);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-pan 32s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 28s ease-in-out infinite alternate;
   --text: #e2e6ff;
   --muted: #9aa2d8;
   --card-bg: rgb(24 30 74 / 82%);
   --card-border-color: rgb(120 130 220 / 35%);
   --card-border: 1px solid rgb(120 130 220 / 35%);
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 42%);
+  --card-shadow: 0 10px 32px color-mix(in srgb, #7b8cff 35%, rgb(0 0 0 / 22%));
   --card-blur: 10px;
   --header-bg: rgb(10 14 22 / 55%);
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #7b8cff;
   --accent-2: #2adfd0;
-  --btn-grad: linear-gradient(135deg,#7b8cff,#2adfd0);
+  --btn-grad: linear-gradient(210deg,#7b8cff,#2adfd0);
   --btn-text: #0a0d24;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #e2e6ff;
   --pill-active: #7b8cff;
-  --font-display: 'Sora', 'Inter', sans-serif;
+  --font-display: 'Unbounded', 'Sora', sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --display-weight: 700;
@@ -260,6 +267,7 @@ body {
   --radius-md: calc(14px * .72 + 2px);
   --radius-sm: calc(14px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 130deg;
   --gloss: 0;
   --focus-ring-color: #2adfd0;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #2adfd0 55%, transparent);
@@ -275,25 +283,25 @@ body {
 [data-theme="lavender"] {
   --bg: linear-gradient(155deg,#f3efff,#e4dbfa 55%,#cdbcf2);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-sway 27s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-pan 35s ease-in-out infinite alternate;
   --text: #3a2c5e;
   --muted: #7a6ba0;
   --card-bg: rgb(255 255 255 / 62%);
   --card-border-color: rgb(200 185 240 / 80%);
   --card-border: 1px solid rgb(200 185 240 / 80%);
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 16%);
+  --card-shadow: 0 2px 6px rgb(0 0 0 / 10%), 0 20px 46px rgb(0 0 0 / 15%);
   --card-blur: 14px;
   --header-bg: rgb(255 255 255 / 55%);
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #8a6ff0;
   --accent-2: #c9a2ff;
-  --btn-grad: linear-gradient(135deg,#8a6ff0,#c9a2ff);
+  --btn-grad: linear-gradient(103deg,#8a6ff0,#c9a2ff);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #3a2c5e;
   --pill-active: #8a6ff0;
-  --font-display: 'Nunito', 'Inter', sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  --font-display: 'Comfortaa', 'Quicksand', sans-serif;
+  --font-body: 'Quicksand', 'Nunito', sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --display-weight: 700;
   --display-case: none;
@@ -302,6 +310,7 @@ body {
   --radius-md: calc(18px * .72 + 2px);
   --radius-sm: calc(18px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 159deg;
   --gloss: 0;
   --focus-ring-color: #c9a2ff;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #c9a2ff 55%, transparent);
@@ -317,19 +326,19 @@ body {
 [data-theme="royal"] {
   --bg: linear-gradient(160deg,#190f33,#2c1c4d 55%,#3a2766);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 34s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-sway 42s ease-in-out infinite alternate;
   --text: #efe6ff;
   --muted: #b3a2d6;
   --card-bg: rgb(40 26 74 / 84%);
   --card-border-color: rgb(212 175 55 / 40%);
   --card-border: 1px solid rgb(212 175 55 / 40%);
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 42%);
+  --card-shadow: 0 4px 10px color-mix(in srgb, #d4af37 24%, transparent), 0 16px 40px rgb(0 0 0 / 34%);
   --card-blur: 10px;
   --header-bg: rgb(10 14 22 / 55%);
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #d4af37;
   --accent-2: #a97ffb;
-  --btn-grad: linear-gradient(135deg,#d4af37,#a97ffb);
+  --btn-grad: linear-gradient(126deg,#d4af37,#a97ffb);
   --btn-text: #150a2c;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #efe6ff;
@@ -344,6 +353,7 @@ body {
   --radius-md: calc(14px * .72 + 2px);
   --radius-sm: calc(14px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 188deg;
   --gloss: 0;
   --focus-ring-color: #a97ffb;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #a97ffb 55%, transparent);
@@ -359,7 +369,7 @@ body {
 [data-theme="sakura"] {
   --bg: linear-gradient(160deg,#fff3f7,#fde5ee 50%,#f8c9da);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 22s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-diag 24s ease-in-out infinite alternate;
   --text: #5c2338;
   --muted: #a06b80;
   --card-bg: rgb(255 255 255 / 66%);
@@ -371,7 +381,7 @@ body {
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #e05c8f;
   --accent-2: #f7a8c4;
-  --btn-grad: linear-gradient(135deg,#e05c8f,#f7a8c4);
+  --btn-grad: linear-gradient(149deg,#e05c8f,#f7a8c4);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #5c2338;
@@ -386,6 +396,7 @@ body {
   --radius-md: calc(18px * .72 + 2px);
   --radius-sm: calc(18px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 217deg;
   --gloss: 0;
   --focus-ring-color: #f7a8c4;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #f7a8c4 55%, transparent);
@@ -401,19 +412,19 @@ body {
 [data-theme="synth"] {
   --bg: linear-gradient(180deg,#1b0b33 0%,#331457 45%,#7a1f63 75%,#ff6a3d 120%);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-pan 32s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-orbit 31s linear infinite;
   --text: #ffe9f4;
   --muted: #c78bb0;
   --card-bg: rgb(43 16 74 / 80%);
   --card-border-color: rgb(255 106 61 / 40%);
   --card-border: 1px solid rgb(255 106 61 / 40%);
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 42%);
+  --card-shadow: 0 10px 32px color-mix(in srgb, #ff2fb9 35%, rgb(0 0 0 / 22%));
   --card-blur: 10px;
   --header-bg: rgb(10 14 22 / 55%);
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #ff2fb9;
   --accent-2: #ffb03d;
-  --btn-grad: linear-gradient(135deg,#ff2fb9,#ffb03d);
+  --btn-grad: linear-gradient(172deg,#ff2fb9,#ffb03d);
   --btn-text: #1b0b33;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #ffe9f4;
@@ -428,6 +439,7 @@ body {
   --radius-md: calc(12px * .72 + 2px);
   --radius-sm: calc(12px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 126deg;
   --gloss: 0;
   --focus-ring-color: #ffb03d;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #ffb03d 55%, transparent);
@@ -443,33 +455,34 @@ body {
 [data-theme="crimson"] {
   --bg: linear-gradient(165deg,#1c0709,#33090e 55%,#4d0f14);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-sway 27s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 38s ease-in-out infinite alternate;
   --text: #ffe4e4;
   --muted: #c98f92;
   --card-bg: rgb(48 12 16 / 84%);
   --card-border-color: rgb(255 82 82 / 35%);
   --card-border: 1px solid rgb(255 82 82 / 35%);
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 42%);
+  --card-shadow: 0 2px 6px rgb(0 0 0 / 20%), 0 20px 46px rgb(0 0 0 / 38%);
   --card-blur: 10px;
   --header-bg: rgb(10 14 22 / 55%);
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #ff5252;
   --accent-2: #ffb46a;
-  --btn-grad: linear-gradient(135deg,#ff5252,#ffb46a);
+  --btn-grad: linear-gradient(195deg,#ff5252,#ffb46a);
   --btn-text: #1a0507;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #ffe4e4;
   --pill-active: #ff5252;
-  --font-display: 'Playfair Display', Georgia, serif;
+  --font-display: 'DM Serif Display', Georgia, serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
-  --display-weight: 700;
+  --display-weight: 400;
   --display-case: none;
   --display-spacing: 0;
   --radius-lg: 12px;
   --radius-md: calc(12px * .72 + 2px);
   --radius-sm: calc(12px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 155deg;
   --gloss: 0;
   --focus-ring-color: #ffb46a;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #ffb46a 55%, transparent);
@@ -478,31 +491,31 @@ body {
   --flag-bg: rgb(255 200 90 / 12%);
   --flag-border: 1px dashed #ff5252;
   --flag-text: #ffd489;
-  --fx: embers;
+  --fx: cinders;
   --fx-color: 255,110,90;
 }
 
 [data-theme="coral"] {
   --bg: linear-gradient(155deg,#fff1e9,#ffd9c8 55%,#f7b39a);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 34s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-pan 20s ease-in-out infinite alternate;
   --text: #5c2c1c;
   --muted: #a56b57;
   --card-bg: rgb(255 255 255 / 62%);
   --card-border-color: rgb(247 179 154 / 90%);
   --card-border: 1px solid rgb(247 179 154 / 90%);
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 16%);
+  --card-shadow: 0 4px 10px color-mix(in srgb, #f2734d 24%, transparent), 0 16px 40px rgb(0 0 0 / 14%);
   --card-blur: 14px;
   --header-bg: rgb(255 255 255 / 55%);
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #f2734d;
   --accent-2: #b8a7f5;
-  --btn-grad: linear-gradient(135deg,#f2734d,#b8a7f5);
+  --btn-grad: linear-gradient(218deg,#f2734d,#b8a7f5);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #5c2c1c;
   --pill-active: #f2734d;
-  --font-display: 'Nunito', 'Inter', sans-serif;
+  --font-display: 'Baloo 2', 'Nunito', sans-serif;
   --font-body: 'Nunito', 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --display-weight: 700;
@@ -512,6 +525,7 @@ body {
   --radius-md: calc(22px * .72 + 2px);
   --radius-sm: calc(22px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 184deg;
   --gloss: 0;
   --focus-ring-color: #b8a7f5;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #b8a7f5 55%, transparent);
@@ -539,7 +553,7 @@ body {
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #ffb000;
   --accent-2: #ff8c00;
-  --btn-grad: linear-gradient(135deg,#ffb000,#ff8c00);
+  --btn-grad: linear-gradient(111deg,#ffb000,#ff8c00);
   --btn-text: #0d0801;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #ffb000;
@@ -554,6 +568,7 @@ body {
   --radius-md: calc(6px * .72 + 2px);
   --radius-sm: calc(6px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 213deg;
   --gloss: 0;
   --focus-ring-color: #ff8c00;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #ff8c00 55%, transparent);
@@ -569,33 +584,34 @@ body {
 [data-theme="desert"] {
   --bg: linear-gradient(160deg,#faeed9,#f4e5d0 50%,#e5c9a5);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 22s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-diag 34s ease-in-out infinite alternate;
   --text: #5a3417;
   --muted: #9a6f45;
   --card-bg: rgb(255 252 245 / 68%);
   --card-border-color: rgb(198 93 33 / 45%);
   --card-border: 1px solid rgb(198 93 33 / 45%);
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 16%);
+  --card-shadow: 0 10px 32px color-mix(in srgb, #c65d21 35%, rgb(0 0 0 / 12%));
   --card-blur: 14px;
   --header-bg: rgb(255 255 255 / 55%);
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #c65d21;
   --accent-2: #7a8f3d;
-  --btn-grad: linear-gradient(135deg,#c65d21,#7a8f3d);
+  --btn-grad: linear-gradient(134deg,#c65d21,#7a8f3d);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #5a3417;
   --pill-active: #c65d21;
-  --font-display: 'Lora', Georgia, serif;
+  --font-display: 'Rye', 'Lora', serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
-  --display-weight: 700;
+  --display-weight: 400;
   --display-case: none;
   --display-spacing: 0;
   --radius-lg: 10px;
   --radius-md: calc(10px * .72 + 2px);
   --radius-sm: calc(10px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 122deg;
   --gloss: 0;
   --focus-ring-color: #7a8f3d;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #7a8f3d 55%, transparent);
@@ -611,19 +627,19 @@ body {
 [data-theme="coffee"] {
   --bg: linear-gradient(160deg,#efe2d0,#e6d5c1 55%,#cbb096);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-pan 32s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-orbit 41s linear infinite;
   --text: #3c2414;
   --muted: #7d5b3e;
   --card-bg: rgb(255 250 242 / 66%);
   --card-border-color: rgb(138 90 51 / 45%);
   --card-border: 1px solid rgb(138 90 51 / 45%);
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 16%);
+  --card-shadow: 0 2px 6px rgb(0 0 0 / 10%), 0 20px 46px rgb(0 0 0 / 15%);
   --card-blur: 14px;
   --header-bg: rgb(255 255 255 / 55%);
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #8a5a33;
   --accent-2: #c98f4e;
-  --btn-grad: linear-gradient(135deg,#8a5a33,#c98f4e);
+  --btn-grad: linear-gradient(157deg,#8a5a33,#c98f4e);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #3c2414;
@@ -638,6 +654,7 @@ body {
   --radius-md: calc(14px * .72 + 2px);
   --radius-sm: calc(14px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 151deg;
   --gloss: 0;
   --focus-ring-color: #c98f4e;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #c98f4e 55%, transparent);
@@ -653,24 +670,24 @@ body {
 [data-theme="luxe"] {
   --bg: linear-gradient(165deg,#0a0805,#14100a 55%,#1c150c);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-sway 27s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 23s ease-in-out infinite alternate;
   --text: #f0e6d2;
   --muted: #a89878;
   --card-bg: rgb(22 18 12 / 86%);
   --card-border-color: rgb(201 162 75 / 45%);
   --card-border: 1px solid rgb(201 162 75 / 45%);
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 42%);
+  --card-shadow: 0 4px 10px color-mix(in srgb, #c9a24b 24%, transparent), 0 16px 40px rgb(0 0 0 / 34%);
   --card-blur: 10px;
   --header-bg: rgb(10 14 22 / 55%);
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #c9a24b;
   --accent-2: #e6cf9a;
-  --btn-grad: linear-gradient(135deg,#c9a24b,#e6cf9a);
+  --btn-grad: linear-gradient(180deg,#c9a24b,#e6cf9a);
   --btn-text: #0a0805;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #f0e6d2;
   --pill-active: #c9a24b;
-  --font-display: 'Playfair Display', Georgia, serif;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --display-weight: 700;
@@ -680,6 +697,7 @@ body {
   --radius-md: calc(10px * .72 + 2px);
   --radius-sm: calc(10px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 180deg;
   --gloss: 0;
   --focus-ring-color: #e6cf9a;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #e6cf9a 55%, transparent);
@@ -695,7 +713,7 @@ body {
 [data-theme="citrus"] {
   --bg: linear-gradient(150deg,#fdffe8,#f4fbc8 45%,#d7f2a0);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 34s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-pan 30s ease-in-out infinite alternate;
   --text: #3b4a10;
   --muted: #7c8a4a;
   --card-bg: rgb(255 255 255 / 66%);
@@ -707,21 +725,22 @@ body {
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #9ac611;
   --accent-2: #ffb703;
-  --btn-grad: linear-gradient(135deg,#9ac611,#ffb703);
+  --btn-grad: linear-gradient(203deg,#9ac611,#ffb703);
   --btn-text: #2f3a0c;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #3b4a10;
   --pill-active: #9ac611;
-  --font-display: 'Nunito', 'Inter', sans-serif;
+  --font-display: 'Righteous', 'Quicksand', sans-serif;
   --font-body: 'Nunito', 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
-  --display-weight: 700;
+  --display-weight: 400;
   --display-case: none;
   --display-spacing: 0;
   --radius-lg: 20px;
   --radius-md: calc(20px * .72 + 2px);
   --radius-sm: calc(20px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 209deg;
   --gloss: 0;
   --focus-ring-color: #ffb703;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #ffb703 55%, transparent);
@@ -737,19 +756,19 @@ body {
 [data-theme="matcha"] {
   --bg: linear-gradient(160deg,#eef3e2,#dfe9cd 55%,#c2d6a6);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 22s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-sway 37s ease-in-out infinite alternate;
   --text: #31431f;
   --muted: #6d8052;
   --card-bg: rgb(255 255 255 / 62%);
   --card-border-color: rgb(154 185 120 / 90%);
   --card-border: 1px solid rgb(154 185 120 / 90%);
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 16%);
+  --card-shadow: 0 10px 32px color-mix(in srgb, #6a994e 35%, rgb(0 0 0 / 12%));
   --card-blur: 14px;
   --header-bg: rgb(255 255 255 / 55%);
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #6a994e;
   --accent-2: #a7c957;
-  --btn-grad: linear-gradient(135deg,#6a994e,#a7c957);
+  --btn-grad: linear-gradient(96deg,#6a994e,#a7c957);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #31431f;
@@ -764,6 +783,7 @@ body {
   --radius-md: calc(16px * .72 + 2px);
   --radius-sm: calc(16px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 118deg;
   --gloss: 0;
   --focus-ring-color: #a7c957;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #a7c957 55%, transparent);
@@ -779,19 +799,19 @@ body {
 [data-theme="forest"] {
   --bg: linear-gradient(170deg,#08130c,#0e2214 55%,#143222);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-pan 32s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-diag 19s ease-in-out infinite alternate;
   --text: #dcefe0;
   --muted: #8fb49a;
   --card-bg: rgb(14 34 22 / 84%);
   --card-border-color: rgb(106 190 130 / 35%);
   --card-border: 1px solid rgb(106 190 130 / 35%);
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 42%);
+  --card-shadow: 0 2px 6px rgb(0 0 0 / 20%), 0 20px 46px rgb(0 0 0 / 38%);
   --card-blur: 10px;
   --header-bg: rgb(10 14 22 / 55%);
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #57cc7a;
   --accent-2: #c8e26a;
-  --btn-grad: linear-gradient(135deg,#57cc7a,#c8e26a);
+  --btn-grad: linear-gradient(119deg,#57cc7a,#c8e26a);
   --btn-text: #07110b;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #dcefe0;
@@ -806,6 +826,7 @@ body {
   --radius-md: calc(14px * .72 + 2px);
   --radius-sm: calc(14px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 147deg;
   --gloss: 0;
   --focus-ring-color: #c8e26a;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #c8e26a 55%, transparent);
@@ -821,24 +842,24 @@ body {
 [data-theme="mint"] {
   --bg: linear-gradient(155deg,#e9fbf6,#d2f4ea 55%,#a9e4d4);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-sway 27s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-orbit 26s linear infinite;
   --text: #0f4438;
   --muted: #4d8577;
   --card-bg: rgb(255 255 255 / 66%);
   --card-border-color: rgb(150 220 200 / 90%);
   --card-border: 1px solid rgb(150 220 200 / 90%);
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 16%);
+  --card-shadow: 0 4px 10px color-mix(in srgb, #12a184 24%, transparent), 0 16px 40px rgb(0 0 0 / 14%);
   --card-blur: 14px;
   --header-bg: rgb(255 255 255 / 55%);
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #12a184;
   --accent-2: #5ed3b8;
-  --btn-grad: linear-gradient(135deg,#12a184,#5ed3b8);
+  --btn-grad: linear-gradient(142deg,#12a184,#5ed3b8);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #0f4438;
   --pill-active: #12a184;
-  --font-display: 'Inter', system-ui, sans-serif;
+  --font-display: 'Comfortaa', 'Quicksand', sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --display-weight: 700;
@@ -848,6 +869,7 @@ body {
   --radius-md: calc(16px * .72 + 2px);
   --radius-sm: calc(16px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 176deg;
   --gloss: 0;
   --focus-ring-color: #5ed3b8;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #5ed3b8 55%, transparent);
@@ -875,12 +897,12 @@ body {
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #19e6ff;
   --accent-2: #ff2fb9;
-  --btn-grad: linear-gradient(135deg,#19e6ff,#ff2fb9);
+  --btn-grad: linear-gradient(165deg,#19e6ff,#ff2fb9);
   --btn-text: #04050c;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #d8faff;
   --pill-active: #19e6ff;
-  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-display: 'Chakra Petch', 'Space Grotesk', sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --display-weight: 700;
@@ -890,6 +912,7 @@ body {
   --radius-md: calc(8px * .72 + 2px);
   --radius-sm: calc(8px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 205deg;
   --gloss: 0;
   --focus-ring-color: #ff2fb9;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #ff2fb9 55%, transparent);
@@ -911,27 +934,28 @@ body {
   --card-bg: rgb(2 22 8 / 88%);
   --card-border-color: rgb(26 255 92 / 40%);
   --card-border: 1px solid rgb(26 255 92 / 40%);
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 42%);
+  --card-shadow: 0 10px 32px color-mix(in srgb, #1aff5c 35%, rgb(0 0 0 / 22%));
   --card-blur: 10px;
   --header-bg: rgb(10 14 22 / 55%);
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #1aff5c;
   --accent-2: #7dffb0;
-  --btn-grad: linear-gradient(135deg,#1aff5c,#7dffb0);
+  --btn-grad: linear-gradient(188deg,#1aff5c,#7dffb0);
   --btn-text: #010c04;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #1aff5c;
   --pill-active: #1aff5c;
-  --font-display: 'JetBrains Mono', 'Courier New', monospace;
+  --font-display: 'VT323', 'JetBrains Mono', monospace;
   --font-body: 'JetBrains Mono', 'Courier New', monospace;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
-  --display-weight: 700;
+  --display-weight: 400;
   --display-case: none;
   --display-spacing: 0;
   --radius-lg: 4px;
   --radius-md: calc(4px * .72 + 2px);
   --radius-sm: calc(4px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 114deg;
   --gloss: 0;
   --focus-ring-color: #7dffb0;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #7dffb0 55%, transparent);
@@ -940,26 +964,26 @@ body {
   --flag-bg: rgb(255 200 90 / 12%);
   --flag-border: 1px dashed #1aff5c;
   --flag-text: #ffd489;
-  --fx: glyphs;
+  --fx: kana;
   --fx-color: 26,255,92;
 }
 
 [data-theme="pixel"] {
   --bg: linear-gradient(180deg,#191b3f,#2b2d5e);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 34s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-sway 22s ease-in-out infinite alternate;
   --text: #fef1ff;
   --muted: #a7a5d6;
   --card-bg: rgb(30 32 74 / 88%);
   --card-border-color: rgb(233 79 138 / 55%);
   --card-border: 1px solid rgb(233 79 138 / 55%);
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 42%);
+  --card-shadow: 0 2px 6px rgb(0 0 0 / 20%), 0 20px 46px rgb(0 0 0 / 38%);
   --card-blur: 10px;
   --header-bg: rgb(10 14 22 / 55%);
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #e94f8a;
   --accent-2: #37d5ff;
-  --btn-grad: linear-gradient(135deg,#e94f8a,#37d5ff);
+  --btn-grad: linear-gradient(211deg,#e94f8a,#37d5ff);
   --btn-text: #12132c;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #fef1ff;
@@ -974,6 +998,7 @@ body {
   --radius-md: calc(0px * .72 + 2px);
   --radius-sm: calc(0px * .5 + 2px);
   --border-w: 3px;
+  --wash-angle: 143deg;
   --gloss: 0;
   --focus-ring-color: #37d5ff;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #37d5ff 55%, transparent);
@@ -995,27 +1020,28 @@ body {
   --card-bg: #ffffff;
   --card-border-color: #141414;
   --card-border: 1px solid #141414;
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 16%);
+  --card-shadow: 0 4px 10px color-mix(in srgb, #ff5252 24%, transparent), 0 16px 40px rgb(0 0 0 / 14%);
   --card-blur: 14px;
   --header-bg: rgb(255 255 255 / 55%);
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #ff5252;
   --accent-2: #2f6bff;
-  --btn-grad: linear-gradient(135deg,#ff5252,#2f6bff);
+  --btn-grad: linear-gradient(104deg,#ff5252,#2f6bff);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #141414;
   --pill-active: #ff5252;
-  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-display: 'Bebas Neue', 'Space Grotesk', sans-serif;
   --font-body: 'Space Grotesk', 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
-  --display-weight: 800;
+  --display-weight: 400;
   --display-case: uppercase;
   --display-spacing: .04em;
   --radius-lg: 0px;
   --radius-md: calc(0px * .72 + 2px);
   --radius-sm: calc(0px * .5 + 2px);
   --border-w: 3px;
+  --wash-angle: 172deg;
   --gloss: 0;
   --focus-ring-color: #2f6bff;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #2f6bff 55%, transparent);
@@ -1024,14 +1050,14 @@ body {
   --flag-bg: rgb(255 180 60 / 16%);
   --flag-border: 1px dashed #ff5252;
   --flag-text: #7a4a00;
-  --fx: shapes;
+  --fx: crosses;
   --fx-color: 20,20,20;
 }
 
 [data-theme="vapor"] {
   --bg: linear-gradient(160deg,#ff9ad5 0%,#c8a8f0 45%,#7fd8f7 100%);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 22s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-orbit 36s linear infinite;
   --text: #3a1d4e;
   --muted: #7a5490;
   --card-bg: rgb(255 255 255 / 55%);
@@ -1043,12 +1069,12 @@ body {
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #ff71ce;
   --accent-2: #01cdfe;
-  --btn-grad: linear-gradient(135deg,#ff71ce,#01cdfe);
+  --btn-grad: linear-gradient(127deg,#ff71ce,#01cdfe);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #3a1d4e;
   --pill-active: #ff71ce;
-  --font-display: 'Orbitron', 'Space Grotesk', sans-serif;
+  --font-display: 'Exo 2', 'Space Grotesk', sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --display-weight: 700;
@@ -1058,6 +1084,7 @@ body {
   --radius-md: calc(14px * .72 + 2px);
   --radius-sm: calc(14px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 201deg;
   --gloss: 1;
   --focus-ring-color: #01cdfe;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #01cdfe 55%, transparent);
@@ -1079,13 +1106,13 @@ body {
   --card-bg: rgb(255 255 255 / 58%);
   --card-border-color: rgb(255 255 255 / 85%);
   --card-border: 1px solid rgb(255 255 255 / 85%);
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 16%);
+  --card-shadow: 0 10px 32px color-mix(in srgb, #9a6ff0 35%, rgb(0 0 0 / 12%));
   --card-blur: 14px;
   --header-bg: rgb(255 255 255 / 55%);
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #9a6ff0;
   --accent-2: #22c8a8;
-  --btn-grad: linear-gradient(135deg,#9a6ff0,#22c8a8);
+  --btn-grad: linear-gradient(150deg,#9a6ff0,#22c8a8);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #33254a;
@@ -1100,6 +1127,7 @@ body {
   --radius-md: calc(18px * .72 + 2px);
   --radius-sm: calc(18px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 110deg;
   --gloss: 1;
   --focus-ring-color: #22c8a8;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #22c8a8 55%, transparent);
@@ -1121,13 +1149,13 @@ body {
   --card-bg: rgb(255 255 255 / 78%);
   --card-border-color: rgb(60 56 48 / 60%);
   --card-border: 1px solid rgb(60 56 48 / 60%);
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 16%);
+  --card-shadow: 0 2px 6px rgb(0 0 0 / 10%), 0 20px 46px rgb(0 0 0 / 15%);
   --card-blur: 14px;
   --header-bg: rgb(255 255 255 / 55%);
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #d95f2b;
   --accent-2: #3c6e71;
-  --btn-grad: linear-gradient(135deg,#d95f2b,#3c6e71);
+  --btn-grad: linear-gradient(173deg,#d95f2b,#3c6e71);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #33302a;
@@ -1142,6 +1170,7 @@ body {
   --radius-md: calc(8px * .72 + 2px);
   --radius-sm: calc(8px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 139deg;
   --gloss: 0;
   --focus-ring-color: #3c6e71;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #3c6e71 55%, transparent);
@@ -1163,13 +1192,13 @@ body {
   --card-bg: rgb(14 16 20 / 92%);
   --card-border-color: rgb(94 158 255 / 40%);
   --card-border: 1px solid rgb(94 158 255 / 40%);
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 42%);
+  --card-shadow: 0 4px 10px color-mix(in srgb, #5e9eff 24%, transparent), 0 16px 40px rgb(0 0 0 / 34%);
   --card-blur: 10px;
   --header-bg: rgb(10 14 22 / 55%);
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #5e9eff;
   --accent-2: #9fd0ff;
-  --btn-grad: linear-gradient(135deg,#5e9eff,#9fd0ff);
+  --btn-grad: linear-gradient(196deg,#5e9eff,#9fd0ff);
   --btn-text: #000000;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #e8ecf4;
@@ -1184,6 +1213,7 @@ body {
   --radius-md: calc(12px * .72 + 2px);
   --radius-sm: calc(12px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 168deg;
   --gloss: 0;
   --focus-ring-color: #9fd0ff;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #9fd0ff 55%, transparent);
@@ -1211,12 +1241,12 @@ body {
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #d6382b;
   --accent-2: #1d5fbf;
-  --btn-grad: linear-gradient(135deg,#d6382b,#1d5fbf);
+  --btn-grad: linear-gradient(219deg,#d6382b,#1d5fbf);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #181818;
   --pill-active: #d6382b;
-  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-display: 'Josefin Sans', 'Inter', sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --display-weight: 800;
@@ -1226,6 +1256,7 @@ body {
   --radius-md: calc(0px * .72 + 2px);
   --radius-sm: calc(0px * .5 + 2px);
   --border-w: 3px;
+  --wash-angle: 197deg;
   --gloss: 0;
   --focus-ring-color: #1d5fbf;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #1d5fbf 55%, transparent);
@@ -1247,27 +1278,28 @@ body {
   --card-bg: rgb(16 46 82 / 84%);
   --card-border-color: rgb(255 209 102 / 45%);
   --card-border: 1px solid rgb(255 209 102 / 45%);
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 42%);
+  --card-shadow: 0 10px 32px color-mix(in srgb, #ffd166 35%, rgb(0 0 0 / 22%));
   --card-blur: 10px;
   --header-bg: rgb(10 14 22 / 55%);
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #ffd166;
   --accent-2: #7fc4e8;
-  --btn-grad: linear-gradient(135deg,#ffd166,#7fc4e8);
+  --btn-grad: linear-gradient(112deg,#ffd166,#7fc4e8);
   --btn-text: #0a2440;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #dce9f7;
   --pill-active: #ffd166;
-  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-display: 'Special Elite', 'JetBrains Mono', monospace;
   --font-body: 'JetBrains Mono', 'Courier New', monospace;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
-  --display-weight: 700;
+  --display-weight: 400;
   --display-case: none;
   --display-spacing: 0;
   --radius-lg: 2px;
   --radius-md: calc(2px * .72 + 2px);
   --radius-sm: calc(2px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 106deg;
   --gloss: 0;
   --focus-ring-color: #7fc4e8;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #7fc4e8 55%, transparent);
@@ -1276,7 +1308,7 @@ body {
   --flag-bg: rgb(255 200 90 / 12%);
   --flag-border: 1px dashed #ffd166;
   --flag-text: #ffd489;
-  --fx: dust;
+  --fx: math;
   --fx-color: 255,209,102;
 }
 
@@ -1329,13 +1361,13 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="cherry"] {
   --bg: linear-gradient(160deg,#fff1f2,#ffd3da 55%,#ffb3c0);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-pan 32s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 28s ease-in-out infinite alternate;
   --text: #4a0d18;
   --muted: color-mix(in srgb, #4a0d18 60%, #ffb3c0);
   --card-bg: rgb(255 255 255 / 62%);
   --card-border-color: color-mix(in srgb, #e8112d 35%, rgb(255 255 255 / 72%));
   --card-border: 1px solid color-mix(in srgb, #e8112d 35%, rgb(255 255 255 / 72%));
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 16%);
+  --card-shadow: 0 2px 6px rgb(0 0 0 / 10%), 0 20px 46px rgb(0 0 0 / 15%);
   --card-blur: 12px;
   --header-bg: rgb(255 255 255 / 55%);
   --chip-bg: rgb(255 255 255 / 55%);
@@ -1346,16 +1378,17 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #4a0d18;
   --pill-active: #e8112d;
-  --font-display: 'Nunito', 'Inter', sans-serif;
+  --font-display: 'Pacifico', 'Quicksand', cursive;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
-  --display-weight: 700;
+  --display-weight: 400;
   --display-case: none;
   --display-spacing: 0;
   --radius-lg: 16px;
   --radius-md: calc(16px * .72 + 2px);
   --radius-sm: calc(16px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 135deg;
   --gloss: 0;
   --focus-ring-color: #ff7a8a;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #ff7a8a 55%, transparent);
@@ -1364,40 +1397,41 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --flag-bg: color-mix(in srgb, #ff7a8a 14%, transparent);
   --flag-border: 1px dashed #e8112d;
   --flag-text: #7a4a00;
-  --fx: confetti;
+  --fx: fizz;
   --fx-color: 235,70,100;
 }
 
 [data-theme="flamingo"] {
   --bg: linear-gradient(155deg,#fff0fa,#ffd1ec 50%,#ffa8d8);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-sway 27s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-pan 35s ease-in-out infinite alternate;
   --text: #59093f;
   --muted: color-mix(in srgb, #59093f 60%, #ffa8d8);
   --card-bg: rgb(255 255 255 / 62%);
   --card-border-color: color-mix(in srgb, #ff3da6 35%, rgb(255 255 255 / 72%));
   --card-border: 1px solid color-mix(in srgb, #ff3da6 35%, rgb(255 255 255 / 72%));
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 16%);
+  --card-shadow: 0 4px 10px color-mix(in srgb, #ff3da6 24%, transparent), 0 16px 40px rgb(0 0 0 / 14%);
   --card-blur: 12px;
   --header-bg: rgb(255 255 255 / 55%);
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #ff3da6;
   --accent-2: #ff8ac2;
-  --btn-grad: linear-gradient(135deg, #ff3da6, #ff8ac2);
+  --btn-grad: linear-gradient(158deg, #ff3da6, #ff8ac2);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #59093f;
   --pill-active: #ff3da6;
-  --font-display: 'Quicksand', 'Nunito', sans-serif;
+  --font-display: 'Righteous', 'Quicksand', sans-serif;
   --font-body: 'Nunito', 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
-  --display-weight: 700;
+  --display-weight: 400;
   --display-case: none;
   --display-spacing: 0;
   --radius-lg: 20px;
   --radius-md: calc(20px * .72 + 2px);
   --radius-sm: calc(20px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 164deg;
   --gloss: 1;
   --focus-ring-color: #ff8ac2;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #ff8ac2 55%, transparent);
@@ -1406,14 +1440,14 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --flag-bg: color-mix(in srgb, #ff8ac2 14%, transparent);
   --flag-border: 1px dashed #ff3da6;
   --flag-text: #7a4a00;
-  --fx: petals;
+  --fx: sparkles;
   --fx-color: 255,120,190;
 }
 
 [data-theme="sunset"] {
   --bg: linear-gradient(165deg,#ffd194 0%,#ff8a70 55%,#b06ab3 115%);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 34s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-sway 42s ease-in-out infinite alternate;
   --text: #3a1030;
   --muted: color-mix(in srgb, #3a1030 60%, #b06ab3);
   --card-bg: rgb(255 255 255 / 62%);
@@ -1425,21 +1459,22 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #ff5e62;
   --accent-2: #ffc371;
-  --btn-grad: linear-gradient(135deg, #ff5e62, #ffc371);
+  --btn-grad: linear-gradient(181deg, #ff5e62, #ffc371);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #3a1030;
   --pill-active: #ff5e62;
-  --font-display: 'Sora', 'Inter', sans-serif;
+  --font-display: 'Abril Fatface', Georgia, serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
-  --display-weight: 700;
+  --display-weight: 400;
   --display-case: none;
   --display-spacing: 0;
   --radius-lg: 18px;
   --radius-md: calc(18px * .72 + 2px);
   --radius-sm: calc(18px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 193deg;
   --gloss: 0;
   --focus-ring-color: #ffc371;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #ffc371 55%, transparent);
@@ -1448,26 +1483,26 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --flag-bg: color-mix(in srgb, #ffc371 14%, transparent);
   --flag-border: 1px dashed #ff5e62;
   --flag-text: #7a4a00;
-  --fx: orbs;
+  --fx: haze;
   --fx-color: 255,170,130;
 }
 
 [data-theme="tangerine"] {
   --bg: linear-gradient(160deg,#fff4e6,#ffe0b8 50%,#ffc180);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 22s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-diag 24s ease-in-out infinite alternate;
   --text: #4d2600;
   --muted: color-mix(in srgb, #4d2600 60%, #ffc180);
   --card-bg: rgb(255 255 255 / 62%);
   --card-border-color: color-mix(in srgb, #ff7a00 35%, rgb(255 255 255 / 72%));
   --card-border: 1px solid color-mix(in srgb, #ff7a00 35%, rgb(255 255 255 / 72%));
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 16%);
+  --card-shadow: 0 10px 32px color-mix(in srgb, #ff7a00 35%, rgb(0 0 0 / 12%));
   --card-blur: 12px;
   --header-bg: rgb(255 255 255 / 55%);
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #ff7a00;
   --accent-2: #ffb347;
-  --btn-grad: linear-gradient(135deg, #ff7a00, #ffb347);
+  --btn-grad: linear-gradient(204deg, #ff7a00, #ffb347);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #4d2600;
@@ -1482,6 +1517,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --radius-md: calc(16px * .72 + 2px);
   --radius-sm: calc(16px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 222deg;
   --gloss: 0;
   --focus-ring-color: #ffb347;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #ffb347 55%, transparent);
@@ -1497,24 +1533,24 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="honey"] {
   --bg: linear-gradient(160deg,#fff8e1,#ffedb0 55%,#ffdd7a);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-pan 32s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-orbit 31s linear infinite;
   --text: #4a3200;
   --muted: color-mix(in srgb, #4a3200 60%, #ffdd7a);
   --card-bg: rgb(255 255 255 / 62%);
   --card-border-color: color-mix(in srgb, #e6a817 35%, rgb(255 255 255 / 72%));
   --card-border: 1px solid color-mix(in srgb, #e6a817 35%, rgb(255 255 255 / 72%));
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 16%);
+  --card-shadow: 0 2px 6px rgb(0 0 0 / 10%), 0 20px 46px rgb(0 0 0 / 15%);
   --card-blur: 12px;
   --header-bg: rgb(255 255 255 / 55%);
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #e6a817;
   --accent-2: #ffcf4d;
-  --btn-grad: linear-gradient(135deg, #e6a817, #ffcf4d);
+  --btn-grad: linear-gradient(97deg, #e6a817, #ffcf4d);
   --btn-text: #3a2800;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #4a3200;
   --pill-active: #e6a817;
-  --font-display: 'Lora', Georgia, serif;
+  --font-display: 'Fraunces', 'Playfair Display', serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --display-weight: 600;
@@ -1524,6 +1560,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --radius-md: calc(14px * .72 + 2px);
   --radius-sm: calc(14px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 131deg;
   --gloss: 0;
   --focus-ring-color: #ffcf4d;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #ffcf4d 55%, transparent);
@@ -1532,31 +1569,31 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --flag-bg: color-mix(in srgb, #ffcf4d 14%, transparent);
   --flag-border: 1px dashed #e6a817;
   --flag-text: #7a4a00;
-  --fx: motes;
+  --fx: drips;
   --fx-color: 240,190,90;
 }
 
 [data-theme="voltage"] {
   --bg: linear-gradient(170deg,#0c1400,#182600 55%,#243a00);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-sway 27s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 38s ease-in-out infinite alternate;
   --text: #eaffd0;
   --muted: color-mix(in srgb, #eaffd0 60%, #243a00);
   --card-bg: rgb(36 58 0 / 82%);
   --card-border-color: color-mix(in srgb, #aaff00 35%, rgb(255 255 255 / 22%));
   --card-border: 1px solid color-mix(in srgb, #aaff00 35%, rgb(255 255 255 / 22%));
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 42%);
+  --card-shadow: 0 4px 10px color-mix(in srgb, #aaff00 24%, transparent), 0 16px 40px rgb(0 0 0 / 34%);
   --card-blur: 12px;
   --header-bg: rgb(36 58 0 / 55%);
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #aaff00;
   --accent-2: #d4ff4d;
-  --btn-grad: linear-gradient(135deg, #aaff00, #d4ff4d);
+  --btn-grad: linear-gradient(120deg, #aaff00, #d4ff4d);
   --btn-text: #0c1400;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #eaffd0;
   --pill-active: #aaff00;
-  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-display: 'Exo 2', 'Space Grotesk', sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --display-weight: 700;
@@ -1566,6 +1603,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --radius-md: calc(10px * .72 + 2px);
   --radius-sm: calc(10px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 160deg;
   --gloss: 0;
   --focus-ring-color: #d4ff4d;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #d4ff4d 55%, transparent);
@@ -1574,14 +1612,14 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --flag-bg: color-mix(in srgb, #d4ff4d 14%, transparent);
   --flag-border: 1px dashed #aaff00;
   --flag-text: #ffd489;
-  --fx: fireflies;
+  --fx: sparks;
   --fx-color: 190,255,60;
 }
 
 [data-theme="emerald"] {
   --bg: linear-gradient(165deg,#06231c,#0a3a2d 55%,#0d4a3a);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 34s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-pan 20s ease-in-out infinite alternate;
   --text: #d9f5ec;
   --muted: color-mix(in srgb, #d9f5ec 60%, #0d4a3a);
   --card-bg: rgb(13 74 58 / 82%);
@@ -1593,21 +1631,22 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #10c98d;
   --accent-2: #6ee7c8;
-  --btn-grad: linear-gradient(135deg, #10c98d, #6ee7c8);
+  --btn-grad: linear-gradient(143deg, #10c98d, #6ee7c8);
   --btn-text: #06231c;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #d9f5ec;
   --pill-active: #10c98d;
-  --font-display: 'Playfair Display', Georgia, serif;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
-  --display-weight: 600;
+  --display-weight: 700;
   --display-case: none;
   --display-spacing: 0;
   --radius-lg: 16px;
   --radius-md: calc(16px * .72 + 2px);
   --radius-sm: calc(16px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 189deg;
   --gloss: 0;
   --focus-ring-color: #6ee7c8;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #6ee7c8 55%, transparent);
@@ -1623,24 +1662,24 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="lagoon"] {
   --bg: linear-gradient(160deg,#d8f9ff,#b0ecf5 50%,#8fdfea);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 22s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-sway 27s ease-in-out infinite alternate;
   --text: #063a44;
   --muted: color-mix(in srgb, #063a44 60%, #8fdfea);
   --card-bg: rgb(255 255 255 / 62%);
   --card-border-color: color-mix(in srgb, #00a8c6 35%, rgb(255 255 255 / 72%));
   --card-border: 1px solid color-mix(in srgb, #00a8c6 35%, rgb(255 255 255 / 72%));
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 16%);
+  --card-shadow: 0 10px 32px color-mix(in srgb, #00a8c6 35%, rgb(0 0 0 / 12%));
   --card-blur: 12px;
   --header-bg: rgb(255 255 255 / 55%);
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #00a8c6;
   --accent-2: #4dd6e8;
-  --btn-grad: linear-gradient(135deg, #00a8c6, #4dd6e8);
+  --btn-grad: linear-gradient(166deg, #00a8c6, #4dd6e8);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #063a44;
   --pill-active: #00a8c6;
-  --font-display: 'Quicksand', 'Nunito', sans-serif;
+  --font-display: 'Outfit', 'Inter', sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --display-weight: 700;
@@ -1650,6 +1689,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --radius-md: calc(20px * .72 + 2px);
   --radius-sm: calc(20px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 218deg;
   --gloss: 1;
   --focus-ring-color: #4dd6e8;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #4dd6e8 55%, transparent);
@@ -1665,24 +1705,24 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="cobalt"] {
   --bg: linear-gradient(160deg,#e8efff,#c2d4ff 50%,#9db9ff);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-pan 32s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-diag 34s ease-in-out infinite alternate;
   --text: #0c1d5e;
   --muted: color-mix(in srgb, #0c1d5e 60%, #9db9ff);
   --card-bg: rgb(255 255 255 / 62%);
   --card-border-color: color-mix(in srgb, #2451ff 35%, rgb(255 255 255 / 72%));
   --card-border: 1px solid color-mix(in srgb, #2451ff 35%, rgb(255 255 255 / 72%));
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 16%);
+  --card-shadow: 0 2px 6px rgb(0 0 0 / 10%), 0 20px 46px rgb(0 0 0 / 15%);
   --card-blur: 12px;
   --header-bg: rgb(255 255 255 / 55%);
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #2451ff;
   --accent-2: #6a8bff;
-  --btn-grad: linear-gradient(135deg, #2451ff, #6a8bff);
+  --btn-grad: linear-gradient(189deg, #2451ff, #6a8bff);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #0c1d5e;
   --pill-active: #2451ff;
-  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-display: 'Unbounded', 'Sora', sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --display-weight: 700;
@@ -1692,6 +1732,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --radius-md: calc(12px * .72 + 2px);
   --radius-sm: calc(12px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 127deg;
   --gloss: 0;
   --focus-ring-color: #6a8bff;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #6a8bff 55%, transparent);
@@ -1700,26 +1741,26 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --flag-bg: color-mix(in srgb, #6a8bff 14%, transparent);
   --flag-border: 1px dashed #2451ff;
   --flag-text: #7a4a00;
-  --fx: rings;
+  --fx: diamonds;
   --fx-color: 70,100,255;
 }
 
 [data-theme="peacock"] {
   --bg: linear-gradient(165deg,#04262b,#07393f 55%,#0a4b53);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-sway 27s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-orbit 41s linear infinite;
   --text: #dbf4f6;
   --muted: color-mix(in srgb, #dbf4f6 60%, #0a4b53);
   --card-bg: rgb(10 75 83 / 82%);
   --card-border-color: color-mix(in srgb, #12c2b0 35%, rgb(255 255 255 / 22%));
   --card-border: 1px solid color-mix(in srgb, #12c2b0 35%, rgb(255 255 255 / 22%));
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 42%);
+  --card-shadow: 0 4px 10px color-mix(in srgb, #12c2b0 24%, transparent), 0 16px 40px rgb(0 0 0 / 34%);
   --card-blur: 12px;
   --header-bg: rgb(10 75 83 / 55%);
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #12c2b0;
   --accent-2: #ffc857;
-  --btn-grad: linear-gradient(135deg, #12c2b0, #ffc857);
+  --btn-grad: linear-gradient(212deg, #12c2b0, #ffc857);
   --btn-text: #04262b;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #dbf4f6;
@@ -1734,6 +1775,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --radius-md: calc(16px * .72 + 2px);
   --radius-sm: calc(16px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 156deg;
   --gloss: 0;
   --focus-ring-color: #ffc857;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #ffc857 55%, transparent);
@@ -1749,7 +1791,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="borealis"] {
   --bg: linear-gradient(175deg,#020b1c,#061530 55%,#0a1f3d);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 34s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 23s ease-in-out infinite alternate;
   --text: #dff0ff;
   --muted: color-mix(in srgb, #dff0ff 60%, #0a1f3d);
   --card-bg: rgb(10 31 61 / 82%);
@@ -1761,7 +1803,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #37f0b4;
   --accent-2: #9d7bff;
-  --btn-grad: linear-gradient(135deg, #37f0b4, #9d7bff);
+  --btn-grad: linear-gradient(105deg, #37f0b4, #9d7bff);
   --btn-text: #021018;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #dff0ff;
@@ -1776,6 +1818,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --radius-md: calc(14px * .72 + 2px);
   --radius-sm: calc(14px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 185deg;
   --gloss: 0;
   --focus-ring-color: #9d7bff;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #9d7bff 55%, transparent);
@@ -1784,26 +1827,26 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --flag-bg: color-mix(in srgb, #9d7bff 14%, transparent);
   --flag-border: 1px dashed #37f0b4;
   --flag-text: #ffd489;
-  --fx: stars;
+  --fx: lanterns;
   --fx-color: 130,240,200;
 }
 
 [data-theme="ultraviolet"] {
   --bg: linear-gradient(170deg,#12002b,#1c003d 50%,#26004d);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 22s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-pan 30s ease-in-out infinite alternate;
   --text: #f0e4ff;
   --muted: color-mix(in srgb, #f0e4ff 60%, #26004d);
   --card-bg: rgb(38 0 77 / 82%);
   --card-border-color: color-mix(in srgb, #b026ff 35%, rgb(255 255 255 / 22%));
   --card-border: 1px solid color-mix(in srgb, #b026ff 35%, rgb(255 255 255 / 22%));
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 42%);
+  --card-shadow: 0 10px 32px color-mix(in srgb, #b026ff 35%, rgb(0 0 0 / 22%));
   --card-blur: 12px;
   --header-bg: rgb(38 0 77 / 55%);
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #b026ff;
   --accent-2: #ff5ce1;
-  --btn-grad: linear-gradient(135deg, #b026ff, #ff5ce1);
+  --btn-grad: linear-gradient(128deg, #b026ff, #ff5ce1);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #f0e4ff;
@@ -1818,6 +1861,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --radius-md: calc(12px * .72 + 2px);
   --radius-sm: calc(12px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 214deg;
   --gloss: 0;
   --focus-ring-color: #ff5ce1;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #ff5ce1 55%, transparent);
@@ -1833,24 +1877,24 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="grape"] {
   --bg: linear-gradient(155deg,#ede0ff,#d4b8f8 50%,#b788f0);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-pan 32s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-sway 37s ease-in-out infinite alternate;
   --text: #33104f;
   --muted: color-mix(in srgb, #33104f 60%, #b788f0);
   --card-bg: rgb(255 255 255 / 62%);
   --card-border-color: color-mix(in srgb, #7a2ff0 35%, rgb(255 255 255 / 72%));
   --card-border: 1px solid color-mix(in srgb, #7a2ff0 35%, rgb(255 255 255 / 72%));
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 16%);
+  --card-shadow: 0 2px 6px rgb(0 0 0 / 10%), 0 20px 46px rgb(0 0 0 / 15%);
   --card-blur: 12px;
   --header-bg: rgb(255 255 255 / 55%);
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #7a2ff0;
   --accent-2: #b06bff;
-  --btn-grad: linear-gradient(135deg, #7a2ff0, #b06bff);
+  --btn-grad: linear-gradient(151deg, #7a2ff0, #b06bff);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #33104f;
   --pill-active: #7a2ff0;
-  --font-display: 'Nunito', 'Inter', sans-serif;
+  --font-display: 'Baloo 2', 'Nunito', sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --display-weight: 800;
@@ -1860,6 +1904,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --radius-md: calc(18px * .72 + 2px);
   --radius-sm: calc(18px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 123deg;
   --gloss: 0;
   --focus-ring-color: #b06bff;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #b06bff 55%, transparent);
@@ -1875,19 +1920,19 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="cottoncandy"] {
   --bg: linear-gradient(150deg,#ffe4f3,#f3e4ff 45%,#dbeeff);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-sway 27s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-diag 19s ease-in-out infinite alternate;
   --text: #4a2545;
   --muted: color-mix(in srgb, #4a2545 60%, #dbeeff);
   --card-bg: rgb(255 255 255 / 62%);
   --card-border-color: color-mix(in srgb, #ff6ec7 35%, rgb(255 255 255 / 72%));
   --card-border: 1px solid color-mix(in srgb, #ff6ec7 35%, rgb(255 255 255 / 72%));
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 16%);
+  --card-shadow: 0 4px 10px color-mix(in srgb, #ff6ec7 24%, transparent), 0 16px 40px rgb(0 0 0 / 14%);
   --card-blur: 12px;
   --header-bg: rgb(255 255 255 / 55%);
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #ff6ec7;
   --accent-2: #6ecbff;
-  --btn-grad: linear-gradient(135deg, #ff6ec7, #6ecbff);
+  --btn-grad: linear-gradient(174deg, #ff6ec7, #6ecbff);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #4a2545;
@@ -1902,6 +1947,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --radius-md: calc(22px * .72 + 2px);
   --radius-sm: calc(22px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 152deg;
   --gloss: 1;
   --focus-ring-color: #6ecbff;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #6ecbff 55%, transparent);
@@ -1917,7 +1963,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="rosegold"] {
   --bg: linear-gradient(160deg,#fdf0ec,#f7dcd2 50%,#f2cfc2);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 34s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-orbit 26s linear infinite;
   --text: #4d241d;
   --muted: color-mix(in srgb, #4d241d 60%, #f2cfc2);
   --card-bg: rgb(255 255 255 / 62%);
@@ -1929,12 +1975,12 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #c96f5e;
   --accent-2: #e8b4a0;
-  --btn-grad: linear-gradient(135deg, #c96f5e, #e8b4a0);
+  --btn-grad: linear-gradient(197deg, #c96f5e, #e8b4a0);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #4d241d;
   --pill-active: #c96f5e;
-  --font-display: 'Playfair Display', Georgia, serif;
+  --font-display: 'Fraunces', 'Playfair Display', serif;
   --font-body: 'Lora', Georgia, serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --display-weight: 600;
@@ -1944,6 +1990,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --radius-md: calc(16px * .72 + 2px);
   --radius-sm: calc(16px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 181deg;
   --gloss: 1;
   --focus-ring-color: #e8b4a0;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #e8b4a0 55%, transparent);
@@ -1959,24 +2006,24 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="berry"] {
   --bg: linear-gradient(165deg,#23041a,#330726 55%,#42082f);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 22s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 33s ease-in-out infinite alternate;
   --text: #ffe3f2;
   --muted: color-mix(in srgb, #ffe3f2 60%, #42082f);
   --card-bg: rgb(66 8 47 / 82%);
   --card-border-color: color-mix(in srgb, #ff2e88 35%, rgb(255 255 255 / 22%));
   --card-border: 1px solid color-mix(in srgb, #ff2e88 35%, rgb(255 255 255 / 22%));
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 42%);
+  --card-shadow: 0 10px 32px color-mix(in srgb, #ff2e88 35%, rgb(0 0 0 / 22%));
   --card-blur: 12px;
   --header-bg: rgb(66 8 47 / 55%);
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #ff2e88;
   --accent-2: #ff7ab5;
-  --btn-grad: linear-gradient(135deg, #ff2e88, #ff7ab5);
+  --btn-grad: linear-gradient(220deg, #ff2e88, #ff7ab5);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #ffe3f2;
   --pill-active: #ff2e88;
-  --font-display: 'Sora', 'Inter', sans-serif;
+  --font-display: 'Space Grotesk', 'Inter', sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --display-weight: 700;
@@ -1986,6 +2033,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --radius-md: calc(14px * .72 + 2px);
   --radius-sm: calc(14px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 210deg;
   --gloss: 0;
   --focus-ring-color: #ff7ab5;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #ff7ab5 55%, transparent);
@@ -2001,19 +2049,19 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="canyon"] {
   --bg: linear-gradient(165deg,#1d0d06,#2d1409 55%,#3d1a0c);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-pan 32s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-pan 40s ease-in-out infinite alternate;
   --text: #ffe9d9;
   --muted: color-mix(in srgb, #ffe9d9 60%, #3d1a0c);
   --card-bg: rgb(61 26 12 / 82%);
   --card-border-color: color-mix(in srgb, #ff7043 35%, rgb(255 255 255 / 22%));
   --card-border: 1px solid color-mix(in srgb, #ff7043 35%, rgb(255 255 255 / 22%));
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 42%);
+  --card-shadow: 0 2px 6px rgb(0 0 0 / 20%), 0 20px 46px rgb(0 0 0 / 38%);
   --card-blur: 12px;
   --header-bg: rgb(61 26 12 / 55%);
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #ff7043;
   --accent-2: #ffab7e;
-  --btn-grad: linear-gradient(135deg, #ff7043, #ffab7e);
+  --btn-grad: linear-gradient(113deg, #ff7043, #ffab7e);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #ffe9d9;
@@ -2028,6 +2076,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --radius-md: calc(12px * .72 + 2px);
   --radius-sm: calc(12px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 119deg;
   --gloss: 0;
   --focus-ring-color: #ffab7e;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #ffab7e 55%, transparent);
@@ -2049,13 +2098,13 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --card-bg: rgb(35 37 41 / 82%);
   --card-border-color: color-mix(in srgb, #ff6b35 35%, rgb(255 255 255 / 22%));
   --card-border: 1px solid color-mix(in srgb, #ff6b35 35%, rgb(255 255 255 / 22%));
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 42%);
+  --card-shadow: 0 4px 10px color-mix(in srgb, #ff6b35 24%, transparent), 0 16px 40px rgb(0 0 0 / 34%);
   --card-blur: 12px;
   --header-bg: rgb(35 37 41 / 55%);
   --chip-bg: rgb(255 255 255 / 10%);
   --accent: #ff6b35;
   --accent-2: #ffa26b;
-  --btn-grad: linear-gradient(135deg, #ff6b35, #ffa26b);
+  --btn-grad: linear-gradient(136deg, #ff6b35, #ffa26b);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 10%);
   --pill-text: #e8e9ec;
@@ -2070,6 +2119,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --radius-md: calc(8px * .72 + 2px);
   --radius-sm: calc(8px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 148deg;
   --gloss: 0;
   --focus-ring-color: #ffa26b;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #ffa26b 55%, transparent);
@@ -2097,12 +2147,12 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #b3261e;
   --accent-2: #6b6152;
-  --btn-grad: linear-gradient(135deg, #b3261e, #6b6152);
+  --btn-grad: linear-gradient(159deg, #b3261e, #6b6152);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #17150f;
   --pill-active: #b3261e;
-  --font-display: 'Lora', Georgia, serif;
+  --font-display: 'Shippori Mincho', 'Lora', serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --display-weight: 600;
@@ -2112,6 +2162,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --radius-md: calc(6px * .72 + 2px);
   --radius-sm: calc(6px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 177deg;
   --gloss: 0;
   --focus-ring-color: #6b6152;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #6b6152 55%, transparent);
@@ -2127,19 +2178,19 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="sterling"] {
   --bg: linear-gradient(160deg,#f4f6f8,#e2e7ed 50%,#cfd6de);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-sway 27s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-orbit 36s linear infinite;
   --text: #232a33;
   --muted: color-mix(in srgb, #232a33 60%, #cfd6de);
   --card-bg: rgb(255 255 255 / 62%);
   --card-border-color: color-mix(in srgb, #4f6d8f 35%, rgb(255 255 255 / 72%));
   --card-border: 1px solid color-mix(in srgb, #4f6d8f 35%, rgb(255 255 255 / 72%));
-  --card-shadow: 0 14px 34px rgb(0 0 0 / 16%);
+  --card-shadow: 0 10px 32px color-mix(in srgb, #4f6d8f 35%, rgb(0 0 0 / 12%));
   --card-blur: 12px;
   --header-bg: rgb(255 255 255 / 55%);
   --chip-bg: rgb(255 255 255 / 55%);
   --accent: #4f6d8f;
   --accent-2: #8fa8c2;
-  --btn-grad: linear-gradient(135deg, #4f6d8f, #8fa8c2);
+  --btn-grad: linear-gradient(182deg, #4f6d8f, #8fa8c2);
   --btn-text: #fff;
   --pill-bg: rgb(255 255 255 / 55%);
   --pill-text: #232a33;
@@ -2154,6 +2205,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --radius-md: calc(14px * .72 + 2px);
   --radius-sm: calc(14px * .5 + 2px);
   --border-w: 1px;
+  --wash-angle: 206deg;
   --gloss: 1;
   --focus-ring-color: #8fa8c2;
   --focus-ring: 0 0 0 3px color-mix(in srgb, #8fa8c2 55%, transparent);

@@ -88,6 +88,20 @@ const FX_PRESETS = {
   rings:    { n: 12, up: 0.4,  drift: 0.5, size: [6, 16],    shape: "ring",   a: [0.15, 0.4] },
   fog:      { n: 8,  up: 0.15, drift: 0.4, size: [40, 90],   shape: "soft",   a: [0.04, 0.1] },
   shards:   { n: 14, up: 0.3,  drift: 0.7, size: [6, 14],    shape: "tri",    a: [0.2, 0.5], spin: true },
+  /* v7: thirteen more, enough for every theme to wear its own weather */
+  fizz:     { n: 46, up: 2.4,  drift: 0.5, size: [2, 5],     shape: "bubble", a: [0.2, 0.5] },
+  plankton: { n: 44, up: 0.2,  drift: 0.8, size: [1, 2.2],   shape: "dot",    a: [0.2, 0.7], flicker: true },
+  cinders:  { n: 24, up: -0.9, drift: 0.8, size: [2, 4],     shape: "dot",    a: [0.3, 0.8], flicker: true },
+  crosses:  { n: 14, up: 0.3,  drift: 0.6, size: [8, 16],    shape: "cross",  a: [0.2, 0.45], spin: true },
+  sparkles: { n: 26, up: 0.15, drift: 0.5, size: [4, 9],     shape: "star4",  a: [0.3, 0.9], flicker: true },
+  drips:    { n: 18, up: -1.6, drift: 0.1, size: [5, 10],    shape: "streak", a: [0.3, 0.6] },
+  diamonds: { n: 16, up: -0.5, drift: 0.5, size: [6, 12],    shape: "diamond", a: [0.3, 0.7], spin: true },
+  lanterns: { n: 10, up: 0.5,  drift: 0.4, size: [10, 20],   shape: "square", a: [0.15, 0.35] },
+  haze:     { n: 10, up: 0.12, drift: 0.5, size: [26, 60],   shape: "soft",   a: [0.05, 0.12] },
+  moths:    { n: 12, up: 0.3,  drift: 1.8, size: [4, 7],     shape: "petal",  a: [0.25, 0.6], flicker: true, spin: true },
+  streamers:{ n: 18, up: -1.2, drift: 1.4, size: [8, 16],    shape: "streak", a: [0.4, 0.8] },
+  kana:     { n: 34, up: -2.4, drift: 0,   size: [11, 15],   shape: "glyph",  a: [0.35, 0.9], glyphs: "アイウエオカキクケコサシスセソナニヌネノ" },
+  math:     { n: 30, up: -1.6, drift: 0.2, size: [11, 15],   shape: "glyph",  a: [0.3, 0.8], glyphs: "∑∆π√∞∠±⌀≈∫λθ" },
   none:     null
 };
 const GLYPH_SET = "01<>{}[]$#*+=/";
@@ -134,6 +148,26 @@ const FX_DRAW = {
     ctx.strokeStyle = `rgba(${color},1)`;
     ctx.lineWidth = Math.max(1, dpi);
     ctx.beginPath(); ctx.arc(x, y, s, 0, Math.PI * 2); ctx.stroke();
+  },
+  cross(ctx, b, x, y, s, alpha, color) {
+    ctx.translate(x, y); ctx.rotate(b.rot);
+    ctx.fillStyle = `rgba(${color},1)`;
+    ctx.fillRect(-s / 2, -s / 6, s, s / 3);
+    ctx.fillRect(-s / 6, -s / 2, s / 3, s);
+  },
+  diamond(ctx, b, x, y, s, alpha, color) {
+    ctx.translate(x, y); ctx.rotate(Math.PI / 4 + b.rot * 0.3);
+    ctx.fillStyle = `rgba(${color},1)`;
+    ctx.fillRect(-s / 2, -s / 2, s, s);
+  },
+  star4(ctx, b, x, y, s, alpha, color) {
+    ctx.translate(x, y); ctx.rotate(b.rot);
+    ctx.fillStyle = `rgba(${color},1)`;
+    const w = s * 0.16;
+    ctx.beginPath();
+    ctx.moveTo(0, -s / 2); ctx.lineTo(w, 0); ctx.lineTo(0, s / 2); ctx.lineTo(-w, 0); ctx.closePath(); ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(-s / 2, 0); ctx.lineTo(0, -w); ctx.lineTo(s / 2, 0); ctx.lineTo(0, w); ctx.closePath(); ctx.fill();
   },
   tri(ctx, b, x, y, s, alpha, color) {
     ctx.translate(x, y); ctx.rotate(b.rot);
@@ -187,7 +221,7 @@ function syncFx() {
     a: preset.a[0] + rand() * (preset.a[1] - preset.a[0]),
     ph: rand() * Math.PI * 2, rot: rand() * Math.PI * 2,
     vr: (rand() - .5) * .02,
-    ch: GLYPH_SET[Math.floor(rand() * GLYPH_SET.length)]
+    ch: (preset.glyphs || GLYPH_SET)[Math.floor(rand() * (preset.glyphs || GLYPH_SET).length)]
   }));
   const draw = FX_DRAW[preset.shape] || FX_DRAW.dot;
   const step = (b, t0) => {
@@ -224,13 +258,14 @@ const LAYOUT_ATTRS = {
   "data-width":    { key: "width",     allowed: ["wide", "cozy"] },
   "data-corners":  { key: "corners",   allowed: ["sharp"] },
   "data-dock":     { key: "dock",      allowed: ["left", "hidden"] },
-  "data-fontmode": { key: "fontmode",  allowed: ["sans", "serif", "mono", "rounded", "scifi", "arcade", "hand"] },
+  "data-fontmode": { key: "fontmode",  allowed: ["sans", "serif", "mono", "rounded", "scifi", "arcade", "hand", "elegant", "display", "comfy", "typewriter"] },
   "data-contrast": { key: "contrast",  allowed: ["high"] },
   "data-underline":{ key: "underline", allowed: ["on"] },
   "data-density":  { key: "density",   allowed: ["compact"] },
   "data-bganim":   { key: "bganim",    allowed: ["still", "drift", "hue"] },
   "data-cards":    { key: "cards",     allowed: ["clear", "solid"] },
-  "data-vibrancy": { key: "vibrancy",  allowed: ["low", "high"] }
+  "data-vibrancy": { key: "vibrancy",  allowed: ["low", "high"] },
+  "data-shadows":  { key: "shadows",   allowed: ["soft", "glow", "crisp", "off"] }
 };
 const LAYOUT_SECTIONS = ["programming", "posts", "finance", "arcade", "individualism", "connect"];
 

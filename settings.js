@@ -34,13 +34,14 @@
     "data-width":    { key: "width",     allowed: ["wide", "cozy"] },
     "data-corners":  { key: "corners",   allowed: ["sharp"] },
     "data-dock":     { key: "dock",      allowed: ["left", "hidden"] },
-    "data-fontmode": { key: "fontmode",  allowed: ["sans", "serif", "mono", "rounded", "scifi", "arcade", "hand"] },
+    "data-fontmode": { key: "fontmode",  allowed: ["sans", "serif", "mono", "rounded", "scifi", "arcade", "hand", "elegant", "display", "comfy", "typewriter"] },
     "data-contrast": { key: "contrast",  allowed: ["high"] },
     "data-underline":{ key: "underline", allowed: ["on"] },
     "data-density":  { key: "density",   allowed: ["compact"] },
     "data-bganim":   { key: "bganim",    allowed: ["still", "drift", "hue"] },
     "data-cards":    { key: "cards",     allowed: ["clear", "solid"] },
-    "data-vibrancy": { key: "vibrancy",  allowed: ["low", "high"] }
+    "data-vibrancy": { key: "vibrancy",  allowed: ["low", "high"] },
+    "data-shadows":  { key: "shadows",   allowed: ["soft", "glow", "crisp", "off"] }
   };
   function applyHere() {
     const root = document.documentElement;
@@ -91,9 +92,10 @@
   seg("#setBganim", "bganim", "theme");
   seg("#setCards", "cards", "theme");
   seg("#setVibrancy", "vibrancy", "default");
+  seg("#setShadows", "shadows", "theme");
 
   /* Particle weather style: one pinned preset over every theme's own */
-  const FX_STYLES = ["bubbles", "orbs", "snow", "rain", "embers", "fireflies", "stars", "petals", "leaves", "motes", "glyphs", "confetti", "shapes", "prisms", "steam", "dust", "bokeh", "pollen", "ash", "comets", "sparks", "pixels", "rings", "fog", "shards"];
+  const FX_STYLES = ["bubbles", "orbs", "snow", "rain", "embers", "fireflies", "stars", "petals", "leaves", "motes", "glyphs", "confetti", "shapes", "prisms", "steam", "dust", "bokeh", "pollen", "ash", "comets", "sparks", "pixels", "rings", "fog", "shards", "fizz", "plankton", "cinders", "crosses", "sparkles", "drips", "diamonds", "lanterns", "haze", "moths", "streamers", "kana", "math"];
   const fxSel = byId("setFx");
   if (fxSel) {
     FX_STYLES.forEach(f => fxSel.appendChild(new Option(f, f)));

@@ -18,9 +18,17 @@
     { id: "soft", label: "Soft — Quicksand + Nunito", display: "'Quicksand', 'Nunito', sans-serif", body: "'Quicksand', 'Nunito', sans-serif", weight: 700 },
     { id: "sketch", label: "Sketchbook — Caveat + Quicksand", display: "'Caveat', cursive", body: "'Quicksand', sans-serif", weight: 600 },
     { id: "arcade", label: "Arcade — Press Start 2P", display: "'Press Start 2P', monospace", body: "'Quicksand', sans-serif", weight: 400 },
-    { id: "terminal", label: "Terminal — JetBrains Mono", display: "'JetBrains Mono', monospace", body: "'JetBrains Mono', monospace", weight: 700 }
+    { id: "terminal", label: "Terminal — JetBrains Mono", display: "'JetBrains Mono', monospace", body: "'JetBrains Mono', monospace", weight: 700 },
+    { id: "editorial", label: "Editorial — Fraunces + Lora", display: "'Fraunces', 'Playfair Display', serif", body: "'Lora', Georgia, serif", weight: 600 },
+    { id: "poster", label: "Poster — Bebas Neue + Outfit", display: "'Bebas Neue', sans-serif", body: "'Outfit', 'Inter', sans-serif", weight: 400 },
+    { id: "comfy", label: "Comfy — Baloo 2 + Comfortaa", display: "'Baloo 2', 'Nunito', sans-serif", body: "'Comfortaa', 'Quicksand', sans-serif", weight: 700 },
+    { id: "typewriter", label: "Typewriter — Special Elite + Lora", display: "'Special Elite', monospace", body: "'Lora', Georgia, serif", weight: 400 },
+    { id: "crt", label: "CRT — VT323 + JetBrains Mono", display: "'VT323', monospace", body: "'JetBrains Mono', monospace", weight: 400 },
+    { id: "deco", label: "Deco — Josefin Sans + Inter", display: "'Josefin Sans', 'Inter', sans-serif", body: "'Inter', system-ui, sans-serif", weight: 600 },
+    { id: "cyber", label: "Cyber — Chakra Petch + Sora", display: "'Chakra Petch', 'Sora', sans-serif", body: "'Sora', 'Inter', sans-serif", weight: 700 },
+    { id: "script", label: "Soda script — Pacifico + Quicksand", display: "'Pacifico', cursive", body: "'Quicksand', sans-serif", weight: 400 }
   ];
-  const FX = ["none", "bubbles", "orbs", "snow", "rain", "embers", "fireflies", "stars", "petals", "leaves", "motes", "glyphs", "confetti", "shapes", "prisms", "steam", "dust", "bokeh", "pollen", "ash", "comets", "sparks", "pixels", "rings", "fog", "shards"];
+  const FX = ["none", "bubbles", "orbs", "snow", "rain", "embers", "fireflies", "stars", "petals", "leaves", "motes", "glyphs", "confetti", "shapes", "prisms", "steam", "dust", "bokeh", "pollen", "ash", "comets", "sparks", "pixels", "rings", "fog", "shards", "fizz", "plankton", "cinders", "crosses", "sparkles", "drips", "diamonds", "lanterns", "haze", "moths", "streamers", "kana", "math"];
 
   /* Options built as DOM nodes (values are internal constants, but node
      building keeps innerHTML out of the file entirely). */
