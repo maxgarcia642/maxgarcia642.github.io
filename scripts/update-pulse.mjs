@@ -20,20 +20,20 @@ let changed = 0;
 
 const fmtUsd = (v) => `$${v.toLocaleString("en-US", { maximumFractionDigits: v >= 100 ? 0 : v >= 1 ? 2 : 4 })}`;
 
-/* Every request must target one of these three known APIs. finance.json is
-   our own file, but symbols pass through URLs — the allowlist makes it
-   impossible for a bad edit to point this script anywhere else. */
-const ALLOWED_HOSTS = new Set(["api.coingecko.com", "api.frankfurter.dev", "query1.finance.yahoo.com"]);
-
-async function getJSON(url, headers = UA) {
-  if (!ALLOWED_HOSTS.has(new URL(url).hostname)) throw new Error(`host not allowlisted: ${url}`);
+/* SSRF-proof by construction: every fetch below starts with a literal
+   https://host/ prefix — symbols from finance.json can only ever land in the
+   query/path of one of the three known APIs, never choose the destination. */
+function withTimeout(headers = UA) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), 20000);
+  return { opts: { headers, signal: ctrl.signal }, done: () => clearTimeout(t) };
+}
+async function readJSON(resPromise, done) {
   try {
-    const res = await fetch(url, { headers, signal: ctrl.signal });
-    if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+    const res = await resPromise;
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return await res.json();
-  } finally { clearTimeout(t); }
+  } finally { done(); }
 }
 
 /* Re-render a chip's display string in the same style it already uses. */
@@ -71,7 +71,9 @@ function apply(item, v) {
 try {
   const cs = items.filter(i => i.coingeckoId);
   if (cs.length) {
-    const data = await getJSON(`https://api.coingecko.com/api/v3/simple/price?ids=${cs.map(i => i.coingeckoId).join(",")}&vs_currencies=usd`);
+    const q = encodeURIComponent(cs.map(i => i.coingeckoId).join(","));
+    const { opts, done } = withTimeout();
+    const data = await readJSON(fetch(`https://api.coingecko.com/api/v3/simple/price?vs_currencies=usd&ids=${q}`, opts), done);
     for (const i of cs) apply(i, data[i.coingeckoId]?.usd);
     console.log(`coingecko: ${cs.length} chips`);
   }
@@ -81,18 +83,21 @@ try {
 try {
   const fs_ = items.filter(i => i.fxCode);
   if (fs_.length) {
-    const data = await getJSON(`https://api.frankfurter.dev/v1/latest?base=USD&symbols=${fs_.map(i => i.fxCode).join(",")}`);
+    const q = encodeURIComponent(fs_.map(i => i.fxCode).join(","));
+    const { opts, done } = withTimeout();
+    const data = await readJSON(fetch(`https://api.frankfurter.dev/v1/latest?base=USD&symbols=${q}`, opts), done);
     for (const i of fs_) apply(i, data.rates?.[i.fxCode]);
     console.log(`frankfurter: ${fs_.length} chips`);
   }
 } catch (e) { console.error("frankfurter soft-fail:", e.message); }
 
 /* 3 — Yahoo (sequential + small delay; be a polite guest) */
+const YAHOO_UA = { "User-Agent": "Mozilla/5.0 (compatible; market-pulse CI)" };
 const ys = items.filter(i => i.yahoo);
 for (const i of ys) {
   try {
-    const d = await getJSON(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(i.yahoo)}?interval=1d&range=1d`,
-      { "User-Agent": "Mozilla/5.0 (compatible; market-pulse CI)" });
+    const { opts, done } = withTimeout(YAHOO_UA);
+    const d = await readJSON(fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(i.yahoo)}?interval=1d&range=1d`, opts), done);
     apply(i, d?.chart?.result?.[0]?.meta?.regularMarketPrice);
     await new Promise(r => setTimeout(r, 400));
   } catch (e) { console.error(`yahoo soft-fail ${i.id}:`, e.message); }
