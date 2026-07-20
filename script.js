@@ -1044,7 +1044,7 @@ const TERMINAL_FILES = [
       { kind: "Section", title: "Articles & Posts", text: "haas hall university of arkansas nwti reports linkedin", href: "#posts" },
       { kind: "Section", title: "The Financial Liberty Project", text: "alternative investments market pulse research", href: "#finance" },
       { kind: "Section", title: "Games & Projects Arcade", text: "pixel art studio games apps", href: "#arcade" },
-      { kind: "Section", title: "Individualism", text: "personality assessment ipip big five openness poster", href: "#individualism" },
+      { kind: "Section", title: "Personality Profile & How I Work", text: "individualism personality assessment ipip big five openness poster", href: "#individualism" },
       { kind: "Section", title: "Connect", text: "linktree links socials", href: "#connect" }
     ];
     (MG.content?.projects || []).forEach(p => out.push({
@@ -1054,7 +1054,7 @@ const TERMINAL_FILES = [
       kind: "Clawmaxxing", title: p.title || "", text: p.description || "", href: "#posts", searchId: p.id
     }));
     (MG.content?.assessments || []).forEach(a => out.push({
-      kind: "Individualism", title: a.title || "", text: [a.subtitle, a.detail].filter(Boolean).join(" "), href: "#individualism", searchId: a.id
+      kind: "Personality", title: a.title || "", text: [a.subtitle, a.detail].filter(Boolean).join(" "), href: "#individualism", searchId: a.id
     }));
     (MG.content?.arcade || []).forEach(g => out.push({
       kind: g.kind === "soon" ? "Coming soon" : "Arcade", title: g.title || "",

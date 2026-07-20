@@ -25,7 +25,7 @@
       "description": "This is the playable shelf. The pixel studio works instantly right here on the page. Everything else waits until you click the big emoji. It tries to show a preview first, and there is always an open in new tab option because some hosts refuse to play inside a frame."
     },
     "individualism": {
-      "title": "🧭 Individualism",
+      "title": "🧭 Personality Profile & How I Work",
       "description": "Personality assessments, taken seriously and shown in full. I sat the 300-item IPIP myself, and the plan is to run the same battery through several AI models and post each profile as its own poster. Tap any card to open the full report right here. Read it, scroll it, close it. No downloads from this window, though the source is in the public repo if you go looking."
     },
     "connect": {

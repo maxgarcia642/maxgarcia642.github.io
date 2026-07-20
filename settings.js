@@ -10,7 +10,7 @@
     ["posts", "📁 Articles & Posts"],
     ["finance", "💸 The Financial Liberty Project"],
     ["arcade", "🕹️ Games & Projects Arcade"],
-    ["individualism", "🧭 Individualism"],
+    ["individualism", "🧭 Personality Profile & How I Work"],
     ["connect", "🌳 Connect"]
   ];
   let L = {};
