@@ -690,15 +690,17 @@ body.sec-hidden-connect #connect { display: none; }
 
 /* ═══════════ v5 additions — vibrancy, words with life, studio ═══════════ */
 
-/* Vibrancy layer: every surface carries a whisper of its theme's accents */
+/* Vibrancy layer: every surface carries a whisper of its theme's accents.
+   The wash angle is a per-theme token (themes.css), so even the light falls
+   differently from one personality to the next. */
 .card {
-  background-image: linear-gradient(150deg,
+  background-image: linear-gradient(var(--wash-angle, 150deg),
     color-mix(in srgb, var(--accent) 8%, transparent),
     transparent 42%,
     color-mix(in srgb, var(--accent-2) 9%, transparent));
 }
 .post-card, .work-card, .arcade-card, .desk-group, .pulse-chip, .mini-terminal {
-  background-image: linear-gradient(160deg, color-mix(in srgb, var(--accent) 6%, transparent), transparent 58%);
+  background-image: linear-gradient(var(--wash-angle, 160deg), color-mix(in srgb, var(--accent) 6%, transparent), transparent 58%);
 }
 .card h2 { width: fit-content; }
 .card h2::after {
@@ -846,6 +848,18 @@ html[data-fontmode="arcade"] { --font-display: 'Press Start 2P', monospace; --fo
 html[data-fontmode="hand"] { --font-display: 'Caveat', cursive; --font-body: 'Quicksand', 'Nunito', sans-serif; --display-case: none; --display-spacing: 0; }
 html[data-fontmode="arcade"] h1 { font-size: clamp(1.15rem, 3.4vw, 1.9rem); }
 html[data-fontmode="arcade"] h2 { font-size: clamp(1rem, 2.6vw, 1.5rem); }
+
+/* v7: four more voices from the widened font pool */
+html[data-fontmode="elegant"] { --font-display: 'Fraunces', 'Playfair Display', serif; --font-body: 'Lora', Georgia, serif; --display-case: none; --display-spacing: 0; --display-weight: 600; }
+html[data-fontmode="display"] { --font-display: 'Bebas Neue', 'Space Grotesk', sans-serif; --font-body: 'Outfit', 'Inter', sans-serif; --display-case: none; --display-spacing: .03em; --display-weight: 400; }
+html[data-fontmode="comfy"] { --font-display: 'Baloo 2', 'Nunito', sans-serif; --font-body: 'Comfortaa', 'Quicksand', sans-serif; --display-case: none; --display-spacing: 0; }
+html[data-fontmode="typewriter"] { --font-display: 'Special Elite', 'Courier New', monospace; --font-body: 'Lora', Georgia, serif; --display-case: none; --display-spacing: 0; --display-weight: 400; }
+
+/* v7: shadow style override — theme default, or one voice everywhere */
+html[data-shadows="soft"] { --card-shadow: 0 14px 34px rgb(0 0 0 / 18%); }
+html[data-shadows="glow"] { --card-shadow: 0 10px 36px color-mix(in srgb, var(--accent) 45%, rgb(0 0 0 / 15%)); }
+html[data-shadows="crisp"] { --card-shadow: 6px 6px 0 color-mix(in srgb, var(--text) 60%, transparent); }
+html[data-shadows="off"] { --card-shadow: none; }
 
 /* Background motion override: freeze it, force the drift, or hue-cycle it */
 html[data-bganim="still"] body { animation: none !important; }

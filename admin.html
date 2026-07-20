@@ -21,7 +21,7 @@
   -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Nunito:wght@400;800&family=Playfair+Display:wght@600&family=Press+Start+2P&family=Sora:wght@400;700&family=Lora:wght@400;600&family=Quicksand:wght@500;700&family=Orbitron:wght@500;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Baloo+2:wght@500;700&family=Bebas+Neue&family=Caveat:wght@600&family=Chakra+Petch:wght@500;700&family=Comfortaa:wght@500;700&family=Cormorant+Garamond:wght@600;700&family=DM+Serif+Display&family=Exo+2:wght@500;700&family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&family=Josefin+Sans:wght@500;700&family=Lora:wght@400;600&family=Nunito:wght@400;800&family=Orbitron:wght@500;700&family=Outfit:wght@400;700&family=Pacifico&family=Playfair+Display:wght@600&family=Press+Start+2P&family=Quicksand:wght@500;700&family=Righteous&family=Rye&family=Shippori+Mincho:wght@600;800&family=Sora:wght@400;700&family=Space+Grotesk:wght@400;700&family=Special+Elite&family=Unbounded:wght@400;700&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="themes.css">
   <style>
@@ -119,6 +119,17 @@
       </div>
 
       <div class="setting">
+        <label>Card shadows<span class="hint">Every theme carries its own shadow voice now — or pin one: soft classic, an accent-colored glow, crisp offset print, or none at all.</span></label>
+        <div class="seg-row" id="setShadows">
+          <button class="seg" type="button" data-v="theme">Theme default</button>
+          <button class="seg" type="button" data-v="soft">Soft</button>
+          <button class="seg" type="button" data-v="glow">Glow</button>
+          <button class="seg" type="button" data-v="crisp">Crisp</button>
+          <button class="seg" type="button" data-v="off">None</button>
+        </div>
+      </div>
+
+      <div class="setting">
         <label>Text size<span class="hint">Scales the whole site's type.</span></label>
         <div class="seg-row" id="setFont">
           <button class="seg" type="button" data-v="s">Smaller</button>
@@ -164,6 +175,10 @@
           <button class="seg" type="button" data-v="scifi">Sci-fi</button>
           <button class="seg" type="button" data-v="arcade">Arcade</button>
           <button class="seg" type="button" data-v="hand">Handwritten</button>
+          <button class="seg" type="button" data-v="elegant">Elegant</button>
+          <button class="seg" type="button" data-v="display">Poster</button>
+          <button class="seg" type="button" data-v="comfy">Comfy</button>
+          <button class="seg" type="button" data-v="typewriter">Typewriter</button>
         </div>
       </div>
 
