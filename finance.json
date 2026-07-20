@@ -2,17 +2,17 @@
   "sectionTitle": "The Financial Liberty Project",
   "sectionTagline": "Verified research, real deliverables, honest flags. Patience pays. 🦞",
   "marketPulse": {
-    "asOf": "2026-07-19",
+    "asOf": "2026-07-20",
     "note": "Point-in-time figures, verified Jul 16, 2026 (Barchart EOD settlements, ECB/Frankfurter FX, CoinGecko). Crypto and FX chips refresh live on demand; commodities and indexes are dated snapshots — treat everything as context, not a quote feed.",
     "items": [
       {
         "id": "btc",
         "label": "Bitcoin",
-        "value": "~$64K",
+        "value": "~$65K",
         "context": "ATH $126,198 on Oct 6, 2025. 2026 has been a crypto-winter year with a June–July rebound.",
         "live": true,
         "coingeckoId": "bitcoin",
-        "raw": 64458,
+        "raw": 64891,
         "usdPerUnit": 63293
       },
       {
@@ -22,17 +22,17 @@
         "context": "ATH $4,953 Aug 24, 2025. Leading the recovery narrative.",
         "live": true,
         "coingeckoId": "ethereum",
-        "raw": 1873.31,
+        "raw": 1881.5,
         "usdPerUnit": 1843.89
       },
       {
         "id": "sol",
         "label": "Solana",
-        "value": "~$76",
+        "value": "~$77",
         "context": "Jul 16, 2026 (CoinGecko).",
         "live": true,
         "coingeckoId": "solana",
-        "raw": 76.25,
+        "raw": 76.93,
         "usdPerUnit": 74.87
       },
       {
@@ -42,7 +42,7 @@
         "context": "Jul 16, 2026 (CoinGecko).",
         "live": true,
         "coingeckoId": "ripple",
-        "raw": 1.093,
+        "raw": 1.1,
         "usdPerUnit": 1.089
       },
       {
@@ -52,7 +52,7 @@
         "context": "Jul 16, 2026 (CoinGecko).",
         "live": true,
         "coingeckoId": "dogecoin",
-        "raw": 0.072442,
+        "raw": 0.07286,
         "usdPerUnit": 0.072097
       },
       {
@@ -62,7 +62,7 @@
         "context": "Jul 16, 2026 (CoinGecko).",
         "live": true,
         "coingeckoId": "litecoin",
-        "raw": 47.13,
+        "raw": 46.98,
         "usdPerUnit": 45.32
       },
       {
