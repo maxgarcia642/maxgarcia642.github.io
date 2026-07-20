@@ -9,9 +9,10 @@ const prefersReduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const isMobile = matchMedia("(max-width: 720px)").matches;
 
 /* ============================== THEMES ================================= */
-const FX_THEMES = new Set(["aero", "glass", "clay"]); // canvas-bubble themes
+const LEGACY_THEME_MAP = { aurora: "indigo", clay: "coral", swiss: "bauhaus", midnight: "noir" };
 
 function setTheme(id) {
+  if (LEGACY_THEME_MAP[id]) id = LEGACY_THEME_MAP[id];
   document.documentElement.setAttribute("data-theme", id);
   try { localStorage.setItem("mg-theme", id); } catch (e) { /* fine */ }
   $$(".theme-orb").forEach(o => o.setAttribute("aria-pressed", String(o.dataset.theme === id)));
@@ -23,82 +24,279 @@ document.addEventListener("click", (e) => {
   if (orb) setTheme(orb.dataset.theme);
 });
 
-/* Bubble canvas — Frutiger Aero's ambient layer. transform-cheap, capped,
-   killed on mobile + reduced motion + non-aero-family themes. */
+/* Dock tooltip: theme name + its creative vibe line (hover, focus, touch).
+   The studio and music buttons carry data-label/data-vibe too. */
+(function dockTips() {
+  const tip = $("#dockTip");
+  if (!tip) return;
+  const HIT = ".theme-orb, .theme-dock .music-btn";
+  let hideT = null;
+  const show = (orb) => {
+    clearTimeout(hideT);
+    const vibe = orb.dataset.vibe || "";
+    tip.innerHTML = "";
+    const s = document.createElement("strong"); s.textContent = orb.dataset.label || "";
+    tip.appendChild(s);
+    if (vibe) tip.appendChild(document.createTextNode(vibe));
+    tip.hidden = false;
+    if (!matchMedia("(max-width: 720px)").matches) {
+      const r = orb.getBoundingClientRect();
+      tip.style.top = Math.max(8, r.top + r.height / 2 - 24) + "px";
+      tip.style.bottom = "auto";
+    } else { tip.style.top = "auto"; }
+  };
+  const hide = () => { hideT = setTimeout(() => { tip.hidden = true; }, 120); };
+  document.addEventListener("pointerover", (e) => {
+    const orb = e.target.closest(HIT); if (orb) show(orb);
+  });
+  document.addEventListener("pointerout", (e) => { if (e.target.closest(HIT)) hide(); });
+  document.addEventListener("focusin", (e) => { const orb = e.target.closest(HIT); if (orb) show(orb); });
+  document.addEventListener("focusout", (e) => { if (e.target.closest(HIT)) hide(); });
+})();
 
-/* Decorative randomness (bubble positions only). crypto-backed purely to
-   satisfy static analysis; nothing security-relevant depends on this. */
+/* ═════════ PARTICLE FX ENGINE — one canvas, per-theme presets ═════════
+   Each theme declares --fx (preset) + --fx-color in themes.css. Presets are
+   config, not code paths: motion + shape + size ranges. Idea-mined from the
+   round-2 particle repos (partikle, JParticles, ab-particles — MIT, credited
+   in the changelog); implemented natively, zero dependencies. */
 const rand = () => crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296;
 
-let fxRaf = null;
-let fxSizer = null;
+const FX_PRESETS = {
+  bubbles:  { n: 22, up: 1,   drift: 0.4,  size: [6, 30],    shape: "bubble", a: [0.08, 0.24] },
+  orbs:     { n: 14, up: 0.3, drift: 0.6,  size: [16, 52],   shape: "soft",   a: [0.05, 0.12] },
+  snow:     { n: 60, up: -1,  drift: 0.8,  size: [1.5, 4],   shape: "dot",    a: [0.5, 0.95] },
+  rain:     { n: 70, up: -6,  drift: 0.15, size: [7, 15],    shape: "streak", a: [0.25, 0.5] },
+  embers:   { n: 26, up: 0.8, drift: 0.7,  size: [1.5, 4],   shape: "dot",    a: [0.4, 0.9], flicker: true },
+  fireflies:{ n: 18, up: 0.1, drift: 1,    size: [2, 3.5],   shape: "dot",    a: [0.2, 1], flicker: true },
+  stars:    { n: 90, up: 0,   drift: 0.02, size: [0.8, 2.2], shape: "dot",    a: [0.25, 0.95], flicker: true },
+  petals:   { n: 26, up: -0.5, drift: 1.2, size: [4, 8],     shape: "petal",  a: [0.5, 0.9], spin: true },
+  leaves:   { n: 20, up: -0.45, drift: 1.3, size: [5, 9],    shape: "petal",  a: [0.5, 0.85], spin: true },
+  motes:    { n: 30, up: 0.15, drift: 0.5, size: [1.5, 3.5], shape: "dot",    a: [0.15, 0.4] },
+  glyphs:   { n: 40, up: -3,  drift: 0,    size: [10, 14],   shape: "glyph",  a: [0.35, 0.9] },
+  confetti: { n: 26, up: -0.8, drift: 1,   size: [3, 6],     shape: "square", a: [0.6, 0.95], spin: true },
+  shapes:   { n: 14, up: 0.25, drift: 0.8, size: [8, 20],    shape: "square", a: [0.15, 0.4], spin: true },
+  prisms:   { n: 16, up: 0.2, drift: 0.6,  size: [8, 18],    shape: "prism",  a: [0.2, 0.5], spin: true },
+  steam:    { n: 14, up: 0.7, drift: 0.5,  size: [14, 34],   shape: "soft",   a: [0.05, 0.14] },
+  dust:     { n: 34, up: 0.1, drift: 0.4,  size: [1, 2.6],   shape: "dot",    a: [0.15, 0.5] },
+  none:     null
+};
+const GLYPH_SET = "01<>{}[]$#*+=/";
+const PRISM_HUES = ["255,150,200", "150,200,255", "170,255,200", "255,240,170"];
+
+/* One draw routine per particle shape — keeps the frame loop flat and small. */
+const FX_DRAW = {
+  bubble(ctx, b, x, y, s, alpha, color) {
+    const g = ctx.createRadialGradient(x - s / 3, y - s / 3, s / 6, x, y, s);
+    g.addColorStop(0, `rgba(${color},${Math.min(1, alpha + 0.25)})`);
+    g.addColorStop(1, `rgba(${color},${alpha * 0.25})`);
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, s, 0, Math.PI * 2); ctx.fill();
+  },
+  soft(ctx, b, x, y, s, alpha, color) {
+    const g = ctx.createRadialGradient(x, y, 0, x, y, s);
+    g.addColorStop(0, `rgba(${color},${alpha})`); g.addColorStop(1, `rgba(${color},0)`);
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, s, 0, Math.PI * 2); ctx.fill();
+  },
+  streak(ctx, b, x, y, s, alpha, color, dpi) {
+    ctx.strokeStyle = `rgba(${color},1)`; ctx.lineWidth = Math.max(1, dpi);
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + b.vx * 4000, y + s); ctx.stroke();
+  },
+  glyph(ctx, b, x, y, s, alpha, color) {
+    ctx.fillStyle = `rgba(${color},1)`;
+    ctx.font = `${s}px 'JetBrains Mono', monospace`;
+    ctx.fillText(b.ch, x, y);
+  },
+  square(ctx, b, x, y, s, alpha, color) {
+    ctx.translate(x, y); ctx.rotate(b.rot);
+    ctx.fillStyle = `rgba(${color},1)`;
+    ctx.fillRect(-s / 2, -s / 2, s, s);
+  },
+  petal(ctx, b, x, y, s, alpha, color) {
+    ctx.translate(x, y); ctx.rotate(b.rot);
+    ctx.fillStyle = `rgba(${color},1)`;
+    ctx.beginPath(); ctx.ellipse(0, 0, s, s * 0.55, 0, 0, Math.PI * 2); ctx.fill();
+  },
+  prism(ctx, b, x, y, s, alpha) {
+    ctx.translate(x, y); ctx.rotate(b.rot);
+    ctx.fillStyle = `rgba(${PRISM_HUES[Math.floor(b.ph) % 4]},${alpha})`;
+    ctx.beginPath(); ctx.moveTo(0, -s / 2); ctx.lineTo(s / 2, s / 2); ctx.lineTo(-s / 2, s / 2); ctx.closePath(); ctx.fill();
+  },
+  dot(ctx, b, x, y, s, alpha, color) {
+    ctx.fillStyle = `rgba(${color},1)`;
+    ctx.beginPath(); ctx.arc(x, y, s, 0, Math.PI * 2); ctx.fill();
+  }
+};
+
+let fxRaf = null, fxSizer = null, fxKey = "";
+function fxDensity() {
+  const d = (MG.layout && MG.layout.particles) || "normal";
+  return { off: 0, low: .5, normal: 1, high: 1.6 }[d] ?? 1;
+}
 function syncFx() {
   const canvas = $("#fx-canvas");
   if (!canvas) return;
-  const theme = document.documentElement.getAttribute("data-theme") || "aero";
-  const on = FX_THEMES.has(theme) && !prefersReduced && !isMobile;
+  const cs = getComputedStyle(document.documentElement);
+  const preset = FX_PRESETS[(cs.getPropertyValue("--fx") || "none").trim()];
+  const color = (cs.getPropertyValue("--fx-color") || "255,255,255").trim();
+  const motionOff = document.documentElement.getAttribute("data-motion") === "off";
+  const density = fxDensity();
+  const key = JSON.stringify([preset && (cs.getPropertyValue("--fx") || "").trim(), color, density, motionOff]);
+  const on = preset && !prefersReduced && !motionOff && density > 0;
   if (!on) {
-    cancelAnimationFrame(fxRaf); fxRaf = null;
+    cancelAnimationFrame(fxRaf); fxRaf = null; fxKey = "";
     if (fxSizer) { removeEventListener("resize", fxSizer); fxSizer = null; }
     canvas.style.display = "none";
     return;
   }
+  if (fxRaf && key === fxKey) return; // same config already running
+  cancelAnimationFrame(fxRaf); fxRaf = null; fxKey = key;
   canvas.style.display = "block";
-  if (fxRaf) return; // already running
   const ctx = canvas.getContext("2d");
-  const dpi = Math.min(devicePixelRatio || 1, 2);
+  const dpi = Math.min(devicePixelRatio || 1, isMobile ? 1.5 : 2);
+  if (fxSizer) removeEventListener("resize", fxSizer);
   fxSizer = () => { canvas.width = innerWidth * dpi; canvas.height = innerHeight * dpi; };
   fxSizer(); addEventListener("resize", fxSizer, { passive: true });
-  const bubbles = Array.from({ length: 22 }, () => ({
-    x: rand(), y: rand() + 0.2,
-    r: 6 + rand() * 26, v: 0.0004 + rand() * 0.0011,
-    drift: (rand() - 0.5) * 0.0004, a: 0.08 + rand() * 0.16
+  const count = Math.round(preset.n * density * (isMobile ? 0.55 : 1));
+  const parts = Array.from({ length: count }, () => ({
+    x: rand(), y: rand(),
+    s: preset.size[0] + rand() * (preset.size[1] - preset.size[0]),
+    vy: (preset.up ?? 0) * (0.0006 + rand() * 0.0008),
+    vx: (rand() - .5) * (preset.drift ?? 0) * 0.0012,
+    a: preset.a[0] + rand() * (preset.a[1] - preset.a[0]),
+    ph: rand() * Math.PI * 2, rot: rand() * Math.PI * 2,
+    vr: (rand() - .5) * .02,
+    ch: GLYPH_SET[Math.floor(rand() * GLYPH_SET.length)]
   }));
-  (function tick() {
+  const draw = FX_DRAW[preset.shape] || FX_DRAW.dot;
+  const step = (b, t0) => {
+    b.y -= b.vy;
+    b.x += b.vx + (preset.drift ? Math.sin(t0 / 1600 + b.ph) * 0.0004 * preset.drift : 0);
+    if (preset.spin) b.rot += b.vr;
+    if (b.y < -0.08) { b.y = 1.08; b.x = rand(); }
+    if (b.y > 1.08) { b.y = -0.08; b.x = rand(); }
+    if (b.x < -0.05) b.x = 1.05;
+    if (b.x > 1.05) b.x = -0.05;
+  };
+  (function tick(ts) {
+    const t0 = ts || 0;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (const b of bubbles) {
-      b.y -= b.v; b.x += b.drift;
-      if (b.y < -0.06) { b.y = 1.06; b.x = rand(); }
-      const x = b.x * canvas.width, y = b.y * canvas.height, r = b.r * dpi;
-      const g = ctx.createRadialGradient(x - r / 3, y - r / 3, r / 6, x, y, r);
-      g.addColorStop(0, `rgba(255,255,255,${b.a + 0.25})`);
-      g.addColorStop(1, `rgba(255,255,255,${b.a * 0.25})`);
-      ctx.fillStyle = g;
-      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+    for (const b of parts) {
+      step(b, t0);
+      const x = b.x * canvas.width, y = b.y * canvas.height, s = b.s * dpi;
+      const alpha = preset.flicker ? b.a * (0.45 + 0.55 * Math.abs(Math.sin(t0 / 700 + b.ph))) : b.a;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      draw(ctx, b, x, y, s, alpha, color, dpi);
+      ctx.restore();
     }
     fxRaf = requestAnimationFrame(tick);
-  })();
+  })(0);
 }
 
+/* ═════════ LAYOUT SETTINGS — applied from localStorage("mg-layout") ═════ */
+MG.layout = {};
+
+/* html attribute → { layout key, allowed values }. Anything else clears it. */
+const LAYOUT_ATTRS = {
+  "data-motion":   { key: "motion",    allowed: ["off"] },
+  "data-width":    { key: "width",     allowed: ["wide", "cozy"] },
+  "data-corners":  { key: "corners",   allowed: ["sharp"] },
+  "data-dock":     { key: "dock",      allowed: ["left", "hidden"] },
+  "data-fontmode": { key: "fontmode",  allowed: ["sans", "serif", "mono"] },
+  "data-contrast": { key: "contrast",  allowed: ["high"] },
+  "data-underline":{ key: "underline", allowed: ["on"] },
+  "data-density":  { key: "density",   allowed: ["compact"] }
+};
+const LAYOUT_SECTIONS = ["programming", "posts", "finance", "arcade", "individualism", "connect"];
+
+function applyLayout() {
+  let L = {};
+  try { L = JSON.parse(localStorage.getItem("mg-layout") || "{}"); } catch (e) { /* defaults */ }
+  MG.layout = L;
+  const root = document.documentElement;
+  Object.entries(LAYOUT_ATTRS).forEach(([attr, rule]) => {
+    const v = L[rule.key];
+    if (rule.allowed.includes(v)) root.setAttribute(attr, v);
+    else root.removeAttribute(attr);
+  });
+  root.style.setProperty("--user-font-scale", { s: ".92", m: "1", l: "1.12" }[L.font] || "1");
+  applySectionLayout(L);
+  syncFx();
+}
+function applySectionLayout(L) {
+  const ordered = Array.isArray(L.order);
+  LAYOUT_SECTIONS.forEach(id => {
+    document.body.classList.toggle(`sec-hidden-${id}`, Boolean(L.hidden?.includes(id)));
+    const sec = document.getElementById(id);
+    if (sec && ordered) {
+      const idx = L.order.indexOf(id);
+      sec.style.order = idx >= 0 ? String(idx + 1) : "";
+    }
+  });
+  if (ordered) { $("#main").style.display = "flex"; $("#main").style.flexDirection = "column"; }
+}
+applyLayout();
+addEventListener("storage", (e) => { if (e.key === "mg-layout") applyLayout(); });
+
+/* Surprise theme: once per browser session, if enabled in Layout Settings */
+document.addEventListener("mg:content-ready", () => {
+  try {
+    if (MG.layout.shuffle === "on" && !sessionStorage.getItem("mg-shuffled")) {
+      sessionStorage.setItem("mg-shuffled", "1");
+      const ids = (MG.content?.themes || []).map(t => t.id);
+      if (ids.length) setTheme(ids[Math.floor(rand() * ids.length)]);
+    }
+  } catch (e) { /* session storage blocked — skip the surprise */ }
+});
+
 /* ============================== MUSIC ================================== */
-/* Looping background track, ON by default. Browsers block true autoplay, so
-   the loop starts on the visitor's first interaction (any click/keypress)
-   unless they muted it on a previous visit. ♫ mutes/unmutes; 🎧 lets the
-   visitor play their own local file instead (object URL — never uploaded). */
+/* Playlist player. ON by default and it TRIES to start on arrival — but
+   Chrome, Safari, and Firefox all block audible autoplay until the visitor
+   interacts, so the honest behavior is: attempt immediately, and otherwise
+   start on the very first click/keypress anywhere (unless muted last visit).
+   ♫ mutes with a red cross; ⏭ skips; 🎧 adds the visitor's own file (any
+   audio format the browser can decode — object URL, never uploaded). */
 (function musicInit() {
-  const btn = $("#musicBtn"), audio = $("#bgm");
+  const btn = $("#musicBtn"), skipBtn = $("#musicSkip"), audio = $("#bgm");
   const uploadBtn = $("#musicUploadBtn"), fileInput = $("#musicFile");
   if (!btn || !audio) return;
-  let muted = false;
-  try { muted = localStorage.getItem("mg-music") === "off"; } catch (e) { /* default: on */ }
 
+  let tracks = [{ src: "assets/music/track1.mp3", title: "Ce matin-là", artist: "AIR" }];
+  let idx = 0;
+  let muted = false;
+  try { muted = localStorage.getItem("mg-music") === "off"; } catch (e) { /* default on */ }
+
+  const current = () => tracks[idx] || tracks[0];
+  const load = (autoplayWanted) => {
+    const t = current();
+    audio.src = t.src;
+    audio.loop = tracks.length === 1;
+    skipBtn.hidden = tracks.length < 2;
+    skipBtn.title = tracks.length > 1 ? `Next track ⏭ (now: ${t.title}${t.artist ? " · " + t.artist : ""})` : "";
+    if (autoplayWanted && !muted) tryPlay();
+  };
   const paint = () => {
+    btn.classList.toggle("muted", muted);
     btn.setAttribute("aria-pressed", String(!muted));
-    btn.textContent = muted ? "♪" : "♫";
-    btn.title = muted ? "Music muted — click to unmute" : "Background music — click to mute";
+    btn.title = muted ? "Music muted. Click to unmute." : `Music on: ${current().title}${current().artist ? " · " + current().artist : ""} (click to mute)`;
+    btn.dataset.vibe = muted ? "muted right now. One click brings it back" : `now playing: ${current().title}${current().artist ? " · " + current().artist : ""}`;
   };
   const tryPlay = async () => {
     if (muted) return;
-    try { await audio.play(); } catch (e) { /* needs a user gesture — armed below */ }
+    try { await audio.play(); } catch (e) { /* gesture needed — armed below */ }
   };
 
-  paint();
-  tryPlay(); // some browsers allow it (revisits with engagement history)
+  document.addEventListener("mg:content-ready", () => {
+    const list = MG.content?.music?.tracks;
+    if (Array.isArray(list) && list.length) { tracks = list.slice(); load(true); }
+  });
 
-  /* First gesture anywhere starts the loop (once) */
-  const arm = () => { tryPlay(); removeEventListener("pointerdown", arm); removeEventListener("keydown", arm); };
+  paint(); load(true);
+
+  const arm = () => { tryPlay(); };
   addEventListener("pointerdown", arm, { once: true });
   addEventListener("keydown", arm, { once: true });
+
+  audio.addEventListener("ended", () => { idx = (idx + 1) % tracks.length; load(true); paint(); });
 
   btn.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -107,18 +305,21 @@ function syncFx() {
     if (muted) audio.pause(); else tryPlay();
     paint();
   });
-
-  /* Custom track: swap the source for this visit only */
+  skipBtn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    idx = (idx + 1) % tracks.length;
+    load(true); paint();
+  });
   uploadBtn?.addEventListener("click", () => fileInput?.click());
   fileInput?.addEventListener("change", () => {
     const f = fileInput.files[0];
     if (!f) return;
-    audio.src = URL.createObjectURL(f);
+    tracks.push({ src: URL.createObjectURL(f), title: f.name.replace(/\.[a-z0-9]+$/i, ""), artist: "your library" });
+    idx = tracks.length - 1;
     muted = false;
     try { localStorage.setItem("mg-music", "on"); } catch (err) {}
-    paint();
-    tryPlay();
-    uploadBtn.title = `Playing your track: ${f.name} (stays in your browser)`;
+    load(true); paint();
+    uploadBtn.title = `Added ${f.name} to the rotation (stays in your browser)`;
   });
 })();
 
@@ -150,7 +351,7 @@ async function renderPdfInto(shell, url) {
   shell.innerHTML = `<p class="pdf-status">Opening ${url.split("/").pop()}…</p>`;
   let lib;
   try { lib = await pdfReady(); }
-  catch { shell.innerHTML = `<p class="pdf-status">Viewer library blocked — use the download link instead.</p>`; return; }
+  catch { shell.innerHTML = `<p class="pdf-status">Viewer library blocked. Use the download link instead.</p>`; return; }
   let doc;
   try { doc = await lib.getDocument(url).promise; }
   catch (err) {
@@ -160,7 +361,7 @@ async function renderPdfInto(shell, url) {
   shell.innerHTML = "";
   const status = document.createElement("p");
   status.className = "pdf-status";
-  status.textContent = `${doc.numPages} pages — rendering as you scroll.`;
+  status.textContent = `${doc.numPages} pages. They render as you scroll.`;
   shell.appendChild(status);
 
   const pageObserver = new IntersectionObserver(async (entries) => {
@@ -240,7 +441,7 @@ document.addEventListener("click", (e) => {
   if (frameBtn) {
     const wrap = document.createElement("div");
     wrap.innerHTML = `<h3></h3><iframe class="embed-live" style="aspect-ratio:4/5" loading="lazy" allow="fullscreen"></iframe>
-      <p class="muted small">If this frame stays blank the host is refusing to be embedded — use the Share/Direct links on the card.</p>`;
+      <p class="muted small">If this frame stays blank the host is refusing to be embedded, so use the Share or Direct links on the card.</p>`;
     wrap.querySelector("h3").textContent = frameBtn.dataset.title;
     wrap.querySelector("iframe").src = frameBtn.dataset.frame;
     openModal(wrap);
@@ -318,12 +519,38 @@ document.addEventListener("click", async (e) => {
   reader.className = "doc-reader";
   const note = document.createElement("p");
   note.className = "doc-reader-note";
-  note.textContent = "View-only reader — this work is shared to be read here, not redistributed.";
+  note.textContent = "View-only reader. This work is shared to be read here, not redistributed.";
   wrap.append(h, reader, note);
   protectReader(reader);
   openModal(wrap);
   try { await renderDocInto(reader, viewBtn.dataset.doc); }
   catch (err) { reader.textContent = `Couldn't open this document (${err.message}).`; }
+});
+
+/* ============ INDIVIDUALISM — assessment poster viewer ================
+   Opens a personality-assessment poster (a self-contained same-origin HTML
+   file) inside a scrollable, view-only iframe. No download affordance here;
+   the honest note says the source lives in the public repo either way.
+   Sandbox = allow-scripts only, so the framed poster runs its own animations
+   but can't reach this page's storage or DOM. */
+document.addEventListener("click", (e) => {
+  const openBtn = e.target.closest(".assessment-open");
+  if (!openBtn) return;
+  const wrap = document.createElement("div");
+  wrap.className = "assessment-viewer";
+  const h = document.createElement("h3");
+  h.textContent = openBtn.dataset.title;
+  const frame = document.createElement("iframe");
+  frame.className = "assessment-frame";
+  frame.loading = "lazy";
+  frame.setAttribute("sandbox", "allow-scripts");
+  frame.title = openBtn.dataset.title || "Personality assessment poster";
+  frame.src = openBtn.dataset.assessment;
+  const note = document.createElement("p");
+  note.className = "doc-reader-note";
+  note.textContent = "Scroll to read the whole profile. View-only here; the source poster lives in the public repo if you go looking.";
+  wrap.append(h, frame, note);
+  openModal(wrap);
 });
 
 /* ====================== ARCADE FACADES ================================= */
@@ -334,14 +561,34 @@ document.addEventListener("click", (e) => {
   const f = e.target.closest(".facade[data-embed], .facade[data-open]");
   if (!f) return;
   const embed = f.dataset.embed;
+  if (embed && MG.layout?.arcade === "newtab" && f.dataset.open) {
+    window.open(f.dataset.open, "_blank", "noopener");
+    return;
+  }
   if (embed) {
+    const shell = document.createElement("div");
+    shell.className = "embed-shell";
     const frame = document.createElement("iframe");
     frame.className = "embed-live";
     frame.loading = "lazy";
     frame.allow = "fullscreen; autoplay; gamepad";
     frame.src = embed;
-    frame.title = f.getAttribute("aria-label") || "Embedded project";
-    f.replaceWith(frame);
+    frame.title = f.getAttribute("aria-label") || "Embedded project preview";
+    shell.appendChild(frame);
+    f.replaceWith(shell);
+    /* If the host silently refuses framing, the frame never paints. We can't
+       read cross-origin state, so after a patient window we show the honest
+       fallback message the brief asked for — the Open link stays either way. */
+    let loaded = false;
+    frame.addEventListener("load", () => { loaded = true; });
+    setTimeout(() => {
+      if (!loaded) {
+        const fail = document.createElement("div");
+        fail.className = "embed-fail";
+        fail.textContent = "Cannot show the preview right now. Please try again later, or use “Open in new tab”.";
+        frame.replaceWith(fail);
+      }
+    }, 9000);
   } else if (f.dataset.open) {
     window.open(f.dataset.open, "_blank", "noopener");
   }
@@ -415,7 +662,7 @@ $("#pulseRefresh")?.addEventListener("click", async (e) => {
     }
   } catch (err) { /* soft-fail */ }
 
-  btn.textContent = okAny ? "↻ Refresh live chips" : "↻ Refresh failed — rate limit? Try later";
+  btn.textContent = okAny ? "↻ Refresh live chips" : "↻ Refresh failed. Rate limit? Try again later";
   btn.disabled = false;
 });
 
@@ -436,9 +683,9 @@ $("#pulseRefresh")?.addEventListener("click", async (e) => {
           toUsd: x => x / MG.rates.perUsd[it.id],
           fromUsd: x => x * MG.rates.perUsd[it.id]
         };
-      } else if (MG.rates.usdPerUnit[it.id] !== undefined) {
+      } else if (MG.rates.usdPerUnit[it.id] !== undefined && !it.noCalc) {
         u[it.id] = {
-          label: it.coingeckoId ? `${it.label} (crypto)` : `${it.label} (snapshot)`,
+          label: it.coingeckoId ? `${it.label} (crypto)` : (it.group === "indices" ? `${it.label} (index level — notional)` : `${it.label} (benchmark)`),
           toUsd: x => x * MG.rates.usdPerUnit[it.id],
           fromUsd: x => x / MG.rates.usdPerUnit[it.id]
         };
@@ -488,7 +735,15 @@ $("#tvLoad")?.addEventListener("click", (e) => {
 /* Same-origin fetch: the deployed Pages site serves its own source, so this
    works even with the repo private (raw.githubusercontent needs auth there).
    admin.html ships no secrets — auth is a per-session PAT, never stored. */
-const TERMINAL_FILES = ["index.html", "styles.css", "themes.css", "script.js", "content-loader.js", "admin.html"];
+const TERMINAL_FILES = [
+  "index.html", "styles.css", "themes.css", "script.js", "content-loader.js",
+  "admin.html", "content.json", "finance.json", "scripts/update-pulse.mjs",
+  ".github/workflows/pages.yml", ".github/workflows/market-pulse.yml",
+  "README.md", "SECURITY.md", "superprompt-changelog.md",
+  "Cursor_Superprompt_Handover.txt", "Grok_Superprompt_RepoScout.txt",
+  "vendor/fuse/PROVENANCE.md", "vendor/mammoth/PROVENANCE.md", "vendor/xlsx/PROVENANCE.md",
+  "assets/music/README.md", ".gitignore", ".stylelintrc.json", ".codacy.yml"
+];
 (async function terminals() {
   const row = $("#github-terminals");
   if (!row) return;
@@ -517,12 +772,29 @@ const TERMINAL_FILES = ["index.html", "styles.css", "themes.css", "script.js", "
 })();
 
 /* ======================= POSTS CAROUSEL BUTTONS ======================== */
+(function terminalCarousel() {
+  const row = $("#github-terminals");
+  if (!row) return;
+  const step = () => Math.min(320, row.clientWidth * 0.8);
+  $(".terminals-carousel .t-prev")?.addEventListener("click", () => row.scrollBy({ left: -step(), behavior: prefersReduced ? "auto" : "smooth" }));
+  $(".terminals-carousel .t-next")?.addEventListener("click", () => row.scrollBy({ left: step(), behavior: prefersReduced ? "auto" : "smooth" }));
+})();
+
 (function carousel() {
   const track = $("#projectTrack");
   if (!track) return;
   const step = () => Math.min(340, track.clientWidth * 0.8);
   $(".posts-carousel .prev")?.addEventListener("click", () => track.scrollBy({ left: -step(), behavior: prefersReduced ? "auto" : "smooth" }));
   $(".posts-carousel .next")?.addEventListener("click", () => track.scrollBy({ left: step(), behavior: prefersReduced ? "auto" : "smooth" }));
+})();
+
+/* Clawmaxxing research row: its own left-right scroll */
+(function clawCarousel() {
+  const track = $("#clawTrack");
+  if (!track) return;
+  const step = () => Math.min(340, track.clientWidth * 0.8);
+  $(".claw-prev")?.addEventListener("click", () => track.scrollBy({ left: -step(), behavior: prefersReduced ? "auto" : "smooth" }));
+  $(".claw-next")?.addEventListener("click", () => track.scrollBy({ left: step(), behavior: prefersReduced ? "auto" : "smooth" }));
 })();
 
 /* ========================= PIXEL ART STUDIO ============================
@@ -657,6 +929,49 @@ const TERMINAL_FILES = ["index.html", "styles.css", "themes.css", "script.js", "
   });
 })();
 
+/* ═════════ MILESTONES — buttons that borrow other themes' colors ═════════ */
+(function milestones() {
+  const row = $("#milestoneRow");
+  if (!row) return;
+  document.addEventListener("mg:content-ready", () => {
+    const items = MG.content?.milestones || [];
+    const themes = MG.content?.themes || [];
+    row.innerHTML = "";
+    items.forEach((m, i) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "milestone-btn";
+      const lab = document.createElement("span");
+      lab.className = "ms-label"; lab.textContent = `${m.icon} ${m.label}`;
+      const sub = document.createElement("span");
+      sub.className = "ms-sub"; sub.textContent = m.sub || m.detail || "";
+      b.append(lab, sub);
+      b.title = m.detail || "";
+      let ti = (i * 5) % Math.max(1, themes.length);
+      b.addEventListener("click", () => {
+        ti = (ti + 1) % themes.length;
+        b.style.setProperty("--ms-bg", themes[ti].swatch);
+        b.style.setProperty("--ms-text", "#fff");
+        b.title = `${m.detail || ""} · wearing: ${themes[ti].label}`;
+      });
+      row.appendChild(b);
+    });
+  });
+})();
+
+/* Dock rail: arrow buttons + start centered on the active theme */
+(function dockRail() {
+  const rail = $("#dockOrbs");
+  if (!rail) return;
+  const step = () => (rail.clientHeight || 200) * 0.6;
+  const go = (dir) => rail.scrollBy({ top: dir * step(), behavior: prefersReduced ? "auto" : "smooth" });
+  $("#dockScrollUp")?.addEventListener("click", () => go(-1));
+  $("#dockScrollDown")?.addEventListener("click", () => go(1));
+  document.addEventListener("mg:content-ready", () => {
+    const cur = rail.querySelector('.theme-orb[aria-pressed="true"]');
+    if (cur) rail.scrollTop = Math.max(0, cur.offsetTop - rail.clientHeight / 2 + 15);
+  });
+})();
+
 /* ============================ SITE SEARCH ==============================
    Fuse.js 7.5.0 (Apache-2.0, vendored at /vendor/fuse/) loads lazily on the
    first open via dynamic import; if it can't load, a built-in substring
@@ -672,14 +987,21 @@ const TERMINAL_FILES = ["index.html", "styles.css", "themes.css", "script.js", "
     const MG = window.MG || {};
     const out = [
       { kind: "Section", title: "Introduction & Resume", text: "resume pdf bio maximiliano garcia", href: "#introduction" },
-      { kind: "Section", title: "Programming Works", text: "source code mini terminals live repo", href: "#programming" },
-      { kind: "Section", title: "Posts", text: "haas hall university of arkansas nwti reports", href: "#posts" },
+      { kind: "Section", title: "Website Programming Work", text: "source code mini terminals live repo themes", href: "#programming" },
+      { kind: "Section", title: "Articles & Posts", text: "haas hall university of arkansas nwti reports linkedin", href: "#posts" },
       { kind: "Section", title: "The Financial Liberty Project", text: "alternative investments market pulse research", href: "#finance" },
       { kind: "Section", title: "Games & Projects Arcade", text: "pixel art studio games apps", href: "#arcade" },
+      { kind: "Section", title: "Individualism", text: "personality assessment ipip big five openness poster", href: "#individualism" },
       { kind: "Section", title: "Connect", text: "linktree links socials", href: "#connect" }
     ];
     (MG.content?.projects || []).forEach(p => out.push({
       kind: "Post", title: p.title || "", text: [p.subtitle, p.description].filter(Boolean).join(" "), href: "#posts"
+    }));
+    (MG.content?.clawmaxxing?.papers || []).forEach(p => out.push({
+      kind: "Clawmaxxing", title: p.title || "", text: p.description || "", href: "#posts", searchId: p.id
+    }));
+    (MG.content?.assessments || []).forEach(a => out.push({
+      kind: "Individualism", title: a.title || "", text: [a.subtitle, a.detail].filter(Boolean).join(" "), href: "#individualism", searchId: a.id
     }));
     (MG.content?.arcade || []).forEach(g => out.push({
       kind: g.kind === "soon" ? "Coming soon" : "Arcade", title: g.title || "",
@@ -693,8 +1015,8 @@ const TERMINAL_FILES = ["index.html", "styles.css", "themes.css", "script.js", "
     (MG.finance?.researchDesk || []).forEach(g => (g.links || []).forEach(l => out.push({
       kind: "Research Desk", title: l.label || l.title || "", text: g.group || g.title || "", external: l.url || l.href
     })));
-    document.querySelectorAll(".tree-link").forEach(a => out.push({
-      kind: "Connect", title: (a.textContent || "").trim().replace(/\s+/g, " "), text: "connect link", external: a.href
+    document.querySelectorAll(".reach-bar .link-btn, .techno-tree a").forEach(a => out.push({
+      kind: "Connect", title: (a.getAttribute("aria-label") || a.textContent || "").trim().replace(/\s+/g, " "), text: "connect link", external: a.href
     }));
     return out;
   }
@@ -713,7 +1035,7 @@ const TERMINAL_FILES = ["index.html", "styles.css", "themes.css", "script.js", "
       if (note) note.textContent = "Fuzzy search · Fuse.js 7.5.0 (vendored, Apache-2.0)";
     } catch (_) {
       fuse = null;
-      if (note) note.textContent = "Basic search (Fuse.js unavailable — substring fallback)";
+      if (note) note.textContent = "Basic search (Fuse.js unavailable, substring fallback)";
     }
   }
 
@@ -732,7 +1054,7 @@ const TERMINAL_FILES = ["index.html", "styles.css", "themes.css", "script.js", "
   function run(q) {
     results.innerHTML = "";
     if (!q || q.trim().length < 2) {
-      results.innerHTML = `<div class="search-empty">Type at least two characters — works, projects, links, sections.</div>`;
+      results.innerHTML = `<div class="search-empty">Type at least two characters to search works, projects, links, and sections.</div>`;
       return;
     }
     const found = (fuse ? fuse.search(q) : fallbackSearch(q)).slice(0, 12);

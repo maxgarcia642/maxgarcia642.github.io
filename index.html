@@ -3,44 +3,51 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Maximiliano Garcia — Portfolio</title>
-  <meta name="description" content="Maximiliano Garcia — a shapeshifting portfolio: 10 full themes, verified financial research with honesty flags, playable projects, and a pixel art studio." />
+  <title>Maximiliano Garcia · Portfolio</title>
+  <meta name="description" content="Maximiliano Garcia. A shapeshifting portfolio with fifty living themes, a Top 50 market pulse with converter, verified financial research with honesty flags, playable projects, and a pixel art studio." />
 
   <!--
-    Meta CSP: reduces XSS surface on GitHub Pages. Honest limits (documented in
-    SECURITY.md): frame-ancestors / report-uri / sandbox are IGNORED in meta form,
-    so clickjacking protection needs real headers (Cloudflare Pages migration).
+    Meta CSP: reduces XSS surface on GitHub Pages. Honest limits (SECURITY.md):
+    frame-ancestors / report-uri / sandbox are IGNORED in meta form, so
+    clickjacking protection needs real headers (Cloudflare Pages migration).
     The sha256 hash authorizes EXACTLY the FOUC guard below and nothing else.
-    If you edit that script (even whitespace), recompute: hash the UTF-8 bytes
-    of the inline script's content (open tag to close tag, exclusive), LF endings.
+    If you edit that script (even whitespace), recompute the hash.
   -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    script-src 'self' https://cdnjs.cloudflare.com 'sha256-rM9WDd90BP7S9knSyt6YY/ecKiUhAPBsC4dz8No8Yxo=';
+    script-src 'self' https://cdnjs.cloudflare.com 'sha256-iFe9HotxWII07hQ7aSCVe3Cs0lJCmPa+Yia6U61xZ4s=';
     style-src 'self' https://fonts.googleapis.com 'unsafe-inline';
     font-src https://fonts.gstatic.com;
     img-src 'self' data: blob: https://api.microlink.io https://*.microlink.io;
-    frame-src https://itch.io https://*.itch.io https://nwaero.netlify.app https://*.bolt.host https://*.vercel.app https://s.tradingview.com https://drive.google.com https://onedrive.live.com;
+    frame-src 'self' https://itch.io https://*.itch.io https://nwaero.netlify.app https://*.bolt.host https://*.vercel.app https://s.tradingview.com https://drive.google.com https://onedrive.live.com;
     connect-src 'self' https://api.github.com https://api.coingecko.com https://api.frankfurter.dev https://api.frankfurter.app https://cdnjs.cloudflare.com;
     media-src 'self' blob:;
     object-src 'none';
     base-uri 'self';
   ">
 
-  <!-- FOUC guard: apply saved theme + music preference before first paint -->
+  <!-- FOUC guard: saved theme (with legacy-id migration) + Layout Settings, before first paint -->
   <script>
     (function () {
       try {
+        var MAP = { aurora: 'indigo', clay: 'coral', swiss: 'bauhaus', midnight: 'noir' };
         var t = localStorage.getItem('mg-theme');
+        if (t && MAP[t]) { t = MAP[t]; localStorage.setItem('mg-theme', t); }
         if (t) document.documentElement.setAttribute('data-theme', t);
-      } catch (e) { /* storage blocked — default theme stands */ }
+        var L = JSON.parse(localStorage.getItem('mg-layout') || '{}');
+        if (L.motion) document.documentElement.setAttribute('data-motion', L.motion);
+        if (L.width) document.documentElement.setAttribute('data-width', L.width);
+        if (L.corners) document.documentElement.setAttribute('data-corners', L.corners);
+        var FS = { s: '.92', m: '1', l: '1.12' };
+        if (L.font && FS[L.font]) document.documentElement.style.setProperty('--user-font-scale', FS[L.font]);
+      } catch (e) { /* storage blocked — defaults stand */ }
     })();
   </script>
 
-  <!-- Fonts for all 10 themes (swap keeps first paint fast) -->
+  <!-- Font pool for all 50 themes (swap keeps first paint fast) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Nunito:wght@400;800&family=Playfair+Display:wght@600&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Nunito:wght@400;800&family=Playfair+Display:wght@600&family=Press+Start+2P&family=Sora:wght@400;700&family=Lora:wght@400;600&family=Quicksand:wght@500;700&family=Orbitron:wght@500;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="themes.css">
@@ -66,35 +73,47 @@
         </svg>
         <div class="brand-text">
           <div class="title">Maximiliano Garcia</div>
-          <div class="subtitle">Portfolio · Patience pays 🦞</div>
+          <div class="subtitle">Portfolio · Code shipped, research proven, games played 🌎</div>
         </div>
       </a>
       <nav class="main-nav" aria-label="Main navigation">
         <a class="nav-pill" href="#introduction">Introduction</a>
         <a class="nav-pill" href="#programming">Programming</a>
-        <a class="nav-pill" href="#posts">Posts</a>
+        <a class="nav-pill" href="#posts">Articles</a>
         <a class="nav-pill" href="#finance">Financial Liberty</a>
-        <a class="nav-pill" href="#arcade">Arcade</a>
+        <a class="nav-pill" href="#arcade">Projects</a>
+        <a class="nav-pill" href="#individualism">Individualism</a>
         <a class="nav-pill" href="#connect">Connect</a>
         <button class="nav-pill" id="searchBtn" type="button" aria-haspopup="dialog" title="Search the site ( / )">🔎 Search</button>
-        <a class="nav-pill admin" href="admin.html">⚙️ Admin</a>
+        <a class="nav-pill admin" href="admin.html">⚙️ Layout Settings</a>
       </nav>
     </div>
   </header>
 
-  <!-- Theme dock: the signature element. 10 orbs + music toggle. -->
+  <!-- Theme dock: 50 circles in a scrollable rail + a fixed control cluster below. -->
   <nav class="theme-dock" id="themeDock" aria-label="Theme and music controls">
-    <!-- orbs injected by script.js from content.json -->
-    <div class="dock-divider" role="presentation"></div>
-    <button class="music-btn" id="musicBtn" type="button" aria-pressed="false"
-            aria-label="Mute or unmute background music" title="Background music — click to mute/unmute">♫</button>
-    <button class="music-btn" id="musicUploadBtn" type="button"
-            aria-label="Play your own audio track instead" title="Play your own track (stays in your browser — never uploaded)">🎧</button>
-    <input type="file" id="musicFile" accept="audio/*" hidden>
+    <div class="dock-orbs" id="dockOrbs" aria-label="Fifty themes, ordered like a color wheel. Scroll for more."></div>
+    <button class="dock-scroll" id="dockScrollUp" type="button" aria-label="Scroll themes up" title="More themes above">▲</button>
+    <button class="dock-scroll" id="dockScrollDown" type="button" aria-label="Scroll themes down" title="More themes below">▼</button>
+    <div class="dock-controls">
+      <div class="dock-divider" role="presentation"></div>
+      <button class="music-btn studio-btn" id="studioBtn" type="button" aria-haspopup="dialog"
+              data-label="Theme Studio" data-vibe="paint your own theme, save it to the dock, and export it as real CSS"
+              aria-label="Open the Theme Studio and paint your own theme" title="Theme Studio: paint your own theme 🖌️">🖌️</button>
+      <button class="music-btn" id="musicBtn" type="button" aria-pressed="true"
+              data-label="Music" data-vibe="one click mutes or unmutes the background track"
+              aria-label="Mute or unmute background music" title="Music is on. Click to mute.">♫</button>
+      <button class="music-btn" id="musicSkip" type="button"
+              data-label="Skip" data-vibe="jump to the next track in the rotation"
+              aria-label="Skip to the next track" title="Next track ⏭">⏭</button>
+      <button class="music-btn" id="musicUploadBtn" type="button"
+              data-label="Add your own track" data-vibe="any audio format your browser can play. It stays on your device"
+              aria-label="Add your own audio track to the rotation" title="Add your own track. Any audio format, and it stays in your browser.">🎧</button>
+      <input type="file" id="musicFile" accept="audio/*" hidden>
+    </div>
   </nav>
-  <audio id="bgm" loop preload="none">
-    <source src="assets/music/track1.mp3" type="audio/mpeg">
-  </audio>
+  <div class="dock-tip" id="dockTip" role="status" aria-live="polite" hidden></div>
+  <audio id="bgm" preload="none"></audio>
 
   <main id="main" tabindex="-1">
 
@@ -103,14 +122,10 @@
       <div class="card card-intro">
         <span class="eyebrow">Introduction</span>
         <h1 id="introTitle">👋 Hello and Welcome to My Website!</h1>
-        <p class="lead" id="introDesc">
-          This is my personal portfolio where I share programming projects, verified financial research,
-          playable projects, and a pixel art studio. Pick a theme from the dock — every one is a full
-          personality, not a palette swap.
-        </p>
+        <p class="lead" id="introDesc"></p>
         <div class="resume-wrap">
           <h2>Resume</h2>
-          <p class="muted small">Rendered page-by-page with a self-hosted PDF.js viewer — pages draw only as you scroll to them, so big documents never choke the page.</p>
+          <p class="muted small">Rendered page by page with a lazy PDF viewer, so big documents never choke the page.</p>
           <div class="pdf-shell" id="resumeShell" data-pdf="files/Maximiliano_Garcia_Resume.pdf">
             <p class="pdf-status">Resume viewer loads when this section scrolls into view…</p>
           </div>
@@ -122,32 +137,43 @@
       </div>
     </section>
 
-    <!-- PROGRAMMING — deliberately tiny now: the site itself is the exhibit -->
+    <!-- WEBSITE PROGRAMMING WORK -->
     <section id="programming" class="section reveal" data-accent="ocean">
       <div class="card card-programming">
-        <span class="eyebrow">Programming</span>
-        <h2 id="progTitle">💻 Programming Works</h2>
-        <p class="lead small" id="progDesc">
-          This whole site is the exhibit — themes, viewer, arcade, and admin are all in the open repo.
-          These mini-terminals pull the live source straight from GitHub; click one to read it full-size.
-        </p>
-        <div class="terminals-row" id="github-terminals"><!-- injected --></div>
+        <span class="eyebrow">Under the hood</span>
+        <h2 id="progTitle">💻 Website Programming Work</h2>
+        <p class="lead small" id="progDesc"></p>
+        <div class="terminals-carousel">
+          <button class="carousel-btn btn ghost t-prev" aria-label="Scroll terminals left">‹</button>
+          <div class="terminals-row" id="github-terminals"><!-- injected --></div>
+          <button class="carousel-btn btn ghost t-next" aria-label="Scroll terminals right">›</button>
+        </div>
+        <p class="muted small" id="progCredit"></p>
+        <div class="milestone-row" id="milestoneRow" aria-label="Site milestones. Click any to cycle its colors."><!-- injected --></div>
       </div>
     </section>
 
-    <!-- ARTICLES & PROJECTS -->
+    <!-- ARTICLES & POSTS -->
     <section id="posts" class="section reveal" data-accent="grass">
       <div class="card card-posts">
         <span class="eyebrow">Reports</span>
-        <h2 id="postsTitle">📁 Articles &amp; Projects</h2>
-        <p class="lead small" id="postsDesc">
-          Project reports and updates. Large PDFs open in the on-site viewer — the old
-          “file too large to embed” redirect is retired.
-        </p>
+        <h2 id="postsTitle">📁 Articles &amp; Posts</h2>
+        <p class="lead small" id="postsDesc"></p>
         <div class="posts-carousel" aria-roledescription="carousel">
-          <button class="carousel-btn btn ghost prev" aria-label="Previous project">‹</button>
+          <button class="carousel-btn btn ghost prev" aria-label="Previous article">‹</button>
           <div class="carousel-track" role="list" id="projectTrack"><!-- injected --></div>
-          <button class="carousel-btn btn ghost next" aria-label="Next project">›</button>
+          <button class="carousel-btn btn ghost next" aria-label="Next article">›</button>
+        </div>
+
+        <!-- Clawmaxxing research row: its own left-right scroll, still inside Articles & Posts -->
+        <div class="claw-row-wrap" id="clawRow" hidden>
+          <h3 class="claw-row-title" id="clawTitle"></h3>
+          <p class="lead small claw-row-desc" id="clawDesc"></p>
+          <div class="posts-carousel" aria-roledescription="carousel">
+            <button class="carousel-btn btn ghost claw-prev" aria-label="Previous Clawmaxxing paper">‹</button>
+            <div class="carousel-track" role="list" id="clawTrack"><!-- injected --></div>
+            <button class="carousel-btn btn ghost claw-next" aria-label="Next Clawmaxxing paper">›</button>
+          </div>
         </div>
       </div>
     </section>
@@ -157,18 +183,20 @@
       <div class="card card-finance">
         <span class="eyebrow">Research with receipts</span>
         <h2 id="finTitle">💸 The Financial Liberty Project</h2>
-        <p class="lead small" id="finTagline"><!-- injected --></p>
+        <p class="lead small" id="finTagline"></p>
 
-        <div class="pulse-meta">
-          <h3 style="margin:0">Market Pulse</h3>
-          <button class="btn ghost" type="button" id="pulseRefresh" title="Refreshes crypto (CoinGecko) and FX (Frankfurter/ECB) chips live">↻ Refresh live chips</button>
-          <span class="muted small" id="pulseAsOf"></span>
-        </div>
-        <div class="pulse-strip" id="pulseStrip"><!-- injected --></div>
-        <p class="muted small" id="pulseNote"></p>
+        <details class="research-desk pulse-wrap">
+          <summary>📊 Market Pulse: Top 50 <span class="sum-sub">crypto · currencies · metals &amp; energy · crops · indices</span></summary>
+          <div class="pulse-meta">
+            <button class="btn ghost" type="button" id="pulseRefresh" title="Refreshes crypto (CoinGecko) and currency (Frankfurter/ECB) chips live; benchmark chips refresh daily via this repo's CI">↻ Refresh live chips</button>
+            <span class="muted small" id="pulseAsOf"></span>
+          </div>
+          <div id="pulseGroups"><!-- five grouped strips injected --></div>
+          <p class="muted small" id="pulseNote"></p>
+        </details>
 
         <details class="research-desk pulse-calc-wrap">
-          <summary>🧮 Converter — currencies, crypto & commodities</summary>
+          <summary>🧮 Converter for all 50: currencies, crypto, metals, energy, crops &amp; indices</summary>
           <div class="pulse-calc" id="pulseCalc">
             <div class="calc-row">
               <input type="number" id="calcAmount" value="100" min="0" step="any" aria-label="Amount to convert">
@@ -177,15 +205,15 @@
               <select id="calcTo" aria-label="Convert to"></select>
               <button class="btn" type="button" id="calcSwap" title="Swap units">⇄</button>
             </div>
-            <p class="calc-result" id="calcResult" aria-live="polite">Pick units above — rates come from the pulse chips.</p>
-            <p class="muted small" id="calcNote">Uses the latest chip values (press “Refresh live chips” for current crypto/FX). Commodity legs use the dated snapshot settles above — context, not a quote feed.</p>
+            <p class="calc-result" id="calcResult" aria-live="polite">Pick units above. Rates come straight from the pulse chips.</p>
+            <p class="muted small" id="calcNote">Every unit above routes through USD using the chip values (press ↻ for live crypto and FX). Index legs are notional, since you can't buy "one S&amp;P", and VIX and the 10-yr yield sit out of the converter on purpose.</p>
           </div>
         </details>
 
         <div class="finance-grid" id="financeGrid"><!-- injected --></div>
 
         <details class="research-desk">
-          <summary>🗄️ Research Desk — the live-data redirects, kept and organized</summary>
+          <summary>🗄️ Research Desk: the live-data redirects, kept and organized</summary>
           <div class="desk-grid" id="deskGrid"><!-- injected --></div>
           <div class="desk-group" style="margin-top:12px">
             <h4>📊 TradingView</h4>
@@ -201,11 +229,7 @@
       <div class="card card-arcade">
         <span class="eyebrow">Playable</span>
         <h2 id="arcadeTitle">🕹️ Games &amp; Projects Arcade</h2>
-        <p class="lead small" id="arcadeDesc">
-          Pixel Art Studio Max is live first — paint right here. Everything else loads on click
-          (never on page load), with an open-in-new-tab escape hatch always visible because some hosts
-          block framing without warning.
-        </p>
+        <p class="lead small" id="arcadeDesc"></p>
         <div class="arcade-grid" id="arcadeGrid">
           <!-- Featured inline studio -->
           <div class="arcade-card featured" id="pixelStudioCard">
@@ -245,51 +269,91 @@
       </div>
     </section>
 
+    <!-- INDIVIDUALISM · PERSONALITY ASSESSMENTS -->
+    <section id="individualism" class="section reveal" data-accent="violet">
+      <div class="card card-individualism">
+        <span class="eyebrow">Who's answering</span>
+        <h2 id="individualismTitle">🧭 Individualism</h2>
+        <p class="lead small" id="individualismDesc"></p>
+        <div class="assessment-grid" id="assessmentGrid"><!-- injected --></div>
+      </div>
+    </section>
+
     <!-- CONNECT -->
     <section id="connect" class="section reveal" data-accent="blue">
       <div class="card card-connect">
         <span class="eyebrow">Connect</span>
-        <h2 id="connectTitle">🪴 Connect</h2>
-        <p class="lead small" id="connectDesc">
-          Everything meets at the Linktree — or take the direct branches below.
-        </p>
+        <h2 id="connectTitle">🌳 Connect</h2>
+        <p class="lead small" id="connectDesc"></p>
 
-        <!-- The trunk: Linktree hero (Linktree refuses iframes, so this IS the preview) -->
-        <a class="linktree-hero" href="https://linktr.ee/maxgarcia642" target="_blank" rel="noopener">
-          <span class="lt-canopy" aria-hidden="true">🌳</span>
-          <span class="lt-text">
+        <!-- The techno tree: theme-aware, and every node is a real link.
+             (Linktree refuses iframes — verified — so the tree IS the preview.) -->
+        <div class="techno-tree" id="connectTree">
+          <svg viewBox="0 0 520 452" role="img" aria-label="Connection tree. Every glowing node is a live link." focusable="false">
+            <defs>
+              <linearGradient id="tt-trunk" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0" class="tt-stop-deep"/><stop offset="1" class="tt-stop-accent"/>
+              </linearGradient>
+              <radialGradient id="tt-glow" cx="50%" cy="40%" r="62%">
+                <stop offset="0" class="tt-stop-glow1"/>
+                <stop offset=".55" class="tt-stop-glow2"/>
+                <stop offset="1" class="tt-stop-glow3"/>
+              </radialGradient>
+            </defs>
+            <ellipse class="tt-halo" cx="260" cy="170" rx="218" ry="152" fill="url(#tt-glow)"/>
+            <g class="tt-canopy">
+              <g class="tt-foliage">
+                <circle cx="260" cy="160" r="78"/><circle cx="150" cy="192" r="52"/>
+                <circle cx="372" cy="192" r="52"/><circle cx="198" cy="146" r="42"/>
+                <circle cx="322" cy="146" r="42"/><circle cx="260" cy="104" r="56"/>
+              </g>
+              <path class="tt-roots" fill="none" stroke-linecap="round"
+                d="M260 400 C 232 414 206 419 184 415 M260 400 C 288 414 314 419 336 415 M260 402 C 248 420 238 426 226 429 M260 402 C 272 420 282 426 294 429"/>
+              <path class="tt-branches" fill="none" stroke="url(#tt-trunk)" stroke-width="16" stroke-linecap="round"
+                d="M260 400 V 235 M260 300 C 200 270 165 235 140 185 M260 300 C 320 270 355 235 380 185 M260 250 C 225 220 205 195 195 150 M260 250 C 295 220 315 195 325 150 M260 235 V 120"/>
+              <path class="tt-flow" fill="none" stroke-linecap="round"
+                d="M260 400 V 235 M260 300 C 200 270 165 235 140 185 M260 300 C 320 270 355 235 380 185 M260 250 C 225 220 205 195 195 150 M260 250 C 295 220 315 195 325 150 M260 235 V 120"/>
+              <g class="tt-fireflies">
+                <circle cx="120" cy="120" r="3"/><circle cx="402" cy="140" r="2.5"/>
+                <circle cx="310" cy="70" r="2"/><circle cx="180" cy="84" r="2.5"/><circle cx="430" cy="250" r="2"/>
+              </g>
+              <g class="tt-pulse">
+                <circle cx="260" cy="112" r="30"/><circle cx="260" cy="112" r="44"/>
+              </g>
+              <a class="tt-node" href="https://www.linkedin.com/in/maximiliano-garcia642/" target="_blank" rel="noopener" aria-label="LinkedIn: project blogs and professional updates">
+                <title>LinkedIn: project blogs &amp; updates</title>
+                <circle cx="140" cy="185" r="19"></circle><text x="140" y="186">💼</text>
+              </a>
+              <a class="tt-node" href="https://github.com/maxgarcia642" target="_blank" rel="noopener" aria-label="GitHub, including this very site">
+                <title>GitHub, including this very site</title>
+                <circle cx="380" cy="185" r="19"></circle><text x="380" y="186">🐙</text>
+              </a>
+              <a class="tt-node" href="https://www.youtube.com/@maxgarcia642" target="_blank" rel="noopener" aria-label="YouTube: @maxgarcia642">
+                <title>YouTube: @maxgarcia642</title>
+                <circle cx="195" cy="150" r="16"></circle><text x="195" y="151">📺</text>
+              </a>
+              <a class="tt-node" href="https://joinhandshake.com" target="_blank" rel="noopener" aria-label="Handshake: early-career profile">
+                <title>Handshake: early-career profile</title>
+                <circle cx="325" cy="150" r="16"></circle><text x="325" y="151">🤝</text>
+              </a>
+              <a class="tt-node tt-node-main" href="https://linktr.ee/maxgarcia642" target="_blank" rel="noopener" aria-label="Linktree: every branch in one place">
+                <title>Linktree: every branch in one place</title>
+                <circle cx="260" cy="112" r="23"></circle><text x="260" y="113">🌳</text>
+              </a>
+            </g>
+          </svg>
+          <a class="tt-label" href="https://linktr.ee/maxgarcia642" target="_blank" rel="noopener">
             <strong>linktr.ee/maxgarcia642</strong>
-            <span class="sub">The one link that holds all the others — socials, projects, everything, always current.</span>
-          </span>
-          <span class="arrow" aria-hidden="true">→</span>
-        </a>
-
-        <!-- The branches -->
-        <div class="tree-links">
-          <a class="tree-link" href="https://www.linkedin.com/in/maximiliano-garcia642/" target="_blank" rel="noopener">
-            <span>💼 LinkedIn <span class="sub">Professional updates &amp; project blogs — maximiliano-garcia642</span></span><span class="arrow">→</span>
-          </a>
-          <a class="tree-link" href="https://github.com/maxgarcia642" target="_blank" rel="noopener">
-            <span>🐙 GitHub <span class="sub">The code — including this very site</span></span><span class="arrow">→</span>
-          </a>
-          <a class="tree-link" href="https://www.youtube.com/@maxgarcia642" target="_blank" rel="noopener">
-            <span>📺 YouTube <span class="sub">@maxgarcia642 — walkthroughs and build logs, content coming</span></span><span class="arrow">→</span>
-          </a>
-          <a class="tree-link" href="https://joinhandshake.com" target="_blank" rel="noopener">
-            <span>🤝 Handshake <span class="sub">Early-career profile — say hello</span></span><span class="arrow">→</span>
-          </a>
-          <a class="tree-link" href="mailto:maxgarcia642@gmail.com">
-            <span>✉️ Contact <span class="sub">maxgarcia642@gmail.com · (479) 402-1707 — both on the resume above</span></span><span class="arrow">→</span>
+            <span class="sub">Every node above is a live link, and the tree repaints itself in every theme.</span>
           </a>
         </div>
 
-        <!-- Minimal highlights — a leaf-sized recap, not a repeat -->
-        <div class="leaf-row" aria-label="Highlights">
-          <span class="leaf-chip">🎨 25 themes</span>
-          <span class="leaf-chip">💸 Financial Liberty research</span>
-          <span class="leaf-chip">🕹️ Games &amp; projects</span>
-          <span class="leaf-chip">🦞 Clawmaxxing local-first AI</span>
-          <span class="leaf-chip">🎵 Shuffle Rush on itch.io</span>
+        <!-- Reach me: direct channels only — the tree holds the profiles -->
+        <div class="reach-bar" id="contactCard">
+          <span class="reach-title">✉️ Reach me</span>
+          <a class="link-btn" href="mailto:maxgarcia642@gmail.com">📧 maxgarcia642@gmail.com</a>
+          <a class="link-btn" href="tel:+14794021707">📱 (479) 402-1707</a>
+          <span class="reach-note">Same email and phone as the resume. Email gets the fastest reply, and the profiles live in the tree above.</span>
         </div>
       </div>
     </section>
@@ -298,11 +362,15 @@
 
   <footer class="site-footer">
     <div class="footer-inner container">
-      <p>© 2025 – Present Maximiliano Garcia — GitHub Pages · 25 themes · zero secrets in this repo · Patience pays. 🦞</p>
+      <p class="f-name">Maximiliano Garcia</p>
+      <p class="f-legal">© 2025–2026 Maximiliano Garcia. All rights reserved.</p>
+      <p class="f-line">Designed and built by hand in Northwest Arkansas, United States · Published open source on GitHub Pages.</p>
+      <p class="f-line">The source code is public for study and reference, and reuse requires attribution. Reproduction of written works without permission is prohibited.</p>
+      <p class="f-sig">Patience pays. 🦞</p>
     </div>
   </footer>
 
-  <!-- Shared modal for PDF viewer + arcade expansion -->
+  <!-- Search dialog -->
   <dialog class="modal search-modal" id="searchModal" aria-label="Site search">
     <div class="modal-inner">
       <div class="search-head">
@@ -314,6 +382,81 @@
     </div>
   </dialog>
 
+  <!-- Theme Studio: paint a theme, preview it live, save it to the dock, export real CSS -->
+  <dialog class="modal studio-modal" id="studioModal" aria-label="Theme Studio">
+    <div class="modal-inner">
+      <div class="studio-head">
+        <h3 style="margin:0">🖌️ Theme Studio</h3>
+        <button class="btn ghost modal-close" type="button" id="studioClose">✕</button>
+      </div>
+      <p class="muted small studio-sub">Paint your own theme. It previews live on the page behind this window, saves to your dock in this browser, and exports as the same CSS shape the site's fifty built-ins use.</p>
+      <div class="st-preview" id="stPreview" aria-hidden="true">
+        <span class="st-prev-sky"></span>
+        <span class="st-prev-acc"></span>
+        <span class="st-prev-acc2"></span>
+        <span class="st-prev-card">Aa</span>
+      </div>
+      <label class="st-field st-wide">Theme name<input id="stName" type="text" maxlength="24" placeholder="e.g. Sunset Study" autocomplete="off"></label>
+      <fieldset class="st-group">
+        <legend>🎨 Colors</legend>
+        <div class="studio-grid">
+          <label class="st-field">Sky, top<input id="stBg1" type="color" value="#2a1a4a"></label>
+          <label class="st-field">Sky, bottom<input id="stBg2" type="color" value="#0e0f2e"></label>
+          <label class="st-field">Text<input id="stText" type="color" value="#efe9ff"></label>
+          <label class="st-field">Accent<input id="stAccent" type="color" value="#ff8a5c"></label>
+          <label class="st-field">Accent 2<input id="stAccent2" type="color" value="#ffc46b"></label>
+          <label class="st-field">Card tint<input id="stCard" type="color" value="#241b3e"></label>
+          <label class="st-field">Card opacity<input id="stCardA" type="range" min="25" max="100" value="80"></label>
+        </div>
+        <div class="st-picker" id="stPicker">
+          <div class="st-picker-head">
+            <span class="st-target-dot" id="stTargetDot"></span>
+            <span class="st-target-name" id="stTargetName">Fine-tune: Accent</span>
+            <button class="btn ghost" type="button" id="stEyedrop" hidden>💧 Pick from the page</button>
+          </div>
+          <label class="st-slider">Hue<input id="stH" type="range" min="0" max="360" value="20"></label>
+          <label class="st-slider">Saturation<input id="stS" type="range" min="0" max="100" value="100"></label>
+          <label class="st-slider">Lightness<input id="stL" type="range" min="0" max="100" value="68"></label>
+          <label class="st-slider st-hex">Hex<input id="stHex" type="text" maxlength="7" spellcheck="false" autocomplete="off" value="#ff8a5c"></label>
+          <p class="muted small st-picker-note">Click any color square above to aim these sliders at it.</p>
+        </div>
+      </fieldset>
+      <fieldset class="st-group">
+        <legend>▢ Shape &amp; type</legend>
+        <div class="studio-grid">
+          <label class="st-field">Corner rounding<input id="stRadius" type="range" min="0" max="26" value="16"></label>
+          <label class="st-field">Font pairing<select id="stFont"></select></label>
+          <label class="st-field st-check"><input id="stGloss" type="checkbox"> Glassy gloss sweep on cards</label>
+        </div>
+      </fieldset>
+      <fieldset class="st-group">
+        <legend>☁ Atmosphere</legend>
+        <div class="studio-grid">
+          <label class="st-field">Particle weather<select id="stFx"></select></label>
+          <label class="st-field">Particle color<input id="stFxColor" type="color" value="#ffd9a8"></label>
+          <label class="st-field">Background motion<select id="stAnim">
+            <option value="drift">Slow drift</option><option value="hue">Hue sweep</option><option value="none">Perfectly still</option>
+          </select></label>
+        </div>
+      </fieldset>
+      <div class="studio-actions">
+        <button class="btn" type="button" id="stApply">👁 Preview on the page</button>
+        <button class="btn" type="button" id="stSave">💾 Save to my dock</button>
+        <button class="btn ghost" type="button" id="stExport">⧉ Export code</button>
+        <button class="btn ghost" type="button" id="stRevert" hidden>↩ Stop previewing</button>
+      </div>
+      <div class="studio-saved" id="stSavedRow"></div>
+      <textarea id="stCode" class="studio-code" hidden readonly rows="12" spellcheck="false" aria-label="Exported theme CSS"></textarea>
+      <div class="studio-actions" id="stCodeActions" hidden>
+        <button class="btn ghost" type="button" id="stCopy">Copy CSS</button>
+        <button class="btn ghost" type="button" id="stDownload">Download .css</button>
+        <span class="muted small">Paste into <code>themes.css</code> plus a dock entry in <code>content.json</code> to make it permanent for everyone.</span>
+      </div>
+      <p class="muted small">Saved themes live only in this browser's localStorage. Nothing is uploaded anywhere.</p>
+    </div>
+  </dialog>
+
+  <!-- Shared modal for viewers + arcade expansion -->
   <dialog class="modal" id="modal">
     <div class="modal-inner">
       <button class="btn ghost modal-close" type="button" id="modalClose">✕ Close</button>
@@ -324,14 +467,14 @@
   <!--
     PDF.js 3.11.174 (last UMD build — no module tooling needed on Pages).
     SRI hashes computed from the actual cdnjs files on 2026-07-16.
-    Note: the worker script is set via workerSrc and CANNOT carry an integrity
-    attribute (Worker() has no SRI) — the CSP script-src origin pin is the
-    control there. Documented in SECURITY.md.
+    The worker is set via workerSrc and cannot carry an integrity attribute
+    (Worker() has no SRI) — the CSP script-src origin pin is the control.
   -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
           integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e"
           crossorigin="anonymous" defer></script>
   <script src="content-loader.js" defer></script>
   <script src="script.js" defer></script>
+  <script src="theme-studio.js" defer></script>
 </body>
 </html>

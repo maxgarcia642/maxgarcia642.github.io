@@ -1,7 +1,9 @@
 name: Market pulse refresh
-# Daily crypto-chip refresh for finance.json. Uses the workflow's own
-# GITHUB_TOKEN (contents: write) — no PAT, no secrets. Snapshot chips are
-# never touched (see scripts/update-pulse.mjs). The resulting push to main
+# Daily refresh for ALL 50 Market Pulse chips (crypto via CoinGecko, FX via
+# Frankfurter/ECB, metals/energy/agri/indices via Yahoo Finance — server-side,
+# so browser CORS limits don't apply). Uses the workflow's own
+# GITHUB_TOKEN (contents: write) — no PAT, no secrets. Each source soft-fails alone
+# (see scripts/update-pulse.mjs). The resulting push to main
 # triggers the normal Pages deploy, so the live site gets the fresh values.
 on:
   schedule:

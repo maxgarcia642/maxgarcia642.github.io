@@ -1,27 +1,27 @@
 # Background music
 
-`script.js` plays `assets/music/track1.mp3` on a loop; the ♫ dock button
-mutes/unmutes and the 🎧 button lets a visitor play a local file of their own
-(object URL — it never leaves their browser).
+## Playlist (v4)
+The player reads its rotation from `content.json → music.tracks` — an array of
+`{ "src", "title", "artist" }`. One track loops; two or more advance in order
+and the ⏭ dock button appears automatically. To add a track:
 
-## What ships here now
+1. Drop the file in this folder (e.g. `track2.mp3` — any browser-decodable
+   audio format works: mp3, m4a/aac, ogg, opus, flac, wav).
+2. Add its entry to `content.json → music.tracks`.
 
-`track1.mp3` = **AIR — "Ce matin-là" (Moon Safari, 1998)**, added 2026-07-16
-at Max's explicit direction.
+Visitor uploads (🎧) join the rotation as local object URLs — they are never
+uploaded anywhere and vanish on refresh.
 
-> ⚑ **Licensing honesty flag:** this is a commercial recording (Source/EMI).
-> Publicly serving it as site background music is *not* covered by any
-> royalty-free license and carries takedown/DMCA risk. The site owner accepted
-> that risk knowingly; this note exists so nobody mistakes it for a cleared
-> track. Swap in a royalty-free loop (Pixabay Music, Free Music Archive,
-> incompetech) to close the flag.
+## Autoplay honesty
+`music.autoplay: true` means the player *attempts* to start on arrival and
+otherwise starts on the visitor's first click or keypress. Chrome, Safari, and
+Firefox all block audible autoplay before an interaction — that's a browser
+policy no site can override, so "on entry" here means "the first instant the
+browser allows."
 
-## Behavior
-
-1. **Loop starts on the visitor's first interaction** (click/keypress) —
-   true autoplay is blocked by every modern browser. If the visitor muted it
-   on a past visit, it stays muted (localStorage `mg-music`).
-2. **Format:** MP3 (universal). Keep loops compressed; seamless loop points
-   avoid clicks.
-3. **Custom track:** the 🎧 button swaps the source for the current visit
-   only — nothing is uploaded or stored.
+## ⚑ Licensing flag (recorded 2026-07-16, unchanged)
+`track1.mp3` is AIR — "Ce matin-là" (Moon Safari), a commercial recording
+shipped at Max's explicit, documented decision. Public hosting of a commercial
+track is a DMCA takedown risk; the honest fix remains a licensed or
+royalty-free replacement (see the scout brief's audio category). This flag is
+documentation, not permission — the risk call is the owner's.

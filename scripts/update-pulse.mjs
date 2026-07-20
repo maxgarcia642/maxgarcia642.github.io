@@ -1,74 +1,126 @@
 #!/usr/bin/env node
-/**
- * update-pulse.mjs — refreshes the live crypto chips in finance.json.
- *
- * Zero dependencies (Node 18+ built-in fetch). Run by the market-pulse
- * GitHub Action daily, or locally: `node scripts/update-pulse.mjs`.
- *
- * Rules:
- *  - Only touches marketPulse items with `live: true` AND a `coingeckoId`.
- *    Snapshot chips (gold, silver, S&P, cards) are never modified here —
- *    those carry dated, hand-verified figures with honesty context.
- *  - Updates `marketPulse.asOf` to today (UTC) only when a price changed.
- *  - Any fetch failure exits 0 without writing, so a CoinGecko rate-limit
- *    never turns the workflow red or commits garbage.
- */
-import { readFileSync, writeFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-import { dirname, join } from "node:path";
+/* update-pulse.mjs v2 — daily CI refresh for ALL 50 Market Pulse chips.
+   Three keyless sources, one per group family:
+     · crypto      → CoinGecko simple/price   (items with coingeckoId)
+     · currencies  → Frankfurter (ECB)        (items with fxCode)
+     · benchmarks  → Yahoo Finance v8 chart   (items with a yahoo symbol) —
+       metals, energy, agriculture, indices. Yahoo has no CORS for browsers,
+       but this runs server-side in Actions where CORS doesn't apply.
+   Values are written back into finance.json preserving each chip's display
+   format; usdPerUnit/perUsd update for the converter; asOf bumps only when
+   something actually changed. Any source failing soft-fails alone — a bad
+   day at one API never blocks the other 40 chips. GITHUB_TOKEN only. */
+import { readFile, writeFile } from "node:fs/promises";
 
-const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const file = join(root, "finance.json");
+const PATH = new URL("../finance.json", import.meta.url);
+const fin = JSON.parse(await readFile(PATH, "utf8"));
+const items = fin.marketPulse.items;
+const UA = { "User-Agent": "maxgarcia642.github.io market-pulse (contact: repo issues)" };
+let changed = 0;
 
-const fmtUsd = (v) => {
-  if (v >= 10000) return `~$${Math.round(v / 1000)}K`;
-  if (v >= 1000) return `~$${(v / 1000).toFixed(1)}K`;
-  return `~$${Math.round(v).toLocaleString("en-US")}`;
-};
+const fmtUsd = (v) => "$" + v.toLocaleString("en-US", { maximumFractionDigits: v >= 100 ? 0 : v >= 1 ? 2 : 4 });
 
-const data = JSON.parse(readFileSync(file, "utf8"));
-const liveItems = (data.marketPulse?.items || []).filter(i => i.live && i.coingeckoId);
-if (!liveItems.length) {
-  console.log("No live chips with coingeckoId — nothing to do.");
-  process.exit(0);
+/* SSRF-proof by construction: every fetch below starts with a literal
+   https://host/ prefix — symbols from finance.json can only ever land in the
+   query/path of one of the three known APIs, never choose the destination. */
+function withTimeout(headers = UA) {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), 20000);
+  return { opts: { headers, signal: ctrl.signal }, done: () => clearTimeout(t) };
+}
+async function readJSON(resPromise, done) {
+  try {
+    const res = await resPromise;
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } finally { done(); }
 }
 
-const ids = liveItems.map(i => i.coingeckoId).join(",");
-let prices;
-try {
-  const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`, {
-    headers: { "Accept": "application/json" },
-    signal: AbortSignal.timeout(20000) // a stalled connection must not hang the workflow
-  });
-  if (!res.ok) throw new Error(`CoinGecko ${res.status}`);
-  prices = await res.json();
-} catch (err) {
-  console.log(`Fetch failed (${err.message}) — leaving finance.json untouched.`);
-  process.exit(0);
+/* Plain string helpers — no regexes on the display strings. */
+const isDigit = (ch) => ch >= "0" && ch <= "9";
+function decimalsBefore(str, stop) {
+  const dot = str.indexOf(".");
+  if (dot < 0) return 0;
+  let n = 0;
+  for (let j = dot + 1; j < str.length && isDigit(str[j]); j++) n++;
+  if (stop !== undefined && str.indexOf(stop) >= 0 && str.indexOf(stop) < dot) return 0;
+  return n;
 }
+const num = (v, dp) => v.toLocaleString("en-US", { minimumFractionDigits: dp, maximumFractionDigits: dp });
 
-let changed = false;
-for (const item of liveItems) {
-  const usd = prices[item.coingeckoId]?.usd;
-  if (typeof usd !== "number") { console.log(`No price for ${item.coingeckoId} — skipped.`); continue; }
-  /* Change detection uses the exact numeric price (persisted as `raw`), not
-     the rounded display string — a $63.4K→$63.6K move that rounds to the same
-     label still counts as movement and refreshes asOf honestly. */
-  const next = fmtUsd(usd);
-  if (item.raw !== usd) {
-    console.log(`${item.label}: ${item.raw ?? "?"} → ${usd} (display ${item.value} → ${next})`);
-    item.raw = usd;
-    item.value = next;
-    changed = true;
-  } else {
-    console.log(`${item.label}: unchanged (${next})`);
+/* Re-render a chip's display string in the same style it already uses. */
+function reformat(item, v) {
+  const old = item.value;
+  if (old.startsWith("$")) {
+    const slash = old.lastIndexOf("/");
+    const unit = slash > 0 ? old.slice(slash) : "";
+    return "$" + num(v, decimalsBefore(old)) + unit;
   }
+  if (old.includes("¢/")) {
+    return num(v, decimalsBefore(old)) + old.slice(old.indexOf("¢"));
+  }
+  if (old.endsWith("%")) return v.toFixed(2) + "%";
+  if (old.endsWith("/$")) return old; // fx handled separately
+  return v.toLocaleString("en-US", { maximumFractionDigits: old.includes(".") ? 2 : 0 });
 }
+function applyBenchmark(item, v) {
+  if (!item.noCalc) item.usdPerUnit = item.group === "agri" && item.value.includes("¢") ? +(v / 100).toFixed(6) : v;
+  item.value = item.coingeckoId ? fmtUsd(v) : reformat(item, v);
+}
+function apply(item, v) {
+  if (!Number.isFinite(v)) return;
+  const prevRaw = item.raw;
+  item.raw = v;
+  if (item.perUsd !== undefined || item.fxCode) {
+    item.perUsd = v;
+    item.value = v.toLocaleString("en-US", { maximumSignificantDigits: 4 }) + " " + item.fxCode + "/$";
+  } else {
+    applyBenchmark(item, v);
+  }
+  if (prevRaw !== v) changed++;
+}
+
+/* 1 — CoinGecko */
+try {
+  const cs = items.filter(i => i.coingeckoId);
+  if (cs.length) {
+    const q = encodeURIComponent(cs.map(i => i.coingeckoId).join(","));
+    const { opts, done } = withTimeout();
+    const data = await readJSON(fetch(`https://api.coingecko.com/api/v3/simple/price?vs_currencies=usd&ids=${q}`, opts), done);
+    for (const i of cs) apply(i, data[i.coingeckoId]?.usd);
+    console.log("coingecko: %d chips", cs.length);
+  }
+} catch (e) { console.error("coingecko soft-fail:", e.message); }
+
+/* 2 — Frankfurter */
+try {
+  const fs_ = items.filter(i => i.fxCode);
+  if (fs_.length) {
+    const q = encodeURIComponent(fs_.map(i => i.fxCode).join(","));
+    const { opts, done } = withTimeout();
+    const data = await readJSON(fetch(`https://api.frankfurter.dev/v1/latest?base=USD&symbols=${q}`, opts), done);
+    for (const i of fs_) apply(i, data.rates?.[i.fxCode]);
+    console.log("frankfurter: %d chips", fs_.length);
+  }
+} catch (e) { console.error("frankfurter soft-fail:", e.message); }
+
+/* 3 — Yahoo (sequential + small delay; be a polite guest) */
+const YAHOO_UA = { "User-Agent": "Mozilla/5.0 (compatible; market-pulse CI)" };
+const ys = items.filter(i => i.yahoo);
+for (const i of ys) {
+  try {
+    const { opts, done } = withTimeout(YAHOO_UA);
+    const d = await readJSON(fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(i.yahoo)}?interval=1d&range=1d`, opts), done);
+    apply(i, d?.chart?.result?.[0]?.meta?.regularMarketPrice);
+    await new Promise(r => setTimeout(r, 400));
+  } catch (e) { console.error("yahoo soft-fail %s: %s", i.id, e.message); }
+}
+console.log("yahoo: %d chips attempted", ys.length);
 
 if (changed) {
-  data.marketPulse.asOf = new Date().toISOString().slice(0, 10);
-  writeFileSync(file, JSON.stringify(data, null, 2) + "\n");
-  console.log(`Wrote finance.json (asOf → ${data.marketPulse.asOf}).`);
+  fin.marketPulse.asOf = new Date().toISOString().slice(0, 10);
+  await writeFile(PATH, JSON.stringify(fin, null, 2) + "\n");
+  console.log("updated %d values → asOf %s", changed, fin.marketPulse.asOf);
 } else {
-  console.log("No price movement — file untouched.");
+  console.log("no changes — finance.json untouched");
 }
