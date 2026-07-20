@@ -77,15 +77,29 @@ function postCard(p) {
   return card;
 }
 
+/* ---------- User card order (Layout Settings → "Cards inside sections") ----
+   mg-layout.items = { posts: [ids], claw: [ids], arcade: [ids], finance: [ids] }.
+   Cards keep content.json order unless the visitor saved their own. Unknown
+   ids sink to the end in their original relative order. */
+function orderItems(list, key) {
+  let saved = null;
+  try { saved = (JSON.parse(localStorage.getItem("mg-layout") || "{}").items || {})[key]; }
+  catch (e) { /* private mode — default order stands */ }
+  if (!Array.isArray(saved) || !saved.length) return list;
+  const pos = new Map(saved.map((id, i) => [id, i]));
+  return list
+    .map((item, i) => ({ item, i }))
+    .sort((a, b) =>
+      (pos.has(a.item.id) ? pos.get(a.item.id) : saved.length + a.i) -
+      (pos.has(b.item.id) ? pos.get(b.item.id) : saved.length + b.i))
+    .map(x => x.item);
+}
+
 function renderPosts(projects) {
   const track = document.getElementById("projectTrack");
   if (!track) return;
   track.innerHTML = "";
-  const stripLead = (s) => String(s || "").replace(/^[^\p{L}\p{N}]+/u, "");
-  projects
-    .filter(p => p.id !== "linkedin-blog") // lives in the section description now, not as a card
-    .slice()
-    .sort((a, b) => stripLead(a.title).localeCompare(stripLead(b.title), undefined, { sensitivity: "base" }))
+  orderItems(projects.filter(p => p.id !== "linkedin-blog"), "posts") // linkedin-blog lives in the section description, not as a card
     .forEach(p => track.appendChild(postCard(p)));
 }
 
@@ -99,7 +113,7 @@ function renderClawmaxxing(claw) {
   if (title) title.textContent = claw.title || "🦞 The Clawmaxxing Project";
   if (desc) desc.textContent = claw.description || "";
   track.innerHTML = "";
-  claw.papers.forEach(p => track.appendChild(postCard(p)));
+  orderItems(claw.papers, "claw").forEach(p => track.appendChild(postCard(p)));
   wrap.hidden = false;
 }
 
@@ -181,7 +195,7 @@ function renderFinance(fin) {
   const grid = document.getElementById("financeGrid");
   if (grid) {
     grid.innerHTML = "";
-    fin.works.forEach(w => {
+    orderItems(fin.works, "finance").forEach(w => {
       const card = document.createElement("article");
       card.className = "work-card";
       card.dataset.searchId = w.id;
@@ -218,8 +232,10 @@ function renderFinance(fin) {
 function renderArcade(items) {
   const grid = document.getElementById("arcadeGrid");
   if (!grid) return;
-  items.filter(i => i.kind !== "inline").forEach(item => {
+  grid.querySelectorAll(".arcade-card:not(.featured)").forEach(c => c.remove());
+  orderItems(items.filter(i => i.kind !== "inline"), "arcade").forEach(item => {
     const card = el("article", "arcade-card");
+    if (item.id) card.dataset.searchId = item.id;
     const isFacade = item.kind === "facade";
 
     /* the big emoji face */
@@ -300,6 +316,10 @@ function applySectionText(c) {
   }
   const credit = document.getElementById("progCredit");
   if (credit && c.sections?.programming?.credit) credit.textContent = c.sections.programming.credit;
+  const gt = document.getElementById("generalTitle");
+  if (gt && c.sections?.posts?.generalTitle) { gt.textContent = c.sections.posts.generalTitle; gt.hidden = false; }
+  const gd = document.getElementById("generalDesc");
+  if (gd && c.sections?.posts?.generalDescription) { gd.textContent = c.sections.posts.generalDescription; gd.hidden = false; }
   const pd = document.getElementById("postsDesc");
   if (pd && c.sections?.posts?.description) {
     pd.textContent = c.sections.posts.description + " ";
@@ -331,6 +351,15 @@ function applySectionText(c) {
     renderArcade(content.arcade || []);
     renderDock(content.themes || []);
     document.dispatchEvent(new CustomEvent("mg:content-ready"));
+
+    /* Card order edited on the Layout Settings page lands instantly here too */
+    addEventListener("storage", (e) => {
+      if (e.key !== "mg-layout") return;
+      renderPosts(content.projects || []);
+      renderClawmaxxing(content.clawmaxxing);
+      renderArcade(content.arcade || []);
+      renderFinance(finance);
+    });
   } catch (err) {
     console.error("Content load failed:", err);
     const track = document.getElementById("projectTrack");

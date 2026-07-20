@@ -39,6 +39,26 @@
                 border: 1px solid var(--card-border-color); border-radius: var(--radius-md); background: var(--chip-bg); }
     .sec-item .grow { flex: 1; }
     .save-note { color: var(--accent); font-size: .85rem; min-height: 1.2em; }
+
+    /* v6: this page reacts like the main site does */
+    .setting { transition: background .2s ease, padding-left .2s ease; border-radius: var(--radius-sm); }
+    .setting:hover { background: color-mix(in srgb, var(--accent) 7%, transparent); padding-left: 8px; }
+    .setting label, .setting .hint { transition: color .2s ease; }
+    .setting:hover > label { color: var(--accent); }
+    .setting:hover .hint { color: var(--text); }
+    .seg { cursor: pointer; transition: transform .15s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease; }
+    .seg:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: 0 6px 16px color-mix(in srgb, var(--accent) 30%, transparent); }
+    .seg:active { transform: translateY(0) scale(.97); }
+    .sec-item { transition: transform .18s ease, border-color .18s ease, box-shadow .2s ease; }
+    .sec-item:hover { transform: translateX(4px); border-color: var(--accent); box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 22%, transparent); }
+    .item-group { margin-top: 10px; }
+    .item-group > h3 { margin: 0 0 6px; font-size: .95rem; }
+    .item-group .sec-item { padding: 6px 10px; font-size: .88rem; }
+    @media (prefers-reduced-motion: reduce) {
+      .setting, .seg, .sec-item { transition: none; }
+      .setting:hover { padding-left: 0; }
+      .seg:hover, .sec-item:hover { transform: none; }
+    }
   </style>
 </head>
 <body>
@@ -62,6 +82,39 @@
           <button class="seg" type="button" data-v="low">Low</button>
           <button class="seg" type="button" data-v="normal">Normal</button>
           <button class="seg" type="button" data-v="high">High</button>
+        </div>
+      </div>
+
+      <div class="setting">
+        <label for="setFx">Particle weather style<span class="hint">Every theme brings its own weather, or pin one style — snow, embers, comets, bokeh — over all fifty.</span></label>
+        <select id="setFx"><option value="theme">Theme default</option></select>
+      </div>
+
+      <div class="setting">
+        <label>Background motion<span class="hint">The sky gradient behind everything: let each theme decide, hold it still, keep it drifting, or cycle its hues.</span></label>
+        <div class="seg-row" id="setBganim">
+          <button class="seg" type="button" data-v="theme">Theme default</button>
+          <button class="seg" type="button" data-v="still">Still</button>
+          <button class="seg" type="button" data-v="drift">Drift</button>
+          <button class="seg" type="button" data-v="hue">Hue cycle</button>
+        </div>
+      </div>
+
+      <div class="setting">
+        <label>Card glass<span class="hint">How see-through the cards are. Solid is easiest to read; clearer shows more sky.</span></label>
+        <div class="seg-row" id="setCards">
+          <button class="seg" type="button" data-v="theme">Theme default</button>
+          <button class="seg" type="button" data-v="clear">Clearer</button>
+          <button class="seg" type="button" data-v="solid">Solid</button>
+        </div>
+      </div>
+
+      <div class="setting">
+        <label>Accent gradients<span class="hint">The soft wash of theme color across cards and chips. Subtle, default, or vivid.</span></label>
+        <div class="seg-row" id="setVibrancy">
+          <button class="seg" type="button" data-v="low">Subtle</button>
+          <button class="seg" type="button" data-v="default">Theme default</button>
+          <button class="seg" type="button" data-v="high">Vivid</button>
         </div>
       </div>
 
@@ -107,6 +160,10 @@
           <button class="seg" type="button" data-v="sans">Clean sans</button>
           <button class="seg" type="button" data-v="serif">Serif</button>
           <button class="seg" type="button" data-v="mono">Mono</button>
+          <button class="seg" type="button" data-v="rounded">Rounded</button>
+          <button class="seg" type="button" data-v="scifi">Sci-fi</button>
+          <button class="seg" type="button" data-v="arcade">Arcade</button>
+          <button class="seg" type="button" data-v="hand">Handwritten</button>
         </div>
       </div>
 
@@ -155,13 +212,18 @@
         <div class="sec-list" id="secList"></div>
       </div>
 
+      <div class="setting" style="grid-template-columns:1fr">
+        <label>Cards inside sections: reorder<span class="hint">Not just the sections — the files and cards inside them move too. Arrange the General shelf, the Clawmaxxing papers, the arcade, and the finance works. The main page updates instantly.</span></label>
+        <div class="sec-list" id="itemLists"><p class="hint">Loading the card lists…</p></div>
+      </div>
+
       <div class="setting">
         <label for="setAutoplay">Music on arrival<span class="hint">Tries to start immediately. Browsers may hold it until your first click, and that is a browser rule, not ours.</span></label>
         <select id="setAutoplay"><option value="on">On (default)</option><option value="off">Muted until I unmute</option></select>
       </div>
 
       <div class="setting" style="grid-template-columns:1fr">
-        <label for="layoutCode">Copy or restore your setup<span class="hint">Turn every choice on this page plus your theme into a little code. Copy it, keep it, or paste one here to bring a setup back.</span></label>
+        <label for="layoutCode">Copy or restore your setup<span class="hint">Everything on this page plus your chosen theme, packed into one little code. It updates below as you make choices. "Copy my setup" puts it on your clipboard — save it anywhere (a note, a message to yourself). On another device or after clearing your browser, paste it back in and hit "Apply pasted code" to restore the exact same look.</span></label>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <input id="layoutCode" class="seg" style="flex:1;min-width:180px" type="text" spellcheck="false" autocomplete="off" placeholder="Your setup code appears here">
           <button class="seg" type="button" id="layoutExport">Copy my setup</button>

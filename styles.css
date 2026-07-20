@@ -48,7 +48,12 @@ h3 { font-size: clamp(1.02rem, 2.2vw, 1.25rem); }
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: var(--border-w) solid var(--card-border-color, transparent);
+  transition: transform .28s ease;
 }
+/* Ducks away when scrolling down past the Introduction (script.js), so the
+   nav pills never block what you're reading on small screens */
+.site-header.header-hidden { transform: translateY(-110%); }
+@media (prefers-reduced-motion: reduce) { .site-header { transition: none; } }
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; flex-wrap: wrap; }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
 .brand .title { font-family: var(--font-display); font-weight: var(--display-weight); font-size: 1.02rem; }
@@ -233,7 +238,9 @@ details.research-desk summary .sum-sub { font-weight: 400; font-size: .76rem; co
 .arcade-body p { margin: 0; font-size: .88rem; color: var(--muted); }
 .arcade-actions { margin-top: auto; display: flex; flex-wrap: wrap; gap: 6px; }
 .arcade-actions .link-btn { font-size: .78rem; padding: 7px 12px; margin: 0; }
-.embed-live { width: 100%; aspect-ratio: 16 / 9; border: none; background: #000; }
+/* width:1px + min-width:100% defeats iOS Safari's habit of inflating an
+   iframe to its content's intrinsic width (which cut posters off on phones) */
+.embed-live { width: 1px; min-width: 100%; aspect-ratio: 16 / 9; border: none; background: #000; }
 .embed-hint { font-size: .74rem; color: var(--muted); padding: 6px 16px 0; }
 
 /* ---------- Pixel studio ---------- */
@@ -828,6 +835,61 @@ html[data-density="compact"] .card { padding: 16px; }
 html[data-density="compact"] .finance-grid, html[data-density="compact"] .arcade-grid { gap: 10px; }
 html[data-motion="off"] .tt-flow, html[data-motion="off"] .tt-fireflies circle, html[data-motion="off"] .tt-canopy { animation: none !important; }
 html[data-motion="off"] .card h2::after { transition: none !important; }
+html[data-motion="off"] .site-header { transition: none; }
+
+/* ═══════════ v6 — Layout Settings expansion hooks ═══════════ */
+
+/* Four more type voices (fonts already in the pool) */
+html[data-fontmode="rounded"] { --font-display: 'Nunito', 'Inter', sans-serif; --font-body: 'Quicksand', 'Nunito', sans-serif; --display-case: none; --display-spacing: 0; }
+html[data-fontmode="scifi"] { --font-display: 'Orbitron', 'Sora', sans-serif; --font-body: 'Sora', 'Inter', sans-serif; --display-case: none; --display-spacing: .02em; }
+html[data-fontmode="arcade"] { --font-display: 'Press Start 2P', monospace; --font-body: 'Quicksand', 'Nunito', sans-serif; --display-case: none; --display-spacing: 0; --display-weight: 400; }
+html[data-fontmode="hand"] { --font-display: 'Caveat', cursive; --font-body: 'Quicksand', 'Nunito', sans-serif; --display-case: none; --display-spacing: 0; }
+html[data-fontmode="arcade"] h1 { font-size: clamp(1.15rem, 3.4vw, 1.9rem); }
+html[data-fontmode="arcade"] h2 { font-size: clamp(1rem, 2.6vw, 1.5rem); }
+
+/* Background motion override: freeze it, force the drift, or hue-cycle it */
+html[data-bganim="still"] body { animation: none !important; }
+html[data-bganim="drift"] body { animation: mg-bg-drift 24s ease-in-out infinite alternate !important; background-size: 200% 200%; }
+html[data-bganim="hue"] body { animation: mg-bg-hue 40s linear infinite !important; }
+
+/* Card glass: clearer panes or fully solid (relative color needs a 2024+
+   browser; older ones simply keep the theme's own card background) */
+html[data-cards="clear"] .card { background-color: color-mix(in srgb, var(--card-bg) 55%, transparent); }
+html[data-cards="solid"] .card { background-color: rgb(from var(--card-bg) r g b); backdrop-filter: none; -webkit-backdrop-filter: none; }
+html[data-cards="solid"] .card::before { opacity: 0; }
+
+/* Accent gradient wash on cards: subtle, theme default, or vivid */
+html[data-vibrancy="low"] .card,
+html[data-vibrancy="low"] .post-card, html[data-vibrancy="low"] .work-card,
+html[data-vibrancy="low"] .arcade-card, html[data-vibrancy="low"] .desk-group,
+html[data-vibrancy="low"] .pulse-chip, html[data-vibrancy="low"] .mini-terminal { background-image: none; }
+html[data-vibrancy="high"] .card {
+  background-image: linear-gradient(150deg,
+    color-mix(in srgb, var(--accent) 18%, transparent),
+    transparent 40%,
+    color-mix(in srgb, var(--accent-2) 20%, transparent));
+}
+html[data-vibrancy="high"] .post-card, html[data-vibrancy="high"] .work-card,
+html[data-vibrancy="high"] .arcade-card, html[data-vibrancy="high"] .desk-group,
+html[data-vibrancy="high"] .pulse-chip, html[data-vibrancy="high"] .mini-terminal {
+  background-image: linear-gradient(160deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 62%);
+}
+
+/* ═══════════ v6 — more words with life (footer, badges, dates, chips) ═══ */
+.f-name, .f-legal, .f-line, .f-sig, .post-card .dates,
+.pulse-chip .p-label, .pulse-chip .p-context, .badge,
+.reach-bar .reach-note, .tt-label .sub, .doc-reader-note, .embed-hint {
+  transition: color .22s ease, transform .18s ease;
+}
+.f-line:hover, .f-legal:hover, .reach-bar .reach-note:hover, .tt-label .sub:hover,
+.doc-reader-note:hover, .embed-hint:hover, .pulse-chip:hover .p-context { color: var(--text); }
+.f-name:hover, .f-sig:hover, .post-card:hover .dates, .pulse-chip:hover .p-label { color: var(--accent); }
+.badge:hover { transform: scale(1.08); }
+@media (prefers-reduced-motion: reduce) {
+  .f-name, .f-legal, .f-line, .f-sig, .post-card .dates,
+  .pulse-chip .p-label, .pulse-chip .p-context, .badge { transition: none; }
+  .badge:hover { transform: none; }
+}
 
 /* ---------- Clawmaxxing research row (inside Articles & Posts) ---------- */
 .claw-row-wrap {
@@ -876,6 +938,6 @@ html[data-motion="off"] .assessment-card:hover { transform: none; }
 /* Poster viewer: a tall, scrollable, view-only frame inside the modal */
 .assessment-viewer { display: flex; flex-direction: column; gap: 10px; }
 .assessment-frame {
-  width: 100%; height: 78vh; border: 1px solid var(--card-border-color);
+  width: 1px; min-width: 100%; height: 78vh; border: 1px solid var(--card-border-color);
   border-radius: var(--radius-md); background: #fff;
 }
