@@ -21,6 +21,7 @@
   const save = () => {
     try { localStorage.setItem("mg-layout", JSON.stringify(L)); } catch (e) { /* private mode */ }
     applyHere();
+    refreshCodeBox();
     const n = $("#saveNote");
     n.textContent = "Saved. The main page picks this up instantly.";
     clearTimeout(save._t); save._t = setTimeout(() => { n.textContent = ""; }, 1800);
@@ -33,10 +34,13 @@
     "data-width":    { key: "width",     allowed: ["wide", "cozy"] },
     "data-corners":  { key: "corners",   allowed: ["sharp"] },
     "data-dock":     { key: "dock",      allowed: ["left", "hidden"] },
-    "data-fontmode": { key: "fontmode",  allowed: ["sans", "serif", "mono"] },
+    "data-fontmode": { key: "fontmode",  allowed: ["sans", "serif", "mono", "rounded", "scifi", "arcade", "hand"] },
     "data-contrast": { key: "contrast",  allowed: ["high"] },
     "data-underline":{ key: "underline", allowed: ["on"] },
-    "data-density":  { key: "density",   allowed: ["compact"] }
+    "data-density":  { key: "density",   allowed: ["compact"] },
+    "data-bganim":   { key: "bganim",    allowed: ["still", "drift", "hue"] },
+    "data-cards":    { key: "cards",     allowed: ["clear", "solid"] },
+    "data-vibrancy": { key: "vibrancy",  allowed: ["low", "high"] }
   };
   function applyHere() {
     const root = document.documentElement;
@@ -84,13 +88,34 @@
   seg("#setUnderline", "underline", "off");
   seg("#setShuffle", "shuffle", "off");
   seg("#setArcade", "arcade", "preview");
+  seg("#setBganim", "bganim", "theme");
+  seg("#setCards", "cards", "theme");
+  seg("#setVibrancy", "vibrancy", "default");
+
+  /* Particle weather style: one pinned preset over every theme's own */
+  const FX_STYLES = ["bubbles", "orbs", "snow", "rain", "embers", "fireflies", "stars", "petals", "leaves", "motes", "glyphs", "confetti", "shapes", "prisms", "steam", "dust", "bokeh", "pollen", "ash", "comets", "sparks", "pixels", "rings", "fog", "shards"];
+  const fxSel = byId("setFx");
+  if (fxSel) {
+    FX_STYLES.forEach(f => fxSel.appendChild(new Option(f, f)));
+    fxSel.value = FX_STYLES.includes(L.fx) ? L.fx : "theme";
+    fxSel.addEventListener("change", () => {
+      if (fxSel.value === "theme") delete L.fx; else L.fx = fxSel.value;
+      save();
+    });
+  }
 
   /* Copy or restore the whole setup (layout + theme) as one little code */
   const codeBox = $("#layoutCode");
-  async function exportSetup() {
+  function currentCode() {
     let theme = null;
     try { theme = localStorage.getItem("mg-theme"); } catch (e) { /* private mode */ }
-    const code = btoa(unescape(encodeURIComponent(JSON.stringify({ layout: L, theme }))));
+    return btoa(unescape(encodeURIComponent(JSON.stringify({ layout: L, theme }))));
+  }
+  function refreshCodeBox() {
+    if (codeBox && document.activeElement !== codeBox) codeBox.value = currentCode();
+  }
+  async function exportSetup() {
+    const code = currentCode();
     codeBox.value = code;
     const n = $("#saveNote");
     try { await navigator.clipboard.writeText(code); n.textContent = "Copied. Keep it anywhere and paste it back later."; }
@@ -115,6 +140,7 @@
   }
   $("#layoutExport")?.addEventListener("click", exportSetup);
   $("#layoutImport")?.addEventListener("click", importSetup);
+  refreshCodeBox();
 
   $("#setMotion").value = L.motion === "off" ? "off" : "full";
   $("#setMotion").addEventListener("change", (e) => {
@@ -168,14 +194,88 @@
   }
   renderSections();
 
+  /* ---- Cards inside sections: reorder the files/cards, not just sections.
+     Lists come from the same content.json / finance.json the main page uses;
+     the chosen order saves to L.items and the main page re-renders live. */
+  const ITEM_GROUPS = [
+    { key: "posts",   label: "🗂️ Articles & Posts — General row", pick: c => (c.projects || []).filter(p => p.id !== "linkedin-blog") },
+    { key: "claw",    label: "🦞 Clawmaxxing papers",              pick: c => c.clawmaxxing?.papers || [] },
+    { key: "arcade",  label: "🕹️ Games & Projects Arcade (after the pixel studio)", pick: c => (c.arcade || []).filter(a => a.kind !== "inline") },
+    { key: "finance", label: "💸 Financial Liberty works",         pick: (c, f) => f?.works || [] }
+  ];
+  function renderItemGroup(host, group, items) {
+    const box = document.createElement("div");
+    box.className = "item-group";
+    const h = document.createElement("h3");
+    h.textContent = group.label;
+    box.appendChild(h);
+    const saved = (L.items || {})[group.key];
+    let ids = items.map(i => i.id);
+    if (Array.isArray(saved) && saved.length) {
+      ids = saved.filter(id => ids.includes(id)).concat(ids.filter(id => !saved.includes(id)));
+    }
+    const titleOf = (id) => {
+      const it = items.find(i => i.id === id);
+      return it ? `${it.emoji ? it.emoji + " " : ""}${it.title}` : id;
+    };
+    const commit = () => {
+      L.items = L.items || {};
+      L.items[group.key] = ids;
+      save();
+      draw();
+    };
+    const draw = () => {
+      box.querySelectorAll(".sec-item").forEach(r => r.remove());
+      ids.forEach((id, idx) => {
+        const row = document.createElement("div");
+        row.className = "sec-item";
+        const name = document.createElement("span");
+        name.className = "grow"; name.textContent = titleOf(id);
+        const up = document.createElement("button");
+        up.type = "button"; up.className = "seg"; up.textContent = "↑";
+        up.disabled = idx === 0;
+        up.setAttribute("aria-label", `Move ${titleOf(id)} up`);
+        up.addEventListener("click", () => { [ids[idx - 1], ids[idx]] = [ids[idx], ids[idx - 1]]; commit(); });
+        const down = document.createElement("button");
+        down.type = "button"; down.className = "seg"; down.textContent = "↓";
+        down.disabled = idx === ids.length - 1;
+        down.setAttribute("aria-label", `Move ${titleOf(id)} down`);
+        down.addEventListener("click", () => { [ids[idx + 1], ids[idx]] = [ids[idx], ids[idx + 1]]; commit(); });
+        row.append(name, up, down);
+        box.appendChild(row);
+      });
+    };
+    draw();
+    host.appendChild(box);
+    return () => { ids = items.map(i => i.id); draw(); }; /* reset hook */
+  }
+  const itemResets = [];
+  (async function initItemLists() {
+    const host = byId("itemLists");
+    if (!host) return;
+    try {
+      const [content, finance] = await Promise.all([
+        fetch("./content.json", { cache: "no-cache" }).then(r => r.json()),
+        fetch("./finance.json", { cache: "no-cache" }).then(r => r.json())
+      ]);
+      host.innerHTML = "";
+      ITEM_GROUPS.forEach(g => itemResets.push(renderItemGroup(host, g, g.pick(content, finance))));
+    } catch (e) {
+      host.innerHTML = "<p class=\"hint\">Couldn't load the card lists (content.json/finance.json unreachable). Everything else here still works.</p>";
+    }
+  })();
+
   $("#resetBtn").addEventListener("click", () => {
     if (!confirm("Reset every layout setting to default?")) return;
     L = { hidden: [], order: SECTIONS.map(s => s[0]) };
     try { localStorage.removeItem("mg-layout"); } catch (e) {}
     renderSections();
+    itemResets.forEach(r => r());
     $("#setMotion").value = "full";
+    const fxReset = byId("setFx"); if (fxReset) fxReset.value = "theme";
     repaintSegs(); /* repaint only — handlers stay bound exactly once */
     applyHere();
+    refreshCodeBox();
     $("#saveNote").textContent = "Reset. Defaults are back.";
   });
 

@@ -175,6 +175,18 @@
     .cover-meta{gap:22px;}
     #dots{display:none;}
   }
+  /* phone-in-modal widths: keep every long word inside the paper edge */
+  @media(max-width:430px){
+    .wrap{padding:40px 14px 40px;}
+    h1.title{font-size:clamp(26px,9vw,38px);overflow-wrap:break-word;}
+    h2.dim{font-size:clamp(24px,8vw,34px);overflow-wrap:break-word;}
+    .pull{font-size:clamp(18px,6vw,22px);}
+    .facet{margin:0;padding:8px 8px;}
+    .ov-row{margin:0;padding:8px 8px;}
+    .cover-spectrum{max-width:100%;}
+    #nav{padding:0 10px;}
+    #nav button{padding:8px 10px;font-size:11px;}
+  }
   @media(prefers-reduced-motion:reduce){.page,.bar .fill{transition:none;} .page::after{animation:none;} .bg-dots i{animation:none !important;} .tap-pulse{animation:none !important;}}
 
   /* tap/click feedback on any text block — color cycles per tap via --pulse */

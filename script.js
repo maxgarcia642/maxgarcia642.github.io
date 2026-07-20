@@ -78,6 +78,16 @@ const FX_PRESETS = {
   prisms:   { n: 16, up: 0.2, drift: 0.6,  size: [8, 18],    shape: "prism",  a: [0.2, 0.5], spin: true },
   steam:    { n: 14, up: 0.7, drift: 0.5,  size: [14, 34],   shape: "soft",   a: [0.05, 0.14] },
   dust:     { n: 34, up: 0.1, drift: 0.4,  size: [1, 2.6],   shape: "dot",    a: [0.15, 0.5] },
+  /* v6: nine more weathers so the fifty themes stop sharing umbrellas */
+  bokeh:    { n: 12, up: 0.12, drift: 0.5, size: [10, 30],   shape: "soft",   a: [0.12, 0.3], flicker: true },
+  pollen:   { n: 26, up: 0.5,  drift: 1.4, size: [1.5, 3],   shape: "dot",    a: [0.3, 0.7] },
+  ash:      { n: 30, up: -0.5, drift: 0.9, size: [1.5, 3.5], shape: "dot",    a: [0.2, 0.5] },
+  comets:   { n: 8,  up: 4,    drift: 0.3, size: [10, 22],   shape: "streak", a: [0.3, 0.6] },
+  sparks:   { n: 22, up: 2.2,  drift: 0.8, size: [1.2, 2.6], shape: "dot",    a: [0.5, 1], flicker: true },
+  pixels:   { n: 24, up: -0.7, drift: 0.4, size: [3, 6],     shape: "square", a: [0.5, 0.9] },
+  rings:    { n: 12, up: 0.4,  drift: 0.5, size: [6, 16],    shape: "ring",   a: [0.15, 0.4] },
+  fog:      { n: 8,  up: 0.15, drift: 0.4, size: [40, 90],   shape: "soft",   a: [0.04, 0.1] },
+  shards:   { n: 14, up: 0.3,  drift: 0.7, size: [6, 14],    shape: "tri",    a: [0.2, 0.5], spin: true },
   none:     null
 };
 const GLYPH_SET = "01<>{}[]$#*+=/";
@@ -120,6 +130,16 @@ const FX_DRAW = {
     ctx.fillStyle = `rgba(${PRISM_HUES[Math.floor(b.ph) % 4]},${alpha})`;
     ctx.beginPath(); ctx.moveTo(0, -s / 2); ctx.lineTo(s / 2, s / 2); ctx.lineTo(-s / 2, s / 2); ctx.closePath(); ctx.fill();
   },
+  ring(ctx, b, x, y, s, alpha, color, dpi) {
+    ctx.strokeStyle = `rgba(${color},1)`;
+    ctx.lineWidth = Math.max(1, dpi);
+    ctx.beginPath(); ctx.arc(x, y, s, 0, Math.PI * 2); ctx.stroke();
+  },
+  tri(ctx, b, x, y, s, alpha, color) {
+    ctx.translate(x, y); ctx.rotate(b.rot);
+    ctx.fillStyle = `rgba(${color},1)`;
+    ctx.beginPath(); ctx.moveTo(0, -s / 2); ctx.lineTo(s / 2, s / 2); ctx.lineTo(-s / 2, s / 2); ctx.closePath(); ctx.fill();
+  },
   dot(ctx, b, x, y, s, alpha, color) {
     ctx.fillStyle = `rgba(${color},1)`;
     ctx.beginPath(); ctx.arc(x, y, s, 0, Math.PI * 2); ctx.fill();
@@ -135,11 +155,14 @@ function syncFx() {
   const canvas = $("#fx-canvas");
   if (!canvas) return;
   const cs = getComputedStyle(document.documentElement);
-  const preset = FX_PRESETS[(cs.getPropertyValue("--fx") || "none").trim()];
+  /* Layout Settings can pin one particle weather over every theme's own */
+  const override = MG.layout && MG.layout.fx;
+  const fxName = (override && override in FX_PRESETS) ? override : (cs.getPropertyValue("--fx") || "none").trim();
+  const preset = FX_PRESETS[fxName];
   const color = (cs.getPropertyValue("--fx-color") || "255,255,255").trim();
   const motionOff = document.documentElement.getAttribute("data-motion") === "off";
   const density = fxDensity();
-  const key = JSON.stringify([preset && (cs.getPropertyValue("--fx") || "").trim(), color, density, motionOff]);
+  const key = JSON.stringify([preset && fxName, color, density, motionOff]);
   const on = preset && !prefersReduced && !motionOff && density > 0;
   if (!on) {
     cancelAnimationFrame(fxRaf); fxRaf = null; fxKey = "";
@@ -201,10 +224,13 @@ const LAYOUT_ATTRS = {
   "data-width":    { key: "width",     allowed: ["wide", "cozy"] },
   "data-corners":  { key: "corners",   allowed: ["sharp"] },
   "data-dock":     { key: "dock",      allowed: ["left", "hidden"] },
-  "data-fontmode": { key: "fontmode",  allowed: ["sans", "serif", "mono"] },
+  "data-fontmode": { key: "fontmode",  allowed: ["sans", "serif", "mono", "rounded", "scifi", "arcade", "hand"] },
   "data-contrast": { key: "contrast",  allowed: ["high"] },
   "data-underline":{ key: "underline", allowed: ["on"] },
-  "data-density":  { key: "density",   allowed: ["compact"] }
+  "data-density":  { key: "density",   allowed: ["compact"] },
+  "data-bganim":   { key: "bganim",    allowed: ["still", "drift", "hue"] },
+  "data-cards":    { key: "cards",     allowed: ["clear", "solid"] },
+  "data-vibrancy": { key: "vibrancy",  allowed: ["low", "high"] }
 };
 const LAYOUT_SECTIONS = ["programming", "posts", "finance", "arcade", "individualism", "connect"];
 
@@ -321,6 +347,33 @@ document.addEventListener("mg:content-ready", () => {
     load(true); paint();
     uploadBtn.title = `Added ${f.name} to the rotation (stays in your browser)`;
   });
+})();
+
+/* ====================== HEADER AUTO-HIDE ================================
+   The sticky header (nav pills) ducks away once you scroll DOWN past the
+   Introduction card, and slides back the moment you scroll up — so on
+   phones the pill rows never sit on top of what you're reading. */
+(function headerAutoHide() {
+  const header = $(".site-header");
+  if (!header) return;
+  let lastY = scrollY, downAcc = 0;
+  addEventListener("scroll", () => {
+    const y = scrollY;
+    const dy = y - lastY;
+    lastY = y;
+    const intro = $("#introduction");
+    const pastIntro = intro ? y > intro.offsetTop + intro.offsetHeight - 120 : y > 320;
+    if (dy > 0 && pastIntro) {
+      downAcc += dy;
+      if (downAcc > 18) header.classList.add("header-hidden");
+    } else if (dy < 0) {
+      downAcc = 0;
+      header.classList.remove("header-hidden");
+    }
+    if (y < 60) { downAcc = 0; header.classList.remove("header-hidden"); }
+  }, { passive: true });
+  /* keyboard users tabbing into the nav always get it back */
+  header.addEventListener("focusin", () => header.classList.remove("header-hidden"));
 })();
 
 /* ============================ REVEAL =================================== */

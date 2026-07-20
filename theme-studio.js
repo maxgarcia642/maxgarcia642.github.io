@@ -20,7 +20,7 @@
     { id: "arcade", label: "Arcade — Press Start 2P", display: "'Press Start 2P', monospace", body: "'Quicksand', sans-serif", weight: 400 },
     { id: "terminal", label: "Terminal — JetBrains Mono", display: "'JetBrains Mono', monospace", body: "'JetBrains Mono', monospace", weight: 700 }
   ];
-  const FX = ["none", "bubbles", "orbs", "snow", "rain", "embers", "fireflies", "stars", "petals", "leaves", "motes", "glyphs", "confetti", "shapes", "prisms", "steam", "dust"];
+  const FX = ["none", "bubbles", "orbs", "snow", "rain", "embers", "fireflies", "stars", "petals", "leaves", "motes", "glyphs", "confetti", "shapes", "prisms", "steam", "dust", "bokeh", "pollen", "ash", "comets", "sparks", "pixels", "rings", "fog", "shards"];
 
   /* Options built as DOM nodes (values are internal constants, but node
      building keeps innerHTML out of the file entirely). */

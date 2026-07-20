@@ -9,6 +9,8 @@
 @keyframes mg-bg-hue   { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(360deg); } }
 @keyframes mg-scan-flicker { 0%,100% { opacity: .92; } 50% { opacity: 1; } }
 @keyframes mg-grid-scroll { from { background-position: 0 0; } to { background-position: 0 44px; } }
+@keyframes mg-bg-pan  { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+@keyframes mg-bg-sway { from { background-position: 50% 0%; } to { background-position: 50% 100%; } }
 
 body {
   background: var(--bg);
@@ -21,7 +23,7 @@ body {
 [data-theme="aero"] {
   --bg: linear-gradient(160deg,#aee9ff 0%,#7ed6f2 35%,#3fb7dd 70%,#1098ba 100%);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 22s ease-in-out infinite alternate;
   --text: #07303c;
   --muted: #3c6b78;
   --card-bg: rgb(255 255 255 / 62%);
@@ -63,7 +65,7 @@ body {
 [data-theme="glass"] {
   --bg: linear-gradient(150deg,#e8eef8,#c7d6ee 55%,#9fb4da);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-pan 32s ease-in-out infinite alternate;
   --text: #1d2740;
   --muted: #5a6a8c;
   --card-bg: rgb(255 255 255 / 46%);
@@ -105,7 +107,7 @@ body {
 [data-theme="frost"] {
   --bg: linear-gradient(170deg,#f6fbfe,#dcefF8 50%,#bcd9ea);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-sway 27s ease-in-out infinite alternate;
   --text: #12384c;
   --muted: #4d7890;
   --card-bg: rgb(255 255 255 / 74%);
@@ -147,7 +149,7 @@ body {
 [data-theme="storm"] {
   --bg: linear-gradient(165deg,#151b26,#1e2836 55%,#27354a);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 34s ease-in-out infinite alternate;
   --text: #dbe4f0;
   --muted: #8fa0b8;
   --card-bg: rgb(35 46 64 / 82%);
@@ -189,7 +191,7 @@ body {
 [data-theme="ocean"] {
   --bg: linear-gradient(180deg,#04141d,#073042 55%,#0a4257);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 22s ease-in-out infinite alternate;
   --text: #d7f2fb;
   --muted: #7fb2c4;
   --card-bg: rgb(9 52 70 / 80%);
@@ -231,7 +233,7 @@ body {
 [data-theme="indigo"] {
   --bg: linear-gradient(180deg,#0b0e2a,#141a45 60%,#1c2460);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-pan 32s ease-in-out infinite alternate;
   --text: #e2e6ff;
   --muted: #9aa2d8;
   --card-bg: rgb(24 30 74 / 82%);
@@ -273,7 +275,7 @@ body {
 [data-theme="lavender"] {
   --bg: linear-gradient(155deg,#f3efff,#e4dbfa 55%,#cdbcf2);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-sway 27s ease-in-out infinite alternate;
   --text: #3a2c5e;
   --muted: #7a6ba0;
   --card-bg: rgb(255 255 255 / 62%);
@@ -308,14 +310,14 @@ body {
   --flag-bg: rgb(255 180 60 / 16%);
   --flag-border: 1px dashed #8a6ff0;
   --flag-text: #7a4a00;
-  --fx: motes;
+  --fx: bokeh;
   --fx-color: 200,180,255;
 }
 
 [data-theme="royal"] {
   --bg: linear-gradient(160deg,#190f33,#2c1c4d 55%,#3a2766);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 34s ease-in-out infinite alternate;
   --text: #efe6ff;
   --muted: #b3a2d6;
   --card-bg: rgb(40 26 74 / 84%);
@@ -357,7 +359,7 @@ body {
 [data-theme="sakura"] {
   --bg: linear-gradient(160deg,#fff3f7,#fde5ee 50%,#f8c9da);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 22s ease-in-out infinite alternate;
   --text: #5c2338;
   --muted: #a06b80;
   --card-bg: rgb(255 255 255 / 66%);
@@ -399,7 +401,7 @@ body {
 [data-theme="synth"] {
   --bg: linear-gradient(180deg,#1b0b33 0%,#331457 45%,#7a1f63 75%,#ff6a3d 120%);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-pan 32s ease-in-out infinite alternate;
   --text: #ffe9f4;
   --muted: #c78bb0;
   --card-bg: rgb(43 16 74 / 80%);
@@ -434,14 +436,14 @@ body {
   --flag-bg: rgb(255 200 90 / 12%);
   --flag-border: 1px dashed #ff2fb9;
   --flag-text: #ffd489;
-  --fx: stars;
+  --fx: comets;
   --fx-color: 255,120,200;
 }
 
 [data-theme="crimson"] {
   --bg: linear-gradient(165deg,#1c0709,#33090e 55%,#4d0f14);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-sway 27s ease-in-out infinite alternate;
   --text: #ffe4e4;
   --muted: #c98f92;
   --card-bg: rgb(48 12 16 / 84%);
@@ -483,7 +485,7 @@ body {
 [data-theme="coral"] {
   --bg: linear-gradient(155deg,#fff1e9,#ffd9c8 55%,#f7b39a);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 34s ease-in-out infinite alternate;
   --text: #5c2c1c;
   --muted: #a56b57;
   --card-bg: rgb(255 255 255 / 62%);
@@ -518,7 +520,7 @@ body {
   --flag-bg: rgb(255 180 60 / 16%);
   --flag-border: 1px dashed #f2734d;
   --flag-text: #7a4a00;
-  --fx: motes;
+  --fx: pollen;
   --fx-color: 255,180,150;
 }
 
@@ -567,7 +569,7 @@ body {
 [data-theme="desert"] {
   --bg: linear-gradient(160deg,#faeed9,#f4e5d0 50%,#e5c9a5);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 22s ease-in-out infinite alternate;
   --text: #5a3417;
   --muted: #9a6f45;
   --card-bg: rgb(255 252 245 / 68%);
@@ -609,7 +611,7 @@ body {
 [data-theme="coffee"] {
   --bg: linear-gradient(160deg,#efe2d0,#e6d5c1 55%,#cbb096);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-pan 32s ease-in-out infinite alternate;
   --text: #3c2414;
   --muted: #7d5b3e;
   --card-bg: rgb(255 250 242 / 66%);
@@ -651,7 +653,7 @@ body {
 [data-theme="luxe"] {
   --bg: linear-gradient(165deg,#0a0805,#14100a 55%,#1c150c);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-sway 27s ease-in-out infinite alternate;
   --text: #f0e6d2;
   --muted: #a89878;
   --card-bg: rgb(22 18 12 / 86%);
@@ -686,14 +688,14 @@ body {
   --flag-bg: rgb(255 200 90 / 12%);
   --flag-border: 1px dashed #c9a24b;
   --flag-text: #ffd489;
-  --fx: dust;
+  --fx: fog;
   --fx-color: 212,180,110;
 }
 
 [data-theme="citrus"] {
   --bg: linear-gradient(150deg,#fdffe8,#f4fbc8 45%,#d7f2a0);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 34s ease-in-out infinite alternate;
   --text: #3b4a10;
   --muted: #7c8a4a;
   --card-bg: rgb(255 255 255 / 66%);
@@ -735,7 +737,7 @@ body {
 [data-theme="matcha"] {
   --bg: linear-gradient(160deg,#eef3e2,#dfe9cd 55%,#c2d6a6);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 22s ease-in-out infinite alternate;
   --text: #31431f;
   --muted: #6d8052;
   --card-bg: rgb(255 255 255 / 62%);
@@ -777,7 +779,7 @@ body {
 [data-theme="forest"] {
   --bg: linear-gradient(170deg,#08130c,#0e2214 55%,#143222);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-pan 32s ease-in-out infinite alternate;
   --text: #dcefe0;
   --muted: #8fb49a;
   --card-bg: rgb(14 34 22 / 84%);
@@ -819,7 +821,7 @@ body {
 [data-theme="mint"] {
   --bg: linear-gradient(155deg,#e9fbf6,#d2f4ea 55%,#a9e4d4);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-sway 27s ease-in-out infinite alternate;
   --text: #0f4438;
   --muted: #4d8577;
   --card-bg: rgb(255 255 255 / 66%);
@@ -945,7 +947,7 @@ body {
 [data-theme="pixel"] {
   --bg: linear-gradient(180deg,#191b3f,#2b2d5e);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 34s ease-in-out infinite alternate;
   --text: #fef1ff;
   --muted: #a7a5d6;
   --card-bg: rgb(30 32 74 / 88%);
@@ -980,7 +982,7 @@ body {
   --flag-bg: rgb(255 200 90 / 12%);
   --flag-border: 1px dashed #e94f8a;
   --flag-text: #ffd489;
-  --fx: shapes;
+  --fx: pixels;
   --fx-color: 233,79,138;
 }
 
@@ -1029,7 +1031,7 @@ body {
 [data-theme="vapor"] {
   --bg: linear-gradient(160deg,#ff9ad5 0%,#c8a8f0 45%,#7fd8f7 100%);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 22s ease-in-out infinite alternate;
   --text: #3a1d4e;
   --muted: #7a5490;
   --card-bg: rgb(255 255 255 / 55%);
@@ -1064,7 +1066,7 @@ body {
   --flag-bg: rgb(255 180 60 / 16%);
   --flag-border: 1px dashed #ff71ce;
   --flag-text: #7a4a00;
-  --fx: shapes;
+  --fx: bokeh;
   --fx-color: 255,255,255;
 }
 
@@ -1274,7 +1276,7 @@ body {
   --flag-bg: rgb(255 200 90 / 12%);
   --flag-border: 1px dashed #ffd166;
   --flag-text: #ffd489;
-  --fx: none;
+  --fx: dust;
   --fx-color: 255,209,102;
 }
 
@@ -1327,7 +1329,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="cherry"] {
   --bg: linear-gradient(160deg,#fff1f2,#ffd3da 55%,#ffb3c0);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-pan 32s ease-in-out infinite alternate;
   --text: #4a0d18;
   --muted: color-mix(in srgb, #4a0d18 60%, #ffb3c0);
   --card-bg: rgb(255 255 255 / 62%);
@@ -1369,7 +1371,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="flamingo"] {
   --bg: linear-gradient(155deg,#fff0fa,#ffd1ec 50%,#ffa8d8);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-sway 27s ease-in-out infinite alternate;
   --text: #59093f;
   --muted: color-mix(in srgb, #59093f 60%, #ffa8d8);
   --card-bg: rgb(255 255 255 / 62%);
@@ -1411,7 +1413,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="sunset"] {
   --bg: linear-gradient(165deg,#ffd194 0%,#ff8a70 55%,#b06ab3 115%);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 34s ease-in-out infinite alternate;
   --text: #3a1030;
   --muted: color-mix(in srgb, #3a1030 60%, #b06ab3);
   --card-bg: rgb(255 255 255 / 62%);
@@ -1453,7 +1455,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="tangerine"] {
   --bg: linear-gradient(160deg,#fff4e6,#ffe0b8 50%,#ffc180);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 22s ease-in-out infinite alternate;
   --text: #4d2600;
   --muted: color-mix(in srgb, #4d2600 60%, #ffc180);
   --card-bg: rgb(255 255 255 / 62%);
@@ -1488,14 +1490,14 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --flag-bg: color-mix(in srgb, #ffb347 14%, transparent);
   --flag-border: 1px dashed #ff7a00;
   --flag-text: #7a4a00;
-  --fx: motes;
+  --fx: sparks;
   --fx-color: 255,160,70;
 }
 
 [data-theme="honey"] {
   --bg: linear-gradient(160deg,#fff8e1,#ffedb0 55%,#ffdd7a);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-pan 32s ease-in-out infinite alternate;
   --text: #4a3200;
   --muted: color-mix(in srgb, #4a3200 60%, #ffdd7a);
   --card-bg: rgb(255 255 255 / 62%);
@@ -1537,7 +1539,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="voltage"] {
   --bg: linear-gradient(170deg,#0c1400,#182600 55%,#243a00);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-sway 27s ease-in-out infinite alternate;
   --text: #eaffd0;
   --muted: color-mix(in srgb, #eaffd0 60%, #243a00);
   --card-bg: rgb(36 58 0 / 82%);
@@ -1579,7 +1581,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="emerald"] {
   --bg: linear-gradient(165deg,#06231c,#0a3a2d 55%,#0d4a3a);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 34s ease-in-out infinite alternate;
   --text: #d9f5ec;
   --muted: color-mix(in srgb, #d9f5ec 60%, #0d4a3a);
   --card-bg: rgb(13 74 58 / 82%);
@@ -1614,14 +1616,14 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --flag-bg: color-mix(in srgb, #6ee7c8 14%, transparent);
   --flag-border: 1px dashed #10c98d;
   --flag-text: #ffd489;
-  --fx: motes;
+  --fx: shards;
   --fx-color: 60,220,160;
 }
 
 [data-theme="lagoon"] {
   --bg: linear-gradient(160deg,#d8f9ff,#b0ecf5 50%,#8fdfea);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 22s ease-in-out infinite alternate;
   --text: #063a44;
   --muted: color-mix(in srgb, #063a44 60%, #8fdfea);
   --card-bg: rgb(255 255 255 / 62%);
@@ -1656,14 +1658,14 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --flag-bg: color-mix(in srgb, #4dd6e8 14%, transparent);
   --flag-border: 1px dashed #00a8c6;
   --flag-text: #7a4a00;
-  --fx: bubbles;
+  --fx: rings;
   --fx-color: 120,220,235;
 }
 
 [data-theme="cobalt"] {
   --bg: linear-gradient(160deg,#e8efff,#c2d4ff 50%,#9db9ff);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-pan 32s ease-in-out infinite alternate;
   --text: #0c1d5e;
   --muted: color-mix(in srgb, #0c1d5e 60%, #9db9ff);
   --card-bg: rgb(255 255 255 / 62%);
@@ -1698,14 +1700,14 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --flag-bg: color-mix(in srgb, #6a8bff 14%, transparent);
   --flag-border: 1px dashed #2451ff;
   --flag-text: #7a4a00;
-  --fx: shapes;
+  --fx: rings;
   --fx-color: 70,100,255;
 }
 
 [data-theme="peacock"] {
   --bg: linear-gradient(165deg,#04262b,#07393f 55%,#0a4b53);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-sway 27s ease-in-out infinite alternate;
   --text: #dbf4f6;
   --muted: color-mix(in srgb, #dbf4f6 60%, #0a4b53);
   --card-bg: rgb(10 75 83 / 82%);
@@ -1747,7 +1749,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="borealis"] {
   --bg: linear-gradient(175deg,#020b1c,#061530 55%,#0a1f3d);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 34s ease-in-out infinite alternate;
   --text: #dff0ff;
   --muted: color-mix(in srgb, #dff0ff 60%, #0a1f3d);
   --card-bg: rgb(10 31 61 / 82%);
@@ -1789,7 +1791,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="ultraviolet"] {
   --bg: linear-gradient(170deg,#12002b,#1c003d 50%,#26004d);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 22s ease-in-out infinite alternate;
   --text: #f0e4ff;
   --muted: color-mix(in srgb, #f0e4ff 60%, #26004d);
   --card-bg: rgb(38 0 77 / 82%);
@@ -1824,14 +1826,14 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --flag-bg: color-mix(in srgb, #ff5ce1 14%, transparent);
   --flag-border: 1px dashed #b026ff;
   --flag-text: #ffd489;
-  --fx: stars;
+  --fx: rings;
   --fx-color: 190,90,255;
 }
 
 [data-theme="grape"] {
   --bg: linear-gradient(155deg,#ede0ff,#d4b8f8 50%,#b788f0);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-pan 32s ease-in-out infinite alternate;
   --text: #33104f;
   --muted: color-mix(in srgb, #33104f 60%, #b788f0);
   --card-bg: rgb(255 255 255 / 62%);
@@ -1873,7 +1875,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="cottoncandy"] {
   --bg: linear-gradient(150deg,#ffe4f3,#f3e4ff 45%,#dbeeff);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-sway 27s ease-in-out infinite alternate;
   --text: #4a2545;
   --muted: color-mix(in srgb, #4a2545 60%, #dbeeff);
   --card-bg: rgb(255 255 255 / 62%);
@@ -1915,7 +1917,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="rosegold"] {
   --bg: linear-gradient(160deg,#fdf0ec,#f7dcd2 50%,#f2cfc2);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 34s ease-in-out infinite alternate;
   --text: #4d241d;
   --muted: color-mix(in srgb, #4d241d 60%, #f2cfc2);
   --card-bg: rgb(255 255 255 / 62%);
@@ -1950,14 +1952,14 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --flag-bg: color-mix(in srgb, #e8b4a0 14%, transparent);
   --flag-border: 1px dashed #c96f5e;
   --flag-text: #7a4a00;
-  --fx: dust;
+  --fx: pollen;
   --fx-color: 220,160,140;
 }
 
 [data-theme="berry"] {
   --bg: linear-gradient(165deg,#23041a,#330726 55%,#42082f);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-drift 22s ease-in-out infinite alternate;
   --text: #ffe3f2;
   --muted: color-mix(in srgb, #ffe3f2 60%, #42082f);
   --card-bg: rgb(66 8 47 / 82%);
@@ -1999,7 +2001,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
 [data-theme="canyon"] {
   --bg: linear-gradient(165deg,#1d0d06,#2d1409 55%,#3d1a0c);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-pan 32s ease-in-out infinite alternate;
   --text: #ffe9d9;
   --muted: color-mix(in srgb, #ffe9d9 60%, #3d1a0c);
   --card-bg: rgb(61 26 12 / 82%);
@@ -2076,7 +2078,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --flag-bg: color-mix(in srgb, #ffa26b 14%, transparent);
   --flag-border: 1px dashed #ff6b35;
   --flag-text: #ffd489;
-  --fx: dust;
+  --fx: ash;
   --fx-color: 165,170,180;
 }
 
@@ -2118,14 +2120,14 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --flag-bg: color-mix(in srgb, #6b6152 14%, transparent);
   --flag-border: 1px dashed #b3261e;
   --flag-text: #7a4a00;
-  --fx: motes;
+  --fx: ash;
   --fx-color: 90,84,70;
 }
 
 [data-theme="sterling"] {
   --bg: linear-gradient(160deg,#f4f6f8,#e2e7ed 50%,#cfd6de);
   --bg-size: 180% 180%;
-  --bg-anim: mg-bg-drift 26s ease-in-out infinite alternate;
+  --bg-anim: mg-bg-sway 27s ease-in-out infinite alternate;
   --text: #232a33;
   --muted: color-mix(in srgb, #232a33 60%, #cfd6de);
   --card-bg: rgb(255 255 255 / 62%);
@@ -2160,7 +2162,7 @@ html[data-motion="off"] body, html[data-motion="off"] body::before, html[data-mo
   --flag-bg: color-mix(in srgb, #8fa8c2 14%, transparent);
   --flag-border: 1px dashed #4f6d8f;
   --flag-text: #7a4a00;
-  --fx: motes;
+  --fx: fog;
   --fx-color: 190,200,210;
 }
 

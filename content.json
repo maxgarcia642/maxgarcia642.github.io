@@ -12,7 +12,9 @@
     },
     "posts": {
       "title": "📁 Articles & Posts",
-      "description": "Papers, write-ups, and older school work, sorted A to Z. Everything opens right here on the page. Longer project updates and professional commentary usually land on LinkedIn first, so for the running version follow"
+      "description": "Papers, write-ups, and older school work. Everything opens right here on the page. Longer project updates and professional commentary usually land on LinkedIn first, so for the running version follow",
+      "generalTitle": "🗂️ General",
+      "generalDescription": "The main shelf: school works, research papers, the channel, and the band, in their intended reading order."
     },
     "finance": {
       "title": "💸 The Financial Liberty Project",
@@ -33,6 +35,18 @@
   },
   "projects": [
     {
+      "id": "youtube",
+      "title": "📺 Official YouTube Channel",
+      "description": "Project walk-throughs, build logs, and demos. The channel is live and content is coming.",
+      "link": {
+        "label": "Visit @maxgarcia642 ↗",
+        "url": "https://www.youtube.com/@maxgarcia642"
+      },
+      "soon": true,
+      "badge": "Coming soon",
+      "dateUpdated": "2026-07-16T00:00:00Z"
+    },
+    {
       "id": "haas-hall",
       "title": "🏫 Junior to High School Haas Hall Works",
       "description": "My early programming works from Haas Hall Academy.",
@@ -49,11 +63,19 @@
     {
       "id": "nwti",
       "title": "🔧 Northwest Technical Institute Works",
-      "description": "Technical projects from Northwest Technical Institute.",
+      "description": "Technical projects from Northwest Technical Institute which caused the file size to be too big.",
       "link": {
         "label": "Open report ↗",
         "url": "https://1drv.ms/b/c/e010e7aa97606cf2/IQDXBv4Vv--PTKrPNMHDxKbdAYsvUvDWMUZvFmFbBIFuciM?e=QRQh4H"
       },
+      "dateUpdated": "2026-07-16T00:00:00Z"
+    },
+    {
+      "id": "band",
+      "title": "🎷 Jazz-Fusion / Progressive Rock Band",
+      "description": "Compositions and sessions are in the works. Recordings will land here and on the YouTube channel.",
+      "soon": true,
+      "badge": "Coming soon",
       "dateUpdated": "2026-07-16T00:00:00Z"
     },
     {
@@ -80,24 +102,18 @@
       "dateUpdated": "2026-07-16T00:00:00Z"
     },
     {
-      "id": "youtube",
-      "title": "📺 Official YouTube Channel",
-      "description": "Project walk-throughs, build logs, and demos. The channel is live and content is coming.",
-      "link": {
-        "label": "Visit @maxgarcia642 ↗",
-        "url": "https://www.youtube.com/@maxgarcia642"
-      },
-      "soon": true,
-      "badge": "Coming soon",
-      "dateUpdated": "2026-07-16T00:00:00Z"
+      "id": "nwti-part1",
+      "title": "🔧 Northwest Technical Institute Works 1/2",
+      "description": "Attempting to split NWTI Works in half to see if it's previewable like HHAB & UofA Works. Pages 1–163, rendered page by page in the on-site reader.",
+      "pdf": "files/Northwest_Technical_Institute_Works_Part1.pdf",
+      "dateUpdated": "2026-07-20T00:00:00Z"
     },
     {
-      "id": "band",
-      "title": "🎷 Jazz-Fusion / Progressive Rock Band",
-      "description": "Compositions and sessions are in the works. Recordings will land here and on the YouTube channel.",
-      "soon": true,
-      "badge": "Coming soon",
-      "dateUpdated": "2026-07-16T00:00:00Z"
+      "id": "nwti-part2",
+      "title": "🔧 Northwest Technical Institute Works 2/2",
+      "description": "Another attempt at splitting NWTI Works in half (this is the other half) to see if it's previewable like HHAB & UofA Works. Pages 164–214, rendered page by page in the on-site reader.",
+      "pdf": "files/Northwest_Technical_Institute_Works_Part2.pdf",
+      "dateUpdated": "2026-07-20T00:00:00Z"
     },
     {
       "id": "linkedin-blog",
@@ -210,34 +226,28 @@
       "badge": "Published"
     },
     {
-      "id": "nwaero",
-      "title": "NWAero Grid Dashboard",
-      "kind": "facade",
-      "emoji": "🌦️",
-      "description": "Regional weather and traffic dashboard with real-time API aggregation. A collab build.",
-      "openUrl": "https://nwaero.netlify.app/",
-      "embedUrl": "https://nwaero.netlify.app/",
-      "badge": "Live app"
+      "id": "skydisorder",
+      "title": "SkyDisorder",
+      "kind": "soon",
+      "emoji": "🏌️",
+      "description": "Satirical single-file Canvas 2D arcade golf. Over 12K lines, census-verified, with four phases complete.",
+      "badge": "Coming soon"
     },
     {
-      "id": "terminal-collective",
-      "title": "Coding Terminal Collective",
-      "kind": "facade",
-      "emoji": "⌨️",
-      "description": "Terminal coding collective with DevOps tooling, refactored from the academic repo.",
-      "openUrl": "https://garciacode-terminalcollective.bolt.host/",
-      "embedUrl": "https://garciacode-terminalcollective.bolt.host/",
-      "badge": "Live app"
+      "id": "getting-through",
+      "title": "Getting Through",
+      "kind": "soon",
+      "emoji": "🥊",
+      "description": "A 3D parody fighter in pre-production on a Unity and Godot 4 stack, targeting itch.io and Roblox.",
+      "badge": "Pre-production"
     },
     {
-      "id": "maxfolio",
-      "title": "Create Your Own Maxfolio",
-      "kind": "facade",
-      "emoji": "🧩",
-      "description": "Full-stack networking parody site built on Next.js, Tailwind, Supabase, and Vercel.",
-      "openUrl": "https://maxfolio-website-git-main-maximiliano-projects.vercel.app?_vercel_share=GZEgLha73mO1Y7LlqCdbXvAnOyRrZy3t",
-      "embedUrl": "",
-      "badge": "Preview link"
+      "id": "keystone",
+      "title": "Keystone",
+      "kind": "soon",
+      "emoji": "🗝️",
+      "description": "A 130K-line local-first AI agent platform in Rust, Tauri, and React. Agents on your hardware, under your keys.",
+      "badge": "Flagship"
     },
     {
       "id": "flock",
@@ -312,28 +322,34 @@
       "badge": "RC shipped"
     },
     {
-      "id": "skydisorder",
-      "title": "SkyDisorder",
-      "kind": "soon",
-      "emoji": "🏌️",
-      "description": "Satirical single-file Canvas 2D arcade golf. Over 12K lines, census-verified, with four phases complete.",
-      "badge": "Coming soon"
+      "id": "maxfolio",
+      "title": "Create Your Own Maxfolio",
+      "kind": "facade",
+      "emoji": "🧩",
+      "description": "Full-stack networking parody site built on Next.js, Tailwind, Supabase, and Vercel.",
+      "openUrl": "https://maxfolio-website-git-main-maximiliano-projects.vercel.app?_vercel_share=GZEgLha73mO1Y7LlqCdbXvAnOyRrZy3t",
+      "embedUrl": "",
+      "badge": "Preview link"
     },
     {
-      "id": "getting-through",
-      "title": "Getting Through",
-      "kind": "soon",
-      "emoji": "🥊",
-      "description": "A 3D parody fighter in pre-production on a Unity and Godot 4 stack, targeting itch.io and Roblox.",
-      "badge": "Pre-production"
+      "id": "nwaero",
+      "title": "NWAero Grid Dashboard",
+      "kind": "facade",
+      "emoji": "🌦️",
+      "description": "Regional weather and traffic dashboard with real-time API aggregation. A collab build.",
+      "openUrl": "https://nwaero.netlify.app/",
+      "embedUrl": "https://nwaero.netlify.app/",
+      "badge": "Live app"
     },
     {
-      "id": "keystone",
-      "title": "Keystone",
-      "kind": "soon",
-      "emoji": "🗝️",
-      "description": "A 130K-line local-first AI agent platform in Rust, Tauri, and React. Agents on your hardware, under your keys.",
-      "badge": "Flagship"
+      "id": "terminal-collective",
+      "title": "Coding Terminal Collective",
+      "kind": "facade",
+      "emoji": "⌨️",
+      "description": "Terminal coding collective with DevOps tooling, refactored from the academic repo.",
+      "openUrl": "https://garciacode-terminalcollective.bolt.host/",
+      "embedUrl": "https://garciacode-terminalcollective.bolt.host/",
+      "badge": "Live app"
     }
   ],
   "themes": [
