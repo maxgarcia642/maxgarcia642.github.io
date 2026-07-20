@@ -90,8 +90,6 @@ This is a **public static site**. Everything below follows from that one fact.
 - [ ] Pasted per-session; never saved anywhere
 - [ ] Revoke immediately at github.com/settings/tokens if a device is lost
 
-
-
-
 ## v4 note — the admin attack surface is gone
+
 admin.html no longer talks to any API. It is a Layout Settings page that only reads/writes `localStorage("mg-layout")` in the visitor's own browser — no PAT, no credentials, no network calls, nothing to phish or throttle. The former GitHub Contents-API panel (per-session fine-grained PAT, write throttling, auto-changelog) is retired; repo changes go through GitHub/Cursor. The FOUC guard grew a legacy-theme migration + layout pre-apply, so its CSP hash changed (value above) — recompute it whenever that inline script changes by even one byte. `settings.js` exists because the settings page's CSP correctly refuses inline scripts.

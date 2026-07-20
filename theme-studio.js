@@ -21,8 +21,10 @@
   ];
   const FX = ["none", "bubbles", "orbs", "snow", "rain", "embers", "fireflies", "stars", "petals", "leaves", "motes", "glyphs", "confetti", "shapes", "prisms", "steam", "dust"];
 
-  $("#stFont").innerHTML = FONT_PAIRS.map(f => `<option value="${f.id}">${f.label}</option>`).join("");
-  $("#stFx").innerHTML = FX.map(f => `<option value="${f}"${f === "stars" ? " selected" : ""}>${f === "none" ? "none — clear air" : f}</option>`).join("");
+  /* Options built as DOM nodes (values are internal constants, but node
+     building keeps innerHTML out of the file entirely). */
+  FONT_PAIRS.forEach(f => $("#stFont").appendChild(new Option(f.label, f.id)));
+  FX.forEach(f => $("#stFx").appendChild(new Option(f === "none" ? "none — clear air" : f, f, f === "stars", f === "stars")));
 
   /* ---------- color helpers ---------- */
   const hexRgb = (h) => {
@@ -31,7 +33,7 @@
   };
   const lum = (h) => {
     const [r, g, b] = hexRgb(h).map(v => v / 255);
-    return .2126 * r + .7152 * g + .0722 * b;
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
   };
 
   function readForm() {
@@ -49,9 +51,9 @@
 
   function cssFor(t, id) {
     const pair = FONT_PAIRS.find(f => f.id === t.font) || FONT_PAIRS[0];
-    const dark = lum(t.bg2) < .45;
+    const dark = lum(t.bg2) < 0.45;
     const [cr, cg, cb] = hexRgb(t.card);
-    const btnText = lum(t.accent) > .62 ? "#101018" : "#ffffff";
+    const btnText = lum(t.accent) > 0.62 ? "#101018" : "#ffffff";
     const anim = t.anim === "hue" ? "mg-bg-hue 40s linear infinite"
       : t.anim === "none" ? "none"
       : "mg-bg-drift 26s ease-in-out infinite alternate";

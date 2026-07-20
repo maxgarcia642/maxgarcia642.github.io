@@ -15,7 +15,7 @@
   -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    script-src 'self' https://cdnjs.cloudflare.com 'sha256-akJOeUYgicp+AUQ4Nap0oxlZS6dt7c3t1+Pji9ugtFI=';
+    script-src 'self' https://cdnjs.cloudflare.com 'sha256-iFe9HotxWII07hQ7aSCVe3Cs0lJCmPa+Yia6U61xZ4s=';
     style-src 'self' https://fonts.googleapis.com 'unsafe-inline';
     font-src https://fonts.gstatic.com;
     img-src 'self' data: blob: https://api.microlink.io https://*.microlink.io;
@@ -38,12 +38,13 @@
         if (L.motion) document.documentElement.setAttribute('data-motion', L.motion);
         if (L.width) document.documentElement.setAttribute('data-width', L.width);
         if (L.corners) document.documentElement.setAttribute('data-corners', L.corners);
-        if (L.font) document.documentElement.style.setProperty('--user-font-scale', L.font);
+        var FS = { s: '.92', m: '1', l: '1.12' };
+        if (L.font && FS[L.font]) document.documentElement.style.setProperty('--user-font-scale', FS[L.font]);
       } catch (e) { /* storage blocked — defaults stand */ }
     })();
   </script>
 
-  <!-- Font pool for all 30 themes (swap keeps first paint fast) -->
+  <!-- Font pool for all 50 themes (swap keeps first paint fast) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Nunito:wght@400;800&family=Playfair+Display:wght@600&family=Press+Start+2P&family=Sora:wght@400;700&family=Lora:wght@400;600&family=Quicksand:wght@500;700&family=Orbitron:wght@500;700&family=Caveat:wght@600&display=swap" rel="stylesheet">

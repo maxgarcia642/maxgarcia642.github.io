@@ -1,6 +1,6 @@
-# maximiliano-garcia-portfolio — v3 "Shapeshifter"
+# maximiliano-garcia-portfolio — v4 "Shapeshifter"
 
-Static portfolio for GitHub Pages. **Twenty-five** full themes, one skeleton.
+Static portfolio for GitHub Pages. **Fifty** full themes, one skeleton.
 Zero build step, zero backend, zero secrets in the repo.
 
 **Live:** <https://maxgarcia642.github.io/>
@@ -10,7 +10,7 @@ Zero build step, zero backend, zero secrets in the repo.
 > Keep it public (the deployed site exposes all client code anyway), upgrade
 > to GitHub Pro, or migrate to Cloudflare Pages for private-repo deploys.
 
-> **v4 (2026-07-17):** 30 animated themes with per-theme particle weather · Top-50 Market Pulse in five groups (all 50 auto-refresh daily via CI; crypto+FX also live in-browser) · playlist music with skip + any-format visitor uploads · the admin token panel is retired in favor of a credential-free **Layout Settings** page · full spec in `Superprompt_v4_Website_Change_Spec.txt`.
+> **v4 (2026-07-17, expanded 2026-07-20):** 50 animated themes with per-theme particle weather (registry and CSS verified 50/50) · Top-50 Market Pulse in five groups (all 50 auto-refresh daily via CI; crypto+FX also live in-browser) · playlist music with skip + any-format visitor uploads · the admin token panel is retired in favor of a credential-free **Layout Settings** page · a Theme Studio to paint your own · the 🧭 Individualism section for personality-assessment posters · full spec in `Superprompt_v4_Website_Change_Spec.txt`.
 
 ## What's here
 
@@ -18,16 +18,18 @@ Zero build step, zero backend, zero secrets in the repo.
 | --- | --- |
 | `index.html` | Structure + inline FOUC guard + meta-CSP + SRI-pinned PDF.js |
 | `styles.css` | Layout skeleton — consumes theme tokens only |
-| `themes.css` | The 25 personalities: Frutiger Aero (default), Liquid Glass, Neobrutalism, Terminal CRT, Pixel Arcade, Aurora Mesh, Claymorphism, Cyberpunk Neon, Editorial Swiss, Dark Luxe, Vaporwave, Sakura, Midnight OLED, Coffee House, Amber Terminal, Paper Sketch, Synthwave Sunset, Deep Ocean, Desert Adobe, Matcha Garden, Bauhaus, Holographic, Royal Velvet, Arctic Frost, Blueprint |
+| `themes.css` | The 50 personalities, generated from a config table (see the file header) — Frutiger Aero is the default; the full roster lives in `content.json → themes` |
 | `script.js` | Theme dock, looping music + custom-track upload, lazy PDF.js rendering, protected doc reader, arcade facades, pixel studio, CoinGecko + Frankfurter refresh, converter, aero bubbles |
 | `content-loader.js` | Fetches `content.json` + `finance.json`, renders posts / finance / arcade / dock |
 | `content.json` | Site text, projects, arcade entries, theme registry |
-| `finance.json` | The Financial Liberty Project: 10 works, 20-chip market pulse (dated + live), honesty flags, research desk |
-| `admin.html` | GitHub Contents API panel — direct commits, no PRs, auto-changelog |
+| `finance.json` | The Financial Liberty Project: 10 works (9 live), Top-50 market pulse in five groups, honesty flags, research desk |
+| `admin.html` + `settings.js` | Layout Settings — credential-free, localStorage-only page customization (the token admin panel is retired) |
+| `theme-studio.js` | 🖌️ Theme Studio — paint a theme, preview live, save to your dock, export CSS |
+| `assessments/` | 🧭 Individualism posters (IPIP-300 self-assessment; model runs land here too) |
 | `vendor/fuse/` | Vendored Fuse.js 7.5.0 (Apache-2.0) powering site search — LICENSE + PROVENANCE included |
 | `vendor/mammoth/` | Vendored mammoth.js 1.11.0 (BSD-2-Clause) — DOCX → HTML for the view-only reader |
 | `vendor/xlsx/` | Vendored SheetJS CE 0.20.3 (Apache-2.0) — XLSX → tables for the view-only reader |
-| `scripts/update-pulse.mjs` | Zero-dep refresher for the live crypto chips (run by CI or locally) |
+| `scripts/update-pulse.mjs` | Zero-dep daily refresher for all 50 pulse chips — CoinGecko + Frankfurter + Yahoo, host-allowlisted (run by CI or locally) |
 | `.github/workflows/market-pulse.yml` | Daily Action: refresh live chips → commit → Pages redeploys with fresh data |
 | `files/` | Downloadable deliverables (DOCX/XLSX) + compressed resume PDF |
 | `superprompt-changelog.md` | Auto-appended by admin actions; feed for Cursor |

@@ -48,10 +48,14 @@
     document.documentElement.setAttribute("data-theme", MAP[t] || t);
   }
 
+  /* Each segment group binds its click handler exactly once; repaints are
+     collected so a reset can refresh every group without re-binding. */
+  const segPainters = [];
   const seg = (hostId, key, def) => {
     const host = $(hostId);
     const paint = () => host.querySelectorAll(".seg").forEach(b =>
       b.setAttribute("aria-pressed", String((L[key] || def) === b.dataset.v)));
+    segPainters.push(paint);
     host.addEventListener("click", (e) => {
       const b = e.target.closest(".seg"); if (!b) return;
       L[key] = b.dataset.v === def ? undefined : b.dataset.v;
@@ -60,6 +64,7 @@
     });
     paint();
   };
+  const repaintSegs = () => segPainters.forEach(p => p());
   seg("#setParticles", "particles", "normal");
   seg("#setFont", "font", "m");
   seg("#setCorners", "corners", "rounded");
@@ -159,13 +164,7 @@
     try { localStorage.removeItem("mg-layout"); } catch (e) {}
     renderSections();
     $("#setMotion").value = "full";
-    document.querySelectorAll(".seg-row .seg").forEach(b => b.setAttribute("aria-pressed", "false"));
-    seg("#setParticles", "particles", "normal"); seg("#setFont", "font", "m");
-    seg("#setCorners", "corners", "rounded"); seg("#setWidth", "width", "default");
-    seg("#setDock", "dock", "right"); seg("#setFontmode", "fontmode", "theme");
-    seg("#setDensity", "density", "default"); seg("#setContrast", "contrast", "default");
-    seg("#setUnderline", "underline", "off"); seg("#setShuffle", "shuffle", "off");
-    seg("#setArcade", "arcade", "preview");
+    repaintSegs(); /* repaint only — handlers stay bound exactly once */
     applyHere();
     $("#saveNote").textContent = "Reset. Defaults are back.";
   });

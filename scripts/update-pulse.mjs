@@ -20,7 +20,13 @@ let changed = 0;
 
 const fmtUsd = (v) => `$${v.toLocaleString("en-US", { maximumFractionDigits: v >= 100 ? 0 : v >= 1 ? 2 : 4 })}`;
 
+/* Every request must target one of these three known APIs. finance.json is
+   our own file, but symbols pass through URLs — the allowlist makes it
+   impossible for a bad edit to point this script anywhere else. */
+const ALLOWED_HOSTS = new Set(["api.coingecko.com", "api.frankfurter.dev", "query1.finance.yahoo.com"]);
+
 async function getJSON(url, headers = UA) {
+  if (!ALLOWED_HOSTS.has(new URL(url).hostname)) throw new Error(`host not allowlisted: ${url}`);
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), 20000);
   try {

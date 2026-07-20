@@ -62,25 +62,69 @@ document.addEventListener("click", (e) => {
 const rand = () => crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296;
 
 const FX_PRESETS = {
-  bubbles:  { n: 22, up: 1,  drift: .4, size: [6, 30],  shape: "bubble",  a: [.08, .24] },
-  orbs:     { n: 14, up: .3, drift: .6, size: [16, 52], shape: "soft",    a: [.05, .12] },
-  snow:     { n: 60, up: -1, drift: .8, size: [1.5, 4], shape: "dot",     a: [.5, .95] },
-  rain:     { n: 70, up: -6, drift: .15,size: [7, 15],  shape: "streak",  a: [.25, .5] },
-  embers:   { n: 26, up: .8, drift: .7, size: [1.5, 4], shape: "dot",     a: [.4, .9], flicker: true },
-  fireflies:{ n: 18, up: .1, drift: 1,  size: [2, 3.5], shape: "dot",     a: [.2, 1], flicker: true },
-  stars:    { n: 90, up: 0,  drift: .02,size: [.8, 2.2],shape: "dot",     a: [.25, .95], flicker: true },
-  petals:   { n: 26, up: -.5,drift: 1.2,size: [4, 8],   shape: "petal",   a: [.5, .9], spin: true },
-  leaves:   { n: 20, up: -.45,drift: 1.3,size: [5, 9],  shape: "petal",   a: [.5, .85], spin: true },
-  motes:    { n: 30, up: .15,drift: .5, size: [1.5, 3.5],shape: "dot",    a: [.15, .4] },
-  glyphs:   { n: 40, up: -3, drift: 0,  size: [10, 14], shape: "glyph",   a: [.35, .9] },
-  confetti: { n: 26, up: -.8,drift: 1,  size: [3, 6],   shape: "square",  a: [.6, .95], spin: true },
-  shapes:   { n: 14, up: .25,drift: .8, size: [8, 20],  shape: "square",  a: [.15, .4], spin: true },
-  prisms:   { n: 16, up: .2, drift: .6, size: [8, 18],  shape: "prism",   a: [.2, .5], spin: true },
-  steam:    { n: 14, up: .7, drift: .5, size: [14, 34], shape: "soft",    a: [.05, .14] },
-  dust:     { n: 34, up: .1, drift: .4, size: [1, 2.6], shape: "dot",     a: [.15, .5] },
+  bubbles:  { n: 22, up: 1,   drift: 0.4,  size: [6, 30],    shape: "bubble", a: [0.08, 0.24] },
+  orbs:     { n: 14, up: 0.3, drift: 0.6,  size: [16, 52],   shape: "soft",   a: [0.05, 0.12] },
+  snow:     { n: 60, up: -1,  drift: 0.8,  size: [1.5, 4],   shape: "dot",    a: [0.5, 0.95] },
+  rain:     { n: 70, up: -6,  drift: 0.15, size: [7, 15],    shape: "streak", a: [0.25, 0.5] },
+  embers:   { n: 26, up: 0.8, drift: 0.7,  size: [1.5, 4],   shape: "dot",    a: [0.4, 0.9], flicker: true },
+  fireflies:{ n: 18, up: 0.1, drift: 1,    size: [2, 3.5],   shape: "dot",    a: [0.2, 1], flicker: true },
+  stars:    { n: 90, up: 0,   drift: 0.02, size: [0.8, 2.2], shape: "dot",    a: [0.25, 0.95], flicker: true },
+  petals:   { n: 26, up: -0.5, drift: 1.2, size: [4, 8],     shape: "petal",  a: [0.5, 0.9], spin: true },
+  leaves:   { n: 20, up: -0.45, drift: 1.3, size: [5, 9],    shape: "petal",  a: [0.5, 0.85], spin: true },
+  motes:    { n: 30, up: 0.15, drift: 0.5, size: [1.5, 3.5], shape: "dot",    a: [0.15, 0.4] },
+  glyphs:   { n: 40, up: -3,  drift: 0,    size: [10, 14],   shape: "glyph",  a: [0.35, 0.9] },
+  confetti: { n: 26, up: -0.8, drift: 1,   size: [3, 6],     shape: "square", a: [0.6, 0.95], spin: true },
+  shapes:   { n: 14, up: 0.25, drift: 0.8, size: [8, 20],    shape: "square", a: [0.15, 0.4], spin: true },
+  prisms:   { n: 16, up: 0.2, drift: 0.6,  size: [8, 18],    shape: "prism",  a: [0.2, 0.5], spin: true },
+  steam:    { n: 14, up: 0.7, drift: 0.5,  size: [14, 34],   shape: "soft",   a: [0.05, 0.14] },
+  dust:     { n: 34, up: 0.1, drift: 0.4,  size: [1, 2.6],   shape: "dot",    a: [0.15, 0.5] },
   none:     null
 };
 const GLYPH_SET = "01<>{}[]$#*+=/";
+const PRISM_HUES = ["255,150,200", "150,200,255", "170,255,200", "255,240,170"];
+
+/* One draw routine per particle shape — keeps the frame loop flat and small. */
+const FX_DRAW = {
+  bubble(ctx, b, x, y, s, alpha, color) {
+    const g = ctx.createRadialGradient(x - s / 3, y - s / 3, s / 6, x, y, s);
+    g.addColorStop(0, `rgba(${color},${Math.min(1, alpha + 0.25)})`);
+    g.addColorStop(1, `rgba(${color},${alpha * 0.25})`);
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, s, 0, Math.PI * 2); ctx.fill();
+  },
+  soft(ctx, b, x, y, s, alpha, color) {
+    const g = ctx.createRadialGradient(x, y, 0, x, y, s);
+    g.addColorStop(0, `rgba(${color},${alpha})`); g.addColorStop(1, `rgba(${color},0)`);
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, s, 0, Math.PI * 2); ctx.fill();
+  },
+  streak(ctx, b, x, y, s, alpha, color, dpi) {
+    ctx.strokeStyle = `rgba(${color},1)`; ctx.lineWidth = Math.max(1, dpi);
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + b.vx * 4000, y + s); ctx.stroke();
+  },
+  glyph(ctx, b, x, y, s, alpha, color) {
+    ctx.fillStyle = `rgba(${color},1)`;
+    ctx.font = `${s}px 'JetBrains Mono', monospace`;
+    ctx.fillText(b.ch, x, y);
+  },
+  square(ctx, b, x, y, s, alpha, color) {
+    ctx.translate(x, y); ctx.rotate(b.rot);
+    ctx.fillStyle = `rgba(${color},1)`;
+    ctx.fillRect(-s / 2, -s / 2, s, s);
+  },
+  petal(ctx, b, x, y, s, alpha, color) {
+    ctx.translate(x, y); ctx.rotate(b.rot);
+    ctx.fillStyle = `rgba(${color},1)`;
+    ctx.beginPath(); ctx.ellipse(0, 0, s, s * 0.55, 0, 0, Math.PI * 2); ctx.fill();
+  },
+  prism(ctx, b, x, y, s, alpha) {
+    ctx.translate(x, y); ctx.rotate(b.rot);
+    ctx.fillStyle = `rgba(${PRISM_HUES[Math.floor(b.ph) % 4]},${alpha})`;
+    ctx.beginPath(); ctx.moveTo(0, -s / 2); ctx.lineTo(s / 2, s / 2); ctx.lineTo(-s / 2, s / 2); ctx.closePath(); ctx.fill();
+  },
+  dot(ctx, b, x, y, s, alpha, color) {
+    ctx.fillStyle = `rgba(${color},1)`;
+    ctx.beginPath(); ctx.arc(x, y, s, 0, Math.PI * 2); ctx.fill();
+  }
+};
 
 let fxRaf = null, fxSizer = null, fxKey = "";
 function fxDensity() {
@@ -111,7 +155,7 @@ function syncFx() {
   if (fxSizer) removeEventListener("resize", fxSizer);
   fxSizer = () => { canvas.width = innerWidth * dpi; canvas.height = innerHeight * dpi; };
   fxSizer(); addEventListener("resize", fxSizer, { passive: true });
-  const count = Math.round(preset.n * density * (isMobile ? .55 : 1));
+  const count = Math.round(preset.n * density * (isMobile ? 0.55 : 1));
   const parts = Array.from({ length: count }, () => ({
     x: rand(), y: rand(),
     s: preset.size[0] + rand() * (preset.size[1] - preset.size[0]),
@@ -122,54 +166,22 @@ function syncFx() {
     vr: (rand() - .5) * .02,
     ch: GLYPH_SET[Math.floor(rand() * GLYPH_SET.length)]
   }));
-  let t0 = 0;
+  const draw = FX_DRAW[preset.shape] || FX_DRAW.dot;
   (function tick(ts) {
-    t0 = ts || 0;
+    const t0 = ts || 0;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (const b of parts) {
       b.y -= b.vy; b.x += b.vx + (preset.drift ? Math.sin(t0 / 1600 + b.ph) * 0.0004 * preset.drift : 0);
       if (preset.spin) b.rot += b.vr;
       if (b.y < -0.08) { b.y = 1.08; b.x = rand(); }
       if (b.y > 1.08) { b.y = -0.08; b.x = rand(); }
-      if (b.x < -0.05) b.x = 1.05; if (b.x > 1.05) b.x = -0.05;
+      if (b.x < -0.05) b.x = 1.05;
+      if (b.x > 1.05) b.x = -0.05;
       const x = b.x * canvas.width, y = b.y * canvas.height, s = b.s * dpi;
-      let alpha = b.a;
-      if (preset.flicker) alpha = b.a * (0.45 + 0.55 * Math.abs(Math.sin(t0 / 700 + b.ph)));
+      const alpha = preset.flicker ? b.a * (0.45 + 0.55 * Math.abs(Math.sin(t0 / 700 + b.ph))) : b.a;
       ctx.save();
       ctx.globalAlpha = alpha;
-      if (preset.shape === "bubble") {
-        const g = ctx.createRadialGradient(x - s / 3, y - s / 3, s / 6, x, y, s);
-        g.addColorStop(0, `rgba(${color},${Math.min(1, alpha + .25)})`);
-        g.addColorStop(1, `rgba(${color},${alpha * .25})`);
-        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, s, 0, Math.PI * 2); ctx.fill();
-      } else if (preset.shape === "soft") {
-        const g = ctx.createRadialGradient(x, y, 0, x, y, s);
-        g.addColorStop(0, `rgba(${color},${alpha})`); g.addColorStop(1, `rgba(${color},0)`);
-        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, s, 0, Math.PI * 2); ctx.fill();
-      } else if (preset.shape === "streak") {
-        ctx.strokeStyle = `rgba(${color},1)`; ctx.lineWidth = Math.max(1, dpi);
-        ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + b.vx * 4000, y + s); ctx.stroke();
-      } else if (preset.shape === "glyph") {
-        ctx.fillStyle = `rgba(${color},1)`;
-        ctx.font = `${s}px 'JetBrains Mono', monospace`;
-        ctx.fillText(b.ch, x, y);
-      } else if (preset.shape === "square") {
-        ctx.translate(x, y); ctx.rotate(b.rot);
-        ctx.fillStyle = `rgba(${color},1)`;
-        ctx.fillRect(-s / 2, -s / 2, s, s);
-      } else if (preset.shape === "petal") {
-        ctx.translate(x, y); ctx.rotate(b.rot);
-        ctx.fillStyle = `rgba(${color},1)`;
-        ctx.beginPath(); ctx.ellipse(0, 0, s, s * .55, 0, 0, Math.PI * 2); ctx.fill();
-      } else if (preset.shape === "prism") {
-        ctx.translate(x, y); ctx.rotate(b.rot);
-        const hues = ["255,150,200", "150,200,255", "170,255,200", "255,240,170"];
-        ctx.fillStyle = `rgba(${hues[Math.floor(b.ph) % 4]},${alpha})`;
-        ctx.beginPath(); ctx.moveTo(0, -s / 2); ctx.lineTo(s / 2, s / 2); ctx.lineTo(-s / 2, s / 2); ctx.closePath(); ctx.fill();
-      } else { /* dot */
-        ctx.fillStyle = `rgba(${color},1)`;
-        ctx.beginPath(); ctx.arc(x, y, s, 0, Math.PI * 2); ctx.fill();
-      }
+      draw(ctx, b, x, y, s, alpha, color, dpi);
       ctx.restore();
     }
     fxRaf = requestAnimationFrame(tick);
@@ -266,7 +278,7 @@ document.addEventListener("mg:content-ready", () => {
   addEventListener("pointerdown", arm, { once: true });
   addEventListener("keydown", arm, { once: true });
 
-  audio.addEventListener("ended", () => { idx = (idx + 1) % tracks.length; load(true); });
+  audio.addEventListener("ended", () => { idx = (idx + 1) % tracks.length; load(true); paint(); });
 
   btn.addEventListener("click", (e) => {
     e.stopPropagation();

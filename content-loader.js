@@ -118,7 +118,11 @@ function renderFinance(fin) {
       const wrap = document.createElement("div");
       wrap.className = "pulse-group";
       const h = document.createElement("h4");
-      h.innerHTML = `${esc(g.label)} <span class="sub">${esc(g.sub || "")}</span>`;
+      h.textContent = `${g.label} `;
+      const sub = document.createElement("span");
+      sub.className = "sub";
+      sub.textContent = g.sub || "";
+      h.appendChild(sub);
       const strip = document.createElement("div");
       strip.className = "pulse-strip";
       fin.marketPulse.items
