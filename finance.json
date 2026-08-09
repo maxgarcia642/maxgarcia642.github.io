@@ -2,7 +2,7 @@
   "sectionTitle": "The Financial Liberty Project",
   "sectionTagline": "Verified research, real deliverables, honest flags. Patience pays. 🦞",
   "marketPulse": {
-    "asOf": "2026-08-08",
+    "asOf": "2026-08-09",
     "note": "Top 50 across five value groups. Crypto and currencies refresh live in your browser (CoinGecko + ECB/Frankfurter. Free, keyless). Metals, energy, agriculture, and indices are exchange benchmarks auto-refreshed once a day by this repo's own CI (Yahoo Finance). Dated context, not a quote feed. Trading-card grading stats moved to the Card Collecting work below, where they belong.",
     "groups": [
       {
@@ -36,111 +36,111 @@
         "id": "btc",
         "group": "crypto",
         "label": "Bitcoin",
-        "value": "$64,971",
-        "usdPerUnit": 64971,
+        "value": "$65,174",
+        "usdPerUnit": 65174,
         "live": true,
         "coingeckoId": "bitcoin",
         "context": "ATH $126,198 Oct 6 2025; 2026 has been a crypto-winter year.",
-        "raw": 64971
+        "raw": 65174
       },
       {
         "id": "eth",
         "group": "crypto",
         "label": "Ethereum",
-        "value": "$1,918",
-        "usdPerUnit": 1918.47,
+        "value": "$1,922",
+        "usdPerUnit": 1921.95,
         "live": true,
         "coingeckoId": "ethereum",
         "context": "ATH $4,953 Aug 24 2025. Leads the recovery narrative.",
-        "raw": 1918.47
+        "raw": 1921.95
       },
       {
         "id": "sol",
         "group": "crypto",
         "label": "Solana",
-        "value": "$75.49",
-        "usdPerUnit": 75.49,
+        "value": "$76.54",
+        "usdPerUnit": 76.54,
         "live": true,
         "coingeckoId": "solana",
         "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
-        "raw": 75.49
+        "raw": 76.54
       },
       {
         "id": "xrp",
         "group": "crypto",
         "label": "XRP",
         "value": "$1.04",
-        "usdPerUnit": 1.041,
+        "usdPerUnit": 1.038,
         "live": true,
         "coingeckoId": "ripple",
         "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
-        "raw": 1.041
+        "raw": 1.038
       },
       {
         "id": "doge",
         "group": "crypto",
         "label": "Dogecoin",
-        "value": "$0.0705",
-        "usdPerUnit": 0.070482,
+        "value": "$0.0703",
+        "usdPerUnit": 0.070279,
         "live": true,
         "coingeckoId": "dogecoin",
         "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
-        "raw": 0.070482
+        "raw": 0.070279
       },
       {
         "id": "ltc",
         "group": "crypto",
         "label": "Litecoin",
-        "value": "$45.61",
-        "usdPerUnit": 45.61,
+        "value": "$46.31",
+        "usdPerUnit": 46.31,
         "live": true,
         "coingeckoId": "litecoin",
         "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
-        "raw": 45.61
+        "raw": 46.31
       },
       {
         "id": "bnb",
         "group": "crypto",
         "label": "BNB",
-        "value": "$598",
-        "usdPerUnit": 598.42,
+        "value": "$607",
+        "usdPerUnit": 606.72,
         "live": true,
         "coingeckoId": "binancecoin",
         "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
-        "raw": 598.42
+        "raw": 606.72
       },
       {
         "id": "ada",
         "group": "crypto",
         "label": "Cardano",
-        "value": "$0.1998",
-        "usdPerUnit": 0.199821,
+        "value": "$0.1973",
+        "usdPerUnit": 0.197284,
         "live": true,
         "coingeckoId": "cardano",
         "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
-        "raw": 0.199821
+        "raw": 0.197284
       },
       {
         "id": "link",
         "group": "crypto",
         "label": "Chainlink",
-        "value": "$8.33",
-        "usdPerUnit": 8.33,
+        "value": "$8.3",
+        "usdPerUnit": 8.3,
         "live": true,
         "coingeckoId": "chainlink",
         "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
-        "raw": 8.33
+        "raw": 8.3
       },
       {
         "id": "xmr",
         "group": "crypto",
         "label": "Monero",
-        "value": "$383",
-        "usdPerUnit": 382.8,
+        "value": "$390",
+        "usdPerUnit": 390.08,
         "live": true,
         "coingeckoId": "monero",
         "context": "Privacy coin. Delisted from several majors; volatile liquidity.",
-        "raw": 382.8
+        "raw": 390.08
       },
       {
         "id": "eur",
