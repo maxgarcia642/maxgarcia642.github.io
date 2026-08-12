@@ -2,7 +2,7 @@
   "sectionTitle": "The Financial Liberty Project",
   "sectionTagline": "Verified research, real deliverables, honest flags. Patience pays. 🦞",
   "marketPulse": {
-    "asOf": "2026-08-11",
+    "asOf": "2026-08-12",
     "note": "Top 50 across five value groups. Crypto and currencies refresh live in your browser (CoinGecko + ECB/Frankfurter. Free, keyless). Metals, energy, agriculture, and indices are exchange benchmarks auto-refreshed once a day by this repo's own CI (Yahoo Finance). Dated context, not a quote feed. Trading-card grading stats moved to the Card Collecting work below, where they belong.",
     "groups": [
       {
@@ -36,111 +36,111 @@
         "id": "btc",
         "group": "crypto",
         "label": "Bitcoin",
-        "value": "$64,027",
-        "usdPerUnit": 64027,
+        "value": "$63,587",
+        "usdPerUnit": 63587,
         "live": true,
         "coingeckoId": "bitcoin",
         "context": "ATH $126,198 Oct 6 2025; 2026 has been a crypto-winter year.",
-        "raw": 64027
+        "raw": 63587
       },
       {
         "id": "eth",
         "group": "crypto",
         "label": "Ethereum",
-        "value": "$1,879",
-        "usdPerUnit": 1878.7,
+        "value": "$1,890",
+        "usdPerUnit": 1890.01,
         "live": true,
         "coingeckoId": "ethereum",
         "context": "ATH $4,953 Aug 24 2025. Leads the recovery narrative.",
-        "raw": 1878.7
+        "raw": 1890.01
       },
       {
         "id": "sol",
         "group": "crypto",
         "label": "Solana",
-        "value": "$75.68",
-        "usdPerUnit": 75.68,
+        "value": "$75.69",
+        "usdPerUnit": 75.69,
         "live": true,
         "coingeckoId": "solana",
         "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
-        "raw": 75.68
+        "raw": 75.69
       },
       {
         "id": "xrp",
         "group": "crypto",
         "label": "XRP",
         "value": "$1.01",
-        "usdPerUnit": 1.006,
+        "usdPerUnit": 1.012,
         "live": true,
         "coingeckoId": "ripple",
         "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
-        "raw": 1.006
+        "raw": 1.012
       },
       {
         "id": "doge",
         "group": "crypto",
         "label": "Dogecoin",
-        "value": "$0.0708",
-        "usdPerUnit": 0.070751,
+        "value": "$0.0704",
+        "usdPerUnit": 0.070364,
         "live": true,
         "coingeckoId": "dogecoin",
         "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
-        "raw": 0.070751
+        "raw": 0.070364
       },
       {
         "id": "ltc",
         "group": "crypto",
         "label": "Litecoin",
-        "value": "$45.03",
-        "usdPerUnit": 45.03,
+        "value": "$45.01",
+        "usdPerUnit": 45.01,
         "live": true,
         "coingeckoId": "litecoin",
         "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
-        "raw": 45.03
+        "raw": 45.01
       },
       {
         "id": "bnb",
         "group": "crypto",
         "label": "BNB",
-        "value": "$610",
-        "usdPerUnit": 610.16,
+        "value": "$611",
+        "usdPerUnit": 611.27,
         "live": true,
         "coingeckoId": "binancecoin",
         "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
-        "raw": 610.16
+        "raw": 611.27
       },
       {
         "id": "ada",
         "group": "crypto",
         "label": "Cardano",
-        "value": "$0.1853",
-        "usdPerUnit": 0.185279,
+        "value": "$0.1828",
+        "usdPerUnit": 0.182835,
         "live": true,
         "coingeckoId": "cardano",
         "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
-        "raw": 0.185279
+        "raw": 0.182835
       },
       {
         "id": "link",
         "group": "crypto",
         "label": "Chainlink",
-        "value": "$8.63",
-        "usdPerUnit": 8.63,
+        "value": "$8.72",
+        "usdPerUnit": 8.72,
         "live": true,
         "coingeckoId": "chainlink",
         "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
-        "raw": 8.63
+        "raw": 8.72
       },
       {
         "id": "xmr",
         "group": "crypto",
         "label": "Monero",
-        "value": "$391",
-        "usdPerUnit": 391.46,
+        "value": "$394",
+        "usdPerUnit": 394.21,
         "live": true,
         "coingeckoId": "monero",
         "context": "Privacy coin. Delisted from several majors; volatile liquidity.",
-        "raw": 391.46
+        "raw": 394.21
       },
       {
         "id": "eur",
@@ -256,331 +256,331 @@
         "id": "gold",
         "group": "metals",
         "label": "Gold",
-        "value": "$4,444/oz",
-        "usdPerUnit": 4444.3,
+        "value": "$4,496/oz",
+        "usdPerUnit": 4495.5,
         "live": false,
         "yahoo": "GC=F",
         "context": "Front-month COMEX. Record ~$5,602 Jan 28 2026, then a hard pullback. Elevated and volatile.",
-        "raw": 4444.3
+        "raw": 4495.5
       },
       {
         "id": "silver",
         "group": "metals",
         "label": "Silver",
-        "value": "$65.03/oz",
-        "usdPerUnit": 65.03,
+        "value": "$66.34/oz",
+        "usdPerUnit": 66.34,
         "live": false,
         "yahoo": "SI=F",
         "context": "Nominal record $121.67/oz Jan 29 2026; supply-squeeze era continues.",
-        "raw": 65.03
+        "raw": 66.34
       },
       {
         "id": "platinum",
         "group": "metals",
         "label": "Platinum",
-        "value": "$1,756/oz",
-        "usdPerUnit": 1756.4,
+        "value": "$1,788/oz",
+        "usdPerUnit": 1788.2,
         "live": false,
         "yahoo": "PL=F",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 1756.4
+        "raw": 1788.2
       },
       {
         "id": "palladium",
         "group": "metals",
         "label": "Palladium",
-        "value": "$1,370/oz",
-        "usdPerUnit": 1369.5,
+        "value": "$1,388/oz",
+        "usdPerUnit": 1387.5,
         "live": false,
         "yahoo": "PA=F",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 1369.5
+        "raw": 1387.5
       },
       {
         "id": "copper",
         "group": "metals",
         "label": "Copper",
-        "value": "$6.65/lb",
-        "usdPerUnit": 6.649,
+        "value": "$6.66/lb",
+        "usdPerUnit": 6.66,
         "live": false,
         "yahoo": "HG=F",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 6.649
+        "raw": 6.66
       },
       {
         "id": "aluminum",
         "group": "metals",
         "label": "Aluminum",
-        "value": "$3,530/t",
-        "usdPerUnit": 3529.5,
+        "value": "$3,478/t",
+        "usdPerUnit": 3477.75,
         "live": false,
         "yahoo": "ALI=F",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 3529.5
+        "raw": 3477.75
       },
       {
         "id": "wti",
         "group": "metals",
         "label": "Crude Oil (WTI)",
-        "value": "$82.17/bbl",
-        "usdPerUnit": 82.17,
+        "value": "$82.79/bbl",
+        "usdPerUnit": 82.79,
         "live": false,
         "yahoo": "CL=F",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 82.17
+        "raw": 82.79
       },
       {
         "id": "brent",
         "group": "metals",
         "label": "Crude Oil (Brent)",
-        "value": "$87.75/bbl",
-        "usdPerUnit": 87.75,
+        "value": "$88.65/bbl",
+        "usdPerUnit": 88.65,
         "live": false,
         "yahoo": "BZ=F",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 87.75
+        "raw": 88.65
       },
       {
         "id": "natgas",
         "group": "metals",
         "label": "Natural Gas",
-        "value": "$2.77/MMBtu",
-        "usdPerUnit": 2.771,
+        "value": "$2.80/MMBtu",
+        "usdPerUnit": 2.804,
         "live": false,
         "yahoo": "NG=F",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 2.771
+        "raw": 2.804
       },
       {
         "id": "gasoline",
         "group": "metals",
         "label": "Gasoline (RBOB)",
         "value": "$2.86/gal",
-        "usdPerUnit": 2.8595,
+        "usdPerUnit": 2.8569,
         "live": false,
         "yahoo": "RB=F",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 2.8595
+        "raw": 2.8569
       },
       {
         "id": "wheat",
         "group": "agri",
         "label": "Wheat (SRW)",
-        "value": "630¢/bu",
-        "usdPerUnit": 6.2975,
+        "value": "651¢/bu",
+        "usdPerUnit": 6.5125,
         "live": false,
         "yahoo": "ZW=F",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 629.75
+        "raw": 651.25
       },
       {
         "id": "corn",
         "group": "agri",
         "label": "Corn",
-        "value": "460¢/bu",
-        "usdPerUnit": 4.595,
+        "value": "468¢/bu",
+        "usdPerUnit": 4.68,
         "live": false,
         "yahoo": "ZC=F",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 459.5
+        "raw": 468
       },
       {
         "id": "soybeans",
         "group": "agri",
         "label": "Soybeans",
-        "value": "1,171¢/bu",
-        "usdPerUnit": 11.7125,
+        "value": "1,176¢/bu",
+        "usdPerUnit": 11.755,
         "live": false,
         "yahoo": "ZS=F",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 1171.25
+        "raw": 1175.5
       },
       {
         "id": "coffee",
         "group": "agri",
         "label": "Coffee",
-        "value": "322.5¢/lb",
-        "usdPerUnit": 3.225,
+        "value": "319.2¢/lb",
+        "usdPerUnit": 3.1915,
         "live": false,
         "yahoo": "KC=F",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 322.5
+        "raw": 319.15
       },
       {
         "id": "sugar",
         "group": "agri",
         "label": "Sugar #11",
-        "value": "16.64¢/lb",
-        "usdPerUnit": 0.1664,
+        "value": "16.91¢/lb",
+        "usdPerUnit": 0.1691,
         "live": false,
         "yahoo": "SB=F",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 16.64
+        "raw": 16.91
       },
       {
         "id": "cocoa",
         "group": "agri",
         "label": "Cocoa",
-        "value": "$5,762/t",
-        "usdPerUnit": 5762,
+        "value": "$5,710/t",
+        "usdPerUnit": 5710,
         "live": false,
         "yahoo": "CC=F",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 5762
+        "raw": 5710
       },
       {
         "id": "cotton",
         "group": "agri",
         "label": "Cotton",
-        "value": "84.25¢/lb",
-        "usdPerUnit": 0.8425,
+        "value": "84.70¢/lb",
+        "usdPerUnit": 0.847,
         "live": false,
         "yahoo": "CT=F",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 84.25
+        "raw": 84.7
       },
       {
         "id": "rice",
         "group": "agri",
         "label": "Rough Rice",
-        "value": "$13.97/cwt",
-        "usdPerUnit": 13.97,
+        "value": "$14.41/cwt",
+        "usdPerUnit": 14.41,
         "live": false,
         "yahoo": "ZR=F",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 13.97
+        "raw": 14.41
       },
       {
         "id": "oats",
         "group": "agri",
         "label": "Oats",
-        "value": "342¢/bu",
-        "usdPerUnit": 3.4175,
+        "value": "347¢/bu",
+        "usdPerUnit": 3.4725,
         "live": false,
         "yahoo": "ZO=F",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 341.75
+        "raw": 347.25
       },
       {
         "id": "lumber",
         "group": "agri",
         "label": "Lumber",
-        "value": "$580/mbf",
-        "usdPerUnit": 579.5,
+        "value": "$578/mbf",
+        "usdPerUnit": 578,
         "live": false,
         "yahoo": "LBR=F",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 579.5
+        "raw": 578
       },
       {
         "id": "spx",
         "group": "indices",
         "label": "S&P 500",
-        "value": "7,759",
-        "usdPerUnit": 7758.87,
+        "value": "7,746",
+        "usdPerUnit": 7746.08,
         "live": false,
         "yahoo": "^GSPC",
         "context": "Front index. Verified Jul 17 2026 (Yahoo Finance); auto-refreshed daily via CI.",
-        "raw": 7758.87
+        "raw": 7746.08
       },
       {
         "id": "nasdaq",
         "group": "indices",
         "label": "Nasdaq Composite",
-        "value": "26,583",
-        "usdPerUnit": 26583.482,
+        "value": "26,603",
+        "usdPerUnit": 26602.938,
         "live": false,
         "yahoo": "^IXIC",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 26583.482
+        "raw": 26602.938
       },
       {
         "id": "dow",
         "group": "indices",
         "label": "Dow Jones",
-        "value": "54,019",
-        "usdPerUnit": 54019.02,
+        "value": "53,816",
+        "usdPerUnit": 53815.69,
         "live": false,
         "yahoo": "^DJI",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 54019.02
+        "raw": 53815.69
       },
       {
         "id": "russell",
         "group": "indices",
         "label": "Russell 2000",
-        "value": "3,035",
-        "usdPerUnit": 3035.307,
+        "value": "3,037",
+        "usdPerUnit": 3036.631,
         "live": false,
         "yahoo": "^RUT",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 3035.307
+        "raw": 3036.631
       },
       {
         "id": "ftse",
         "group": "indices",
         "label": "FTSE 100",
-        "value": "10,860",
-        "usdPerUnit": 10859.63,
+        "value": "10,833",
+        "usdPerUnit": 10832.96,
         "live": false,
         "yahoo": "^FTSE",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 10859.63
+        "raw": 10832.96
       },
       {
         "id": "dax",
         "group": "indices",
         "label": "DAX",
-        "value": "26,464",
-        "usdPerUnit": 26464.04,
+        "value": "26,414",
+        "usdPerUnit": 26414.18,
         "live": false,
         "yahoo": "^GDAXI",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 26464.04
+        "raw": 26414.18
       },
       {
         "id": "nikkei",
         "group": "indices",
         "label": "Nikkei 225",
-        "value": "66,970",
-        "usdPerUnit": 66970.22,
+        "value": "67,524",
+        "usdPerUnit": 67524.06,
         "live": false,
         "yahoo": "^N225",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 66970.22
+        "raw": 67524.06
       },
       {
         "id": "hangseng",
         "group": "indices",
         "label": "Hang Seng",
-        "value": "25,653",
-        "usdPerUnit": 25652.82,
+        "value": "25,440",
+        "usdPerUnit": 25440.17,
         "live": false,
         "yahoo": "^HSI",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 25652.82
+        "raw": 25440.17
       },
       {
         "id": "vix",
         "group": "indices",
         "label": "VIX (fear index)",
-        "value": "15.41",
+        "value": "14.77",
         "live": false,
         "yahoo": "^VIX",
         "context": "Volatility gauge, not a tradable amount. Excluded from the converter.",
         "noCalc": true,
-        "raw": 15.41
+        "raw": 14.77
       },
       {
         "id": "us10y",
         "group": "indices",
         "label": "US 10-Yr Yield",
-        "value": "4.68%",
+        "value": "4.67%",
         "live": false,
         "yahoo": "^TNX",
         "context": "CBOE ^TNX ÷10 convention = yield %. Excluded from the converter.",
         "noCalc": true,
-        "raw": 4.682
+        "raw": 4.668
       }
     ]
   },
