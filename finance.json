@@ -2,7 +2,7 @@
   "sectionTitle": "The Financial Liberty Project",
   "sectionTagline": "Verified research, real deliverables, honest flags. Patience pays. 🦞",
   "marketPulse": {
-    "asOf": "2026-10-31",
+    "asOf": "2026-11-01",
     "note": "Top 50 across five value groups. Crypto and currencies refresh live in your browser (CoinGecko + ECB/Frankfurter. Free, keyless). Metals, energy, agriculture, and indices are exchange benchmarks auto-refreshed once a day by this repo's own CI (Yahoo Finance). Dated context, not a quote feed. Trading-card grading stats moved to the Card Collecting work below, where they belong.",
     "groups": [
       {
@@ -36,111 +36,111 @@
         "id": "btc",
         "group": "crypto",
         "label": "Bitcoin",
-        "value": "$77,551",
-        "usdPerUnit": 77551,
+        "value": "$77,881",
+        "usdPerUnit": 77881,
         "live": true,
         "coingeckoId": "bitcoin",
         "context": "ATH $126,198 Oct 6 2025; 2026 has been a crypto-winter year.",
-        "raw": 77551
+        "raw": 77881
       },
       {
         "id": "eth",
         "group": "crypto",
         "label": "Ethereum",
-        "value": "$2,255",
-        "usdPerUnit": 2254.67,
+        "value": "$2,261",
+        "usdPerUnit": 2261.35,
         "live": true,
         "coingeckoId": "ethereum",
         "context": "ATH $4,953 Aug 24 2025. Leads the recovery narrative.",
-        "raw": 2254.67
+        "raw": 2261.35
       },
       {
         "id": "sol",
         "group": "crypto",
         "label": "Solana",
-        "value": "$96.05",
-        "usdPerUnit": 96.05,
+        "value": "$94.35",
+        "usdPerUnit": 94.35,
         "live": true,
         "coingeckoId": "solana",
         "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
-        "raw": 96.05
+        "raw": 94.35
       },
       {
         "id": "xrp",
         "group": "crypto",
         "label": "XRP",
-        "value": "$1.26",
-        "usdPerUnit": 1.26,
+        "value": "$1.25",
+        "usdPerUnit": 1.25,
         "live": true,
         "coingeckoId": "ripple",
         "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
-        "raw": 1.26
+        "raw": 1.25
       },
       {
         "id": "doge",
         "group": "crypto",
         "label": "Dogecoin",
-        "value": "$0.0758",
-        "usdPerUnit": 0.075786,
+        "value": "$0.0753",
+        "usdPerUnit": 0.075271,
         "live": true,
         "coingeckoId": "dogecoin",
         "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
-        "raw": 0.075786
+        "raw": 0.075271
       },
       {
         "id": "ltc",
         "group": "crypto",
         "label": "Litecoin",
-        "value": "$55.62",
-        "usdPerUnit": 55.62,
+        "value": "$55.4",
+        "usdPerUnit": 55.4,
         "live": true,
         "coingeckoId": "litecoin",
         "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
-        "raw": 55.62
+        "raw": 55.4
       },
       {
         "id": "bnb",
         "group": "crypto",
         "label": "BNB",
-        "value": "$706",
-        "usdPerUnit": 706.11,
+        "value": "$710",
+        "usdPerUnit": 709.67,
         "live": true,
         "coingeckoId": "binancecoin",
         "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
-        "raw": 706.11
+        "raw": 709.67
       },
       {
         "id": "ada",
         "group": "crypto",
         "label": "Cardano",
-        "value": "$0.1938",
-        "usdPerUnit": 0.193766,
+        "value": "$0.1922",
+        "usdPerUnit": 0.192215,
         "live": true,
         "coingeckoId": "cardano",
         "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
-        "raw": 0.193766
+        "raw": 0.192215
       },
       {
         "id": "link",
         "group": "crypto",
         "label": "Chainlink",
-        "value": "$11.71",
-        "usdPerUnit": 11.71,
+        "value": "$11.48",
+        "usdPerUnit": 11.48,
         "live": true,
         "coingeckoId": "chainlink",
         "context": "Jul 17 2026 (CoinGecko). Refreshes live in-browser and daily via CI.",
-        "raw": 11.71
+        "raw": 11.48
       },
       {
         "id": "xmr",
         "group": "crypto",
         "label": "Monero",
-        "value": "$597",
-        "usdPerUnit": 597.2,
+        "value": "$596",
+        "usdPerUnit": 596.45,
         "live": true,
         "coingeckoId": "monero",
         "context": "Privacy coin. Delisted from several majors; volatile liquidity.",
-        "raw": 597.2
+        "raw": 596.45
       },
       {
         "id": "eur",
@@ -400,11 +400,11 @@
         "group": "agri",
         "label": "Coffee",
         "value": "287.2¢/lb",
-        "usdPerUnit": 2.8715,
+        "usdPerUnit": 2.872,
         "live": false,
         "yahoo": "KC=F",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 287.15
+        "raw": 287.2
       },
       {
         "id": "sugar",
@@ -421,12 +421,12 @@
         "id": "cocoa",
         "group": "agri",
         "label": "Cocoa",
-        "value": "$5,454/t",
-        "usdPerUnit": 5454,
+        "value": "$5,453/t",
+        "usdPerUnit": 5453,
         "live": false,
         "yahoo": "CC=F",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 5454
+        "raw": 5453
       },
       {
         "id": "cotton",
@@ -510,11 +510,11 @@
         "group": "indices",
         "label": "Russell 2000",
         "value": "2,812",
-        "usdPerUnit": 2811.8442,
+        "usdPerUnit": 2811.844,
         "live": false,
         "yahoo": "^RUT",
         "context": "Front-month/level, Jul 17 2026 (Yahoo Finance). Auto-refreshed daily via CI. Dated benchmark, not a quote feed.",
-        "raw": 2811.8442
+        "raw": 2811.844
       },
       {
         "id": "ftse",
